@@ -1,0 +1,33 @@
+[project]
+name = "jiratools"
+version = "1.0.0" # reviewed
+authors = [
+  { name="Paul Wilk", email="wilkp@vmware.com" },
+  { name="Chris Stacks", email="stacksc@vmware.com" }
+]
+description = "jiratools - a CLI client for VMware Jira"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "toolbox",
+  "configstore",
+  "click",
+  "jira",
+  "tabulate",
+  "prompt_toolkit"
+]
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0"
+]
+
+[project.scripts]
+jiratools = "jiratools.jiraclient:cli"
+
+[tool.setuptools.packages]
+find = {}

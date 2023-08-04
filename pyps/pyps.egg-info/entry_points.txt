@@ -1,0 +1,2 @@
+[console_scripts]
+pyps = pyps.pyps:cli

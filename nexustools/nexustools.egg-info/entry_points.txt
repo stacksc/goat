@@ -1,0 +1,3 @@
+[console_scripts]
+nexus_auth = nexustools.nexus_auth:auth
+nexustools = nexustools.nexustools:cli

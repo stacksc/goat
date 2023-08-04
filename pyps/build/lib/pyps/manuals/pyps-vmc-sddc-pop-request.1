@@ -1,0 +1,15 @@
+.TH "PYPS VMC SDDC POP REQUEST" "1" "2023-03-21" "1.0.0" "pyps vmc sddc pop request Manual"
+.SH NAME
+pyps\-vmc\-sddc\-pop\-request \- request access to POP for an SDDC
+.SH SYNOPSIS
+.B pyps vmc sddc pop request
+[OPTIONS] TARGET_ORG SDDC_ID
+.SH DESCRIPTION
+request access to POP for an SDDC
+.SH OPTIONS
+.TP
+\fB\-r,\fP \-\-reason TEXT
+supply a reason for POP access (required in prod)
+.TP
+\fB\-t,\fP \-\-token_access
+use a token to request access to POP and ESX

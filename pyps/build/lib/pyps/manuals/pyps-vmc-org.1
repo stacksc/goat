@@ -1,0 +1,44 @@
+.TH "PYPS VMC ORG" "1" "2023-03-21" "1.0.0" "pyps vmc org Manual"
+.SH NAME
+pyps\-vmc\-org \- manage CSP orgs for VMC
+.SH SYNOPSIS
+.B pyps vmc org
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+manage CSP orgs for VMC
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-m,\fP \-\-menu
+launch a menu driven interface for common CSP user actions
+.SH COMMANDS
+.PP
+\fBtype\fP
+  set org type
+  See \fBpyps vmc org-type(1)\fP for full documentation on the \fBtype\fP command.
+.PP
+\fBcreate\fP
+  create an org in CSP
+  See \fBpyps vmc org-create(1)\fP for full documentation on the \fBcreate\fP command.
+.PP
+\fBrename\fP
+  change the display name of a given org
+  See \fBpyps vmc org-rename(1)\fP for full documentation on the \fBrename\fP command.
+.PP
+\fBdelete\fP
+  delete org - remember to double check the...
+  See \fBpyps vmc org-delete(1)\fP for full documentation on the \fBdelete\fP command.
+.PP
+\fBproperty\fP
+  manage org properties
+  See \fBpyps vmc org-property(1)\fP for full documentation on the \fBproperty\fP command.
+.PP
+\fBuser\fP
+  manage users in CSP orgs for VMC
+  See \fBpyps vmc org-user(1)\fP for full documentation on the \fBuser\fP command.
+.PP
+\fBshow\fP
+  display info about CSP org(s)
+  See \fBpyps vmc org-show(1)\fP for full documentation on the \fBshow\fP command.

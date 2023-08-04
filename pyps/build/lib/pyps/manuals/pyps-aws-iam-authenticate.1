@@ -1,0 +1,18 @@
+.TH "PYPS AWS IAM AUTHENTICATE" "1" "2023-03-21" "1.0.0" "pyps aws iam authenticate Manual"
+.SH NAME
+pyps\-aws\-iam\-authenticate \- login using existing IAM creds or add new...
+.SH SYNOPSIS
+.B pyps aws iam authenticate
+[OPTIONS]
+.SH DESCRIPTION
+login using existing IAM creds or add new creds to config with IDP only
+.SH OPTIONS
+.TP
+\fB\-r,\fP \-\-region TEXT
+aws region to connect to  [default: us-gov-west-1]
+.TP
+\fB\-o,\fP \-\-output TEXT
+output type for awscli  [default: json]
+.TP
+\fB\-i,\fP \-\-idp_url TEXT
+idp url if different from default

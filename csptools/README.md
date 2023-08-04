@@ -1,0 +1,196 @@
+<a name="readme-top"></a>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#cliusage">CLI Usage</a></li>
+    <li><a href="#devusage">Dev Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+CSPtools - a CLI client and Python module for interacting with VMware CSP
+
+Current features:
+* retrieval of CSP tokens from encrypted storage
+* generating CSP access tokens
+* setting up CSP org access/tokens
+* managing CSP orgs
+* listing CSP org details
+* managing CSP users
+* listing CSP user details
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
+
+Internal packages:
+* toolbox
+  ```sh
+  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/toolbox
+  ```
+* configstore
+  ```sh
+  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/configstore
+  ```
+External packages:
+* click
+  ```sh
+  pip install click
+  ```
+
+### Installation
+
+1. Clone the repo or download the latest wheel from /dist
+2. Install the wheel with pip or add the cloned repo to one of your paths (python3 -c "import sys; print(sys.path)")
+3. To use the jiraclient in CLI mode (ie as a bash command), run `jiraclient auth -u JIRA_URL_HERE -m (pass/token)` to setup your user profile
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+### CLI Usage
+
+* `csptools auth` - setup and manage authentication details for CSP and its orgs
+  * `csptools auth setup` - setup your API access to a CSP org
+  * `csptools auth convert_token` - create an ad-hoc access token using your refresh token (no options/arguments required)
+  * `csptools auth get` - use to show authentication-related data pulled from CSP
+* `csptools show`
+  * `csptools show config` - display the contents of the entire configstore used by csptools (no options/arguments required)
+  * `csptools show org`
+    * `csptools show org refresh_token` - CSP refresh token
+    * `csptools show org access_token` - CSP access token
+    * `csptools show org access_token_age` - time until current access token expires
+    * `csptools show org org_id` - lookup a CSP org ID by org name
+    * `csptools show org org_name` - lookup a CSP org name by org ID
+    * `csptools show org org_config` - display the contents of the entire org config stored by csptools
+    * `csptools show org all` - show all orgs
+    * `csptools show org features` - show all features enabled for an org
+    * `csptools show org details` - show all details about an org
+    * `csptools show org tasks` - show all tasks for an org
+    * `csptools show org task` - show details about a specific task
+    * `csptools show org sddcs` - show SDDCs deployed in a given org
+  * `csptools show user`
+    * `csptools user show details` - show all details about an user
+    * `csptools user show orgs` - show orgs associated with the user
+    * `csptools user show roles` - show roles assigned to the user
+    * `csptools user show service-roles` - show admin role assigned to the user
+* `csptools org` - create and manage csp orgs
+  * `csptools org create` - create a new org
+  * `csptools org delete` - delete an org
+  * `csptools org rename` - rename an existing org
+  * `csptools org type` - change org type
+  * `csptools org property` - manage org properties
+    * `csptools org property default` - apply default set of properties to an org
+    * `csptools org property set` - set a sepcific property on an org
+    * `csptools org property delete` - delete a property set on an org
+    * `csptools org property show` - show all properties on an org
+  * `csptools org show` - same as `csptools show org`
+  * `csptools org user` - same as `csptools user`
+* `csptools user` - manage csp users
+  * `csptools user add` - invite a user to an org
+  * `csptools user remove` - remove a user from an org
+  * `csptools user role` - change role of a user within an org
+    * `csptools user role admin` - make a user an admin for an org
+    * `csptools user role change` - change the assigned role of the user
+  * `csptools user show` - same as `csptools show user`
+
+
+
+For help with required and optional parameters, please see the `csptools <subcommand> --help` 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+### Dev Usage
+
+* Authentication:
+  * setup access to 123-456-789 org under a 'myOrg' name
+  ```python
+  from cspclient.cspclient import CSPclient
+  CSP = CSPclient()
+  if CSP.setup_org_access('123-456-789', 'myOrg', refresh_token='1234567890'):
+    print('OK!')
+  else:
+    print('Doh!')
+  ```
+  * get access token for an "operator" org created under "prod" profile:
+  ```python
+  from cspclient.cspclient import CSPclient
+  CSP = CSPclient()
+  ACCESS_TOKEN = CSP.get_org_access_token(org_name='operator', user_profile="prod"):
+    print(f'access token: {ACCESS_TOKEN}')
+  if ACCESS_TOKEN is None:
+    print('Oh no, that printed out an empty string :(')
+  ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] org management
+  - [X] create orgs
+  - [ ] update orgs
+  - [ ] delete orgs
+
+See the [open issues](https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+
+1. Fork the Project (optional)
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+After making changes to the source code, please remember to build a new wheel for the project by running `python3 -m build --wheel` in the root of the project (where .toml file is)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- CONTACT -->
+## Contact
+
+Paul Wilk - wilkp@vmware.com
+
+Project Link: [https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python](https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

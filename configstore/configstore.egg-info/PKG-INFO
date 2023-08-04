@@ -1,0 +1,214 @@
+Metadata-Version: 2.1
+Name: configstore
+Version: 1.0.0
+Summary: ConfigStore - manage settings for your Python application with encrypted json files
+Author-email: Paul Wilk <wilkp@vmware.com>, Chris Stacks <stacksc@vmware.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+<a name="readme-top"></a>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#cliusage">CLI Usage</a></li>
+    <li><a href="#devusage">Dev Usage</a></li>
+    <li><a href-="#testing">Testing</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+ConfigStore - framework for storing user profiles for python applications in encrypted json files
+
+ConfigStore allows to store multiple user profiles for your application. Each Config object originating from ConfigStore uses an individual enryption key for securing the data saved on disk.
+
+Current features:
+* save settings to a user profile
+* store user settings in a secure json file
+* load user settings from file
+* save unlimited amount of user profiles for a single application
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
+
+Internal packages:
+* toolbox
+  ```sh
+  https://gitlab.eng.vmware.com/wilkp/pssrex/-/tree/main/toolbox
+  ```
+
+
+
+### Installation
+
+1. Clone the repo or download the latest wheel from /dist
+2. Install the wheel with pip or add the cloned repo to one of your paths (python3 -c "import sys; print(sys.path)")
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+### CLI Usage
+
+* `configstore show` - setup user authentication to JIRA server
+  ```sh
+  configstore show jiraclient 
+  # show all records saved for jiraclient
+  configstore show slackclient test
+  # show all records saved under profile 'test' for slackclient
+  configstore show cspclient prod operator
+  # show all a record 'operator' saved under 'prod' profile for csptools
+  ```
+* `configstore add` - search for issues based on given parameters or pure JQL (and export to csv if needed)
+  ```sh
+  configstore add profile slackclient test
+  # add a new profile 'test' to slackclient
+  configstore add record csptools prod operator --value 123
+  # add a new record 'operator' with a value of '123' to 'prod' profile for csptools
+  ```
+* `configstore delete` - search for issues based on given parameters or pure JQL (and export to csv if needed)
+  ```sh
+  configstore delete profile slackclient test
+  # delete profile 'test' from slackclient configstore
+  configstore delete record csptools prod operator
+  # delete record 'operator' from 'prod' profile for csptools configstore
+  ```
+
+For help with required and optional parameters, please see the `configstore <subcommand> --help` 
+
+
+
+<!-- USAGE EXAMPLES -->
+## Dev Usage
+
+* create new Config object to initialize ConfigStore and save config for myApp in a default user profile
+```python
+from configstore.configstore import Config
+
+config = Config('myApp')
+
+myApp_settings = {
+  'user': 'test',
+  'url': 'example.api.url.com'
+}
+
+Config.create_config(myApp_settings)
+```
+* load user entire config from a "beta" user profile
+```python
+from configstore.configstore import Config
+
+config = Config('myApp')
+
+myApp_settings = config.load_config(profile_name='beta')
+```
+* load metadata property "created_by" in "gamma" profile:
+```python
+from configstore.configstore import Config
+
+config = Config('myApp')
+
+myApp_profile_user = config.load_metadata('created_by', 'beta)
+```
+* change the value in "username" property in the default user profile (overwrite current value):
+```python
+from configstore.configstore import Config
+
+config = Config('myApp')
+
+new_username = 'python_rider'
+
+config.update_config(new_username, 'username')
+```
+* add new value set (dict) to "valid_urls" property in metadata of the 'testing' user profile (DON'T overwrite current value):
+```python
+from configstore.configstore import Config
+
+config = Config('myApp')
+
+new_urls = {
+  'alpha': 'alpha.ufo.mars',
+  'beta': 'area51.mib.tinf'
+}
+
+config.update_metadata(new_urls, 'valid_urls', True)
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+## Testing
+
+* To locally run unit tests when making changes to configstore, run the following command in this directory
+
+```
+python3 -m tests
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [X] add basic configstore CLI
+- [ ] create more advanced functions for updating values within a configstore instance
+
+See the [open issues](https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+
+1. Fork the Project (optional)
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- CONTACT -->
+## Contact
+
+Author's Name - author@vmware.com
+Co-author's name - coauthor@vmware.com
+
+Project Link: [https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python](https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

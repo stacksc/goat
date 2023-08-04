@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+adhoc/adhoc.py
+adhoc/command.py
+adhoc.egg-info/PKG-INFO
+adhoc.egg-info/SOURCES.txt
+adhoc.egg-info/dependency_links.txt
+adhoc.egg-info/entry_points.txt
+adhoc.egg-info/requires.txt
+adhoc.egg-info/top_level.txt

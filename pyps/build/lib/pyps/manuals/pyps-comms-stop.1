@@ -1,0 +1,18 @@
+.TH "PYPS COMMS STOP" "1" "2023-02-26" "1.0.0" "pyps comms stop Manual"
+.SH NAME
+pyps\-comms\-stop \- send comms about finishing the work on a...
+.SH SYNOPSIS
+.B pyps comms stop
+[OPTIONS] CHANNEL...
+.SH DESCRIPTION
+send comms about finishing the work on a change via JIRA & Slack
+.SH OPTIONS
+.TP
+\fB\-k,\fP \-\-key TEXT
+JIRA ticket number (key) to post a comment on; i.e. PUBSECSRE-123
+.TP
+\fB\-p,\fP \-\-project TEXT
+JIRA project to search for tickets to transition; i.e. PUBSECSRE
+.TP
+\fB\-e,\fP \-\-emoji TEXT
+emoji name to react with

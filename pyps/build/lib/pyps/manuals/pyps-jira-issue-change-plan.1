@@ -1,0 +1,24 @@
+.TH "PYPS JIRA ISSUE CHANGE-PLAN" "1" "2023-03-21" "1.0.0" "pyps jira issue change-plan Manual"
+.SH NAME
+pyps\-jira\-issue\-change-plan \- dump entire change implementation plan of...
+.SH SYNOPSIS
+.B pyps jira issue change-plan
+[OPTIONS] ISSUE_KEYS...
+.SH DESCRIPTION
+dump entire change implementation plan of a given issue
+.SH OPTIONS
+.TP
+\fB\-r,\fP \-\-regex TEXT
+pattern to lookup
+.TP
+\fB\-u,\fP \-\-url
+extract jenkins build URL
+.TP
+\fB\-c,\fP \-\-cred
+extract helm credentials for the build
+.TP
+\fB\-v,\fP \-\-verify
+verify the extracted helm credentials for the build by searching jenkins
+.TP
+\fB\-p,\fP \-\-post
+extract the runway post-deploy URL from the change-plan

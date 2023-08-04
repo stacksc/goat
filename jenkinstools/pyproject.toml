@@ -1,0 +1,31 @@
+[project]
+name = "jenkinstools"
+version = "0.0.7"
+authors = [
+  { name="Chris Stacks", email="stacksc@vmware.com" },
+]
+description = "jenkinstools - everything you need to interact with VMware Jenkins"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "toolbox",
+  "configstore",
+  "python-jenkins",
+  "click"
+]
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0"
+]
+
+[project.scripts]
+jenkinstools = "jenkinstools.jenkinstools:cli"
+jenkins_auth = "jenkinstools.jenkins_auth:auth"
+
+[tool.setuptools.packages]
+find = {}

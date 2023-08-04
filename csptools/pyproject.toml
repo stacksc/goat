@@ -1,0 +1,30 @@
+[project]
+name = "csptools"
+version = "0.0.7"
+authors = [
+  { name="Paul Wilk", email="wilkp@vmware.com" },
+]
+description = "csptools - everything you need to interact with VMware CSP"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "toolbox",
+  "configstore",
+  "click"
+]
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0"
+]
+
+[project.scripts]
+csptools = "csptools.csptools:cli"
+csp_auth = "csptools.csp_auth:auth"
+
+[tool.setuptools.packages]
+find = {}

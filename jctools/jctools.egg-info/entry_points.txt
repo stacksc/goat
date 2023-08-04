@@ -1,0 +1,2 @@
+[console_scripts]
+jctools = jctools.tools:cli

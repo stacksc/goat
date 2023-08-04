@@ -1,0 +1,33 @@
+[project]
+name = "awstools"
+version = "1.0.3" # major.update.prod-reviewed
+authors = [
+  { name="Paul Wilk", email="wilkp@vmware.com" },
+  { name="Chris Stacks", email="stacksc@vmware.com" }
+]
+description = "AWStools - CLI client for AWS GovCloud"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+  "boto3",
+  "click",
+  "toolbox",
+  "configstore",
+  "requests_ntlm"
+]
+
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0"
+]
+
+[project.scripts]
+awstools = "awstools.awstools:CLI"
+
+[tool.setuptools.packages]
+find = {}

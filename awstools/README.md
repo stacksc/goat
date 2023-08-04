@@ -1,0 +1,200 @@
+<a name="readme-top"></a>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#cliusage">CLI Usage</a></li>
+    <li><a href="#devusage">Dev Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+AWStools - CLI client for AWS GovCloud
+
+AWStools is a collection of methods written in boto3 to mimic the usage of aws (awscli) command. On top of that, AWStools can also help you setup your awscli profiles (especially for profiles via assumed roles), and it can also pass through your usual awsli commands while injecting profile information/tokens on-demand. This allows you to quickly run awscli commands against multiple aws accounts with very little hassle.
+
+Current features:
+* iam - authenticate with AWS, setup your profiles and assume roles in federated accounts
+* aws s3 - create and delete buckets, download from and upload to buckets, list files in buckets etc
+* ec2 - list resources managed by EC2
+* cli - awscli wrapper with built-in profile management
+
+NOTE: For cli, you only need to assume a role ONCE.  
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
+
+Internal packages:
+* toolbox
+  ```sh
+  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/toolbox
+  ```
+  configstore
+  ```sh
+  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/configstore
+  ```
+External packages:
+* boto3
+  ```sh
+  pyps install boto3
+  ```
+* tabulate
+  ```sh
+  pyps install tabulate
+  ```
+* bs4
+  ```sh
+  pyps install bs4
+  ```
+
+
+
+### Installation
+
+1. Clone the repo or download the latest wheel from /dist
+2. Install the wheel with pip or add the cloned repo to one of your paths (python3 -c "import sys; print(sys.path)")
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+### CLI Usage
+
+* `awstools iam` - create profiles and retrieve tokens
+  * `awstools iam authenticate` - create a profile with access key ID and access key secret OR via LDAP log-in (inB only)
+  ```bash
+  awstools iam authenticate --profile test
+  # populate /.aws/config and /.aws/credentials with login details for a profile "test"
+  # this command will also save aws to data to local cache for future use
+  ```
+  * `awstools iam assume-role` - retrieve session token for a role in federated account AND add the federated account to AWStools 
+  ```bash
+  awstools iam assume-role delta 1234567890
+  # retrieve access details for account 1234567890 and save it under delta profile
+  # note: this only has to be run once for other modules to work; 
+  # you only need to re-run this if you intend to use the access details with awscli - the tokens generated will last for 30min
+  # this command will also save aws to data to local cache for future use
+  ```
+* `awstools s3` - manage S3 buckets
+  * `awstools s3 create` - create S3 bucket
+  ```bash
+  awstools s3 create test --profile delta
+  # create a bucket test under the account saved under "delta" profile
+  ```
+  * `awstools s3 delete` - delete S3 bucket
+  ```bash
+  awstools s3 delete test
+  # delete a bucket test under the account saved under "default" profile
+  ```
+  * `awstools s3 upload` - upload a local file/folder to S3
+  ```bash
+  awstools s3 upload ./folder-local test-bucket --profile test
+  # upload the "folder-local" folder to "test" bucket under the account saved in test profile
+  ```
+  * `awstools s3 download` - download files from a bucket to local storage
+  ```bash
+  awstools s3 download test-bucket ./folder-local
+  # download the contents of test-bucket located in an account saved under the "default" profile and save it to ./folder-local path on your local system
+  ```
+  * `awstools s3 refresh` - refresh the cached data about s3 objects - note: this kicks-in automatically each week
+  * `awstools s3 show` - show all buckets on the account or files within a bucket
+  ```bash
+  awstools s3 show buckets --profile delta
+  # show all S3 buckets on an account saved under the default profile
+  awstools s3 show test-bucket --profile delta
+  # show all files saved in the 'test-bucket' bucket in delta profile
+  ```
+* `awstools ec2` - manage EC2 resources
+  * `awstools ec2 refresh` - refresh the cached data about EC2 objects - note: this kicks-in automatically each week
+  * `awstools ec2 show` - show a table view of EC2 objects of a given type
+  ```bash
+  awstools ec2 show instances --profile delta
+  # show all EC2 instances on an account saved under the default profile
+  ```
+* `awstools rds` - manage RDS resources
+  * `awstools rds refresh` - refresh the cached data about RDS objects - note: this kicks-in automatically each week
+  * `awstools rds show` - show RDS instances on a given account
+* `awstools cli` - run any awscli commands leveraging awstools profile management
+```bash
+awstools cli --profile delta s3 ls
+# this will run "aws s3 ls" while sourcing the login details for delta profile
+# remember to run 'authenticate --profile delta' or 'assume-role delta 12344564564' at least once before using the cli module
+```
+
+For help with required and optional parameters, please see the `awstools <subcommand> --help` 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+### Dev Usage
+
+TBD
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] more EC2 features
+- [ ] RDS
+
+See the [open issues](https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+
+1. Fork the Project (optional)
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- CONTACT -->
+## Contact
+
+Paul Wilk - wilkp@vmware.com
+Chris Stacks - stacksc@vmware.com
+
+Project Link: [https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python](https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

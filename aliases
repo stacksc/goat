@@ -1,0 +1,5 @@
+alias cscm="pyps jira project search CSCM -a $LOGNAME -t"
+alias cssd="pyps jira project search CSSD -a $LOGNAME -t"
+alias pubsec="pyps jira project search PUBSECSRE -a $LOGNAME -t"
+alias toggle="pyps aws iam assume-role "
+alias report="pyps report image-promotion --jira_profile default --aws_profile vmcdelta "

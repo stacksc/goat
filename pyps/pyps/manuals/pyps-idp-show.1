@@ -1,0 +1,36 @@
+.TH "PYPS IDP SHOW" "1" "2023-04-14" "1.0.0" "pyps idp show Manual"
+.SH NAME
+pyps\-idp\-show \- retrieve information from IDP/vIDP
+.SH SYNOPSIS
+.B pyps idp show
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+retrieve information from IDP/vIDP
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-m,\fP \-\-menu
+launch a menu driven interface for common CSP user actions
+.SH COMMANDS
+.PP
+\fBdirectories\fP
+  retrieve a list of directories from tenant
+  See \fBpyps idp show-directories(1)\fP for full documentation on the \fBdirectories\fP command.
+.PP
+\fBusers\fP
+  retrieve all users from target tenant
+  See \fBpyps idp show-users(1)\fP for full documentation on the \fBusers\fP command.
+.PP
+\fBexpired\fP
+  retreive information about users with...
+  See \fBpyps idp show-expired(1)\fP for full documentation on the \fBexpired\fP command.
+.PP
+\fBconfig\fP
+  retrieve the entire content of idptools...
+  See \fBpyps idp show-config(1)\fP for full documentation on the \fBconfig\fP command.
+.PP
+\fBtenant-config\fP
+  retrieve the entire tenant config
+  See \fBpyps idp show-tenant-config(1)\fP for full documentation on the \fBtenant-config\fP command.

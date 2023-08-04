@@ -1,0 +1,37 @@
+.TH "PYPS SLACK" "1" "2023-03-03" "1.0.0" "pyps slack Manual"
+.SH NAME
+pyps\-slack \- VMware Slack CLI Client
+.SH SYNOPSIS
+.B pyps slack
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+VMware Slack CLI Client
+.SH OPTIONS
+.TP
+\fB\-p,\fP \-\-profile TEXT
+User profile to use for connecting to Slack
+.SH COMMANDS
+.PP
+\fBpost\fP
+  post a meessage to a given channel(s)
+  See \fBpyps slack-post(1)\fP for full documentation on the \fBpost\fP command.
+.PP
+\fBreact\fP
+  post a reaction to a given message in...
+  See \fBpyps slack-react(1)\fP for full documentation on the \fBreact\fP command.
+.PP
+\fBunpost\fP
+  delete a meessage in a given channel
+  See \fBpyps slack-unpost(1)\fP for full documentation on the \fBunpost\fP command.
+.PP
+\fBunreact\fP
+  remove a reaction to a given message in a...
+  See \fBpyps slack-unreact(1)\fP for full documentation on the \fBunreact\fP command.
+.PP
+\fBconfig\fP
+  retrieve the entire content of...
+  See \fBpyps slack-config(1)\fP for full documentation on the \fBconfig\fP command.
+.PP
+\fBchannel\fP
+  manage Slack channels; create, archive,...
+  See \fBpyps slack-channel(1)\fP for full documentation on the \fBchannel\fP command.

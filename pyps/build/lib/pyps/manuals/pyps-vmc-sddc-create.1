@@ -1,0 +1,39 @@
+.TH "PYPS VMC SDDC CREATE" "1" "2023-03-21" "1.0.0" "pyps vmc sddc create Manual"
+.SH NAME
+pyps\-vmc\-sddc\-create \- deploy a new SDDC in VMC
+.SH SYNOPSIS
+.B pyps vmc sddc create
+[OPTIONS] TARGET_ORG SDDC_NAME
+.SH DESCRIPTION
+deploy a new SDDC in VMC
+.SH OPTIONS
+.TP
+\fB\-n,\fP \-\-number\-of\-hosts TEXT
+number of ESXi hosts to deploy in SDDC
+.TP
+\fB\-p,\fP \-\-provider [AWS|ZEROCLOUD]
+cloud provider to use
+.TP
+\fB\-a,\fP \-\-account TEXT
+AWS account to use for the deployment
+.TP
+\fB\-m,\fP \-\-customer\-cidr TEXT
+subnet to use for management network
+.TP
+\fB\-v,\fP \-\-vpc\-cidr TEXT
+subnet to use for VPC network
+.TP
+\fB\-t,\fP \-\-sddc\-type TEXT
+type of SDDC to deploy
+.TP
+\fB\-d,\fP \-\-deployment\-type [SingleAZ|MultiAZ]
+single-region or multi-region (stretched) deployment
+.TP
+\fB\-s,\fP \-\-size [MEDIUM|LARGE]
+size of the appliances (vCenter, NSX) to deploy
+.TP
+\fB\-i,\fP \-\-instance\-type TEXT
+type of AWS hardware instance to use for deploying ESXi
+.TP
+\fB\-r,\fP \-\-region [west|east]
+target cloud provider region to deploy the SDDC to

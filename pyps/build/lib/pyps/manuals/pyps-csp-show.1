@@ -1,0 +1,48 @@
+.TH "PYPS CSP SHOW" "1" "2023-03-21" "1.0.0" "pyps csp show Manual"
+.SH NAME
+pyps\-csp\-show \- retrieve information from CSP
+.SH SYNOPSIS
+.B pyps csp show
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+retrieve information from CSP
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-m,\fP \-\-menu
+launch a menu driven interface for common CSP user actions
+.SH COMMANDS
+.PP
+\fBidp\fP
+  list all vIDM tenants with optional filter
+  See \fBpyps csp show-idp(1)\fP for full documentation on the \fBidp\fP command.
+.PP
+\fBconfig\fP
+  retrieve the entire content of csptool's...
+  See \fBpyps csp show-config(1)\fP for full documentation on the \fBconfig\fP command.
+.PP
+\fBfeatures\fP
+  show a summary of available VMC org features
+  See \fBpyps csp show-features(1)\fP for full documentation on the \fBfeatures\fP command.
+.PP
+\fBproperties\fP
+  show a summary of available VMC org...
+  See \fBpyps csp show-properties(1)\fP for full documentation on the \fBproperties\fP command.
+.PP
+\fBroles\fP
+  show a summary of available VMC org roles
+  See \fBpyps csp show-roles(1)\fP for full documentation on the \fBroles\fP command.
+.PP
+\fBoauth\fP
+  display info about CSP oauth-app(s)
+  See \fBpyps csp show-oauth(1)\fP for full documentation on the \fBoauth\fP command.
+.PP
+\fBorg\fP
+  display info about CSP org(s)
+  See \fBpyps csp show-org(1)\fP for full documentation on the \fBorg\fP command.
+.PP
+\fBuser\fP
+  display info about CSP user(s)
+  See \fBpyps csp show-user(1)\fP for full documentation on the \fBuser\fP command.

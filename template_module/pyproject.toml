@@ -1,0 +1,31 @@
+[project]
+name = "template_module"
+version = "0.0.1" # major.update.path
+authors = [
+  { name="John Doe", email="example@vmware.com" },
+  { name="John Smith", email="example@vmware.com" }
+]
+description = "template_module - short description of the module"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "package-from-pip"
+]
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0",
+  "internal-package"
+]
+
+[project.scripts]
+# this is where you list the scripts which should be executable on the system
+# nameoftheexecutable = "nameofthescriptfile:nameofthemainfunction"
+# template_module=template_module.template_module_file:cli
+
+[tool.setuptools.packages]
+find = {}

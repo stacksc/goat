@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: jctools
+Version: 0.0.3
+Summary: Job Control Tools - submit CSCM tickets through common pipeline tasks
+Author-email: Chris Stacks <stacksc@vmware.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown

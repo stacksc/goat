@@ -1,0 +1,32 @@
+[project]
+name = "gitools"
+version = "0.0.1"
+authors = [
+  { name="Chris Stacks", email="stacksc@vmware.com" },
+]
+description = "GITools - CLI client for GIT"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "click",
+  "python-gitlab",
+  "PyYAML"
+]
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0",
+  "toolbox",
+  "configstore"
+]
+
+[project.scripts]
+gitools = "gitools.tools:cli"
+
+[tool.setuptools.packages]
+find = {}
+

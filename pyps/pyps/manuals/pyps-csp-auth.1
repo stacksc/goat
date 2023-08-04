@@ -1,0 +1,28 @@
+.TH "PYPS CSP AUTH" "1" "2023-04-14" "1.0.0" "pyps csp auth Manual"
+.SH NAME
+pyps\-csp\-auth \- perform authentication operations against CSP
+.SH SYNOPSIS
+.B pyps csp auth
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+perform authentication operations against CSP
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-u,\fP \-\-usage
+provide usage instructions to setup access to CSP tools
+.SH COMMANDS
+.PP
+\fBconvert-token\fP
+  ad-hoc convert a refresh token to an...
+  See \fBpyps csp auth-convert-token(1)\fP for full documentation on the \fBconvert-token\fP command.
+.PP
+\fBupdate-profile\fP
+  update the default profile
+  See \fBpyps csp auth-update-profile(1)\fP for full documentation on the \fBupdate-profile\fP command.
+.PP
+\fBsetup\fP
+  setup your API access to a given CSP org
+  See \fBpyps csp auth-setup(1)\fP for full documentation on the \fBsetup\fP command.

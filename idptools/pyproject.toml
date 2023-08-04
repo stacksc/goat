@@ -1,0 +1,31 @@
+[project]
+name = "idptools"
+version = "0.0.2"
+authors = [
+  { name="Chris Stacks", email="stacksc@vmware.com" },
+]
+description = "IDPtools - CLI client for IDP"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "click",
+  "RandomWords",
+]
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0",
+  "toolbox",
+  "configstore"
+]
+
+[project.scripts]
+vmctools = "idptools.idptools:cli"
+
+[tool.setuptools.packages]
+find = {}
+

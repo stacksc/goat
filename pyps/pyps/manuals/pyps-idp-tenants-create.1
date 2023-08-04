@@ -1,0 +1,18 @@
+.TH "PYPS IDP TENANTS CREATE" "1" "2023-04-14" "1.0.0" "pyps idp tenants create Manual"
+.SH NAME
+pyps\-idp\-tenants\-create \- create new child tenant
+.SH SYNOPSIS
+.B pyps idp tenants create
+[OPTIONS]
+.SH DESCRIPTION
+create new child tenant
+.SH OPTIONS
+.TP
+\fB\-n,\fP \-\-name TEXT
+provide tenant name  [required]
+.TP
+\fB\-t,\fP \-\-type [PAID|INTERNAL]
+provide tenant type  [default: PAID; required]
+.TP
+\fB\-p,\fP \-\-parent [vmc\-prod]
+provide parent tenant  [default: vmc-prod; required]

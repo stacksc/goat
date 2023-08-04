@@ -380,5 +380,4 @@ CSCM-40945  Closed    Chris Stacks  Andrey Karadzha (c)  Govcloud-Atlas Atlas Ba
 ```
 ## Text User Interface
 * [ENTER] per ticket will launch the URL in your browser using click
-<img width="2529" alt="image" src="https://github.com/stacksc/goat/images/jira_wizard.mp4">
-
+<img src="./images/jira_wizard.mp4" alt="JIRA" width="200"/>

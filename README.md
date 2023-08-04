@@ -25,36 +25,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-PYPS ("pipes") - PYthon tools by PSsre team - a front-end application for most Python modules created by the Public Sector SRE team. Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br><br>
-The PYPS repository and code is for demonstration purposes; this is only to showcase a basic application to common APIs.
-
+GOAT ("goat") - a front-end application for the Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, & Azure). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br><br>
+The repository and code is for demonstration purposes at this time; this is only to showcase a basic application to common APIs.
 ## Current Usage
 ```
-pyps -h
-Usage: pyps [OPTIONS] COMMAND [ARGS]...
-
-  pyps - PYthon tools by PSsre team - pronounced as 'pipes'
-
-Options:
-  -d, --debug [0|1|2]  0 = no output, 1 = default, 2 = debug on
-  -v, --version        print version of pyps and all its submodules
-  -a, --aliases        print all defined aliases and shortcuts
-  -m, --manuals TEXT   print all defined manuals matching pattern(s)
-  -s, --setup          setup client(s) for pyps interaction
-  -h, --help           Show this message and exit.
-
-Commands:
-  aws         VMware AWS CLI Client    -> Current Profile: VMCDELTA
-  configs     VMware Config Client     -> Current Profile: N/A
-  confluence  VMware Confluence CLI    -> Current Profile: DEFAULT
-  fly         VMware Concourse CLI     -> Current Profile: DEFAULT
-  git         VMware GIT CLI Client    -> Current Profile: DEFAULT
-  jc          VMware JC CLI Client     -> Current Profile: N/A
-  jenkins     VMware Jenkins Client    -> Current Profile: DEFAULT
-  jfrog       VMware JFROG CLI Client  -> Current Profile: DEFAULT
-  jira        VMware JIRA CLI Client   -> Current Profile: https://servicedesk.eng.vmware.com
-  report      VMware Report Module     -> Current Profile: N/A
-  slack       VMware Slack CLI Client  -> Current Profile: DEFAULT
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -67,7 +41,7 @@ Commands:
 
 1. Clone the repo:
    ```sh
-   git clone git@github.com:stacksc/pyps.git
+   git clone git@github.com:stacksc/goat.git
    ```
 2. Install all required packages with 1 script from the main repository: 
    ```sh
@@ -78,7 +52,7 @@ Commands:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] TBD - roadmap not yet available
+- [ ] TBD - roadmap not yet available or determined.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -100,7 +74,7 @@ After making changes to the source code, please remember to build a new wheel fo
 
 <!-- CONTACTS -->
 ## Contacts
-Christopher Stacks - <stacksc@vmware.com>
+Christopher Stacks - <centerupt@gmail.com>
 
 <!-- MP4_Collections -->
 ## MP4 and Image Collections
@@ -111,9 +85,9 @@ Native notifications included to direct users to the README document for critica
 <br><br>
 The following image is demonstrated out-of-bounds where specific modules are loaded.
 <br><br>
-PYPS is fine-tuned to behave differently based on the environment.
+GOAT is fine-tuned to behave differently based on the environment.
 <br><br>
-<img src="./images/pyps-usage.jpg" alt="PYPS Usage" width="600"/>
+<img src="./images/pyps-usage.jpg" alt="GOAT Usage" width="600"/>
 <br><br>
 
 <!-- DOCKER_EXAMPLE -->
@@ -142,7 +116,7 @@ INFO: SLACK_BOT_TOKEN:               xoxb-2154537752-4006410458018-2ksepJwq1D21S
 INFO: GIT:                           /home/stacksc/git
 INFO: REGION:                        us-gov-west-1
 
-INFO: starting the docker build process, which will stop any running PYPS containers, & prune prior to starting
+INFO: starting the docker build process, which will stop any running GOAT containers, & prune prior to starting
 
 WARNING! This will remove:
   - all stopped containers
@@ -223,7 +197,7 @@ Total reclaimed space: 1.317GB
  => CACHED [19/48] WORKDIR /var/tmp                                                                                                                                             0.0s
  => [20/48] COPY . /var/tmp/                                                                                                                                                    0.7s
  => [21/48] RUN yum -y install openssh-server openssh-clients sudo pinentry # buildkit                                                                                         25.4s
- => [22/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && adduser -m stacksc --shell /bin/bash --comment "pyps user" &&     usermod -aG wheel stacksc &&      1.4s
+ => [22/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && adduser -m stacksc --shell /bin/bash --comment "goat user" &&     usermod -aG wheel stacksc &&      1.4s
  => [23/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && echo "$SSH_PRV_KEY" > /home/stacksc/.ssh/id_rsa &&     echo "$SSH_PUB_KEY" > /home/stacksc/.ssh/id  0.2s
  => [24/48] RUN yum -y install python3-boto3 jq awscli gnupg2 npm python3-tabulate # buildkit                                                                                   9.6s
  => [25/48] RUN systemctl enable sshd.service # buildkit                                                                                                                        0.2s
@@ -244,8 +218,8 @@ Total reclaimed space: 1.317GB
  => [40/48] RUN chmod 777 /usr/share/man/man1                                                                                                                                   0.3s
  => [41/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=stacksc; /home/stacksc/.lo  2.1s
  => [42/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=stacksc; /home/stacksc/.lo  2.8s
- => [43/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "export SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}; export LOGNAME=stacksc; pyps slac  1.0s
- => [44/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "click-man pyps -t /usr/share/man/man1"                                        1.2s
+ => [43/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "export SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}; export LOGNAME=stacksc; goat slac  1.0s
+ => [44/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "click-man goat -t /usr/share/man/man1"                                        1.2s
  => [45/48] RUN python3.9 -m pip install --upgrade pip # buildkit                                                                                                               0.7s
  => [46/48] RUN sudo activate-global-python-argcomplete # buildkit                                                                                                              0.3s
  => [47/48] RUN sudo chmod 755 /usr/share/man/man1                                                                                                                              0.2s
@@ -253,16 +227,16 @@ Total reclaimed space: 1.317GB
  => exporting to image                                                                                                                                                          1.1s
  => => exporting layers                                                                                                                                                         1.1s
  => => writing image sha256:38eb56084fead8cd123bfc7c30655ded108fed4866abdf3ab21f3fd773e36223                                                                                    0.0s
- => => naming to docker.io/library/pyps                                                                                                                                         0.0s
+ => => naming to docker.io/library/goat                                                                                                                                         0.0s
 
 fb073a69d77a5b851e24e93564392711e063d617214dceb64035819c892b8f47
 
 CONTAINER ID   IMAGE     COMMAND       CREATED                  STATUS                  PORTS     NAMES
-fb073a69d77a   pyps      "/bin/bash"   Less than a second ago   Up Less than a second             affectionate_lederberg
+fb073a69d77a   goat      "/bin/bash"   Less than a second ago   Up Less than a second             affectionate_lederberg
 
-INFO: login to pyps now with: docker exec -it $(docker ps -a| grep pyps | awk '{print $1}') bash -l
+INFO: login to goat now with: docker exec -it $(docker ps -a| grep goat | awk '{print $1}') bash -l
 INFO: copying .env to /Users/stacksc and out of the main repository
-INFO: pyps docker build is complete!
+INFO: goat docker build is complete!
 ```
 
 </details>
@@ -270,7 +244,7 @@ INFO: pyps docker build is complete!
 ## JIRA Authentication
 1. The following example demonstrates JIRA authentication for the first time:
 ```
-pyps jira -p stage auth -u https://servicedesk-stage.eng.vmware.com -m pass
+goat jira -p stage auth -u https://servicedesk-stage.eng.vmware.com -m pass
 Enter username [stacksc] :
 Enter password: **************
 INFO: Caching some system info now to save time later... please wait
@@ -280,7 +254,7 @@ INFO: Caching facts complete
 ## AWS Authentication
 1. The following example demonstrates AWS authentication for the first time:
 ```
-$ pyps aws -p default iam authenticate --region us-gov-west-1 --output json
+$ goat aws -p default iam authenticate --region us-gov-west-1 --output json
 Please enter AWS_KEY_ID: AKIARO3EFWTTEEIKKCFH
 Please enter AWS_SECRET_ACCESS_KEY: ****************************************
 INFO: credentials saved successfully
@@ -298,12 +272,12 @@ INFO: aws profile caching initialized
 INFO: caching s3 data...
 INFO: caching ec2 data...
 INFO: caching rds data...
-INFO: run source ~/pypsrole.sh
+INFO: run source ~/goatrole.sh
 ```
 ## JIRA Module Demonstration
 ```
-$ pyps jira -h
-Usage: pyps jira [OPTIONS] COMMAND [ARGS]...
+$ goat jira -h
+Usage: goat jira [OPTIONS] COMMAND [ARGS]...
 
   VMware JIRA CLI Client               Current Profile: https://servicedesk.eng.vmware.com
 
@@ -321,7 +295,7 @@ Commands:
 ```
 ## Authentication setup
 ```
-$ pyps jira -p default auth -u https://servicedesk.vmwarefed.com -m pass
+$ goat jira -p default auth -u https://servicedesk.vmwarefed.com -m pass
 WARN: Encryption key not detected. Generating a new one
 Is this going to be your default profile (Y/N)? : Y
 Enter username [stacksc] :
@@ -331,7 +305,7 @@ INFO: Caching facts complete
 ```
 ## Configuration / Cached Data
 ```
-$ pyps jira config
+$ goat jira config
 {
     "config": {
         "mode": "pass",
@@ -359,8 +333,8 @@ $ pyps jira config
 ```
 ## Project Search
 ```
-$ pyps jira project search -h
-Usage: pyps jira project search [OPTIONS] [PROJECTS]...
+$ goat jira project search -h
+Usage: goat jira project search [OPTIONS] [PROJECTS]...
 
   show a summary of projects matching the specified filter
 
@@ -384,7 +358,7 @@ Options:
 ```
 ## Example Search
 ```
-pyps jira project search CSCM -a stacksc -l 10
+goat jira project search CSCM -a stacksc -l 10
 INFO: project = "CSCM" AND assignee = "stacksc"
 INFO: scanned 10 tickets in 2.9686810970306396 seconds
 
@@ -406,5 +380,5 @@ CSCM-40945  Closed    Chris Stacks  Andrey Karadzha (c)  Govcloud-Atlas Atlas Ba
 ```
 ## Text User Interface
 * [ENTER] per ticket will launch the URL in your browser using click
-<img width="2529" alt="image" src="https://github.com/stacksc/pyps/assets/116677370/84c7aa43-e093-4b60-925e-53fcbcad3de8">
+<img width="2529" alt="image" src="https://github.com/stacksc/goat/images/jira_wizard.mp4">
 

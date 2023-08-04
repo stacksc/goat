@@ -27,57 +27,22 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-PYPS ("pipes") - PYthon tools by PSsre team - a front-end application for most Python modules created by the Public Sector SRE team. Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.
+GOAT ("goat") - GOAT is a front-end application for Python modules created to access Public Cloud Platforms GCP, OCI, AWS & Azure. Other tools are packaged into the application to support adhoc applications (Jenkins, Slack, Jira, Confluence, etc...). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.
 
 Current features:
-* adhoc - run a quick-and-dirty bash command in python
 * aws - easily access data from aws and manage profiles for awscli (+ awscli wrapper which makes switching profiles instant)
-* jira - manage, comment and transition jira issues plus search for tickets with easy to use parameters or plain old JQL
-* slack - post and delete messages and reactions, manage channels, add and remove users etc
-* comms - send maintenance and incident notifications to Slack and Jira at the same time
-* vmc - manage access & refresh tokens for VMC, users and organizations, deploy and delete SDDCs, connect to ESXi hosts and much, much more
-* configs - manage all configstore instances (settings for modules such as jiraclient) and records stored within them
+* oci - easily access data from oci and manage profiles for ocicli (+ ocicli wrapper which makes switching profiles instant)
+* jira - manage, comment and transition jira issues plus search for tickets with easy to use parameters
+* slack - post and delete messages and reactions, manage channels, add and remove users, etc...
+* configs - manage all configstore instances (settings for modules) and records stored within them
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### Prerequisites
-
-Internal packages:
-* jiraclient
-  ```sh
-  https://gitlab.eng.vmware.com/wilkp/pssrex/-/tree/main/jiraclient
-  ```
-* slackclient
-  ```sh
-  https://gitlab.eng.vmware.com/wilkp/pssrex/-/tree/main/slackclient
-  ```
-* toolbox
-  ```sh
-  https://gitlab.eng.vmware.com/wilkp/pssrex/-/tree/main/toolbox
-  ```
-* csptools
-  ```sh
-  https://gitlab.eng.vmware.com/wilkp/pssrex/-/tree/main/csptools
-  ```
-* configstore
-  ```sh
-  https://gitlab.eng.vmware.com/wilkp/pssrex/-/tree/main/configstore
-  ```
-External packages:
-* click
-  ```sh
-  pip install click
-  ```
-
 ### Installation
-
-1. Clone the repo or download the latest wheel from /dist
-2. Install the wheel with pip or add the cloned repo to one of your paths (python3 -c "import sys; print(sys.path)")
+1. Clone the repo
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

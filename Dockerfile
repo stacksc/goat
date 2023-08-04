@@ -38,7 +38,7 @@ RUN --mount=type=secret,id=my_env source /run/secrets/my_env && adduser -m $USER
      echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
      echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
      echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config &&\
-     ssh-keyscan gitlab.eng.vmware.com > /home/$USER/.ssh/known_hosts
+     ssh-keyscan github.com > /home/$USER/.ssh/known_hosts
 
 # Add the keys and set permissions on files of interest
 RUN --mount=type=secret,id=my_env source /run/secrets/my_env && echo "$SSH_PRV_KEY" > /home/$USER/.ssh/id_rsa && \
@@ -70,11 +70,11 @@ RUN --mount=type=secret,id=my_env source /run/secrets/my_env && touch /home/$USE
      echo 'pinentry-program /usr/bin/pinentry-curses' > /home/$USER/.gnupg/gpg-agent.conf &&\
      gpg-agent --daemon --options /home/$USER/.gnupg/gpg-agent.conf # buildkit
 
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "/usr/bin/python3 -m pip install click-man bs4 importlib_resources gnureadline termcolor slack_sdk jira argcomplete build prompt_toolkit --upgrade"
+RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "/usr/bin/python3 -m pip install in_place concoursepy click-man bs4 importlib_resources gnureadline termcolor slack_sdk jira argcomplete build prompt_toolkit --upgrade"
 RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.email ${USER}@vmware.com"
 RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.name ${USER}"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git && git clone git@gitlab.eng.vmware.com:govcloud-ops/govcloud-devops-python.git"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git/govcloud-devops-python && bash ./bulk.sh --action rebuild --target all"
+RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git && git clone https://github.com/stacksc/pyps.git"
+RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git/pyps && bash ./bulk.sh --action rebuild --target all"
 
 RUN cp /var/tmp/load_prompt.sh /home/${USER}/
 RUN cp /var/tmp/.bashrc /home/${USER}/
@@ -84,7 +84,6 @@ RUN chmod 777 /usr/share/man/man1
 
 RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=${USER}; echo 'Y' | /home/$USER/.local/bin/jiratools -p default auth -u https://servicedesk.eng.vmware.com -m pass"
 RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=${USER}; echo 'Y' | /home/$USER/.local/bin/jiratools -p jd auth -u https://jira.eng.vmware.com -m pass"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "export SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}; export LOGNAME=${USER}; /home/$USER/.local/bin/pyps slack config"
 
 USER "$USER"
 RUN python3.9 -m pip install --upgrade pip # buildkit

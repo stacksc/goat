@@ -54,9 +54,4 @@ if [ -t 1 ]; then
 fi
 
 [[ -f ${HOME}/load_prompt.sh ]] && source ${HOME}/load_prompt.sh >/dev/null 2>&1
-eval "$(_JIRACLIENT_COMPLETE=bash_source jiraclient)"
 eval "$(_PYPS_COMPLETE=bash_source pyps)"
-eval "$(_AWSTOOLS_COMPLETE=bash_source awstools)"
-eval "$(_CSPTOOLS_COMPLETE=bash_source csptools)"
-eval "$(_VMCTOOLS_COMPLETE=bash_source vmctools)"
-eval "$(_KUBETOOLS_COMPLETE=bash_source kubetools)"

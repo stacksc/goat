@@ -25,11 +25,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-PYPS ("pipes") - PYthon tools by PSsre team - a front-end application for most Python modules created by the Public Sector SRE team. Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.
+PYPS ("pipes") - PYthon tools by PSsre team - a front-end application for most Python modules created by the Public Sector SRE team. Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br><br>
+The PYPS repository and code is for demonstration purposes; this is only to showcase a basic application to common APIs.
 
 ## Current Usage
 ```
-$ pyps -h
+pyps -h
 Usage: pyps [OPTIONS] COMMAND [ARGS]...
 
   pyps - PYthon tools by PSsre team - pronounced as 'pipes'
@@ -38,19 +39,22 @@ Options:
   -d, --debug [0|1|2]  0 = no output, 1 = default, 2 = debug on
   -v, --version        print version of pyps and all its submodules
   -a, --aliases        print all defined aliases and shortcuts
+  -m, --manuals TEXT   print all defined manuals matching pattern(s)
+  -s, --setup          setup client(s) for pyps interaction
   -h, --help           Show this message and exit.
 
 Commands:
-  aws      VMware AWS CLI Client -> Current Profile: vgscs
-  comms    send communications for changes or incidents to JIRA and Slack
-  configs  manage data stored in a configstore
-  csp      VMware CSP CLI Client -> URL: https://console-stg.us-gov.cloud.vmware.com
-  jira     VMware JIRA CLI Client -> URL: https://servicedesk.eng.vmware.com
-  k8s      a module to improve kubernetes & vdp
-  preset   manage built-in and custom presets
-  report   create reports for different systems
-  slack    VMware Slack CLI Client -> URL: https://vmware.slack.com
-  vmc      VMware VMC CLI Client -> URL: https://stg-us-gov-west-1.skyscraper.vmware.com
+  aws         VMware AWS CLI Client    -> Current Profile: VMCDELTA
+  configs     VMware Config Client     -> Current Profile: N/A
+  confluence  VMware Confluence CLI    -> Current Profile: DEFAULT
+  fly         VMware Concourse CLI     -> Current Profile: DEFAULT
+  git         VMware GIT CLI Client    -> Current Profile: DEFAULT
+  jc          VMware JC CLI Client     -> Current Profile: N/A
+  jenkins     VMware Jenkins Client    -> Current Profile: DEFAULT
+  jfrog       VMware JFROG CLI Client  -> Current Profile: DEFAULT
+  jira        VMware JIRA CLI Client   -> Current Profile: https://servicedesk.eng.vmware.com
+  report      VMware Report Module     -> Current Profile: N/A
+  slack       VMware Slack CLI Client  -> Current Profile: DEFAULT
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -59,42 +63,11 @@ Commands:
 ## Getting Started
 
 ### Prerequisites
-
-Internal packages:
-* jiraclient
-  ```sh
-  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/jiraclient
-  ```
-* slackclient
-  ```sh
-  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/slackclient
-  ```
-* toolbox
-  ```sh
-  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/toolbox
-  ```
-* csptools
-  ```sh
-  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/csptools
-  ```
-* configstore
-  ```sh
-  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/configstore
-  ```
-* awstools
-  ```sh
-  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/awstools
-  ```
-* kubetools
-  ```sh
-  https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/tree/main/kubetools
-  ```
-
 ### Installation
 
 1. Clone the repo:
    ```sh
-   git clone git@gitlab.eng.vmware.com:govcloud-ops/govcloud-devops-python.git 
+   git clone git@github.com:stacksc/pyps.git
    ```
 2. Install all required packages with 1 script from the main repository: 
    ```sh
@@ -107,13 +80,10 @@ Internal packages:
 
 - [ ] TBD - roadmap not yet available
 
-See the [open issues](https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/issues) for a full list of proposed features (and known issues).
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 ## Contributing
-
 Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
@@ -130,27 +100,21 @@ After making changes to the source code, please remember to build a new wheel fo
 
 <!-- CONTACTS -->
 ## Contacts
-
-- Paul Wilk <wilkp@vmware.com>
-- Christopher Stacks <stacksc@vmware.com>
-- VMC ps-SRE <vmc-public-sector-sre@vmware.com>
-
-Project Link: [https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python](https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python)
+Christopher Stacks - <stacksc@vmware.com>
 
 <!-- MP4_Collections -->
 ## MP4 and Image Collections
 
-The following demonstrates transitioning using the JIRA wizard menu:
-<br>
-![Alt text](./images/jira_wizard.mp4 "PYPS JIRA Transitions")
-
-The following demonstrates how to navigate and download/upload to S3:
-<br>
-![Alt text](./images/PYPS_S3.mp4 "PYPS S3 Download")
-
 Native notifications included to direct users to the README document for critical failures:
-<br>
+<br><br>
 <img src="./images/notify.jpg" alt="Native Notifications" width="600"/>
+<br><br>
+The following image is demonstrated out-of-bounds where specific modules are loaded.
+<br><br>
+PYPS is fine-tuned to behave differently based on the environment.
+<br><br>
+<img src="./images/pyps-usage.jpg" alt="PYPS Usage" width="600"/>
+<br><br>
 
 <!-- DOCKER_EXAMPLE -->
 ## Docker Example
@@ -303,40 +267,144 @@ INFO: pyps docker build is complete!
 
 </details>
 
-## PYPS All Client Setup
-1. The following example demonstrates how to setup pyps for the first time:
+## JIRA Authentication
+1. The following example demonstrates JIRA authentication for the first time:
 ```
-$ pyps -s
-INFO: would you like to setup client jiratools using https://servicedesk.eng.vmware.com? [Y/n]: y
-INFO: would you like to setup client jiratools using https://jira.eng.vmware.com? [Y/n]: y
-INFO: would you like to setup client jfrogtools? [Y/n]: y
-Enter Artifactory username [stacksc] :
-Enter Artifactory password: **************
-INFO: jfrog artifactory settings saved succesfully
-INFO: would you like to setup client jenkinstools? [Y/n]: y
-Enter jenkins username [stacksc] :
-Enter jenkins password: **************
-INFO: access token expired or not found. Generating a new one
-INFO: jenkins settings saved succesfully
-INFO: would you like to setup client awstools? [Y/n]: y
+pyps jira -p stage auth -u https://servicedesk-stage.eng.vmware.com -m pass
+Enter username [stacksc] :
+Enter password: **************
+INFO: Caching some system info now to save time later... please wait
+INFO: Caching facts complete
+```
+
+## AWS Authentication
+1. The following example demonstrates AWS authentication for the first time:
+```
+$ pyps aws -p default iam authenticate --region us-gov-west-1 --output json
+Please enter AWS_KEY_ID: AKIARO3EFWTTEEIKKCFH
+Please enter AWS_SECRET_ACCESS_KEY: ****************************************
 INFO: credentials saved successfully
 INFO: aws profile caching initialized
+INFO: caching s3 data...
+INFO: caching ec2 data...
 INFO: caching rds data...
 INFO: you can now use your new profile with 'aws --profile default
-INFO: would you like to setup client confluence? [Y/n]: y
-Enter Confluence username [stacksc] :
-Enter Confluence password: **************
-INFO: confluence settings saved succesfully
-INFO: would you like to setup client flytools? [Y/n]: y
-Enter Concourse username [stacksc] :
-Enter Concourse password: **************
-INFO: Launching the following URL in your browser for the token:
-      https://runway-ci.eng.vmware.com/login?fly_port=62715
-Paste concourse runway token here: *********************************************
-INFO: concourse runway settings saved succesfully
-INFO: would you like to setup client gitools? [Y/n]: y
-Enter gitlab username [stacksc] :
-Enter gitlab password: **************
-Paste git token here: ********************
-INFO: git settings saved succesfully
 ```
+2. The following example shows how to assume a role after authentication:
+```
+$ pyps aws iam assume-role atlcs
+INFO: successfully assumed the role
+INFO: aws profile caching initialized
+INFO: caching s3 data...
+INFO: caching ec2 data...
+INFO: caching rds data...
+INFO: run source ~/pypsrole.sh
+```
+## JIRA Module Demonstration
+```
+$ pyps jira -h
+Usage: pyps jira [OPTIONS] COMMAND [ARGS]...
+
+  VMware JIRA CLI Client               Current Profile: https://servicedesk.eng.vmware.com
+
+Options:
+  -d, --debug [0|1|2]  0 = no output, 1 = default, 2 = debug on
+  -p, --profile TEXT   profile name to use when working with the jiraclient  [default: default]
+  -h, --help           Show this message and exit.
+
+Commands:
+  auth     setup or change authentication settings for JIRA
+  config   manage configuration details for the Jira server on this profile
+  issue    manage JIRA issues
+  project  manage JIRA projects
+  search   search for issues in Jira
+```
+## Authentication setup
+```
+$ pyps jira -p default auth -u https://servicedesk.vmwarefed.com -m pass
+WARN: Encryption key not detected. Generating a new one
+Is this going to be your default profile (Y/N)? : Y
+Enter username [stacksc] :
+Enter password: ******************
+INFO: Caching some system info now to save time later... please wait
+INFO: Caching facts complete
+```
+## Configuration / Cached Data
+```
+$ pyps jira config
+{
+    "config": {
+        "mode": "pass",
+        "url": "https://servicedesk.vmwarefed.com",
+        "default": "Y",
+        "user": "stacksc",
+        "pass": "******************"
+    },
+    "metadata": {
+        "name": "default",
+        "created_by": "stacksc@admins.vmwarefed.com",
+        "created_at": "1676180080.897811",
+        "projects": {
+            "CSCM": {},
+            "CSSD": {},
+            "GUAR": {},
+            "ITEX": {},
+            "TEMP": {},
+            "UCP": {},
+            "UCPS": {},
+            "VLOPS": {}
+         }
+    }
+}
+```
+## Project Search
+```
+$ pyps jira project search -h
+Usage: pyps jira project search [OPTIONS] [PROJECTS]...
+
+  show a summary of projects matching the specified filter
+
+Options:
+  -a, --assignee TEXT  i.e. jdoe
+  -g, --group TEXT     i.e. devops
+  -r, --reporter TEXT  i.e. smithj
+  -s, --status TEXT    i.e. closed
+  --summary TEXT       text to search for in the summary field
+  --description TEXT   text to search for in the description field
+  -l, --limit INTEGER  max amount of issues to show
+  -o, --orderby TEXT   choose which field to use for sorting
+  -A, --ascending      show issues in ascending order
+  -D, --descending     show issues in descending order
+  -c, --csv TEXT       name of the csv file to save the results to
+  -J, --json           output results in JSON format
+  -w, --wizard         output results in wizard format for transitioning
+  -t, --tui            use the native TUI to launch tickets in the browser
+  -h, --help           Show this message and exit.
+
+```
+## Example Search
+```
+pyps jira project search CSCM -a stacksc -l 10
+INFO: project = "CSCM" AND assignee = "stacksc"
+INFO: scanned 10 tickets in 2.9686810970306396 seconds
+
+INFO:
+==========  ========  ============  ===================  ===========================================================================================================  ==========
+key         status    assignee      reporter             summary                                                                                                      launcher
+==========  ========  ============  ===================  ===========================================================================================================  ==========
+CSCM-42185  Closed    Chris Stacks  Archana B S          Govcloud-Atlas SaaS Service Production Push - atlas-vmc-sidecar-log-forwarder                                CSCM-42185
+CSCM-42150  Closed    Chris Stacks  Andrey Karadzha (c)  Govcloud-Atlas Atlas Base Image Production Promotion - atlas-atlas-base-image - 2.0.59-20230515-165-9e0611b  CSCM-42150
+CSCM-42125  Closed    Chris Stacks  Archana B S          Govcloud-Atlas SaaS Service Production Push - vmc-vmc-fluentd                                                CSCM-42125
+CSCM-42124  Closed    Chris Stacks  Archana B S          Govcloud SaaS Service Production Push - vmc-vmc-fluentd                                                      CSCM-42124
+CSCM-42108  Closed    Chris Stacks  Yue Chen             Govcloud LINT upgrade for May 2023 adding Nginx                                                              CSCM-42108
+CSCM-42103  Closed    Chris Stacks  Abhishek Gupta       Govcloud SaaS Service Production Push - vmc-vmcmon-api-gateway                                               CSCM-42103
+CSCM-42088  Closed    Chris Stacks  Sukhmeet Chhabra     Govcloud SaaS Service Production Push - vmc-fm-release-engine-ui                                             CSCM-42088
+CSCM-42084  Closed    Chris Stacks  Andrey Karadzha (c)  Govcloud-Atlas Atlas Base Image Production Promotion - atlas-atlas-base-image - 2.0.58-20230512-164-2e26d20  CSCM-42084
+CSCM-41058  Closed    Chris Stacks  Saipriya Gavini (c)  Govcloud SaaS Service Production Push - vmc-vmc-reverseproxy                                                 CSCM-41058
+CSCM-40945  Closed    Chris Stacks  Andrey Karadzha (c)  Govcloud-Atlas Atlas Base Image Production Promotion - atlas-atlas-base-image - 2.0.54-20230420-159-14ecbe6  CSCM-40945
+==========  ========  ============  ===================  ===========================================================================================================  ==========
+```
+## Text User Interface
+* [ENTER] per ticket will launch the URL in your browser using click
+<img width="2529" alt="image" src="https://github.com/stacksc/pyps/assets/116677370/84c7aa43-e093-4b60-925e-53fcbcad3de8">
+

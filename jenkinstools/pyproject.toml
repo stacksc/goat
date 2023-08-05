@@ -25,7 +25,6 @@ requires = [
 
 [project.scripts]
 jenkinstools = "jenkinstools.jenkinstools:cli"
-jenkins_auth = "jenkinstools.jenkins_auth:auth"
 
 [tool.setuptools.packages]
 find = {}

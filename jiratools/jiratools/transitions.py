@@ -105,7 +105,6 @@ def transition_issue(issue_key, transition_id, transition_payload, user_profile,
         if REQ_FIELDS != {}:
             if not check_payload(REQ_FIELDS, transition_payload):
                 ERROR = 'Selected transition requires a payload for the following fields:\n'
-                #ERROR = ERROR = ERROR + f"{json.dumps(REQ_FIELDS, indent=2)}"
                 ERROR = ERROR + format_req_fields_json(REQ_FIELDS)
                 if not wizard:
                     open_url(build_url(str(issue_key), user_profile))
@@ -116,7 +115,6 @@ def transition_issue(issue_key, transition_id, transition_payload, user_profile,
             transition_payload = json.loads(transition_payload)
         REQ_FIELDS_NEW = transition_issue_with_payload(JIRA_SESSION, ISSUE, transition_id, transition_payload)
         if REQ_FIELDS_NEW == {}:
-            #update_cache_with_correct_payload(issue_key, transition_payload, transition_id, user_profile)
             return True
         else:
             TRANSITION_NAME = get_transition_name(issue_key, transition_id, user_profile)

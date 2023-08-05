@@ -3,15 +3,6 @@ from prompt_toolkit import prompt
 from prompt_toolkit.filters import Condition
 from prompt_toolkit.key_binding import KeyBindings
 
-def getIDPCredentials():
-    try:
-        IDP_USER = os.environ['LOGNAME'].replace('admins.','')
-        IDP_PASS = os.environ['IDP_PASS']
-    except:
-        IDP_USER = ''
-        IDP_PASS = ''
-    return IDP_USER, IDP_PASS
-
 def getJiraCredentials():
 
     try:
@@ -85,40 +76,6 @@ def get_secure_string(var_name, prompt_msg="Enter password: "):
     signal.signal(signal.SIGTSTP, signal.SIG_DFL)
     return SECURE_STRING
 
-def getIDPCreds():
-
-    IDP_USER, IDP_PASS = getIDPCredentials()
-    if IDP_USER and IDP_PASS:
-        return IDP_USER, IDP_PASS
-    hidden = [True]  # Nonlocal
-    bindings = KeyBindings()
-
-    signal.signal(signal.SIGTSTP, signal.SIG_IGN)
-    stdin = sys.__stdin__.fileno()
-    stream = sys.__stderr__.fileno()
-
-    old = tty.tcgetattr(stdin)
-
-    IDP_USER = input('Enter username ' + "[" + os.environ['LOGNAME'].replace('admins.','') + "] : ").strip()
-    if not IDP_USER:
-        IDP_USER = os.environ['LOGNAME'].replace('admins.','')
-
-    @bindings.add("c-t")
-    def _(event):
-        "When ControlT has been pressed, toggle visibility."
-        hidden[0] = not hidden[0]
-
-    IDP_PASS = prompt(
-        "Enter password: ", is_password=Condition(lambda: hidden[0]), key_bindings=bindings
-    )
-    # restore terminal settings
-    tty.tcsetattr(stdin, tty.TCSAFLUSH, old)
-    # enable (^Z) SIGTSTP
-    signal.signal(signal.SIGTSTP, signal.SIG_DFL)
-
-    # return credentials
-    return IDP_USER, IDP_PASS
-
 def password_prompt():
 
     hidden = [True]  # Nonlocal
@@ -145,96 +102,6 @@ def password_prompt():
 
     # return credentials
     return PASSWORD
-
-def getCSPcreds():
-
-    hidden = [True]  # Nonlocal
-    bindings = KeyBindings()
-
-    signal.signal(signal.SIGTSTP, signal.SIG_IGN)
-    stdin = sys.__stdin__.fileno()
-    stream = sys.__stderr__.fileno()
-
-    old = tty.tcgetattr(stdin)
-
-    @bindings.add("c-t")
-    def _(event):
-        "When ControlT has been pressed, toggle visibility."
-        hidden[0] = not hidden[0]
-
-    TOKEN = prompt(
-        "Enter your organization's refresh token: ", is_password=Condition(lambda: hidden[0]), key_bindings=bindings
-    )
-
-    # restore terminal settings
-    tty.tcsetattr(stdin, tty.TCSAFLUSH, old)
-    # enable (^Z) SIGTSTP
-    signal.signal(signal.SIGTSTP, signal.SIG_DFL)
-
-    # return credentials
-    return TOKEN
-
-def getVIDMcreds():
-
-    hidden = [True]  # Nonlocal
-    bindings = KeyBindings()
-
-    signal.signal(signal.SIGTSTP, signal.SIG_IGN)
-    stdin = sys.__stdin__.fileno()
-    stream = sys.__stderr__.fileno()
-
-    old = tty.tcgetattr(stdin)
-
-    @bindings.add("c-t")
-    def _(event):
-        "When ControlT has been pressed, toggle visibility."
-        hidden[0] = not hidden[0]
-
-    CLIENT_ID = prompt(
-        "Enter tenant client-id: ", is_password=Condition(lambda: hidden[0]), key_bindings=bindings
-    )
-    CLIENT_SECRET = prompt(
-        "Enter tenant client-secret: ", is_password=Condition(lambda: hidden[0]), key_bindings=bindings
-    )
-
-    # restore terminal settings
-    tty.tcsetattr(stdin, tty.TCSAFLUSH, old)
-    # enable (^Z) SIGTSTP
-    signal.signal(signal.SIGTSTP, signal.SIG_DFL)
-
-    # return credentials
-    return CLIENT_ID, CLIENT_SECRET
-
-def getNexusCreds():
-
-    hidden = [True]  # Nonlocal
-    bindings = KeyBindings()
-
-    signal.signal(signal.SIGTSTP, signal.SIG_IGN)
-    stdin = sys.__stdin__.fileno()
-    stream = sys.__stderr__.fileno()
-
-    old = tty.tcgetattr(stdin)
-
-    NEXUS_USER = input('Enter nexus username ' + "[" + os.environ['LOGNAME'].split('@')[0] + "] : ").strip()
-    if not NEXUS_USER:
-        NEXUS_USER = os.environ['LOGNAME'].split('@')[0]
-
-    @bindings.add("c-t")
-    def _(event):
-        "When ControlT has been pressed, toggle visibility."
-        hidden[0] = not hidden[0]
-
-    NEXUS_PASS = prompt(
-        "Enter nexus password: ", is_password=Condition(lambda: hidden[0]), key_bindings=bindings
-    )
-    # restore terminal settings
-    tty.tcsetattr(stdin, tty.TCSAFLUSH, old)
-    # enable (^Z) SIGTSTP
-    signal.signal(signal.SIGTSTP, signal.SIG_DFL)
-
-    # return credentials
-    return NEXUS_USER, NEXUS_PASS
 
 def getOtherCreds(title='default'):
 

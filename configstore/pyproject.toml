@@ -2,10 +2,9 @@
 name = "configstore"
 version = "1.0.0" # major.update.reviewed
 authors = [
-  { name="Paul Wilk", email="wilkp@vmware.com" },
-  { name="Chris Stacks", email="stacksc@vmware.com" }
+  { name="Chris Stacks", email="centerupt@gmail.com" }
 ]
-description = "ConfigStore - manage settings for your Python application with encrypted json files"
+description = "configtools - manage settings for your Python application with encrypted json files"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
@@ -16,7 +15,6 @@ dependencies = [
   "click",
   "toolbox"
 ]
-
 
 [build-system]
 requires = [

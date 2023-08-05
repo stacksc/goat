@@ -1,3 +1,0 @@
-[console_scripts]
-jenkins_auth = jenkinstools.jenkins_auth:auth
-jenkinstools = jenkinstools.jenkinstools:cli

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import os, click
 from toolbox.logger import Log
 from .jenkins_auth import auth, get_latest_profile
@@ -11,7 +10,7 @@ from toolbox import misc
 
 os.environ['NCURSES_NO_UTF8_ACS'] = "1"
 CONFIG = Config('jenkinstools')
-MESSAGE="VMware Jenkins Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET
+MESSAGE="Jenkins Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET
 
 @click.group(help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))

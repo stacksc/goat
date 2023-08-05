@@ -2,7 +2,6 @@
 name = "toolbox"
 version = "1.0.0"
 authors = [
-  { name="Paul Wilk", email="wilkp@vmware.com" },
   { name="Chris Stacks", email="stacksc@vmware.com" }
 ]
 description = "toolbox - a library of standalone python modules ready for use"

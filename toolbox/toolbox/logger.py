@@ -35,7 +35,7 @@ class Log:
                     'file_handler': {
                         'level': MODE,
                         'mode': 'a',
-                        'filename': f"{os.getenv('HOME')}/.{name}.log",
+                        'filename': f"{os.getenv('HOME')}/goat/.{name}.log",
                         'class': 'logging.FileHandler',
                         'formatter': 'standard'
                     }
@@ -66,7 +66,7 @@ class Log:
                     'file_handler': {
                         'level': self.MODE,
                         'mode': 'a',
-                        'filename': f"{os.getenv('HOME')}/.{self.NAME}.log",
+                        'filename': f"{os.getenv('HOME')}/goat/.{self.NAME}.log",
                         'class': 'logging.FileHandler',
                         'formatter': 'standard'
                     }

@@ -15,7 +15,8 @@ class Config:
     def __init__(self, name):
         self.NAME = name
         HOME = os.getenv('HOME')
-        self.PATH = f'{HOME}/.{name}.cfg'
+        os.makedirs(f'{HOME}/goat', exist_ok=True)
+        self.PATH = f'{HOME}/goat/.{name}.cfg'
         self.PROFILES = self.load_cfg_file()
         if self.PROFILES is None:
             self.PROFILES = { }
@@ -143,16 +144,6 @@ class Config:
                     profile_data[section] = data
                 else:
                     profile_data[section][data_name] = data
-            #if overwrite:
-            #    if data_name is None:
-            #        profile_data[section] = data
-            #    else:
-            #        profile_data[section][data_name] = data
-            #else:
-            #    if data_name is None:
-            #        profile_data[section].update(data)
-            #    else:
-            #        profile_data[section][data_name].update(data)
         except KeyError:
             return False
         self.update_profile(profile_data)
@@ -280,7 +271,7 @@ class Config:
         return CONFIG
 
     def display_metadata(self, profile_name):
-        METADATA = self.get_profile(profile_name)['metadata']#
+        METADATA = self.get_profile(profile_name)['metadata']
         self.filter_print(METADATA)
         return METADATA
 
@@ -296,7 +287,7 @@ class Config:
         print(json.dumps(data, indent=4))
 
     def filter_data(self, data):
-        RESTRICTED_KEYS = ['pass', 'password', 'IDP_PASS']
+        RESTRICTED_KEYS = ['pass', 'password', 'token']
         for RESTRICTED_KEY in RESTRICTED_KEYS:
             for KEY in data:
                 if type(data[KEY]) == dict:

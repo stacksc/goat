@@ -1,2 +1,0 @@
-[console_scripts]
-jfrogtools = jfrogtools.tools:cli

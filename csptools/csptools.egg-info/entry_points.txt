@@ -1,3 +1,0 @@
-[console_scripts]
-csp_auth = csptools.csp_auth:auth
-csptools = csptools.csptools:cli

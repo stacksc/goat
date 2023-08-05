@@ -1,12 +1,10 @@
 import click
-import unittest
 from toolbox.logger import Log
 from .configstore import Config
-from awstools.aws_config import AWSconfig
 from toolbox.click_complete import complete_configstore_names
 from toolbox import misc
 
-MESSAGE="VMware Config Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'N/A' + misc.RESET
+MESSAGE="Config Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'N/A' + misc.RESET
 
 @click.group(help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', help="name of the profile to use", required=False, default=None)
@@ -57,15 +55,6 @@ def _show(configstore_name, profile_name=None):
             AWS_CONFIG.display('config')
             AWS_CONFIG.display('creds')
     return RESULT
-
-@cli.command(help="configstore unittesting", context_settings={'help_option_names':['-h','--help']})
-@click.pass_context
-def test(ctx):
-    from .tests import TestAddMethods
-    all_tests = unittest.TestLoader().loadTestsFromTestCase(TestAddMethods)
-    test_suite = unittest.TestSuite()
-    test_suite.addTest(all_tests)
-    unittest.TextTestRunner().run(test_suite)
 
 @delete.command('profile', help="delete an entire profile stored in a configstore", context_settings={'help_option_names':['-h','--help']})
 @click.argument('configstore_name', nargs=-1, required=True, type=str, shell_complete=complete_configstore_names)

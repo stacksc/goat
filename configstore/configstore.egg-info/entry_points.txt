@@ -1,2 +1,0 @@
-[console_scripts]
-configstore = configstore.configstore_ctrl:cli

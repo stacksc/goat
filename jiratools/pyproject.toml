@@ -2,10 +2,9 @@
 name = "jiratools"
 version = "1.0.0" # reviewed
 authors = [
-  { name="Paul Wilk", email="wilkp@vmware.com" },
   { name="Chris Stacks", email="stacksc@vmware.com" }
 ]
-description = "jiratools - a CLI client for VMware Jira"
+description = "jiratools - a CLI client for Jira included by default"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [

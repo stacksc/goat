@@ -14,7 +14,7 @@ DICTCONFIG = {
         'file_handler': {
             'level': 'INFO',
             'mode': 'a',
-            'filename': f"{os.getenv('HOME')}/.{LOGNAME}",
+            'filename': f"{os.getenv('HOME')}/goat/.{LOGNAME}",
             'class': 'logging.FileHandler',
             'formatter': 'standard'
         }
@@ -30,7 +30,8 @@ DICTCONFIG = {
 logging.config.dictConfig(DICTCONFIG)
 
 def setup(KEYNAME):
-    KEYFILE = f"{os.getenv('HOME')}/.{KEYNAME}.key" 
+    os.makedirs(f"{os.getenv('HOME')}/goat", exist_ok=True)
+    KEYFILE = f"{os.getenv('HOME')}/goat/.{KEYNAME}.key" 
     if not os.path.exists(KEYFILE):
         warn("Encryption key not detected. Generating a new one")
         KEY = Fernet.generate_key()

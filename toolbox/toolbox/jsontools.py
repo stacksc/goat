@@ -140,10 +140,6 @@ def _filter_json(data, filter_key, filter_value):
     else:
         return False
 
-
-
-        
-
 #### logging
 
 LOGNAME = 'jsonfilter.log'
@@ -159,7 +155,7 @@ DICTCONFIG = {
         'file_handler': {
             'level': 'INFO',
             'mode': 'a',
-            'filename': f"{os.getenv('HOME')}/.{LOGNAME}",
+            'filename': f"{os.getenv('HOME')}/goat/.{LOGNAME}",
             'class': 'logging.FileHandler',
             'formatter': 'standard'
         }

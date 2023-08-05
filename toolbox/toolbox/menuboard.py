@@ -31,7 +31,7 @@ class MenuBoard():
 
         # title information
         title = self.TITLE
-        author = "author: VMC PSSRE Team"
+        author = "author: GOAT Team"
         subtitle = self.SUBTITLE
       
         max_row = 15 # max number of rows
@@ -64,7 +64,7 @@ class MenuBoard():
 
         for i in range( 1, max_row + 1 ):
             if row_num == 0:
-                box.addstr( 1, 1, "THESE AREN'T STRINGS", highlightText )
+                box.addstr( 1, 1, "THESE AREN'T STRINGS - PRESS 'Q' TO QUIT", highlightText )
             else:
                 size = len(strings[ i - 1]) + 5
                 space = " " * size
@@ -174,7 +174,7 @@ class MenuBoard():
     def display(self):
         CHOICE = curses.wrapper(self._setup_menu)
         if CHOICE == "ERROR_DISPLAY":
-            print("Ooops, your window is too small to display the menu. Please maximize your terminal/client app and try again")
+            print("Oops, your window is too small to display the menu. Please maximize your terminal/client app and try again")
             sys.exit()
         curses.endwin()
         return CHOICE

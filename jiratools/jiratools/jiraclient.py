@@ -8,7 +8,7 @@ from .search import search
 from toolbox.click_complete import complete_jira_profiles
 from toolbox import misc
 
-MESSAGE="VMware JIRA CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_default_url().lower() + misc.RESET
+MESSAGE="JIRA CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_default_url().lower() + misc.RESET
 
 @click.group('jira', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
@@ -17,7 +17,7 @@ MESSAGE="VMware JIRA CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN 
 def cli(ctx, debug, profile_name):
     ctx.ensure_object(dict)
     ctx.obj['PROFILE'] = profile_name
-    Log.setup('jiraclient', int(debug))
+    Log.setup('jiratools', int(debug))
     pass
     
 cli.add_command(issue)

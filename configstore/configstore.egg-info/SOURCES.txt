@@ -1,0 +1,10 @@
+pyproject.toml
+configstore/__init__.py
+configstore/configstore.py
+configstore/configstore_ctrl.py
+configstore.egg-info/PKG-INFO
+configstore.egg-info/SOURCES.txt
+configstore.egg-info/dependency_links.txt
+configstore.egg-info/entry_points.txt
+configstore.egg-info/requires.txt
+configstore.egg-info/top_level.txt

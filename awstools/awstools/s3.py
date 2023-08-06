@@ -1,7 +1,7 @@
 import click, json, os
 from toolbox.logger import Log
 from .s3client import S3client
-from toolbox.click_complete import complete_profile_names, complete_bucket_names
+from toolbox.click_complete import complete_profile_names
 from configstore.configstore import Config
 from toolbox.menumaker import Menu
 from toolbox.misc import set_terminal_width
@@ -39,7 +39,7 @@ def _create(aws_profile_name, bucket_name):
 
 @s3.command(help='download from s3 to local storage', context_settings={'help_option_names':['-h','--help']})
 @click.pass_context
-@click.argument('source', required=False, default=None, shell_complete=complete_bucket_names)
+@click.argument('source', required=False, default=None)
 @click.option('--destination', help="provide a local destination for download", type=str, required=False, default=os.environ["HOME"], show_default=True)
 def download(ctx, source, destination):
     aws_profile_name = ctx.obj['PROFILE']
@@ -132,7 +132,7 @@ def _download(aws_profile_name, source, destination, filename):
 
 @s3.command(help='upload from local storage to s3 bucket', context_settings={'help_option_names':['-h','--help']})
 @click.option('--source', help="provide a local source for upload", type=str, required=True)
-@click.argument('destination', required=False, default=None, shell_complete=complete_bucket_names)
+@click.argument('destination', required=False, default=None)
 @click.pass_context
 def upload(ctx, source, destination):
     aws_profile_name = ctx.obj['PROFILE']
@@ -176,7 +176,7 @@ def _upload(aws_profile_name, source, destination):
 
 @s3.command(help='delete a specified bucket', context_settings={'help_option_names':['-h','--help']})
 @click.pass_context
-@click.argument('bucket', required=False, default=None, shell_complete=complete_bucket_names)
+@click.argument('bucket', required=False, default=None)
 def delete(ctx, bucket):
     aws_profile_name = ctx.obj['PROFILE']
     if ctx.obj["MENU"] or bucket is None:
@@ -241,7 +241,7 @@ def _refresh(aws_profile_name):
 
 @s3.command(help='show the data stored in s3 cache', context_settings={'help_option_names':['-h','--help']})
 @click.pass_context
-@click.argument('bucket', required=False, default=None, shell_complete=complete_bucket_names)
+@click.argument('bucket', required=False, default=None)
 def show(ctx, bucket):
     aws_profile_name = ctx.obj['PROFILE']
     if ctx.obj["MENU"]:

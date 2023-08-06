@@ -1,4 +1,3 @@
-README.md
 pyproject.toml
 contools/action.py
 contools/auth.py

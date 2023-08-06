@@ -272,18 +272,18 @@ TYPE=$(echo $SHELL | grep "zsh" >/dev/null 2>&1; echo $?)
 if [[ $MYOS == "MAC" ]] && [[ $TYPE -eq 0 ]];
 then
   # if the OS is mac create a completion file
-  cat << 'EOF' > ~/pyps_completion.sh
+  cat << 'EOF' > ~/goat_completion.sh
 fpath=(~/func $fpath)
 autoload -U compinit
 compinit
 EOF
-  [[ -f ${MYDIR}/aliases ]] && cat ${MYDIR}/aliases >> ${HOME}/pyps_completion.sh
+  [[ -f ${MYDIR}/aliases ]] && cat ${MYDIR}/aliases >> ${HOME}/goat_completion.sh
   # if the shell really is ZSH then setup zshrc file
-  chk=$(cat ${HOME}/.zshrc | grep "source ~/pyps_completion.sh" >/dev/null 2>&1; echo $?)
+  chk=$(cat ${HOME}/.zshrc | grep "source ~/goat_completion.sh" >/dev/null 2>&1; echo $?)
   if [[ $chk -ne 0 ]];
   then
     cat << 'EOF' >> ~/.zshrc
-source ~/pyps_completion.sh
+source ~/goat_completion.sh
 EOF
   fi
   cp -rfp ${MYDIR}/func ${HOME}/ >/dev/null 2>&1
@@ -297,7 +297,7 @@ if [[ $(which click-man >/dev/null 2>&1; echo $?) -eq 0 ]]
 then
   if [ -d /opt/homebrew/share/man/man1 ];
   then
-    click-man pyps -t /opt/homebrew/share/man/man1
+    click-man goat -t /opt/homebrew/share/man/man1
     echo
     echo "INFO: make sure the following line exists in /etc/man.conf:"
     echo "MANPATH_MAP     /opt/homebrew/bin       /usr/local/share/man"
@@ -311,8 +311,8 @@ then
   echo "INFO: please source your profile for shell changes to take effect."
   echo "INFO: run the following command to source bashrc: source ${HOME}/.bashrc"
   echo
-  cat << 'EOF' > ~/pyps_completion.sh
-# custom .bashrc for pyps
+  cat << 'EOF' > ~/goat_completion.sh
+# custom .bashrc for goat
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -372,11 +372,11 @@ fi
 
 [[ -f ${HOME}/load_prompt.sh ]] && source ${HOME}/load_prompt.sh >/dev/null 2>&1
 EOF
-  chk=$(cat ${HOME}/.bashrc | grep "source ~/pyps_completion.sh" >/dev/null 2>&1; echo $?)
+  chk=$(cat ${HOME}/.bashrc | grep "source ~/goat_completion.sh" >/dev/null 2>&1; echo $?)
   if [[ $chk -ne 0 ]];
   then
     cat << 'EOF' >> ~/.bashrc
-source ~/pyps_completion.sh
+source ~/goat_completion.sh
 EOF
   fi
 fi

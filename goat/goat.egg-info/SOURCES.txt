@@ -1,0 +1,13 @@
+pyproject.toml
+goat/cmd_preset.py
+goat/cmd_slack.py
+goat/goat.py
+goat.egg-info/PKG-INFO
+goat.egg-info/SOURCES.txt
+goat.egg-info/dependency_links.txt
+goat.egg-info/entry_points.txt
+goat.egg-info/requires.txt
+goat.egg-info/top_level.txt
+goat/presets/confluence.py
+goat/presets/gitools.py
+goat/presets/jenkins.py

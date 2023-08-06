@@ -2,7 +2,7 @@ import click, os, json
 from toolbox.logger import Log
 from .rdsclient import RDSclient
 from tabulate import tabulate
-from toolbox.click_complete import complete_profile_names, complete_db_names
+from toolbox.click_complete import complete_profile_names
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width
 from .iam import get_latest_profile
@@ -37,7 +37,7 @@ def _refresh(cache_type, aws_profile_name):
         False
     
 @rds.command(help='show the data stored in rds cache', context_settings={'help_option_names':['-h','--help']})
-@click.argument('database', required=False, shell_complete=complete_db_names)
+@click.argument('database', required=False)
 @click.pass_context
 def show(ctx, database):
     aws_profile_name = ctx.obj['PROFILE']

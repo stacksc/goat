@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: configstore
+Version: 1.0.0
+Summary: configtools - manage settings for your Python application with encrypted json files
+Author-email: Chris Stacks <centerupt@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown

@@ -1,11 +1,10 @@
 [project]
-name = "pyps"
+name = "goat"
 version = "1.0.0" # reviewed
 authors = [
-  { name="Paul Wilk", email="wilkp@vmware.com" },
   { name="Christopher Stacks", email="stacksc@vmware.com" }
 ]
-description = "pyps - PYthon tools by PSsre team - pronounced as 'pipes'"
+description = "goat => GCP, OCI, & AWS tools : GOAT Team"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [

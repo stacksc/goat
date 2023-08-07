@@ -1,7 +1,6 @@
 import click, os, gnureadline, csv
 from toolbox.logger import Log
 from .ec2client import EC2client
-from toolbox.click_complete import complete_profile_names
 from toolbox.menumaker import Menu
 from tabulate import tabulate
 from configstore.configstore import Config

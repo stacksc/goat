@@ -1,2 +1,2 @@
 [console_scripts]
-pyps = pyps.pyps:cli
+goat = goat.goat:cli

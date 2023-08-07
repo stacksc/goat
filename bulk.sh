@@ -186,10 +186,10 @@ then
 	FULL=$(pwd)
 	if [[ ${ANS} == "Y" ]] || [[ ${ANS} == "y" ]];
 	then
-          sudo rsync -av ./${BASE}/* /usr/local/lib/python3.7/site-packages/${BASE}/
-	  sudo chown -R root:root /usr/local/lib/python3.7/site-packages/${BASE}
+          sudo rsync -av ./${BASE}/* /opt/homebrew/lib/python3.11/site-packages/${BASE}/
+	  sudo chown -R root:root /opt/homebrew/lib/python3.11/site-packages/${BASE}
         else
-          sudo rsync -av /usr/local/lib/python3.7/site-packages/${BASE}/* ./${BASE}/
+          sudo rsync -av /opt/homebrew/lib/python3.11/site-packages/${BASE}/* ./${BASE}/
 	fi
       fi
     done
@@ -200,13 +200,13 @@ then
     FULL=$(pwd)
     if [[ ${ANS} == "Y" ]] || [[ ${ANS} == "y" ]];
     then
-        sudo rsync -av ./${BASE}/* /usr/local/lib/python3.7/site-packages/${BASE}/
-        sudo chown -R root:root /usr/local/lib/python3.7/site-packages/${BASE}
+        sudo rsync -av ./${BASE}/* /opt/homebrew/lib/python3.11/site-packages/${BASE}/
+        sudo chown -R root:root /opt/homebrew/lib/python3.11/site-packages/${BASE}
     else
-        sudo rsync -av /usr/local/lib/python3.7/site-packages/${BASE}/* ./${BASE}/
+        sudo rsync -av /opt/homebrew/lib/python3.11/site-packages/${BASE}/* ./${BASE}/
     fi
   fi
-  sudo chown -R stacksc@admins.vmwarefed.com:rl.vmc.cpbu.linux.admins ~/git/govcloud-devops-python
+  sudo chown -R ${LOGNAME}:${LOGNAME} ~/git/goat
   exit 0
 fi
 

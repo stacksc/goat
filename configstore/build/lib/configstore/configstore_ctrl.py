@@ -3,6 +3,7 @@ from toolbox.logger import Log
 from .configstore import Config
 from toolbox.click_complete import complete_configstore_names
 from toolbox import misc
+from awstools.aws_config import AWSconfig
 
 MESSAGE="Config Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'N/A' + misc.RESET
 
@@ -62,7 +63,7 @@ def _show(configstore_name, profile_name=None):
 def delete_profile(ctx, configstore_name):
     profile_name = ctx.obj['PROFILE']
     if configstore_name is not None:
-        configstore_name = misc.convertTuple(configstore_name)
+        profile_name = misc.convertTuple(configstore_name)
     if profile_name is None:
         Log.critical("please provide a profile name")
     CONFIG = Config(configstore_name)
@@ -75,6 +76,8 @@ def delete_profile(ctx, configstore_name):
 @click.pass_context
 def delete_profile_record(ctx, configstore_name, record_name):
     profile_name = ctx.obj['PROFILE']
+    if configstore_name is not None:
+        profile_name = misc.convertTuple(configstore_name)
     if profile_name is None or record_name is None:
         Log.critical("please provide a profile name and a record name for removal")
     CONFIG = Config(configstore_name)
@@ -86,8 +89,8 @@ def delete_profile_record(ctx, configstore_name, record_name):
 @click.pass_context
 def add_profile(ctx, configstore_name):
     profile_name = ctx.obj['PROFILE']
-    if profile_name is None:
-        Log.critical("please provide a profile name")
+    if configstore_name is not None:
+        profile_name = misc.convertTuple(configstore_name)
     CONFIG = Config(configstore_name)
     RESULT = CONFIG.create_profile(profile_name)
     return RESULT

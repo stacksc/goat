@@ -1,11 +1,7 @@
 import click, json, os
 from toolbox.logger import Log
 from configstore.configstore import Config
-from .presets.csp import csp_preset
 from .presets.jenkins import jenkins_preset
-from .presets.jfrog import jfrog_preset
-from .presets.fly import fly_preset
-from .presets.confluence import confluence_preset
 from toolbox.misc import set_terminal_width, detect_environment
 
 @click.group(help='manage built-in and custom presets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
@@ -36,11 +32,7 @@ def add(type, module, data_pairs):
 def init():
     # put any tools in here that shouldn't use presets in prod
     if detect_environment() == 'non-gc':
-        RESULT = Config('csptools').create_preset(csp_preset)
-        RESULT = Config('jfrogtools').create_preset(jfrog_preset)
         RESULT = Config('jenkinstools').create_preset(jenkins_preset)
-        RESULT = Config('flytools').create_preset(fly_preset)
-        RESULT = Config('confluence').create_preset(confluence_preset)
     else:
         RESULT = False
     return RESULT

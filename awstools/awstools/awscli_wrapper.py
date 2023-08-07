@@ -3,7 +3,6 @@ from toolbox.logger import Log
 from .aws_config import AWSconfig
 from . import iam_nongc
 from . import iam_ingc
-from toolbox.click_complete import complete_profile_names
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width, detect_environment
 

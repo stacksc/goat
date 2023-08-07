@@ -32,3 +32,4 @@ _goat_completion() {
 }
 
 compdef _goat_completion goat;
+

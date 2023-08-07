@@ -1,0 +1,60 @@
+.TH "GOAT JIRA SEARCH" "1" "2023-08-06" "1.0.0" "goat jira search Manual"
+.SH NAME
+goat\-jira\-search \- search for issues in Jira
+.SH SYNOPSIS
+.B goat jira search
+[OPTIONS]
+.SH DESCRIPTION
+search for issues in Jira
+.SH OPTIONS
+.TP
+\fB\-k,\fP \-\-key TEXT
+i.e. PUBSECSRE-123
+.TP
+\fB\-p,\fP \-\-project TEXT
+i.e. PUBSECSRE
+.TP
+\fB\-a,\fP \-\-assignee TEXT
+i.e. jdoe
+.TP
+\fB\-g,\fP \-\-group TEXT
+i.e. devops
+.TP
+\fB\-r,\fP \-\-reporter TEXT
+i.e. smithj
+.TP
+\fB\-s,\fP \-\-status TEXT
+i.e. closed
+.TP
+\fB\-\-summary\fP TEXT
+text to search for in the summary field
+.TP
+\fB\-\-description\fP TEXT
+text to search for in the description field
+.TP
+\fB\-j,\fP \-\-jql TEXT
+ignore other filters and use explicit jql query
+.TP
+\fB\-J,\fP \-\-json
+output results in JSON format
+.TP
+\fB\-w,\fP \-\-wizard
+output results in wizard format for transitioning
+.TP
+\fB\-t,\fP \-\-tui
+use the native TUI to launch tickets in the browser
+.TP
+\fB\-l,\fP \-\-limit INTEGER
+max amount of issues to show
+.TP
+\fB\-o,\fP \-\-orderby TEXT
+choose which field to use for sorting
+.TP
+\fB\-A,\fP \-\-ascending
+show issues in ascending order
+.TP
+\fB\-D,\fP \-\-descending
+show issues in descending order
+.TP
+\fB\-c,\fP \-\-csv TEXT
+name of the csv file to save the results to

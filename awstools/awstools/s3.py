@@ -1,7 +1,6 @@
 import click, json, os
 from toolbox.logger import Log
 from .s3client import S3client
-from toolbox.click_complete import complete_profile_names
 from configstore.configstore import Config
 from toolbox.menumaker import Menu
 from toolbox.misc import set_terminal_width

@@ -1,5 +1,5 @@
 # misc functions
-import sys, os, shutil, getpass, importlib_resources, glob, gnupg, json, gnureadline, re
+import sys, os, shutil, getpass, importlib_resources, glob, gnupg, json, gnureadline, re, operator
 from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from pathlib import Path
@@ -12,7 +12,19 @@ GREEN = '\033[0;32m'
 RED = '\033[1;31m'
 UNDERLINE = '\033[4m'
 MYBLUE = '\033[0;2;60m'
+debug = 1
 pushstack = list()
+SCREEN_WIDTH=80
+centered = operator.methodcaller('center', SCREEN_WIDTH)
+
+def draw_title():
+    b = centered('''
+(_(
+/_/'_____/)
+"  |      |
+   |""""""|
+    ''')
+    return (''.join(b))
 
 def convert(list):
     # convert list to tuple

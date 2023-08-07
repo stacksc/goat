@@ -1,0 +1,36 @@
+[project]
+name = "slacktools"
+version = "1.0.0" # reviewed and bumped
+authors = [
+  { name="Chris Stacks", email="stacksc@vmware.com" }
+]
+description = "slackclient - a CLI client for GOAAT"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "slack_sdk",
+  "argparse",
+  "argcomplete"
+]
+
+[build-system]
+requires = [
+  "setuptools >= 40.9.0",
+  "configstore",
+  "toolbox"
+]
+
+[project.scripts]
+slacktools = "slacktools.slackclient:cli"
+
+[tool.setuptools.packages]
+find = {}
+
+# include our slack_channels.lst
+[tool.setuptools.package-data]
+"*" = ["*.lst"]
+

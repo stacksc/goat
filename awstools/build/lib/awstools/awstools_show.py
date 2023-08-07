@@ -3,7 +3,6 @@ from  configstore.configstore_ctrl import _show as configshow
 from .ec2 import _show as ec2show, orphaned_ebs_volumes as orphans, orphaned_ebs_snap_report as snap_report
 from .s3 import _show as s3show
 from .aws_config import AWSconfig
-from toolbox.click_complete import complete_profile_names
 from .iam import get_latest_profile
 
 @click.command(help='display configuration data for awstools and awscli')

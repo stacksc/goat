@@ -25,7 +25,7 @@ requires = [
 ]
 
 [project.scripts]
-pyps = "pyps.pyps:cli"
+goat = "goat.goat:cli"
 
 [tool.setuptools.packages]
 find = {}

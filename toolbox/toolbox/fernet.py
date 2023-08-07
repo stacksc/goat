@@ -27,10 +27,12 @@ DICTCONFIG = {
         },
     }
 }
+
+HOME = os.getenv('HOME')
+os.makedirs(f'{HOME}/goat', exist_ok=True)
 logging.config.dictConfig(DICTCONFIG)
 
 def setup(KEYNAME):
-    os.makedirs(f"{os.getenv('HOME')}/goat", exist_ok=True)
     KEYFILE = f"{os.getenv('HOME')}/goat/.{KEYNAME}.key" 
     if not os.path.exists(KEYFILE):
         warn("Encryption key not detected. Generating a new one")

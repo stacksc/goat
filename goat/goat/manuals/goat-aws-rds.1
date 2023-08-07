@@ -1,0 +1,21 @@
+.TH "GOAT AWS RDS" "1" "2023-08-06" "1.0.0" "goat aws rds Manual"
+.SH NAME
+goat\-aws\-rds \- rds to manage the DB instances and related...
+.SH SYNOPSIS
+.B goat aws rds
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+rds to manage the DB instances and related configuration
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform EC2 actions
+.SH COMMANDS
+.PP
+\fBrefresh\fP
+  manually refresh ec2 cached data
+  See \fBgoat aws rds-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBshow\fP
+  show the data stored in rds cache
+  See \fBgoat aws rds-show(1)\fP for full documentation on the \fBshow\fP command.

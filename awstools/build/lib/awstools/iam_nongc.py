@@ -3,7 +3,6 @@ from .aws_config import AWSconfig
 from .accounts import get_accounts
 from toolbox.logger import Log
 from os import environ, chmod, stat
-from toolbox.click_complete import complete_profile_names
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width
 
@@ -51,7 +50,7 @@ def _authenticate(profile_name, aws_region='us-gov-west-1', aws_output='json'):
     return SESSION
 
 @click.command('assume-role', help='login using existing IAM creds or add new creds to config', context_settings={'help_option_names':['-h','--help']})
-@click.argument('aws_profile_name', nargs=-1, type=str, shell_complete=complete_profile_names)
+@click.argument('aws_profile_name', nargs=-1, type=str)
 @click.option('-r', '--role', 'aws_role_name', help='name of the role to assume; i.e. PowerUser', required=False, default='PowerUser')
 @click.option('-c', '--creds', 'creds_profile_name', help='aws credential file to source for the IAM credentials', required=False, default=None)
 @click.option('-a', '--account', 'aws_account_number', help='aws account number to register new IAM credentials', required=False, default=None)

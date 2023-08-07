@@ -27,7 +27,7 @@ def show(ctx, debug, menu):
         ctx.obj['menu'] = False
 
     if ctx.obj['setup'] == True:
-        RESULT = NEXUS.setup_access(ctx.obj['profile'])
+        RESULT = JENKINS.setup_access(ctx.obj['profile'])
         if RESULT:
             Log.info("jenkins settings saved succesfully")
             update_latest_profile(ctx.obj['profile'])

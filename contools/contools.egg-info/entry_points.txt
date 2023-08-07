@@ -1,2 +1,0 @@
-[console_scripts]
-contools = contools.tools:cli

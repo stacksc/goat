@@ -125,7 +125,7 @@ def setup_jira_pass_auth(profile_name):
     
 def setup_jira_token_auth(profile_name):
     while True:
-        JIRA_TOKEN = getpass.getuser("JIRA API Token: ")
+        JIRA_TOKEN = getpass.getpass("JIRA API Token: ")
         if JIRA_TOKEN != '':
             break
     try:

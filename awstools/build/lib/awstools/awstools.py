@@ -8,19 +8,18 @@ from .rds import rds
 from .awscli_wrapper import cli
 from .awstools_show import show
 from toolbox import misc
+from toolbox.misc import debug
 from .iam import get_latest_profile
 import unittest
 from .tests import TestAddMethods
-from toolbox.click_complete import complete_profile_names
 
-MESSAGE="VMware AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET
+MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET
 
 @click.group('aws', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
-@click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
 @click.option('-w', '--whoami', help="display the latest assumed profile for the CLI client", default=False, is_flag=True)
-@click.option('-p', '--profile', 'aws_profile_name', help='profile name to use when working with awstools', required=False, default=get_latest_profile(), shell_complete=complete_profile_names)
+@click.option('-p', '--profile', 'aws_profile_name', help='profile name to use when working with awstools', required=False, default=get_latest_profile())
 @click.pass_context
-def CLI(ctx, debug, whoami, aws_profile_name):
+def CLI(ctx, whoami, aws_profile_name):
     ctx.ensure_object(dict)
     ctx.obj['PROFILE'] = aws_profile_name
     if whoami:

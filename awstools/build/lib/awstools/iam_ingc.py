@@ -2,7 +2,6 @@ import os, boto3, click, json, base64, random, string, getpass, requests, import
 from configstore.configstore import Config
 from toolbox import misc
 from toolbox.logger import Log
-from toolbox.click_complete import complete_profile_names
 from toolbox.menumaker import Menu
 from .aws_config import AWSconfig
 from requests_ntlm import HttpNtlmAuth

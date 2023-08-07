@@ -4,11 +4,6 @@ from pathlib import Path
 from configstore.configstore import Config
 from toolbox.misc import detect_environment
 
-def complete_profile_names(ctx, param, incomplete):
-    NAMES = {}
-    NAMES = listAwsProfiles()
-    return [k for k in NAMES if k.startswith(incomplete)]
-
 def complete_idp_profiles(ctx, param, incomplete):
     CONFIG = Config('idptools')
     NAMES = []

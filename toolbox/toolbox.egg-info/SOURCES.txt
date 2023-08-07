@@ -12,6 +12,7 @@ toolbox/menuboard.py
 toolbox/menumaker.py
 toolbox/misc.py
 toolbox/results.py
+toolbox/stage_accounts.lst
 toolbox.egg-info/PKG-INFO
 toolbox.egg-info/SOURCES.txt
 toolbox.egg-info/dependency_links.txt

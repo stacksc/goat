@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import click
 from slacktools.auth import get_slackclient_config
 from slacktools.post import post_slack_message
@@ -8,10 +7,10 @@ from slacktools.unpost import delete_slack_message
 from slacktools.unreact import delete_slack_reaction
 from slacktools.channel import channel_set_topic, channel_user_add, channel_user_delete, channel_create, channel_archive, channel_unarchive
 from toolbox.logger import Log
-from toolbox.click_complete import complete_emojis, complete_slack_names
+from toolbox.click_complete import complete_emojis
 from toolbox import misc
 
-MESSAGE="VMware Slack CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'DEFAULT' + misc.RESET
+MESSAGE="Slack CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'DEFAULT' + misc.RESET
 
 @click.group(help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', help='User profile to use for connecting to Slack', required=False, default='default', type=str)
@@ -22,7 +21,7 @@ def slack(ctx, profile):
     pass
 
 @slack.command(help='post a meessage to a given channel(s)', context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()})
-@click.argument('channel', nargs=-1, type=str, required=True, shell_complete=complete_slack_names)
+@click.argument('channel', nargs=-1, type=str, required=True)
 @click.option('-m', '--message', help='Text to include in the message', required=True, type=str)
 @click.option('-r', '--reply', help='TS of the message to reply to', required=False, type=str)
 @click.pass_context
@@ -33,7 +32,7 @@ def post(ctx, channel, message, reply):
         Log.info(f"Message sent at {RESPONSE['ts']}")
 
 @slack.command(help='post a reaction to a given message in specific channel', context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()})
-@click.argument('channel', nargs=-1, type=str, required=True, shell_complete=complete_slack_names)
+@click.argument('channel', nargs=-1, type=str, required=True)
 @click.option('-t', '--timestamp', help='timestamp of the target message', required=True, type=str)
 @click.option('-e', '--emoji', help='emoji name to react with', required=True, type=str, shell_complete=complete_emojis)
 @click.pass_context
@@ -43,7 +42,7 @@ def react(ctx, channel, timestamp, emoji):
     Log.info("Reaction posted")
 
 @slack.command(help='delete a meessage in a given channel', context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()})
-@click.argument('channel', nargs=-1, type=str, required=True, shell_complete=complete_slack_names)
+@click.argument('channel', nargs=-1, type=str, required=True)
 @click.option('-t', '--timestamp', help='Text to include in the message', required=True, type=str)
 @click.pass_context
 def unpost(ctx, channel, timestamp):
@@ -52,7 +51,7 @@ def unpost(ctx, channel, timestamp):
     Log.info(f"Message deleted")
 
 @slack.command(help='remove a reaction to a given message in a specific channel', context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()})
-@click.argument('channel', nargs=-1, type=str, required=True, shell_complete=complete_slack_names)
+@click.argument('channel', nargs=-1, type=str, required=True)
 @click.option('-t', '--timestamp', help='timestamp of the target message', required=True, type=str)
 @click.option('-e', '--emoji', help='emoji name to react with', required=True, type=str)
 @click.pass_context

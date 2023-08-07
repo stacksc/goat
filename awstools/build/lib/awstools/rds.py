@@ -2,7 +2,6 @@ import click, os, json
 from toolbox.logger import Log
 from .rdsclient import RDSclient
 from tabulate import tabulate
-from toolbox.click_complete import complete_profile_names
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width
 from .iam import get_latest_profile

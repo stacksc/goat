@@ -84,7 +84,7 @@ The following image is demonstrated where specific modules are loaded.
 <br><br>
 GOAT is fine-tuned to behave differently based on the environment.
 <br><br>
-<img src="./images/pyps-usage.jpg" alt="usage" width="600"/>
+<img src="./images/usage.png" alt="usage" width="600"/>
 <br><br>
 
 <!-- DOCKER_EXAMPLE -->

@@ -1,4 +1,4 @@
-<img src="./images/PYPS-Icon1.png" alt="PYPS" width="200"/>
+<img src="./images/goat-head-logo-205100183F-seeklogo.com.png" alt="PYPS" width="200"/>
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>

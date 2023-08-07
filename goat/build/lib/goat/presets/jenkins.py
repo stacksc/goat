@@ -2,6 +2,6 @@ jenkins_preset = {
     'config': {
     },
     'metadata': {
-        'JENKINS_URL': 'https://bigsky-ci.eng.vmware.com'
+        'JENKINS_URL': 'https://localhost:8080'
     }
 }

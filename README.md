@@ -46,6 +46,17 @@ Commands:
   jira     JIRA CLI Client             Current Profile: HTTPS://GOAAT.ATLASSIAN.NET
   slack    Slack CLI Client            Current Profile: DEFAULT
 ```
+## Versions
+```
+goat -v
+GOAT:			1.0.0
+- awstools:		1.0.3
+- configstore:  1.0.0
+- jiratools:	1.0.0
+- toolbox:		1.0.0
+- slacktools:	1.0.0
+- jenkinstools:	0.0.7
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

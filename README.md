@@ -48,7 +48,7 @@ Commands:
 ```
 ## Versions
 ```
-goat -v
+$ goat -v
 GOAT:			1.0.0
 - awstools:		1.0.3
 - configstore:		1.0.0

@@ -291,7 +291,7 @@ Commands:
 ```
 ## Authentication setup
 ```
-$ goat jira -p default auth -u https://servicedesk.vmwarefed.com -m pass
+$ goat jira -p default auth -u https://goaat.atlassian.net -m pass
 WARN: Encryption key not detected. Generating a new one
 Is this going to be your default profile (Y/N)? : Y
 Enter username [stacksc] :
@@ -312,7 +312,7 @@ $ goat jira config
     },
     "metadata": {
         "name": "default",
-        "created_by": "stacksc@admins.vmwarefed.com",
+        "created_by": "centerupt.stacks@gmail.com",
         "created_at": "1676180080.897811",
         "projects": {
             "CSCM": {},

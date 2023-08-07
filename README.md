@@ -241,7 +241,7 @@ INFO: goat docker build is complete!
 ## JIRA Authentication
 1. The following example demonstrates JIRA authentication for the first time:
 ```
-goat jira -p stage auth -u https://servicedesk-stage.eng.vmware.com -m pass
+$ goat jira -p stage auth -u https://goaat.atlassian.net -m pass
 Enter username [stacksc] :
 Enter password: **************
 INFO: Caching some system info now to save time later... please wait
@@ -276,12 +276,11 @@ INFO: run source ~/goatrole.sh
 $ goat jira -h
 Usage: goat jira [OPTIONS] COMMAND [ARGS]...
 
-  VMware JIRA CLI Client               Current Profile: https://servicedesk.eng.vmware.com
+  JIRA CLI Client                      Current Profile: HTTPS://GOAAT.ATLASSIAN.NET
 
 Options:
-  -d, --debug [0|1|2]  0 = no output, 1 = default, 2 = debug on
-  -p, --profile TEXT   profile name to use when working with the jiraclient  [default: default]
-  -h, --help           Show this message and exit.
+  -p, --profile TEXT  profile name to use when working with the jiraclient  [default: default]
+  -h, --help          Show this message and exit.
 
 Commands:
   auth     setup or change authentication settings for JIRA
@@ -306,7 +305,7 @@ $ goat jira config
 {
     "config": {
         "mode": "pass",
-        "url": "https://servicedesk.vmwarefed.com",
+        "url": "https://goaat.atlassian.net",
         "default": "Y",
         "user": "stacksc",
         "pass": "******************"
@@ -323,7 +322,8 @@ $ goat jira config
             "TEMP": {},
             "UCP": {},
             "UCPS": {},
-            "VLOPS": {}
+            "VLOPS": {},
+            "GD": {}
          }
     }
 }

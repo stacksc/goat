@@ -8,7 +8,7 @@ from .iam import get_latest_profile
 from pprint import pprint
 
 CONFIG = Config('awstools')
-ignore = ['default','IDP','latest']
+ignore = ['IDP','latest']
 
 @click.group('s3', invoke_without_command=True, help='s3 functions to sync buckets and filesystems', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
 @click.option('-m', '--menu', help='use the menu to perform S3 actions', is_flag=True, show_default=True, default=False, required=False)
@@ -307,7 +307,7 @@ def _show(target, aws_profile_name, bucket=None):
     except:
         return False
 
-def get_S3client(aws_profile_name, aws_region='us-gov-west-1', auto_refresh=True, cache_only=False):
+def get_S3client(aws_profile_name, aws_region='us-east-1', auto_refresh=True, cache_only=False):
     try:
         DOMAIN = os.getenv('USER').split('@')[1]
         ENVS = {

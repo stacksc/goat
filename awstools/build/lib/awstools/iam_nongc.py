@@ -9,7 +9,7 @@ from toolbox.misc import set_terminal_width
 CONFIG = AWSconfig()
 
 @click.command(help='login using existing IAM creds or add new creds to config', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
-@click.option('-r', '--region', 'aws_region', help='aws region to connect to', required=False, default='us-gov-west-1')
+@click.option('-r', '--region', 'aws_region', help='aws region to connect to', required=False, default='us-east-1')
 @click.option('-o', '--output', 'aws_output', help='output type for awscli', required=False, default='json')
 @click.pass_context
 def authenticate(ctx, aws_region, aws_output):
@@ -17,10 +17,10 @@ def authenticate(ctx, aws_region, aws_output):
     RESULT = _authenticate(profile_name, aws_region, aws_output)
     if RESULT is None:
         MSG = 'setup failed. please verify supplied credentials and try again. settings were not saved'
-        LINK = 'https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/blob/main/awstools/README.md'
+        LINK = 'https://github.com/stacksc/goat'
         CMD = None
         SUBTITLE = 'CRITICAL'
-        TITLE = 'PYPS'
+        TITLE = 'GOAT'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
         Log.critical(MSG)
     else:
@@ -32,13 +32,13 @@ def authenticate(ctx, aws_region, aws_output):
         LINK = None
         CMD = None
         SUBTITLE = 'INFO'
-        TITLE = 'PYPS'
+        TITLE = 'GOAT'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
 
 # worker function to make the method portable
-def _authenticate(profile_name, aws_region='us-gov-west-1', aws_output='json'):
+def _authenticate(profile_name, aws_region='us-east-1', aws_output='json'):
     CONFIG.unset_aws_profile()
-    AWS_REGION = CONFIG.get_from_config('config', 'region', 'string', 'us-gov-west-1', profile_name, aws_region)
+    AWS_REGION = CONFIG.get_from_config('config', 'region', 'string', 'us-east-1', profile_name, aws_region)
     AWS_OUTPUT = CONFIG.get_from_config('config', 'output', 'string', 'json', profile_name, aws_output)
     AWS_KEY_ID, AWS_SECRET_ACCESS_KEY = get_env_variables()
     if AWS_KEY_ID is None or AWS_SECRET_ACCESS_KEY is None:
@@ -64,7 +64,7 @@ def assume_role(aws_profile_name, aws_role_name, creds_profile_name, aws_account
         LINK = None
         CMD = None
         SUBTITLE = 'CRITICAL'
-        TITLE = 'PYPS'
+        TITLE = 'GOAT'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
     else:
         Log.info("successfully assumed the role")
@@ -75,7 +75,7 @@ def assume_role(aws_profile_name, aws_role_name, creds_profile_name, aws_account
         LINK = None
         CMD = None
         SUBTITLE = 'INFO'
-        TITLE = 'PYPS'
+        TITLE = 'GOAT'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
 
 def update_latest_profile(aws_profile_name):
@@ -99,7 +99,7 @@ def _assume_role(aws_account_number=None, aws_profile_name=None, creds_profile=N
                 AWS_ROLE_ARN = f"arn:aws-us-gov:sts::{aws_account_number}:role/{aws_role}"
             except:
                 MSG = 'Please supply an AWS account number when assuming a role for the first time'
-                LINK = 'https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/blob/main/awstools/README.md'
+                LINK = 'https://github.com/stacksc/goat'
                 Log.notify(MSG, LINK)
                 Log.critical(MSG)
     else:
@@ -108,7 +108,7 @@ def _assume_role(aws_account_number=None, aws_profile_name=None, creds_profile=N
         Log.critical(f'{aws_profile_name} is not allowed for this method; please choose a different name')
     CREDS_PROFILE = CONFIG.get_from_config('creds', 'source_profile', 'string', 'default', aws_profile_name, creds_profile)
     CREDS_SESSION = _authenticate(CREDS_PROFILE)
-    AWS_REGION = CONFIG.get_from_config('config', 'region', 'string', 'us-gov-west-1', aws_profile_name)
+    AWS_REGION = CONFIG.get_from_config('config', 'region', 'string', 'us-east-1', aws_profile_name)
     AWS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN = get_role_iam(CREDS_SESSION, AWS_ROLE_ARN, AWS_REGION)
     if AWS_SECRET_ACCESS_KEY is not None:
         CONFIG.unset_aws_profile()
@@ -171,12 +171,12 @@ def print_role_info(KEY_ID, ACCESS_TOKEN, SESSION_TOKEN):
     EXPORT_CMDS = f"\nexport AWS_ACCESS_KEY_ID={KEY_ID}\nexport AWS_SECRET_ACCESS_KEY={ACCESS_TOKEN}\nexport AWS_SESSION_TOKEN={SESSION_TOKEN}"
     SCRIPT = f"#!/bin/bash\n\n{EXPORT_CMDS}"
     HOME = environ['HOME']
-    with open(f"{HOME}/pypsrole.sh", 'w') as SCRIPT_FILE:
+    with open(f"{HOME}/goatrole.sh", 'w') as SCRIPT_FILE:
         SCRIPT_FILE.write(SCRIPT)
-        MODE = stat(f"{HOME}/pypsrole.sh").st_mode
+        MODE = stat(f"{HOME}/goatrole.sh").st_mode
         MODE |= (MODE & 0o444) >> 2
-        chmod(f"{HOME}/pypsrole.sh", MODE)
-    Log.info("run source ~/pypsrole.sh")
+        chmod(f"{HOME}/goatrole.sh", MODE)
+    Log.info("run source ~/goatrole.sh")
 
 def cache_all_hack(aws_profile_name):
     CONFIG = Config('awstools')
@@ -191,7 +191,7 @@ def cache_all_hack(aws_profile_name):
                 pass
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'pyps aws -p {aws_profile_name} {MODULE} show')
+                run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
         elif MODULE == 'ec2':
             CACHED = {}
             try:
@@ -200,7 +200,7 @@ def cache_all_hack(aws_profile_name):
                 pass
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'pyps aws -p {aws_profile_name} {MODULE} show')
+                run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
         elif MODULE == 'rds':
             CACHED = {}
             try:
@@ -209,7 +209,7 @@ def cache_all_hack(aws_profile_name):
                 pass
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'pyps aws -p {aws_profile_name} {MODULE} show')
+                run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
 
 def run_command(command):
     PROC = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)

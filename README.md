@@ -1,4 +1,4 @@
-<img src="./images/goat-head-logo-205100183F-seeklogo.com.png" alt="PYPS" width="200"/>
+<img src="./images/Goat_icon.svg.png" alt="GOAT" width="200"/>
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -266,7 +266,7 @@ INFO: you can now use your new profile with 'aws --profile default
 ```
 2. The following example shows how to assume a role after authentication:
 ```
-$ pyps aws iam assume-role atlcs
+$ goat aws iam assume-role atlcs
 INFO: successfully assumed the role
 INFO: aws profile caching initialized
 INFO: caching s3 data...

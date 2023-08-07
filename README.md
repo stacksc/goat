@@ -29,6 +29,22 @@ GOAT ("goat") - a front-end application for the Python modules to communicate wi
 The repository and code is for demonstration purposes at this time; this is only to showcase a basic application to common APIs.
 ## Current Usage
 ```
+$ goat -h
+Usage: goat [OPTIONS] COMMAND [ARGS]...
+
+  goat => GCP, OCI, & AWS TK
+
+Options:
+  -v, --version       print version of goat and all its submodules
+  -m, --manuals TEXT  print all defined manuals matching pattern(s)
+  -h, --help          Show this message and exit.
+
+Commands:
+  aws      AWS CLI Client              Current Profile: VMCDELTA
+  configs  Config Client               Current Profile: N/A
+  jenkins  Jenkins Client              Current Profile: DEFAULT
+  jira     JIRA CLI Client             Current Profile: HTTPS://GOAAT.ATLASSIAN.NET
+  slack    Slack CLI Client            Current Profile: DEFAULT
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -355,7 +371,7 @@ Options:
 ```
 ## Example Search
 ```
-goat jira project search CSCM -a stacksc -l 10
+$ goat jira project search CSCM -a stacksc -l 10
 INFO: project = "CSCM" AND assignee = "stacksc"
 INFO: scanned 10 tickets in 2.9686810970306396 seconds
 

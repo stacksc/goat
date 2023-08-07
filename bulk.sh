@@ -118,7 +118,7 @@ trap 'trap_exit; \
 function usage() {
   printf "\n${BLUE}Help Documentation${COLOR_OFF}: ${SCRIPT}\n"
   printf "\n${ORANGE}INFO${COLOR_OFF}: perform bulk operations to rebuild wheels for specific modules and run unit tests\n\n"
-  printf "${BLUE}--action${COLOR_OFF}${SLIDE} supply one of the following actions: [rebuild/install/test]$(tput sgr0)\n"
+  printf "${BLUE}--action${COLOR_OFF}${SLIDE} supply one of the following actions: [rebuild/install/sync]$(tput sgr0)\n"
   printf "${BLUE}--target${COLOR_OFF}${SLIDE} supply the specific module to action, or supply keyword \"all\" for all modules$(tput sgr0)\n"
   printf "${BLUE}--help${COLOR_OFF}${SLIDE} show this help message$(tput sgr0)\n\n"
   exit 0

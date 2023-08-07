@@ -79,15 +79,12 @@ Christopher Stacks - <centerupt@gmail.com>
 <!-- MP4_Collections -->
 ## MP4 and Image Collections
 
-Native notifications included to direct users to the README document for critical failures:
 <br><br>
-<img src="./images/notify.jpg" alt="Native Notifications" width="600"/>
-<br><br>
-The following image is demonstrated out-of-bounds where specific modules are loaded.
+The following image is demonstrated where specific modules are loaded.
 <br><br>
 GOAT is fine-tuned to behave differently based on the environment.
 <br><br>
-<img src="./images/pyps-usage.jpg" alt="GOAT Usage" width="600"/>
+<img src="./images/pyps-usage.jpg" alt="usage" width="600"/>
 <br><br>
 
 <!-- DOCKER_EXAMPLE -->

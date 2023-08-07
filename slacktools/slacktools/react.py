@@ -54,17 +54,23 @@ def post_slack_reaction(channel_id, target_timestamp, emoji, user_profile='defau
     if(type(emoji)) is tuple:
         emoji = misc.convertTuple(emoji)
 
-    try:
-        RESPONSE = SLACK_CLIENT.reactions_add(
-            channel = channel_id,
-            name = emoji,
-            timestamp = target_timestamp
-        )
-        return RESPONSE
-    except errors.SlackApiError:
-        Log.critical("Unknown emoji name. Reaction not posted.")
-    except Exception:
-        Log.critical("Failed to post a reaction or reaction already posted")
+    #try:
+    #    RESPONSE = SLACK_CLIENT.reactions_add(
+    #        channel = channel_id,
+    #        name = emoji,
+    #        timestamp = target_timestamp
+    #    )
+    #    return RESPONSE
+    RESPONSE = SLACK_CLIENT.reactions_add(
+         channel = channel_id,
+         name = emoji,
+         timestamp = target_timestamp
+    )
+    #    return RESPONSE
+    #except errors.SlackApiError:
+    #    Log.critical("Unknown emoji name. Reaction not posted.")
+    #except Exception:
+    #    Log.critical("Failed to post a reaction or reaction already posted")
 
 if __name__ == "__main__":
     main()

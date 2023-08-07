@@ -206,7 +206,7 @@ then
         sudo rsync -av /opt/homebrew/lib/python3.11/site-packages/${BASE}/* ./${BASE}/
     fi
   fi
-  sudo chown -R ${LOGNAME}:${LOGNAME} ~/git/goat
+  sudo chown -R ${LOGNAME}:staff ~/git/goat
   exit 0
 fi
 

@@ -13,7 +13,7 @@ CONFIGSTORE = Config('awstools')
 
 class S3client():
 
-    def __init__(self, aws_profile_name, aws_region='us-gov-west-1', in_boundary=True, cache_only=False):
+    def __init__(self, aws_profile_name, aws_region='us-east-1', in_boundary=True, cache_only=False):
         self.CONFIG = AWSconfig()
         self.CONFIGSTORE = Config('awstools')
         self.size_table={0: 'Bs', 1: 'KBs', 2: 'MBs', 3: 'GBs', 4: 'TBs', 5: 'PBs', 6: 'EBs'}
@@ -190,7 +190,7 @@ class S3client():
             CREDS_PROFILE = self.CONFIG.get_from_config('creds', 'source_profile', profile_name=aws_profile_name)
             AWS_REGION = self.CONFIG.get_from_config('config', 'region', profile_name=CREDS_PROFILE)
         if AWS_REGION is None:
-            Log.critical("Please run pyps aws iam assume-role for the targer profile before using the s3 module")
+            Log.critical("Please run goat aws iam assume-role for the targer profile before using the s3 module")
         return AWS_REGION
 
     def nuke_bucket(self, bucket_name, aws_client, aws_region):

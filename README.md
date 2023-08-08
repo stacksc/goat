@@ -40,7 +40,7 @@ Options:
   -h, --help          Show this message and exit.
 
 Commands:
-  aws      AWS CLI Client              Current Profile: VMCDELTA
+  aws      AWS CLI Client              Current Profile: DEFAULT
   configs  Config Client               Current Profile: N/A
   jenkins  Jenkins Client              Current Profile: DEFAULT
   jira     JIRA CLI Client             Current Profile: HTTPS://GOAAT.ATLASSIAN.NET

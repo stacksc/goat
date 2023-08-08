@@ -10,8 +10,6 @@ from .awstools_show import show
 from toolbox import misc
 from toolbox.misc import debug
 from .iam import get_latest_profile
-import unittest
-from .tests import TestAddMethods
 
 MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET
 
@@ -35,13 +33,6 @@ CLI.add_command(ec2)
 CLI.add_command(rds)
 CLI.add_command(cli)
 CLI.add_command(show)
-
-@CLI.command(help="awstools unittesting", context_settings={'help_option_names':['-h','--help']})
-def test():
-    all_tests = unittest.TestLoader().loadTestsFromTestCase(TestAddMethods)
-    test_suite = unittest.TestSuite()
-    test_suite.addTest(all_tests)
-    unittest.TextTestRunner().run(test_suite)
 
 if __name__ == "__main__":
     cli(ctx)

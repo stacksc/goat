@@ -1,4 +1,3 @@
-README.md
 pyproject.toml
 slacktools/__init__.py
 slacktools/auth.py

@@ -15,7 +15,6 @@ awstools/rdsclient.py
 awstools/s3.py
 awstools/s3client.py
 awstools/secrets.py
-awstools/tests.py
 awstools.egg-info/PKG-INFO
 awstools.egg-info/SOURCES.txt
 awstools.egg-info/dependency_links.txt

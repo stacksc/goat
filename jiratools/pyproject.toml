@@ -2,7 +2,7 @@
 name = "jiratools"
 version = "1.0.0" # reviewed
 authors = [
-  { name="Chris Stacks", email="stacksc@vmware.com" }
+  { name="Chris Stacks", email="centerupt@gmail.com" }
 ]
 description = "jiratools - a CLI client for Jira included by default"
 readme = "README.md"

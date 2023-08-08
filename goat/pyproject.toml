@@ -2,7 +2,7 @@
 name = "goat"
 version = "1.0.0" # reviewed
 authors = [
-  { name="Christopher Stacks", email="stacksc@vmware.com" }
+  { name="Christopher Stacks", email="centerupt@gmail.com" }
 ]
 description = "goat => GCP, OCI, & AWS tools : GOAT Team"
 readme = "README.md"

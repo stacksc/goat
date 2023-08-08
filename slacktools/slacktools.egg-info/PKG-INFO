@@ -2,7 +2,7 @@ Metadata-Version: 2.1
 Name: slacktools
 Version: 1.0.0
 Summary: slackclient - a CLI client for GOAAT
-Author-email: Chris Stacks <stacksc@vmware.com>
+Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
@@ -191,7 +191,7 @@ After making changes to the source code, please remember to build a new wheel fo
 <!-- CONTACT -->
 ## Contact
 
-Christopher Stacks - stacksc@vmware.com
+Christopher Stacks - centerupt@gmail.com
 
 Project Link: [https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python](https://gitlab.eng.vmware.com/govcloud-ops/govops-devops-python)
 

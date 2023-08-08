@@ -1,5 +1,5 @@
 FROM centos
-LABEL org.privatecontainers.image.authors="stacksc@vmware.com"
+LABEL org.privatecontainers.image.authors="centerupt@gmail.com"
 
 ARG MYUSER
 ENV USER=$MYUSER

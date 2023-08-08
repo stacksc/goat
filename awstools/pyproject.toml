@@ -3,7 +3,7 @@ name = "awstools"
 version = "1.0.3" # major.update.prod-reviewed
 authors = [
   { name="Paul Wilk", email="wilkp@vmware.com" },
-  { name="Chris Stacks", email="stacksc@vmware.com" }
+  { name="Chris Stacks", email="centerupt@gmail.com" }
 ]
 description = "AWStools - CLI client for AWS GovCloud"
 readme = "README.md"

@@ -2,7 +2,7 @@
 name = "jenkinstools"
 version = "0.0.7"
 authors = [
-  { name="Chris Stacks", email="stacksc@vmware.com" },
+  { name="Chris Stacks", email="centerupt@gmail.com" },
 ]
 description = "jenkinstools - everything you need to interact with VMware Jenkins"
 readme = "README.md"

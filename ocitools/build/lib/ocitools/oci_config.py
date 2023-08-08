@@ -1,3 +1,4 @@
+import oci
 from os import environ, unsetenv, mkdir, path
 from pathlib import Path
 from configparser import ConfigParser

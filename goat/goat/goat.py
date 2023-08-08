@@ -6,6 +6,7 @@ from toolbox.logger import Log
 from jiratools.jiraclient import cli as jira
 from configstore.configstore_ctrl import cli as configs
 from awstools.awstools import CLI as aws
+from ocitools.ocitools import CLI as oci
 from jenkinstools.jenkinstools import cli as jenkins
 from toolbox.misc import set_terminal_width, detect_environment, search_man_pages, debug, draw_title
 from .cmd_slack import slack
@@ -37,17 +38,20 @@ def goat_version():
     print('GOAT:\t\t\t' + version('goat'))
     print('- awstools:\t\t' + version('awstools'))
     print('- configstore:\t\t' + version('configstore'))
-    print('- jiratools:\t\t' + version('jiratools'))
-    print('- toolbox:\t\t' + version('toolbox'))
-    print('- slacktools:\t\t' + version('slacktools'))
     print('- jenkinstools:\t\t' + version('jenkinstools'))
+    print('- jiratools:\t\t' + version('jiratools'))
+    print('- ocitools:\t\t' + version('ocitools'))
+    print('- slacktools:\t\t' + version('slacktools'))
+    print('- toolbox:\t\t' + version('toolbox'))
     sys.exit(0)
 
 cli.add_command(configs, name='configs')
 cli.add_command(jira, name='jira')
 cli.add_command(aws, name='aws')
+cli.add_command(oci, name='oci')
 cli.add_command(jenkins, name='jenkins')
 cli.add_command(slack)
 
 if __name__ == "__main__":
-    cli()
+    cli(ctx)
+    print(ctx)

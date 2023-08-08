@@ -254,7 +254,7 @@ def cache_all_hack(aws_profile_name):
                 pass
         if not CACHED:
             Log.info(f'caching {MODULE} data...')
-            run_command(f'pyps aws -p {aws_profile_name} {MODULE} show')
+            run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
 
 def run_command(command):
     PROC = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
@@ -386,10 +386,10 @@ def print_role_info(KEY_ID, ACCESS_TOKEN, SESSION_TOKEN):
     EXPORT_CMDS = f"\nexport AWS_ACCESS_KEY_ID={KEY_ID}\nexport AWS_SECRET_ACCESS_KEY={ACCESS_TOKEN}\nexport AWS_SESSION_TOKEN={SESSION_TOKEN}\nexport AWS_DEFAULT_REGION=us-gov-west-1"
     SCRIPT = f"#!/bin/bash\n\n{EXPORT_CMDS}"
     HOME = os.environ['HOME']
-    with open(f"{HOME}/pypsrole.sh", 'w') as SCRIPT_FILE:
+    with open(f"{HOME}/goatrole.sh", 'w') as SCRIPT_FILE:
         SCRIPT_FILE.write(SCRIPT)
-        MODE = os.stat(f"{HOME}/pypsrole.sh").st_mode
+        MODE = os.stat(f"{HOME}/goatrole.sh").st_mode
         MODE |= (MODE & 0o444) >> 2
-        os.chmod(f"{HOME}/pypsrole.sh", MODE)
-    Log.info("run source ~/pypsrole.sh")
+        os.chmod(f"{HOME}/goatrole.sh", MODE)
+    Log.info("run source ~/goatrole.sh")
 

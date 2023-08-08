@@ -29,7 +29,7 @@ COPY . /var/tmp/
 RUN yum -y install openssh-server openssh-clients sudo pinentry # buildkit
 
 # mount secrets and add our default user; this is used in the container as your SSO_USER
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && adduser -m $USER --shell /bin/bash --comment "pyps user" &&\
+RUN --mount=type=secret,id=my_env source /run/secrets/my_env && adduser -m $USER --shell /bin/bash --comment "goat user" &&\
      usermod -aG wheel $USER &&\
      mkdir -p /home/$USER/.ssh &&\
      mkdir -p /home/$USER/.gnupg &&\
@@ -71,10 +71,6 @@ RUN --mount=type=secret,id=my_env source /run/secrets/my_env && touch /home/$USE
      gpg-agent --daemon --options /home/$USER/.gnupg/gpg-agent.conf # buildkit
 
 RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "/usr/bin/python3 -m pip install in_place concoursepy click-man bs4 importlib_resources gnureadline termcolor slack_sdk jira argcomplete build prompt_toolkit --upgrade"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.email ${USER}@vmware.com"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.name ${USER}"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git && git clone https://github.com/stacksc/pyps.git"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git/pyps && bash ./bulk.sh --action rebuild --target all"
 
 RUN cp /var/tmp/load_prompt.sh /home/${USER}/
 RUN cp /var/tmp/.bashrc /home/${USER}/
@@ -82,14 +78,11 @@ RUN chown ${USER}:${USER} /home/${USER}/.bashrc
 RUN chown ${USER}:${USER} /home/${USER}/load_prompt.sh
 RUN chmod 777 /usr/share/man/man1
 
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=${USER}; echo 'Y' | /home/$USER/.local/bin/jiratools -p default auth -u https://servicedesk.eng.vmware.com -m pass"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=${USER}; echo 'Y' | /home/$USER/.local/bin/jiratools -p jd auth -u https://jira.eng.vmware.com -m pass"
-
 USER "$USER"
 RUN python3.9 -m pip install --upgrade pip # buildkit
 RUN sudo activate-global-python-argcomplete # buildkit
 
-# now install man pages for pyps
+# now install man pages for goat
 RUN sudo chmod 755 /usr/share/man/man1
 # our working directory will be HOME
 WORKDIR $HOME

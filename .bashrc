@@ -1,4 +1,4 @@
-# custom .bashrc for pyps bashrc lovers
+# custom .bashrc for goat bashrc lovers
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -54,4 +54,4 @@ if [ -t 1 ]; then
 fi
 
 [[ -f ${HOME}/load_prompt.sh ]] && source ${HOME}/load_prompt.sh >/dev/null 2>&1
-eval "$(_PYPS_COMPLETE=bash_source pyps)"
+eval "$(_GOAT_COMPLETE=bash_source goat)"

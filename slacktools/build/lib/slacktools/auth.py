@@ -8,9 +8,9 @@ def get_slack_session(user_profile):
         SLACK_SESSION = WebClient(token=get_slack_token(user_profile))
     except FileExistsError:
         MSG = 'Unable to connect to Slack. Verify your API token'
-        LINK = 'https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/blob/main/slacktools/README.md'
+        LINK = 'https://github.com/stacksc/goat'
         CMD = None
-        TITLE = 'PYPS'
+        TITLE = 'GOAT'
         SUBTITLE = 'CRITICAL'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
         Log.critical(MSG)

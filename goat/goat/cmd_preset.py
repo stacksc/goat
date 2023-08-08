@@ -7,7 +7,7 @@ from toolbox.misc import set_terminal_width, detect_environment
 @click.group(help='manage built-in and custom presets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
 @click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
 def preset(debug):
-    log = Log('pyps.log', debug)
+    log = Log('goat.log', debug)
     pass
 
 @preset.command(help='add new data:key pairs to presets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})

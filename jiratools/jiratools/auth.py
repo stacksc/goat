@@ -61,7 +61,7 @@ def get_jira_session(jira_url=None, auth_mode=None, profile_name='default'):
     if PROFILE is None or PROFILE['config'] == {}:
         Log.debug(f"Profile '{profile_name}' not found; creating a new profile")
         if jira_url is None:
-            Log.warn("Project not found. Please verify it or make sure at least one pyps/jiratools profile is connected to the right server")
+            Log.warn("Project not found. Please verify it or make sure at least one goat/jiratools profile is connected to the right server")
             sys.exit()
         while auth_mode != 'pass' and auth_mode != 'token':
             auth_mode = input('\nPlease select authentication mode (pass/token): ')
@@ -112,9 +112,9 @@ def setup_jira_pass_auth(profile_name):
         JIRA_SESSION = get_jira_session_pass_auth(JIRA_URL, JIRA_USER, JIRA_PASS)
     except:
         MSG = 'Failed to login to Jira. Please verify your login details, server URL etc.'
-        LINK = 'https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/blob/main/jiratools/README.md'
+        LINK = 'https://github.com/stacksc/goat'
         CMD = None
-        TITLE = 'PYPS'
+        TITLE = 'GOAT'
         SUBTITLE = 'CRITICAL'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
         Log.critical(MSG)
@@ -133,9 +133,9 @@ def setup_jira_token_auth(profile_name):
         JIRA_SESSION = get_jira_session_token_auth(JIRA_URL, JIRA_TOKEN)
     except:
         MSG = 'Failed to login to Jira. Please verify your login details, server URL etc.'
-        LINK = 'https://gitlab.eng.vmware.com/govcloud-ops/govcloud-devops-python/-/blob/main/jiratools/README.md'
+        LINK = 'https://github.com/stacksc/goat'
         CMD = None
-        TITLE = 'PYPS'
+        TITLE = 'GOAT'
         SUBTITLE = 'CRITICAL'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
         Log.critical(MSG)

@@ -199,7 +199,7 @@ function ask() {
     qcnt=$(expr $qcnt + 1)
     read -ep "[${qcnt}] Enter SLACK_BOT_TOKEN: " SLACK_BOT_TOKEN; export SLACK_BOT_TOKEN
   fi
-  [[ -z ${SLACK_BOT_TOKEN} ]] && echo "INFO: please provide the slack bot token for PYPS (stored in production password state)" && exit 1
+  [[ -z ${SLACK_BOT_TOKEN} ]] && echo "INFO: please provide the slack bot token for GOAT (stored in production password state)" && exit 1
 
   get_sso;
   qcnt=$(expr $qcnt + 1)
@@ -269,22 +269,22 @@ JIRA_API_TOKEN="${SSO_PASS}"
 LOGNAME="${USER}"
 EOF
 
-printf "INFO: starting the docker build process, which will stop any running PYPS containers, & prune prior to starting\n"
+printf "INFO: starting the docker build process, which will stop any running GOAT containers, & prune prior to starting\n"
 echo
-docker stop $(docker ps | grep pyps | awk '{print $1}') >/dev/null 2>&1 && yes | docker system prune
+docker stop $(docker ps | grep goat | awk '{print $1}') >/dev/null 2>&1 && yes | docker system prune
 echo
-docker build . -t pyps --build-arg MYUSER=${USER} --secret id=my_env,src=.env 
+docker build . -t goat --build-arg MYUSER=${USER} --secret id=my_env,src=.env 
 ret=$?
 echo
-[[ $ret -eq 0 ]] && docker run -d -it --memory="4g" --cpus="3.0" pyps
+[[ $ret -eq 0 ]] && docker run -d -it --memory="4g" --cpus="3.0" goat
 ret=$?
 echo
 [[ $ret -eq 0 ]] && docker ps -a
 echo
-echo "INFO: login to pyps now with: docker exec -it \$(docker ps -a| grep pyps | awk '{print \$1}') bash -l"
+echo "INFO: login to goat now with: docker exec -it \$(docker ps -a| grep goat | awk '{print \$1}') bash -l"
 echo "INFO: copying .env to ${HOME} and out of the main repository"
 cat ${MYDIR}/.env | grep -vE "SSO_PASS|JIRA_API_TOKEN" > ${HOME}/.env 2>/dev/null
 [[ -f .env ]] && rm -f .env >/dev/null 2>&1
-echo "INFO: pyps docker build is complete!"
+echo "INFO: goat docker build is complete!"
 echo
 popd >/dev/null

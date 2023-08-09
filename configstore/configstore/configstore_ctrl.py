@@ -4,6 +4,7 @@ from .configstore import Config
 from toolbox.click_complete import complete_configstore_names
 from toolbox import misc
 from awstools.aws_config import AWSconfig
+from ocitools.oci_config import OCIconfig
 
 MESSAGE="Config Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'N/A' + misc.RESET
 
@@ -46,6 +47,9 @@ def _show(configstore_name, profile_name=None):
             CONFIG.display_configstore()
             AWS_CONFIG.display('config', profile_name)
             AWS_CONFIG.display('creds', profile_name)
+        elif configstore_name == 'ocitools':
+            OCI_CONFIG = OCIconfig()
+            OCI_CONFIG.display('config', profile_name)
     else:
         try:
             RESULT = CONFIG.display_configstore()
@@ -55,6 +59,9 @@ def _show(configstore_name, profile_name=None):
             AWS_CONFIG = AWSconfig()
             AWS_CONFIG.display('config')
             AWS_CONFIG.display('creds')
+        elif configstore_name == 'ocitools':
+            OCI_CONFIG = OCIconfig()
+            OCI_CONFIG.display('config', profile_name)
     return RESULT
 
 @delete.command('profile', help="delete an entire profile stored in a configstore", context_settings={'help_option_names':['-h','--help']})

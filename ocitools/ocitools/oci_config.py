@@ -64,14 +64,14 @@ class OCIconfig():
             Path(path_to_file).touch()
             return path_to_file
         except OSError:
-                Log.critical("failed to create .oci directory")
+            Log.critical("failed to create .oci directory")
 
     def display(self, type, profile_name=None):
         OCI_CONFIG, OCI_FILE = self.choose_configparser(type)
         if profile_name is None:
             print(f'\n-------------------- oci {type} for all profiles --------------------')
             for PROFILE in OCI_CONFIG:
-                if PROFILE != 'DEFAULT': # oci uses lowercase default, remove redundant DEFAULT entry from output
+                if PROFILE != 'DEFAULT': # oci uses uppercase default, remove redundant DEFAULT entry from output
                     print(f"    [{PROFILE}]")
                 for PROPERTY in OCI_CONFIG[PROFILE]:
                     print(f"    {PROPERTY}={OCI_CONFIG[PROFILE][PROPERTY]}")

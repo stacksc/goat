@@ -69,7 +69,7 @@ class Config:
                     'created_by': os.environ['USER'],
                     'created_at': str(datetime.datetime.now().timestamp())
                 }
-            }    
+            }
         self.PROFILES[profile_name] = PROFILE
         self.reload_cfg()
         return True
@@ -155,7 +155,7 @@ class Config:
         self.load_cfg()
         try:
             del self.PROFILES[profile_name]
-        except KeyError:
+        except KeyError as e:
             return False
         self.reload_cfg()
         return True

@@ -139,7 +139,6 @@ def get_role_session(aws_key_id, aws_secret_access_key, aws_session_token):
     except:
         return None
     return SESSION
-        
 
 def get_env_variables():
     try:

@@ -2,6 +2,7 @@
 import sys, click
 from toolbox.logger import Log
 from .iam import iam
+from .oss import oss
 from .ocicli_wrapper import cli
 from .ocitools_show import show
 from toolbox import misc
@@ -10,7 +11,7 @@ from .iam import get_latest_profile
 
 MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET
 
-@click.group('aws', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
+@click.group('oci', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', 'profile_name', help='profile name to use when working with ocitools', required=False, default=get_latest_profile())
 @click.pass_context
 def CLI(ctx, profile_name):
@@ -20,11 +21,9 @@ def CLI(ctx, profile_name):
     pass
     
 CLI.add_command(iam)
-#CLI.add_command(s3)
-#CLI.add_command(ec2)
-#CLI.add_command(rds)
 CLI.add_command(cli)
 CLI.add_command(show)
+CLI.add_command(oss)
 
 if __name__ == "__main__":
     cli(ctx)

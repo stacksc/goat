@@ -1,5 +1,6 @@
-boto3
+oci
 click
 toolbox
 configstore
+tqdm
 requests_ntlm

@@ -12,10 +12,11 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-  "boto3",
+  "oci",
   "click",
   "toolbox",
   "configstore",
+  "tqdm",
   "requests_ntlm"
 ]
 

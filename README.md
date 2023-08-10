@@ -362,7 +362,7 @@ Commands:
   jobs              display information about Jenkins job names
   user              display information about Jenkins users
 ```
-## TUI for job selections
+### TUI for job selections
 * [ENTER] per job will launch tasks on that object
 <img src="./images/jenkins.png" alt="Jenkins" width="1200"/>
 <br>

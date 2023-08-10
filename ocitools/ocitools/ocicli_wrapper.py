@@ -21,7 +21,7 @@ def cli(ctx, ocicli_command, region):
     profile_name = ctx.obj['PROFILE']
     OCI = get_OCIcli(profile_name, region)
     CMD = ' '.join(ocicli_command) # convert tuple to string
-    RESULT = OCI.run_cmd(f"oci --region {region} {CMD}")
+    RESULT = OCI.run_cmd(f"oci --profile {profile_name} --region {region} {CMD}")
     print(RESULT)
 
 class OCIcli():

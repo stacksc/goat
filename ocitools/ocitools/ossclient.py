@@ -9,6 +9,8 @@ from pathlib import Path
 from tqdm.auto import tqdm
 from oci.object_storage.models import CreateBucketDetails
 
+CONFIGSTORE = Config('ocitools')
+
 class OSSclient():
 
     def __init__(self, profile_name, region='us-ashburn-1', cache_only=False):

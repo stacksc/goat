@@ -51,6 +51,7 @@ def authenticate(ctx, region, tenant, user, keyfile, fingerprint, profile):
         TITLE = 'GOAT'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
         cache_all_hack(profile_name)
+        update_latest_profile(profile_name)
 
 # worker function to make the method portable
 def _authenticate(tenant, user, fingerprint, keyfile, profile_name, region='us-ashburn-1'):

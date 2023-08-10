@@ -3,6 +3,7 @@ import sys, click
 from toolbox.logger import Log
 from .iam import iam
 from .oss import oss
+from .compute import compute
 from .ocicli_wrapper import cli
 from .ocitools_show import show
 from toolbox import misc
@@ -22,8 +23,9 @@ def CLI(ctx, profile_name):
     
 CLI.add_command(iam)
 CLI.add_command(cli)
-CLI.add_command(show)
+CLI.add_command(compute)
 CLI.add_command(oss)
+CLI.add_command(show)
 
 if __name__ == "__main__":
     cli(ctx)

@@ -2,6 +2,8 @@ pyproject.toml
 ocitools/add_api_key.py
 ocitools/color.py
 ocitools/common.py
+ocitools/compute.py
+ocitools/computeclient.py
 ocitools/find_storage.py
 ocitools/iam.py
 ocitools/iam_nongc.py

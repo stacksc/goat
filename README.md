@@ -473,5 +473,6 @@ Commands:
 <img src="./images/download_1.png" alt="OCI Downloads" width="1200"/>
 <br>
 * native notifications are included on most critical tasks:
+<br>
 <img src="./images/native_notifications.png" alt="notifications" width="600"/>
 <br>

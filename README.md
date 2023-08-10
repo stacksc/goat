@@ -466,9 +466,13 @@ Commands:
   upload    upload from local storage to OSS bucket
 ```
 
-## TUI for downloading, uploading, and creating buckets
+#### TUI for downloading, uploading, and creating buckets
 * [ENTER] per bucket or object will initiate task
 <img src="./images/downloads.png" alt="OCI Downloads" width="1200"/>
 <br>
 <img src="./images/download_1.png" alt="OCI Downloads" width="1200"/>
+<br>
+
+#### Native notifications are included on some critical tasks
+<img src="./images/native_notifications.png" alt="notifications" width="1200"/>
 <br>

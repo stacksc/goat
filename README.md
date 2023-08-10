@@ -427,3 +427,21 @@ INFO: caching OCI object storage buckets...
 INFO: compartment name: test holds object storage buckets in region us-ashburn-1
 INFO: compartment name: centerupt holds object storage buckets in region us-ashburn-1
 ```
+
+### OCI usage
+```
+$ goat oci -h
+Usage: goat oci [OPTIONS] COMMAND [ARGS]...
+
+  OCI CLI Client                       Current Profile: DEFAULT
+
+Options:
+  -p, --profile TEXT  profile name to use when working with ocitools
+  -h, --help          Show this message and exit.
+
+Commands:
+  cli   run any ocicli (oci) command while leveraging ocitools profile functionality
+  iam   manage and switch between OCI profiles for all realms
+  oss   object storage functions to sync buckets and filesystems
+  show  display configuration data for ocitools and ocicli
+```

@@ -445,3 +445,24 @@ Commands:
   oss   object storage functions to sync buckets and filesystems
   show  display configuration data for ocitools and ocicli
 ```
+
+#### OCI object storage
+```
+goat oci oss -h
+Usage: goat oci oss [OPTIONS] COMMAND [ARGS]...
+
+  object storage functions to sync buckets and filesystems
+
+Options:
+  -m, --menu  use the menu to perform OCI OSS actions
+  -h, --help  Show this message and exit.
+
+Commands:
+  create    create a new bucket
+  delete    delete a specified bucket
+  download  download from OSS to local storage
+  refresh   manually refresh OSS cached data
+  show      show the data stored in OSS cache
+  upload    upload from local storage to OSS bucket
+```
+

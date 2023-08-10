@@ -300,6 +300,41 @@ INFO: caching ec2 data...
 INFO: caching rds data...
 INFO: run source ~/goatrole.sh
 ```
+
+## SLACK communication
+```
+$ goat slack post -h
+Usage: goat slack post [OPTIONS] CHANNEL...
+
+  post a meessage to a given channel(s)
+
+Options:
+  -m, --message TEXT  Text to include in the message  [required]
+  -r, --reply TEXT    TS of the message to reply to
+  -h, --help          Show this message and exit.
+```
+### post a message
+```
+$ goat slack post -m "Hello - this is a test from stacks" C05LXFYUNNM
+INFO: Message sent at 1691706809.465009
+```
+
+### react to a message
+```
+goat slack react -h
+Usage: goat slack react [OPTIONS] CHANNEL...
+
+  post a reaction to a given message in specific channel
+
+Options:
+  -t, --timestamp TEXT  timestamp of the target message  [required]
+  -e, --emoji TEXT      emoji name to react with  [required]
+  -h, --help            Show this message and exit.
+
+$ goat slack react -t 1691706809.465009 -e wavy_dash C05LXFYUNNM
+INFO: Reaction posted
+```
+
 ## JIRA Module Demonstration
 ```
 $ goat jira -h

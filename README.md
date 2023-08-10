@@ -303,16 +303,25 @@ INFO: run source ~/goatrole.sh
 
 ## SLACK communication
 ```
-$ goat slack post -h
-Usage: goat slack post [OPTIONS] CHANNEL...
+$ goat slack -h
+Usage: goat slack [OPTIONS] COMMAND [ARGS]...
 
-  post a meessage to a given channel(s)
+  Slack CLI Client                     Current Profile: DEFAULT
 
 Options:
-  -m, --message TEXT  Text to include in the message  [required]
-  -r, --reply TEXT    TS of the message to reply to
+  -p, --profile TEXT  User profile to use for connecting to Slack
   -h, --help          Show this message and exit.
+
+Commands:
+  channel  manage Slack channels; create, archive, invite users etc
+  config   retrieve the entire content of slacktools's configstore
+  post     post a meessage to a given channel(s)
+  react    post a reaction to a given message in specific channel
+  unpost   delete a meessage in a given channel
+  unreact  remove a reaction to a given message in a specific channel
+
 ```
+
 ### post a message
 ```
 $ goat slack post -m "Hello - this is a test from stacks" C05LXFYUNNM
@@ -321,16 +330,6 @@ INFO: Message sent at 1691706809.465009
 
 ### react to a message
 ```
-goat slack react -h
-Usage: goat slack react [OPTIONS] CHANNEL...
-
-  post a reaction to a given message in specific channel
-
-Options:
-  -t, --timestamp TEXT  timestamp of the target message  [required]
-  -e, --emoji TEXT      emoji name to react with  [required]
-  -h, --help            Show this message and exit.
-
 $ goat slack react -t 1691706809.465009 -e wavy_dash C05LXFYUNNM
 INFO: Reaction posted
 ```

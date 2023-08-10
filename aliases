@@ -1,4 +1,0 @@
-alias cscm="goat jira project search CSCM -a $LOGNAME -t"
-alias cssd="goat jira project search CSSD -a $LOGNAME -t"
-alias pubsec="goat jira project search PUBSECSRE -a $LOGNAME -t"
-alias toggle="goat aws iam assume-role "

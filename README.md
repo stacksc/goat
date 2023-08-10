@@ -301,6 +301,83 @@ INFO: caching rds data...
 INFO: run source ~/goatrole.sh
 ```
 
+## Jenkins Tasks
+```
+goat jenkins -h
+Usage: goat jenkins [OPTIONS] COMMAND [ARGS]...
+
+  Jenkins Client                       Current Profile: DEFAULT
+
+Options:
+  -p, --profile TEXT  user profile for Jenkins operations
+  -h, --help          Show this message and exit.
+
+Commands:
+  auth  perform authentication operations against Jenkins
+  show  retrieve information from Jenkins
+```
+
+## Jenkins Show
+```
+goat jenkins show -h
+Usage: goat jenkins show [OPTIONS] COMMAND [ARGS]...
+
+  retrieve information from Jenkins
+
+Options:
+  -d, --debug [0|1|2]  0 = no output, 1 = default, 2 = debug on
+  -m, --menu           launch a menu driven interface for common Jenkins user actions
+  -h, --help           Show this message and exit.
+
+Commands:
+  access-token      API token for accessing the Jenins functionality
+  access-token-age  how long the current access token will remain active
+  config            retrieve the entire content of jenkinstool's configstore instance
+  credentials       display system credentials available for jobs
+  crumb-token       API crumb for accessing the Jenins functionality
+  crumb-token-age   how long the current crumb token will remain active
+  jobs              display information about Jenkins job names
+  user              display information about Jenkins users
+```
+
+### jenkins examples
+```
+goat jenkins show -h
+Usage: goat jenkins show [OPTIONS] COMMAND [ARGS]...
+
+  retrieve information from Jenkins
+
+Options:
+  -d, --debug [0|1|2]  0 = no output, 1 = default, 2 = debug on
+  -m, --menu           launch a menu driven interface for common Jenkins user actions
+  -h, --help           Show this message and exit.
+
+Commands:
+  access-token      API token for accessing the Jenins functionality
+  access-token-age  how long the current access token will remain active
+  config            retrieve the entire content of jenkinstool's configstore instance
+  credentials       display system credentials available for jobs
+  crumb-token       API crumb for accessing the Jenins functionality
+  crumb-token-age   how long the current crumb token will remain active
+  jobs              display information about Jenkins job names
+  user              display information about Jenkins users
+```
+## TUI for job selections
+* [ENTER] per job will launch tasks on that object
+<img src="./images/jenkins.png" alt="Jenkins" width="1200"/>
+<br>
+<img src="./images/jenkins2.png" alt="Jenkins" width="1200"/>
+<br>
+```
+$ goat jenkins show jobs last-failed
+INFO: checking last failed job name capacity-reporter build now, please wait...
+{
+  "_class": "hudson.model.FreeStyleBuild",
+  "number": 12,
+  "url": "http://localhost:8080/goaat/job/capacity-reporter/12/"
+}
+```
+
 ## SLACK communication
 ```
 $ goat slack -h

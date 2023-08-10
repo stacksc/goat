@@ -406,10 +406,8 @@ CSCM-40945  Closed    Chris Stacks  Andrey Karadzha (c)  Govcloud-Atlas Atlas Ba
 * [ENTER] per ticket will launch the URL in your browser using click
 <img src="./images/jira_menu.png" alt="JIRA" width="1200"/>
 <br>
-
 ## OCI examples
 ### The following pre-requisites are needed:
-
 1. Tenant OCID
 2. User OCID
 3. Public key fingerprint

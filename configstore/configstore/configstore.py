@@ -144,6 +144,16 @@ class Config:
                     profile_data[section] = data
                 else:
                     profile_data[section][data_name] = data
+            if overwrite:
+                if data_name is None:
+                    profile_data[section] = data
+                else:
+                    profile_data[section][data_name] = data
+            else:
+                if data_name is None:
+                    profile_data[section].update(data)
+                else:
+                    profile_data[section][data_name].update(data)
         except KeyError:
             return False
         self.update_profile(profile_data)

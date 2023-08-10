@@ -69,7 +69,7 @@ class Config:
                     'created_by': os.environ['USER'],
                     'created_at': str(datetime.datetime.now().timestamp())
                 }
-            }    
+            }
         self.PROFILES[profile_name] = PROFILE
         self.reload_cfg()
         return True
@@ -144,6 +144,16 @@ class Config:
                     profile_data[section] = data
                 else:
                     profile_data[section][data_name] = data
+            if overwrite:
+                if data_name is None:
+                    profile_data[section] = data
+                else:
+                    profile_data[section][data_name] = data
+            else:
+                if data_name is None:
+                    profile_data[section].update(data)
+                else:
+                    profile_data[section][data_name].update(data)
         except KeyError:
             return False
         self.update_profile(profile_data)
@@ -155,7 +165,7 @@ class Config:
         self.load_cfg()
         try:
             del self.PROFILES[profile_name]
-        except KeyError:
+        except KeyError as e:
             return False
         self.reload_cfg()
         return True

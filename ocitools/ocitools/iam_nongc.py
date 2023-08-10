@@ -1,4 +1,4 @@
-import click, string, random, subprocess, oci
+import click, string, random, subprocess, oci, os
 from .oci_config import OCIconfig
 from toolbox.logger import Log
 from os import environ, chmod, stat
@@ -32,7 +32,6 @@ def authenticate(ctx, region, tenant, user, keyfile, fingerprint, profile):
         Log.critical(MSG)
     else:
         Log.info("credentials saved successfully")
-        cache_all_hack(profile_name)
         if profile_name not in STORE.PROFILES:
             STORE.create_profile(profile_name)
         # update metadata facts
@@ -51,12 +50,25 @@ def authenticate(ctx, region, tenant, user, keyfile, fingerprint, profile):
         SUBTITLE = 'INFO'
         TITLE = 'GOAT'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
+        cache_all_hack(profile_name)
 
 # worker function to make the method portable
 def _authenticate(tenant, user, fingerprint, keyfile, profile_name, region='us-ashburn-1'):
-    SESSION = oci.config.from_file("~/.oci/config", profile_name)
+    SESSION = None
+    try:
+        SESSION = oci.config.from_file("~/.oci/config", profile_name)
+    except:
+        pass
     if SESSION is not None:
         CONFIG.add_oci_profile(tenant, user, region, fingerprint, keyfile, profile_name)
+    else:
+        CONFIG.add_oci_profile(tenant, user, region, fingerprint, keyfile, profile_name)
+    # try again
+    try:
+        SESSION = oci.config.from_file("~/.oci/config", profile_name)
+    except:
+        Log.warn('unable to load the new config file')
+        return None
     return SESSION
 
 def update_latest_profile(profile_name):
@@ -74,9 +86,10 @@ def listToStringWithoutBrackets(list1):
 def cache_all_hack(profile_name):
     CONFIG = Config('ocitools')
     Log.info('oci profile caching initialized')
-    MODULES = ['s3', 'ec2', 'rds']
+    #MODULES = ['oss', 'compute', 'db']
+    MODULES = ['oss']
     for MODULE in MODULES:
-        if MODULE == 's3':
+        if MODULE == 'oss':
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_buckets', profile_name))
@@ -84,8 +97,13 @@ def cache_all_hack(profile_name):
                 pass
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'goat oci -p {profile_name} {MODULE} show')
-        elif MODULE == 'ec2':
+                try:
+                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                except:
+                    pass
+            else:
+                Log.info(f'cache exists for {MODULE} data...')
+        elif MODULE == 'compute':
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_instances', profile_name))
@@ -93,16 +111,26 @@ def cache_all_hack(profile_name):
                 pass
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'goat oci -p {profile_name} {MODULE} show')
-        elif MODULE == 'rds':
+                try:
+                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                except:
+                    pass
+            else:
+                Log.info(f'cache exists for {MODULE} data...')
+        elif MODULE == 'db':
             CACHED = {}
             try:
-                CACHED.update(CONFIG.PROFILES[profile_name]['metadata']['cached_rds_instances'])
+                CACHED.update(CONFIG.PROFILES[profile_name]['metadata']['cached_db_instances'])
             except:
                 pass
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'goat oci -p {profile_name} {MODULE} show')
+                try:
+                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                except:
+                    pass
+            else:
+                Log.info(f'cache exists for {MODULE} data...')
 
 def run_command(command):
     PROC = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)

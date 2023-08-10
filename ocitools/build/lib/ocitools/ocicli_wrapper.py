@@ -11,7 +11,7 @@ LATEST = CONFIG.get_profile('latest')
 if LATEST is None:
     LATEST = 'default'
 else:
-    LATEST = LATEST['config']['tenant']
+    LATEST = LATEST['config']['name']
 
 @click.command(help="run any ocicli (oci) command while leveraging ocitools profile functionality", context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
 @click.argument('ocicli_command', nargs=-1, type=str, required=True)

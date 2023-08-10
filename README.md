@@ -29,7 +29,7 @@ GOAT ("goat") - a front-end application for the Python modules to communicate wi
 The repository and code is for demonstration purposes at this time; this is only to showcase a basic application to common APIs.
 ## Current Usage
 ```
-$ goat -h
+goat -h
 Usage: goat [OPTIONS] COMMAND [ARGS]...
 
   goat => GCP, OCI, & AWS TK
@@ -44,6 +44,7 @@ Commands:
   configs  Config Client               Current Profile: N/A
   jenkins  Jenkins Client              Current Profile: DEFAULT
   jira     JIRA CLI Client             Current Profile: HTTPS://GOAAT.ATLASSIAN.NET
+  oci      OCI CLI Client              Current Profile: CENTERUPT
   slack    Slack CLI Client            Current Profile: DEFAULT
 ```
 ## Versions

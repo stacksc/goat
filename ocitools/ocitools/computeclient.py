@@ -107,8 +107,6 @@ class MyComputeClient():
                                 'AD': AD
             }
             COMPUTE_CACHE['last_cache_update'] = TIMESTAMP
-        #Log.json(json.dumps(COMPUTE_CACHE))
-        #CONFIGSTORE.update_metadata(COMPUTE_CACHE, 'cached_instances', profile_name, True)
         return COMPUTE_CACHE
 
     def cache_instances(self, profile_name='default'):

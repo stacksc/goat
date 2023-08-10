@@ -54,4 +54,3 @@ cli.add_command(slack)
 
 if __name__ == "__main__":
     cli(ctx)
-    print(ctx)

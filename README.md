@@ -472,7 +472,6 @@ Commands:
 <br>
 <img src="./images/download_1.png" alt="OCI Downloads" width="1200"/>
 <br>
-
-#### Native notifications are included on some critical tasks
-<img src="./images/native_notifications.png" alt="notifications" width="1200"/>
+* native notifications are included on most critical tasks:
+<img src="./images/native_notifications.png" alt="notifications" width="600"/>
 <br>

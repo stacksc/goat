@@ -448,7 +448,7 @@ Commands:
 
 #### OCI object storage
 ```
-goat oci oss -h
+$ goat oci oss -h
 Usage: goat oci oss [OPTIONS] COMMAND [ARGS]...
 
   object storage functions to sync buckets and filesystems
@@ -466,3 +466,9 @@ Commands:
   upload    upload from local storage to OSS bucket
 ```
 
+## TUI for downloading, uploading, and creating buckets
+* [ENTER] per bucket or object will initiate task
+<img src="./images/downloads.png" alt="OCI Downloads" width="1200"/>
+<br>
+<img src="./images/download_1.png" alt="OCI Downloads" width="1200"/>
+<br>

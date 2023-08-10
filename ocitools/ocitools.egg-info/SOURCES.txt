@@ -4,6 +4,8 @@ ocitools/color.py
 ocitools/common.py
 ocitools/compute.py
 ocitools/computeclient.py
+ocitools/dbs.py
+ocitools/dbsclient.py
 ocitools/find_storage.py
 ocitools/iam.py
 ocitools/iam_nongc.py
@@ -15,6 +17,8 @@ ocitools/ocitools.py
 ocitools/ocitools_show.py
 ocitools/oss.py
 ocitools/ossclient.py
+ocitools/regions.py
+ocitools/regionsclient.py
 ocitools/shapes.py
 ocitools.egg-info/PKG-INFO
 ocitools.egg-info/SOURCES.txt

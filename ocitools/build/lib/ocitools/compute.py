@@ -60,10 +60,10 @@ def show(ctx, target):
                 COMPUTE = get_compute_client(profile_name, auto_refresh=False, cache_only=True)
                 RES = COMPUTE.show_cache(profile_name, 'cached_instances', display=False)
                 for data in RES:
-                    NAME = data["PrivateDnsName"].ljust(50)
-                    IP = data["PrivateIpAddress"]
-                    ID = data["InstanceId"]
-                    details = NAME + "\t" + IP + "\t" + ID
+                    NAME = data["display_name"].ljust(50)
+                    IP = data["private_ips"].strip()
+                    STATE = data["lifecycle_state"]
+                    details = NAME + "\t" + IP + "\t" + STATE
                     DATA.append(details)
                 break
         INPUT = 'Login Manager'
@@ -86,10 +86,6 @@ def _show(target, profile_name, display):
         return True
     except:
         return False
-
-@compute.group('delete', help="Delete compute objects such as instances", context_settings={'help_option_names':['-h','--help']})
-def delete():
-    pass
 
 def get_compute_client(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
     CLIENT = MyComputeClient(profile_name, region, cache_only)

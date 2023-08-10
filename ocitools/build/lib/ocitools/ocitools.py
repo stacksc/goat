@@ -3,6 +3,8 @@ import sys, click
 from toolbox.logger import Log
 from .iam import iam
 from .oss import oss
+from .dbs import dbs
+from .regions import regions
 from .compute import compute
 from .ocicli_wrapper import cli
 from .ocitools_show import show
@@ -21,10 +23,12 @@ def CLI(ctx, profile_name):
     Log.setup('ocitools', int(debug))
     pass
     
-CLI.add_command(iam)
 CLI.add_command(cli)
 CLI.add_command(compute)
+CLI.add_command(dbs)
+CLI.add_command(iam)
 CLI.add_command(oss)
+CLI.add_command(regions)
 CLI.add_command(show)
 
 if __name__ == "__main__":

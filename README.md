@@ -405,3 +405,23 @@ CSCM-40945  Closed    Chris Stacks  Andrey Karadzha (c)  Govcloud-Atlas Atlas Ba
 ## Text User Interface
 * [ENTER] per ticket will launch the URL in your browser using click
 <img src="./images/jira_menu.png" alt="JIRA" width="1200"/>
+<br>
+## OCI examples
+### The following pre-requisites are needed:
+1. Tenant OCID
+2. User OCID
+3. Public key fingerprint
+4. Profile name
+```
+$ goat oci iam authenticate -r us-ashburn-1 -t {tenantOcid} -u {userOcid} -f {fingerprint} -p {profile}
+WARN: Encryption key not detected. Generating a new one
+INFO: credentials saved successfully
+INFO: you can now use your new profile with 'oci --profile centerupt
+INFO: oci profile caching initialized
+INFO: caching oss data...
+INFO: connecting to OSS as centerupt via us-ashburn-1...
+INFO: connecting to OSS as centerupt via us-ashburn-1...
+INFO: caching OCI object storage buckets...
+INFO: compartment name: test holds object storage buckets in region us-ashburn-1
+INFO: compartment name: centerupt holds object storage buckets in region us-ashburn-1
+```

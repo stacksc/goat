@@ -582,6 +582,106 @@ IAD           us-ashburn-1   READY     True
 ============  =============  ========  ================
 ```
 
+### post authentication cache 
+1. the following information is cached automatically and stored in the configstore
+2. the caching mechanism works for all modules (jira, aws, oci, etc)
+
+```
+$ goat configs show ocitools
+{
+    "centerupt": {
+        "config": {},
+        "metadata": {
+            "name": "centerupt",
+            "created_by": "stacksc",
+            "created_at": "1691710189.381707",
+            "fingerprint": "1f:ce:1a:08:94:93:b7:a9:56:29:38:71:20:a0:63:4e",
+            "key_file": "~/.oci/oci_api_key.pem",
+            "tenancy": "ocid1.tenancy.oc1..aaaaaaaajkxcejo4fjvjwfceouocuzxgmbexy7cqy423kjchmyywtpoigb5a",
+            "region": "us-ashburn-1",
+            "user": "ocid1.user.oc1..aaaaaaaaizly2w5xebvjn7rhty63aaq3ydavo45yueirf7ncv7s7hstpdi4a",
+            "cached_buckets": {
+                "bucketeer": {
+                    "name": "bucketeer",
+                    "namespace": "idqa8rzudg50",
+                    "compartment": "test",
+                    "ocid": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a"
+                },
+                "goat-stacks": {
+                    "name": "goat-stacks",
+                    "namespace": "idqa8rzudg50",
+                    "compartment": "test",
+                    "ocid": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a"
+                },
+                "test-bucket": {
+                    "name": "test-bucket",
+                    "namespace": "idqa8rzudg50",
+                    "compartment": "test",
+                    "ocid": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a"
+                },
+                "last_cache_update": "1691710190.993007"
+            },
+            "cached_instances": {
+                "instance-20230807-1711": {
+                    "display_name": "instance-20230807-1711",
+                    "lifecycle_state": "RUNNING",
+                    "instance_type": "Compute",
+                    "shape": "VM.Standard.E2.1.Micro",
+                    "compartment_name": "root",
+                    "public_ips": "129.213.121.59 ",
+                    "private_ips": "10.0.0.202 ",
+                    "AD": "US-ASHBURN-AD-1"
+                },
+                "last_cache_update": "1691710193.441092"
+            },
+            "cached_dbs_instances": {
+                "LLE8SPADCEIQ1DW9": {
+                    "display_name": "LLE8SPADCEIQ1DW9",
+                    "lifecycle_state": "AVAILABLE",
+                    "ocpu": 1,
+                    "memory": "n/a",
+                    "shape": "ATP",
+                    "compartment_name": "root",
+                    "type": "ATP",
+                    "public_ips": "n/a",
+                    "private_ips": "n/a",
+                    "OS": "n/a",
+                    "AD": "US-ASHBURN-1"
+                },
+                "last_cache_update": "1691710200.217792"
+            },
+            "cached_regions": {
+                "IAD": {
+                    "region_key": "IAD",
+                    "region_name": "us-ashburn-1",
+                    "status": "READY",
+                    "is_home_region": true
+                }
+            }
+        }
+    },
+    "latest": {
+        "config": {
+            "name": "centerupt"
+        },
+        "metadata": {
+            "name": "latest",
+            "created_by": "stacksc",
+            "created_at": "1691710203.898848"
+        }
+    }
+}
+
+-------------------- oci config for all profiles --------------------
+
+    [centerupt]
+    region=us-ashburn-1
+    tenancy=ocid1.tenancy.oc1..aaaaaaaajkxcejo4fjvjwfceouocuzxgmbexy7cqy423kjchmyywtpoigb5a
+    user=ocid1.user.oc1..aaaaaaaaizly2w5xebvjn7rhty63aaq3ydavo45yueirf7ncv7s7hstpdi4a
+    fingerprint=1f:ce:1a:08:94:93:b7:a9:56:29:38:71:20:a0:63:4e
+    key_file=~/.oci/oci_api_key.pem
+```
+
 ### OCI usage
 ```
 $ goat oci -h

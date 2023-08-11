@@ -16,10 +16,12 @@ MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.U
 
 @click.group('oci', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', 'profile_name', help='profile name to use when working with ocitools', required=False, default=get_latest_profile())
+@click.option('-r', '--region', 'region', help='region name to use when working with ocitools', required=False, default='us-ashburn-1')
 @click.pass_context
-def CLI(ctx, profile_name):
+def CLI(ctx, profile_name, region):
     ctx.ensure_object(dict)
     ctx.obj['PROFILE'] = profile_name
+    ctx.obj['REGION'] = region
     Log.setup('ocitools', int(debug))
     pass
     

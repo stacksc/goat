@@ -303,7 +303,7 @@ INFO: run source ~/goatrole.sh
 
 ## Jenkins Tasks
 ```
-goat jenkins -h
+$ goat jenkins -h
 Usage: goat jenkins [OPTIONS] COMMAND [ARGS]...
 
   Jenkins Client                       Current Profile: DEFAULT
@@ -367,7 +367,7 @@ $ goat configs show jenkinstools
 
 ## Jenkins Show
 ```
-goat jenkins show -h
+$ goat jenkins show -h
 Usage: goat jenkins show [OPTIONS] COMMAND [ARGS]...
 
   retrieve information from Jenkins
@@ -390,7 +390,7 @@ Commands:
 
 ### jenkins examples
 ```
-goat jenkins show -h
+$ goat jenkins show -h
 Usage: goat jenkins show [OPTIONS] COMMAND [ARGS]...
 
   retrieve information from Jenkins

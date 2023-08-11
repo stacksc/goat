@@ -4,7 +4,6 @@ import click, os, sys, gnureadline, operator
 from pathlib import Path
 from toolbox.logger import Log
 from jiratools.jiraclient import cli as jira
-from gitools.tools import cli as git
 from configstore.configstore_ctrl import cli as configs
 from awstools.awstools import CLI as aws
 from ocitools.ocitools import CLI as oci
@@ -53,7 +52,6 @@ cli.add_command(jira, name='jira')
 cli.add_command(aws, name='aws')
 cli.add_command(oci, name='oci')
 cli.add_command(jenkins, name='jenkins')
-cli.add_command(git, name='git')
 cli.add_command(slack)
 
 if __name__ == "__main__":

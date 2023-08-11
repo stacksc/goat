@@ -60,7 +60,7 @@ def download(ctx, source, destination):
                 for PROFILE in CONFIG.PROFILES:
                     if PROFILE in ignore:
                         continue
-                    if CONFIG.get_metadata_aws('cached_buckets', PROFILE, aws_region_name) and source in CONFIG.get_metadata('cached_buckets', PROFILE, aws_region_name):
+                    if CONFIG.get_metadata_aws('cached_buckets', PROFILE, aws_region_name) and source in CONFIG.get_metadata_aws('cached_buckets', PROFILE, aws_region_name):
                         aws_profile_name = PROFILE
                         S3 = get_S3client(PROFILE, aws_region_name)
                         CONTENTS, TOTAL, LASTMOD = S3.show_bucket_content(source)

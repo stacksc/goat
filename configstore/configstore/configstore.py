@@ -237,6 +237,18 @@ class Config:
         else:
             return None
 
+    def get_metadata_aws(self, metadata_name=None, profile_name='default', region_name='us-east-1'):
+        PROFILE = self.get_profile(profile_name)
+        if PROFILE is None:
+            return None
+        if 'metadata' in PROFILE:
+            if metadata_name is None:
+                return PROFILE['metadata']
+            elif metadata_name in PROFILE['metadata']:
+                return PROFILE['metadata'][metadata_name][region_name]
+        else:
+            return None
+
     def get_from_env(self, variable_name, prompt_msg=None, property_type='config', profile_name='default'):
         PROFILE_DATA = self.get_profile(profile_name)
         if prompt_msg is None:

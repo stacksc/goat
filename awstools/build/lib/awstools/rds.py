@@ -24,12 +24,13 @@ def rds(ctx, menu):
 @click.pass_context
 def refresh(ctx):
     aws_profile_name = ctx.obj['PROFILE']
-    _refresh('cached_rds_instances', aws_profile_name)
+    aws_region = get_region(ctx, aws_profile_name)
+    _refresh('cached_rds_instances', aws_profile_name, aws_region)
 
-def _refresh(cache_type, aws_profile_name):
+def _refresh(cache_type, aws_profile_name, aws_region):
     try:
         if cache_type == 'cached_rds_instances':
-            RDS = get_RDSclient(aws_profile_name, auto_refresh=False)
+            RDS = get_RDSclient(aws_profile_name, aws_region, auto_refresh=False)
             RESULT = RDS.refresh('cached_rds_instances', aws_profile_name)
         return True
     except:
@@ -40,13 +41,14 @@ def _refresh(cache_type, aws_profile_name):
 @click.pass_context
 def show(ctx, database):
     aws_profile_name = ctx.obj['PROFILE']
-    _show(ctx, aws_profile_name, database)
+    aws_region = get_region(ctx, aws_profile_name)
+    _show(ctx, aws_profile_name, aws_region, database)
 
-def _show(ctx, aws_profile_name, database):
+def _show(ctx, aws_profile_name, aws_region, database):
     if not database:
         if ctx.obj["MENU"]:
             DATA = []
-            RDS = get_RDSclient(aws_profile_name, auto_refresh=False, cache_only=True)
+            RDS = get_RDSclient(aws_profile_name, aws_region, auto_refresh=False, cache_only=True)
             RESPONSE = RDS.get_rds_instances()
             for data in RESPONSE:
                 ID = data
@@ -60,11 +62,11 @@ def _show(ctx, aws_profile_name, database):
             RESPONSE = RDS.describe(CHOICE)
             Log.info(f"describing {CHOICE}:\n" + json.dumps(RESPONSE, indent=2, sort_keys=True, default=str))
         else:
-            RDS = get_RDSclient(aws_profile_name, auto_refresh=False, cache_only=True)
+            RDS = get_RDSclient(aws_profile_name, aws_region, auto_refresh=False, cache_only=True)
             RESPONSE = RDS.get_rds_instances()
             show_as_table(RESPONSE, name='RDS TABLE')
     else:
-        RDS = get_RDSclient(aws_profile_name, auto_refresh=False, cache_only=True)
+        RDS = get_RDSclient(aws_profile_name, aws_region, auto_refresh=False, cache_only=True)
         RESPONSE = RDS.describe(database)
         Log.info(f"describing {database}:\n" + json.dumps(RESPONSE, indent=2, sort_keys=True, default=str))
 
@@ -100,3 +102,9 @@ def runMenu(DATA, INPUT):
     FINAL_MENU = Menu(FINAL, TITLE, JOINER, SUBTITLE)
     CHOICE = FINAL_MENU.display()
     return CHOICE
+
+def get_region(ctx, aws_profile_name):
+    AWS_REGION = ctx.obj['REGION']
+    if not AWS_REGION:
+        AWS_REGION = S3.get_region_from_profile(aws_profile_name)
+    return AWS_REGION

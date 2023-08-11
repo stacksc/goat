@@ -10,7 +10,7 @@ CONFIGSTORE = Config('awstools')
 
 class EC2client():
 
-    def __init__(self, aws_profile_name, aws_region='us-gov-west-1', in_boundary=True, cache_only=False):
+    def __init__(self, aws_profile_name, aws_region='us-east-1', in_boundary=True, cache_only=False):
         self.CONFIG = AWSconfig()
         self.CONFIGSTORE = Config('awstools')
         self.CACHE_UPDATE_INTERVAL = 60*60*24*7 # update cache every week
@@ -75,15 +75,19 @@ class EC2client():
             if INSTANCE_NAME is None:
                 INSTANCE_NAME = INSTANCE['InstanceId']
             INSTANCE_DICT = {
+                'InstanceName': INSTANCE_NAME,
                 'ImageId': INSTANCE['ImageId'],
                 'InstanceId': INSTANCE['InstanceId'],
                 'InstanceType': INSTANCE['InstanceType'],
                 'PrivateDnsName': INSTANCE['PrivateDnsName'],
-                'PrivateIpAddress': INSTANCE['PrivateIpAddress'],
+                'PrivateIpAddress': INSTANCE['PrivateIpAddress']
             }
             INSTANCES_CACHE[INSTANCE_NAME] = INSTANCE_DICT
+            #INSTANCES_CACHE[self.AWS_REGION] = INSTANCE_DICT
         INSTANCES_CACHE['last_cache_update'] = TIMESTAMP
-        self.CONFIGSTORE.update_metadata(INSTANCES_CACHE, 'cached_instances', aws_profile_name, True)
+        DICT = {}
+        DICT[self.AWS_REGION] = INSTANCES_CACHE 
+        self.CONFIGSTORE.update_metadata(DICT, 'cached_instances', aws_profile_name, False)
         self.CONFIGSTORE = Config('awstools')
     
     def get_instances(self, EC2):
@@ -155,20 +159,33 @@ class EC2client():
         self.CONFIGSTORE.update_metadata(REGIONS_CACHE, 'cached_regions', aws_profile_name, True)
         self.CONFIGSTORE = Config('awstools')
 
-    def show_cache(self, aws_profile_name, type, display):
+    def show_cache(self, aws_profile_name, type, aws_region, display):
         self.auto_refresh(aws_profile_name)
         DATA = []
-        for ENTRY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type]:
-            DATA_ENTRY = {}
-            if ENTRY != 'last_cache_update':
-                DATA_ENTRY['Name/ID'] = ENTRY
-                for PROPERTY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][ENTRY]:
-                    DATA_ENTRY[PROPERTY] = self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][ENTRY][PROPERTY]
-                DATA.append(DATA_ENTRY)
-        if DATA != []:
-            if display is True:
-                Log.info(f"{type}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
-            return DATA
+        if type != 'cached_regions':
+            for ENTRY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][aws_region]:
+                DATA_ENTRY = {}
+                if ENTRY != 'last_cache_update':
+                    DATA_ENTRY['Name/ID'] = ENTRY
+                    for PROPERTY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][aws_region][ENTRY]:
+                        DATA_ENTRY[PROPERTY] = self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][aws_region][ENTRY][PROPERTY]
+                    DATA.append(DATA_ENTRY)
+            if DATA != []:
+                if display is True:
+                    Log.info(f"{type}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
+                return DATA
+        else:
+            for ENTRY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type]:
+                DATA_ENTRY = {}
+                if ENTRY != 'last_cache_update':
+                    DATA_ENTRY['Name/ID'] = ENTRY
+                    for PROPERTY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][ENTRY]:
+                        DATA_ENTRY[PROPERTY] = self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][ENTRY][PROPERTY]
+                    DATA.append(DATA_ENTRY)
+            if DATA != []:
+                if display is True:
+                    Log.info(f"{type}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
+                return DATA
 
     def show_all_cache(self, aws_profile_name):
         self.show_cache(aws_profile_name, 'cached_instances', display=False)

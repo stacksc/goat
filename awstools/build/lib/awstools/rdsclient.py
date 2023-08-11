@@ -10,7 +10,7 @@ CONFIGSTORE = Config('awstools')
 
 class RDSclient():
 
-    def __init__(self, aws_profile_name, aws_region='us-gov-west-1', in_boundary=True, cache_only=False):
+    def __init__(self, aws_profile_name, aws_region='us-east-1', in_boundary=True, cache_only=False):
         self.CONFIG = AWSconfig()
         self.CONFIGSTORE = Config('awstools')
         self.CACHE_UPDATE_INTERVAL = 60*60*24*7 # update cache every week
@@ -71,7 +71,7 @@ class RDSclient():
     def get_cached_rds_instances(self, aws_profile_name):
         if aws_profile_name in self.CONFIGSTORE.PROFILES:
             if 'cached_rds_instances' in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']:
-                return self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']['cached_rds_instances']
+                return self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']['cached_rds_instances'][self.AWS_REGION]
         else:
             return None
 
@@ -81,7 +81,6 @@ class RDSclient():
             self.CONFIGSTORE.create_profile(aws_profile_name)
         if 'cached_rds_instances' not in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']:
             self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']['cached_rds_instances'] = {}
-            print(self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']['cached_rds_instances'])
         self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']['cached_rds_instances'] = instances
         self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata']['cached_rds_instances']['last_cache_update'] = TIMESTAMP
         self.CONFIGSTORE.update_profile(self.CONFIGSTORE.PROFILES[aws_profile_name])
@@ -90,7 +89,9 @@ class RDSclient():
         if type == 'cached_rds_instances':
             Log.info("caching rds instances...")
             RDS_INSTANCES = self.get_rds_instances()
-            self.cache_rds_instances(RDS_INSTANCES, aws_profile_name)
+            DICT = {}
+            DICT[self.AWS_REGION] = RDS_INSTANCES
+            self.cache_rds_instances(DICT, aws_profile_name)
         self.CONFIGSTORE = Config('awstools')
 
     def auto_refresh(self, aws_profile_name):
@@ -103,20 +104,3 @@ class RDSclient():
             Log.info('automatic refresh of rds instance cache initiated')
             self.refresh('cached_rds_instances', aws_profile_name)
 
-    #def start_maintenance(self):
-    #    CLIENT = self.SESSION.client('rds')
-
-
-'''
-        elif action == "apply-maintenance":
-            if args.force:
-                myargs = ' --force'
-            else:
-                myargs = ''
-            if args.arn:
-                cmd = config.base + '/modules/rds/rds_tasks.sh --apply-maintenance --resource-instance %s %s' %(arn, myargs)
-            else:
-                cmd = config.base + '/modules/rds/rds_tasks.sh --apply-maintenance %s' %(myargs)
-            os.system(cmd)
-'''                
-        

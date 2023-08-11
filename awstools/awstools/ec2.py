@@ -27,11 +27,12 @@ def ec2(ctx, menu):
 @click.argument('cache_type', required=False, default='all', type=click.Choice(['all', 'instances', 'public_ips', 'regions', 'auto']))
 def refresh(ctx, cache_type):
     aws_profile_name = ctx.obj['PROFILE']
-    _refresh(cache_type, aws_profile_name)
+    aws_region = get_region(ctx, aws_profile_name)
+    _refresh(cache_type, aws_profile_name, aws_region)
 
-def _refresh(cache_type, aws_profile_name):
+def _refresh(cache_type, aws_profile_name, aws_region):
     try:    
-        EC2 = get_EC2client(aws_profile_name, auto_refresh=False)
+        EC2 = get_EC2client(aws_profile_name, aws_region, auto_refresh=False)
         if cache_type == 'all':
             EC2.refresh(aws_profile_name)
         if cache_type == 'instances':
@@ -51,6 +52,7 @@ def _refresh(cache_type, aws_profile_name):
 @click.argument('target', required=False, default='all', type=click.Choice(['all', 'instances', 'public_ips', 'regions', 'orphaned_ebs', 'orphaned_snaps']))
 def show(ctx, target):
     aws_profile_name = ctx.obj['PROFILE']
+    aws_region = get_region(ctx, aws_profile_name)
     if ctx.obj["MENU"] and target == "instances":
         CACHED_INSTANCES = {}
         DATA = []
@@ -59,7 +61,7 @@ def show(ctx, target):
                 continue
             if PROFILE == aws_profile_name:
                 EC2 = get_EC2client(aws_profile_name, auto_refresh=False, cache_only=True)
-                RES = EC2.show_cache(aws_profile_name, 'cached_instances', display=False)
+                RES = EC2.show_cache(aws_profile_name, 'cached_instances', aws_region, display=False)
                 for data in RES:
                     NAME = data["PrivateDnsName"].ljust(50)
                     IP = data["PrivateIpAddress"]
@@ -87,17 +89,17 @@ def show(ctx, target):
             ID = CHOICE[0].split("\t")[0]
             Log.info(f"you chose to work with {ID} which will be implemented later...")
     else:
-        _show(target, aws_profile_name, display=True)
+        _show(target, aws_profile_name, aws_region, display=True)
 
-def _show(target, aws_profile_name, display):
+def _show(target, aws_profile_name, aws_region, display):
     try:
         EC2 = get_EC2client(aws_profile_name, auto_refresh=False, cache_only=True)
         if target == 'instances' or target == 'all':
-            EC2.show_cache(aws_profile_name, 'cached_instances', display)
+            EC2.show_cache(aws_profile_name, 'cached_instances', aws_region, display)
         if target == 'public_ips' or target == 'all':
-            EC2.show_cache(aws_profile_name, 'cached_public_ips', display)
+            EC2.show_cache(aws_profile_name, 'cached_public_ips', aws_region, display)
         if target == 'regions' or target == 'all':
-            EC2.show_cache(aws_profile_name, 'cached_regions', display)
+            EC2.show_cache(aws_profile_name, 'cached_regions', aws_region, display)
         if target == 'orphaned_ebs' or target == 'all':
             orphaned_ebs_volumes(aws_profile_name)
         if target == 'orphaned_snaps':
@@ -314,3 +316,9 @@ def save_results(data, csvfile):
         writer = csv.DictWriter(CSV, fieldnames=ROWS)
         writer.writeheader()
         writer.writerows(data)
+
+def get_region(ctx, aws_profile_name):
+    AWS_REGION = ctx.obj['REGION']
+    if not AWS_REGION:
+        AWS_REGION = S3.get_region_from_profile(aws_profile_name)
+    return AWS_REGION

@@ -36,8 +36,7 @@ class S3client():
     def create_bucket(self, bucket_name, aws_region):
         CLIENT = self.SESSION.client('s3')
         try:
-            #CLIENT.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': aws_region})
-            CLIENT.create_bucket(Bucket=bucket_name)
+            CLIENT.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': aws_region})
             return True
         except ClientError:
             Log.warn('insufficient permissions to create a bucket')
@@ -373,7 +372,9 @@ class S3client():
                 'name': BUCKET
             }
         BUCKETS_CACHE['last_cache_update'] = TIMESTAMP
-        self.CONFIGSTORE.update_metadata(BUCKETS_CACHE, 'cached_buckets', aws_profile_name, True)
+        DICT = {}
+        DICT[self.AWS_REGION] = BUCKETS_CACHE
+        self.CONFIGSTORE.update_metadata(DICT, 'cached_buckets', aws_profile_name, False)
 
     def get_cache(self, type, aws_profile_name, subtype=None):
         if aws_profile_name not in self.CONFIGSTORE.PROFILES:
@@ -391,7 +392,7 @@ class S3client():
     def show_cache(self, type, aws_profile_name):
         self.auto_refresh(aws_profile_name)
         DATA = []
-        for ENTRY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type]:
+        for ENTRY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][self.AWS_REGION]:
             DATA_ENTRY = {}
             if ENTRY != 'last_cache_update' and ENTRY != 'lastmod' and ENTRY != 'total':
                 DATA_ENTRY['Name'] = ENTRY

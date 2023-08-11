@@ -317,6 +317,54 @@ Commands:
   show  retrieve information from Jenkins
 ```
 
+## jenkins auth setup
+```
+$ goat jenkins auth setup
+WARN: Encryption key not detected. Generating a new one
+Enter jenkins username [stacksc] : stacksc
+Enter jenkins password: *********
+Paste jenkins full URL here: **********************
+INFO: access token expired or not found. Generating a new one
+INFO: jenkins settings saved succesfully
+```
+
+## post auth cache
+```
+$ goat configs show jenkinstools
+{
+    "default": {
+        "config": {
+            "username": "stacksc",
+            "password": "******************",
+            "access_token": {
+                "token": "******************",
+                "timestamp": 1691719300.347849
+            },
+            "crumb_token": {
+                "crumb": "Jenkins-Crumb:7c9f5fecf82a11ff98ab8f5c158ab5a52098e83c6e9cb4408b2ddfc1ffcdfe23",
+                "timestamp": 1691719300.532575
+            }
+        },
+        "metadata": {
+            "name": "default",
+            "created_by": "stacksc",
+            "created_at": "1691719288.30942",
+            "JENKINS_URL": "http://localhost:8080"
+        }
+    },
+    "latest": {
+        "config": {
+            "role": "default"
+        },
+        "metadata": {
+            "name": "latest",
+            "created_by": "stacksc",
+            "created_at": "1691719300.539011"
+        }
+    }
+}
+```
+
 ## Jenkins Show
 ```
 goat jenkins show -h

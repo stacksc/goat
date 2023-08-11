@@ -2,7 +2,7 @@
 import sys, click
 from toolbox.logger import Log
 from .s3 import s3
-from .iam import iam, iam_ingc
+from .iam import iam
 from .ec2 import ec2
 from .rds import rds
 from .awscli_wrapper import cli
@@ -20,10 +20,6 @@ MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.U
 def CLI(ctx, whoami, aws_profile_name):
     ctx.ensure_object(dict)
     ctx.obj['PROFILE'] = aws_profile_name
-    if whoami:
-        if misc.detect_environment() == 'gc-prod':
-            iam_ingc.get_latest_profile_data(ctx)
-        sys.exit(0)
     Log.setup('awstools', int(debug))
     pass
     

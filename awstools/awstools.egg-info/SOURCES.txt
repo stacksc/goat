@@ -8,7 +8,6 @@ awstools/ec2.py
 awstools/ec2client.py
 awstools/get_accounts.py
 awstools/iam.py
-awstools/iam_ingc.py
 awstools/iam_nongc.py
 awstools/rds.py
 awstools/rdsclient.py

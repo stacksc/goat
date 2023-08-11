@@ -20,7 +20,7 @@ class Commands():
         self.MAP.update({NAME: globals()[MODULE_NAME].main})
 
 def init_parsers(COMMANDS):
-    LINE='VMware CLI client for Slack'
+    LINE='CLI client for Slack'
     PARSER = argparse.ArgumentParser(
         description=LINE, 
         allow_abbrev=True, 

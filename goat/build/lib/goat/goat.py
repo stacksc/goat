@@ -35,6 +35,7 @@ def cli(ctx, version, manuals):
 
 def goat_version():
     from importlib_metadata import version
+    RES = draw_title()
     print('GOAT:\t\t\t' + version('goat'))
     print('- awstools:\t\t' + version('awstools'))
     print('- configstore:\t\t' + version('configstore'))
@@ -43,6 +44,7 @@ def goat_version():
     print('- ocitools:\t\t' + version('ocitools'))
     print('- slacktools:\t\t' + version('slacktools'))
     print('- toolbox:\t\t' + version('toolbox'))
+    print(RES)
     sys.exit(0)
 
 cli.add_command(configs, name='configs')
@@ -54,4 +56,3 @@ cli.add_command(slack)
 
 if __name__ == "__main__":
     cli(ctx)
-    print(ctx)

@@ -19,12 +19,12 @@ centered = operator.methodcaller('center', SCREEN_WIDTH)
 
 def draw_title():
     b = centered('''
-(_(
-/_/'_____/)
-"  |      |
-   |""""""|
+        (_(
+        /_/'_____/)
+        "  |      |
+           |""""""|
     ''')
-    return (''.join(b))
+    return(''.join(b))
 
 def convert(list):
     # convert list to tuple

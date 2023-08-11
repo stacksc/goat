@@ -2,7 +2,6 @@ import click, os, subprocess, tempfile
 from toolbox.logger import Log
 from .aws_config import AWSconfig
 from . import iam_nongc
-from . import iam_ingc
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width, detect_environment
 
@@ -34,26 +33,10 @@ class AWScli():
         self.AWS_REGION = aws_region
         self.CONFIG = AWSconfig()
         self.CONFIG.unset_aws_profile()
-        if 'prod' in self.INB:
-            MINS = iam_ingc.check_time(self.AWS_PROFILE)
-            if MINS >= 30 or MINS is False:
-                IDP_URL = CONFIG.get_config('IDP_URL', 'IDP')
-                RESULT, self.AWS_PROFILE = iam_ingc._authenticate(IDP_URL, aws_region=self.AWS_REGION, aws_output='json', aws_profile_name=self.AWS_PROFILE, menu=False)
-                if RESULT is not None:
-                    ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_access_key_id', 'string', 'aws_access_key_id', self.AWS_PROFILE)
-                    SECRET_ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_secret_access_key', 'string', 'aws_secret_access_key', self.AWS_PROFILE)
-                    TOKEN = self.CONFIG.get_from_config('creds', 'aws_session_token', 'string', 'aws_session_token', self.AWS_PROFILE)
-                    self.SESSION = iam_ingc.get_role_session(ACCESS_KEY, SECRET_ACCESS_KEY, TOKEN)
-            else:
-                ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_access_key_id', 'string', 'aws_access_key_id', self.AWS_PROFILE)
-                SECRET_ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_secret_access_key', 'string', 'aws_secret_access_key', self.AWS_PROFILE)
-                TOKEN = self.CONFIG.get_from_config('creds', 'aws_session_token', 'string', 'aws_session_token', self.AWS_PROFILE)
-                self.SESSION = iam_ingc.get_role_session(ACCESS_KEY, SECRET_ACCESS_KEY, TOKEN)
+        if self.CONFIG.profile_or_role(aws_profile_name):
+            self.SESSION = iam_nongc._authenticate(aws_profile_name, aws_region)
         else:
-            if self.CONFIG.profile_or_role(aws_profile_name):
-                self.SESSION = iam_nongc._authenticate(aws_profile_name, aws_region)
-            else:
-                self.SESSION = iam_nongc._assume_role(aws_profile_name=aws_profile_name)[0]
+            self.SESSION = iam_nongc._assume_role(aws_profile_name=aws_profile_name)[0]
 
     def get_session_creds(self):
         CREDS = self.SESSION.get_credentials()
@@ -77,19 +60,8 @@ class AWScli():
         return RESULT
 
 def get_AWScli(aws_profile_name, aws_region='us-gov-west-1'):
-    try:
-        DOMAIN = os.getenv('USER').split('@')[1]
-        ENVS = {
-            "admins.vmwarefed.com": 'gc-prod',
-            "vmwarefedstg.com": 'gc-stg',
-            "vmware.smil.mil": 'ohio-sim'
-        }
-        inb = True
-        RESULT = ENVS[DOMAIN]
-        return AWScli(aws_profile_name, inb, aws_region)
-    except:
-        inb = False
-        return AWScli(aws_profile_name, inb, aws_region)
+    inb = False
+    return AWScli(aws_profile_name, inb, aws_region)
 
 def run_command(command):
     TEMP = tempfile.NamedTemporaryFile(delete=False)

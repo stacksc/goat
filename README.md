@@ -58,6 +58,11 @@ GOAT:			1.0.0
 - ocitools:		0.0.3
 - slacktools:		1.0.0
 - toolbox:		1.0.0
+
+        (_(
+        /_/'_____/)
+        "  |      |
+           |""""""|
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -231,9 +236,9 @@ Total reclaimed space: 1.317GB
  => [27/48] RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3                                                                                                                 0.2s
  => [28/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && touch /home/stacksc/.gnupg/gpg-agent.conf &&     chmod 700 -R /home/stacksc/.gnupg &&     chown -R  0.2s
  => [29/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "/usr/bin/python3 -m pip install click-man bs4 importlib_resources gnureadlin  5.7s
- => [30/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "git config --global user.email centerupt@gmail.com"                            0.2s
+ => [30/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "git config --global user.email centerupt@gmail.com"                           0.2s
  => [31/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "git config --global user.name stacksc"                                        0.2s
- => [32/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "cd /home/stacksc/git && git clone git@gitlab.eng.vmware.com:govcloud-ops/go  24.9s
+ => [32/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "cd /home/stacksc/git && git clone git@github.com/stacksc/goat                 4.9s
  => [33/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "cd /home/stacksc/git/govcloud-devops-python && bash ./bulk.sh --action rebu  68.4s
  => [34/48] RUN cp /var/tmp/legacy/vmcgov/load_prompt.sh /home/stacksc/                                                                                                         0.2s
  => [35/48] RUN cp /var/tmp/legacy/.bashrc /home/stacksc/                                                                                                                       0.3s

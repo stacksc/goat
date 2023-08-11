@@ -143,6 +143,41 @@ def getOtherCreds(title='default'):
     # return credentials
     return USER, PASS
 
+def getFullUrl(title='default'):
+
+    hidden = [True]  # Nonlocal
+    bindings = KeyBindings()
+
+    signal.signal(signal.SIGTSTP, signal.SIG_IGN)
+    stdin = sys.__stdin__.fileno()
+    stream = sys.__stderr__.fileno()
+
+    old = tty.tcgetattr(stdin)
+
+    @bindings.add("c-t")
+    def _(event):
+        "When ControlT has been pressed, toggle visibility."
+        hidden[0] = not hidden[0]
+
+    URL = prompt(
+        "Paste " + title + " full URL here: ", is_password=Condition(lambda: hidden[0]), key_bindings=bindings
+    )
+
+    # restore terminal settings
+    tty.tcsetattr(stdin, tty.TCSAFLUSH, old)
+    # enable (^Z) SIGTSTP
+    signal.signal(signal.SIGTSTP, signal.SIG_DFL)
+
+    # return URL
+    return remove_lead_and_trail_slash(URL)
+
+def remove_lead_and_trail_slash(s):
+    if s.startswith('/'):
+        s = s[1:]
+    if s.endswith('/'):
+        s = s[:-1]
+    return s
+
 def getOtherToken(title='default'):
 
     hidden = [True]  # Nonlocal

@@ -4,7 +4,7 @@ from . import auth
 from slack_sdk.errors import SlackApiError
 from toolbox.logger import Log
 
-help = "manage channels on VMware Slack"
+help = "manage channels on Slack"
 
 def setup_args(subparser):
     subparser.add_argument(

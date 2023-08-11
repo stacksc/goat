@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# this is a test
+#### INFO: this needs work
+#### INFO: meant to help prepare our docker image, but needs some attention
 
 GREEN="\\033[1;32m"
 WHITE="\\033[1;97m"
@@ -21,10 +22,6 @@ BASE=$(dirname ${MYDIR})
 ERROR=0
 DATE=$(date +'%s')
 ENV=$(find ${HOME} -maxdepth 1 -name ".env" -print 2>/dev/null)
-JIRAURL1="https://servicedesk.eng.vmware.com"
-JIRAURL2="https://jira.eng.vmware.com"
-JIRAURL3="https://servicedesk.vmwarefed.com"
-JIRAURL4="https://servicedesk.vmwarefedstg.com"
 qcnt=0
 
 pushd $MYDIR >/dev/null
@@ -148,14 +145,6 @@ function get_sso() {
 }
 
 chk_os;
-staging=$(whoami | grep "vmwarefedstg" >/dev/null 2>&1; echo $?)
-prod=$(whoami | grep "vmwarefed" >/dev/null 2>&1; echo $?)
-
-if [[ $staging -eq 0 ]] || [[ $prod -eq 0 ]];
-then
-  echo "INFO: not able to prep for docker build in production"
-  exit 1
-fi
 
 trap 'trap_exit; \
       exit 1' 1 2 3 15
@@ -252,10 +241,6 @@ fi
 displayDetails;
 
 cat << EOF > $MYDIR/.env
-JIRAURL1="${JIRAURL1}"
-JIRAURL2="${JIRAURL2}"
-JIRAURL3="${JIRAURL3}"
-JIRAURL4="${JIRAURL4}"
 REGION="${REGION}"
 GITDIR="${GITDIR}"
 AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
@@ -265,7 +250,6 @@ USER="${USER}"
 SSO_PASS="${SSO_PASS}"
 SSH_PUB_KEY="${SSH_PUB_KEY}"
 SSH_PRV_KEY="${SSH_PRV_KEY}"
-JIRA_API_TOKEN="${SSO_PASS}"
 LOGNAME="${USER}"
 EOF
 
@@ -283,7 +267,7 @@ echo
 echo
 echo "INFO: login to goat now with: docker exec -it \$(docker ps -a| grep goat | awk '{print \$1}') bash -l"
 echo "INFO: copying .env to ${HOME} and out of the main repository"
-cat ${MYDIR}/.env | grep -vE "SSO_PASS|JIRA_API_TOKEN" > ${HOME}/.env 2>/dev/null
+cat ${MYDIR}/.env > ${HOME}/.env 2>/dev/null
 [[ -f .env ]] && rm -f .env >/dev/null 2>&1
 echo "INFO: goat docker build is complete!"
 echo

@@ -3,7 +3,7 @@
 from . import auth, slack_converter
 from toolbox.logger import Log
 
-help = "post a meessage to VMware Slack"
+help = "post a meessage to Slack"
 
 def setup_args(subparser):
     subparser.add_argument(

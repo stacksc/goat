@@ -4,7 +4,7 @@ from . import auth, slack_converter, misc
 from toolbox.logger import Log
 from slack_sdk import errors
 
-help = "remove a reaction from a meessage in VMware Slack"
+help = "remove a reaction from a meessage in Slack"
 
 def setup_args(subparser):
     subparser.add_argument(

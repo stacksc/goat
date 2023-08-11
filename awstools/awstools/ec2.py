@@ -168,17 +168,7 @@ def delete_orphaned_ebs_volumes(ctx, volume, snapshot):
         orphaned_ebs_snap_report(aws_profile_name, delete=True)
 
 def get_EC2client(aws_profile_name, aws_region='us-gov-west-1', auto_refresh=True, cache_only=False):
-    try:
-        DOMAIN = os.getenv('USER').split('@')[1]
-        ENVS = {
-            "admins.vmwarefed.com": 'gc-prod',
-            "vmwarefedstg.com": 'gc-stg',
-            "vmware.smil.mil": 'ohio-sim'
-        }
-        RESULT = ENVS[DOMAIN]
-        CLIENT = EC2client(aws_profile_name, aws_region, True, cache_only)
-    except:
-        CLIENT = EC2client(aws_profile_name, aws_region, False, cache_only)
+    CLIENT = EC2client(aws_profile_name, aws_region, False, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(aws_profile_name)
     return CLIENT

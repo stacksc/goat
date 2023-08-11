@@ -3,7 +3,6 @@ from toolbox.misc import detect_environment
 from configstore.configstore import Config
 from .aws_config import AWSconfig
 from . import iam_nongc
-from . import iam_ingc
 import datetime
 from tabulate import tabulate
 
@@ -29,23 +28,6 @@ class EC2client():
                 self.SESSION = iam_nongc._authenticate(self.AWS_PROFILE, self.AWS_REGION)
             else:
                 self.SESSION = iam_nongc._assume_role(aws_profile_name=self.AWS_PROFILE)[0]
-        else:    
-            MINS = iam_ingc.check_time(self.AWS_PROFILE)
-            if MINS >= 60 or MINS is False:
-                Log.info(f"reauthentication running against IDP due to session timeout")
-                IDP_URL = CONFIGSTORE.get_config('IDP_URL', 'IDP')
-                RESULT, self.AWS_PROFILE = iam_ingc._authenticate(IDP_URL, aws_region=self.AWS_REGION, aws_output='json', aws_profile_name=self.AWS_PROFILE, menu=False)
-                if RESULT is not None:
-                    ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_access_key_id', 'string', 'aws_access_key_id', self.AWS_PROFILE)
-                    SECRET_ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_secret_access_key', 'string', 'aws_secret_access_key', self.AWS_PROFILE)
-                    TOKEN = self.CONFIG.get_from_config('creds', 'aws_session_token', 'string', 'aws_session_token', self.AWS_PROFILE)
-                    self.SESSION = iam_ingc.get_role_session(ACCESS_KEY, SECRET_ACCESS_KEY, TOKEN)
-            else:
-                Log.info(f"session held with {MINS} minutes since authentication")
-                ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_access_key_id', 'string', 'aws_access_key_id', self.AWS_PROFILE)
-                SECRET_ACCESS_KEY = self.CONFIG.get_from_config('creds', 'aws_secret_access_key', 'string', 'aws_secret_access_key', self.AWS_PROFILE)
-                TOKEN = self.CONFIG.get_from_config('creds', 'aws_session_token', 'string', 'aws_session_token', self.AWS_PROFILE)
-                self.SESSION = iam_ingc.get_role_session(ACCESS_KEY, SECRET_ACCESS_KEY, TOKEN)
         return self.SESSION
 
     def auto_refresh(self, aws_profile_name='default'):

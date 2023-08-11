@@ -6,7 +6,7 @@ from toolbox.logger import Log
 from toolbox.jsontools import reduce_json
 from toolbox import curl
 from configstore.configstore import Config
-from toolbox.getpass import getOtherCreds
+from toolbox.getpass import getOtherCreds, getFullUrl
 import getpass, datetime, os, subprocess, json, base64, requests
 from datetime import timedelta
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -342,7 +342,7 @@ class JenkinsClient:
         CONFIG = Config('jenkinstools')
         jenkins_url = CONFIG.get_metadata('JENKINS_URL', user_profile)
         if jenkins_url is None:
-            jenkins_url = getpass.getpass(f"Please provide full URL to {user_profile} JENKINS: ")
+            jenkins_url = getFullUrl('jenkins')
         CONFIG.update_metadata(jenkins_url, 'JENKINS_URL', user_profile)
         return jenkins_url
 

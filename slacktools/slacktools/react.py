@@ -4,7 +4,7 @@ from . import auth, slack_converter, misc
 from slack_sdk import errors
 from toolbox.logger import Log
 
-help = "react to a meessage to VMware Slack"
+help = "react to a meessage to Slack"
 
 def setup_args(subparser):
     subparser.add_argument(

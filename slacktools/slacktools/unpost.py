@@ -3,7 +3,7 @@
 from . import auth, slack_converter, misc
 from toolbox.logger import Log
 
-help = "delete a meessage from VMware Slack"
+help = "delete a meessage from Slack"
 
 def setup_args(subparser):
     subparser.add_argument(

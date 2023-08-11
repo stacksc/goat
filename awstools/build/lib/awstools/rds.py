@@ -81,17 +81,7 @@ def show_as_table(source_data, name=None):
         Log.info(f"{name}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
 
 def get_RDSclient(aws_profile_name, aws_region='us-gov-west-1', auto_refresh=True, cache_only=False):
-    try:
-        DOMAIN = os.getenv('USER').split('@')[1]
-        ENVS = {
-            "admins.vmwarefed.com": 'gc-prod',
-            "vmwarefedstg.com": 'gc-stg',
-            "vmware.smil.mil": 'ohio-sim'
-        }
-        RESULT = ENVS[DOMAIN]
-        CLIENT = RDSclient(aws_profile_name, aws_region, True, cache_only)
-    except:
-        CLIENT = RDSclient(aws_profile_name, aws_region, False, cache_only)
+    CLIENT = RDSclient(aws_profile_name, aws_region, False, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(aws_profile_name)
     return CLIENT

@@ -74,7 +74,7 @@ def show(ctx, target):
             Log.info(f"you chose to SSH to {IP} which will be implemented later...")
     elif ctx.obj["MENU"] and target == "orphaned_ebs":
         INPUT = 'ORPHANED EBS VOLUMES'
-        EC2 = EC2client(aws_profile_name, aws_region='us-gov-west-1', in_boundary=False, cache_only=False)
+        EC2 = EC2client(aws_profile_name, aws_region='us-east-1', in_boundary=False, cache_only=False)
         CLIENT = EC2.SESSION.client('ec2')
         VOLUMES = CLIENT.describe_volumes()
         DATA = []
@@ -107,7 +107,7 @@ def _show(target, aws_profile_name, display):
         return False
 
 def orphaned_ebs_volumes(aws_profile_name):
-    EC2 = EC2client(aws_profile_name, aws_region='us-gov-west-1', in_boundary=False, cache_only=False)
+    EC2 = EC2client(aws_profile_name, aws_region='us-east-1', in_boundary=False, cache_only=False)
     CLIENT = EC2.SESSION.client('ec2')
     VOLUMES = CLIENT.describe_volumes()
     ORPHANED_VOLUMES = {'VolumeId': [], 'VolumeSize': [], 'VolumeType': [], 'State': [], 'CreateTime': []}
@@ -132,7 +132,7 @@ def delete():
 @click.pass_context
 def delete_orphaned_ebs_volumes(ctx, volume, snapshot):
     aws_profile_name = ctx.obj['PROFILE']
-    EC2 = EC2client(aws_profile_name, aws_region='us-gov-west-1', in_boundary=False, cache_only=False)
+    EC2 = EC2client(aws_profile_name, aws_region='us-east-1', in_boundary=False, cache_only=False)
     CLIENT = EC2.SESSION.client('ec2')
     VOLUMES = CLIENT.describe_volumes()
     if ctx.obj["MENU"] and volume is True:
@@ -167,7 +167,7 @@ def delete_orphaned_ebs_volumes(ctx, volume, snapshot):
     if snapshot is True:
         orphaned_ebs_snap_report(aws_profile_name, delete=True)
 
-def get_EC2client(aws_profile_name, aws_region='us-gov-west-1', auto_refresh=True, cache_only=False):
+def get_EC2client(aws_profile_name, aws_region='us-east-1', auto_refresh=True, cache_only=False):
     CLIENT = EC2client(aws_profile_name, aws_region, False, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(aws_profile_name)
@@ -198,7 +198,7 @@ def orphaned_ebs_snap_report(aws_profile_name, delete=False):
     CSV = '/tmp/' + aws_profile_name + '_snapshots.csv'
     IGNORE_DAYS = 0
     MYDATA = []
-    EC2 = EC2client(aws_profile_name, aws_region='us-gov-west-1', in_boundary=False, cache_only=False)
+    EC2 = EC2client(aws_profile_name, aws_region='us-east-1', in_boundary=False, cache_only=False)
     EC2 = EC2.SESSION.client('ec2')
     SNAPSHOTS = EC2.describe_snapshots(OwnerIds=['self']).get('Snapshots', [])
     SNAPSHOTS = []

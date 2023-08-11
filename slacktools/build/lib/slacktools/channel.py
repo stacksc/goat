@@ -3,6 +3,7 @@
 from . import auth
 from slack_sdk.errors import SlackApiError
 from toolbox.logger import Log
+from nested_lookup import nested_lookup
 
 help = "manage channels on Slack"
 
@@ -75,12 +76,13 @@ def channel_create(channel_name, private, user_profile='default'):
             name = channel_name,
             is_private = private
         )
-        Log.info(f"Channel created: {RESPONSE['id']}")
+        NAME = RESPONSE['channel']['name']
+        Log.info(f"created channel {NAME}")
         return RESPONSE
     except SlackApiError:
         Log.critical("Your account/token doesn't have the permission to do that")
     except:
-        Log.critical("Failed to archive channel")
+        Log.critical("Failed to create channel")
 
 def channel_user_add(channel_id, user_name, user_profile='default'):
     SLACK_CLIENT = auth.get_slack_session(user_profile)
@@ -89,12 +91,13 @@ def channel_user_add(channel_id, user_name, user_profile='default'):
             channel = channel_id,
             users = user_name
         )
-        Log.info(f"Invited user to channel {RESPONSE['name']}")
+        NAME = RESPONSE['channel']['name']
+        Log.info(f"Invited user to channel {NAME}")
         return RESPONSE
     except SlackApiError:
         Log.critical("Your account/token doesn't have the permission to do that")
     except:
-        Log.critical("Failed to archive channel")
+        Log.critical("Failed to add user to channel") 
 
 def channel_user_delete(channel_id, user_name, user_profile='default'):
     SLACK_CLIENT = auth.get_slack_session(user_profile)
@@ -103,7 +106,8 @@ def channel_user_delete(channel_id, user_name, user_profile='default'):
             channel = channel_id,
             user = user_name
         )
-        Log.info(f"Kicked user out of channel {RESPONSE['name']}")
+        NAME = RESPONSE['channel']['name']
+        Log.info(f"Kicked user out of channel {NAME}")
         return RESPONSE
     except:
         Log.critical("Failed to kick user")
@@ -112,7 +116,8 @@ def channel_archive(channel_id, user_profile='default'):
     SLACK_CLIENT = auth.get_slack_session(user_profile)
     try:
         RESPONSE = SLACK_CLIENT.conversations_archive(channel = channel_id)
-        Log.info(f"Archived channel {RESPONSE['name']}")
+        NAME = RESPONSE['channel']['name']
+        Log.info(f"Archived channel {NAME}")
         return RESPONSE
     except SlackApiError:
         Log.critical("Your account/token doesn't have the permission to do that")
@@ -123,12 +128,13 @@ def channel_unarchive(channel_id, user_profile='default'):
     SLACK_CLIENT = auth.get_slack_session(user_profile)
     try:
         RESPONSE = SLACK_CLIENT.conversations_unarchive(channel = channel_id)
-        Log.info(f"Un-archived channel {RESPONSE['name']}")
+        NAME = RESPONSE['channel']['name']
+        Log.info(f"Un-archived channel {NAME}")
         return RESPONSE
     except SlackApiError:
         Log.critical("Your account/token doesn't have the permission to do that")
     except:
-        Log.critical("Failed to archive channel")
+        Log.critical("Failed to unarchive channel")
 
 def channel_set_topic(channel_id, channel_topic, user_profile='default'):
     SLACK_CLIENT = auth.get_slack_session(user_profile)
@@ -137,12 +143,13 @@ def channel_set_topic(channel_id, channel_topic, user_profile='default'):
             channel = channel_id,
             topic = channel_topic
         )
-        Log.info(f"Set the topic on channel {RESPONSE['name']}")
+        NAME = RESPONSE['channel']['name']
+        Log.info(f"channel topic set to: {channel_topic} in {NAME}")
         return RESPONSE
     except SlackApiError:
         Log.critical("Your account/token doesn't have the permission to do that")
     except:
-        Log.critical("Failed to archive channel")
+        Log.critical("Failed to set the channel topic")
 
 if __name__ == "__main__":
     main()

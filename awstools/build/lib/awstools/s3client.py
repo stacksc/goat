@@ -36,7 +36,8 @@ class S3client():
     def create_bucket(self, bucket_name, aws_region):
         CLIENT = self.SESSION.client('s3')
         try:
-            CLIENT.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': aws_region})
+            #CLIENT.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': aws_region})
+            CLIENT.create_bucket(Bucket=bucket_name)
             return True
         except ClientError:
             Log.warn('insufficient permissions to create a bucket')

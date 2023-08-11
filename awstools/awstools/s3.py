@@ -29,7 +29,7 @@ def create(ctx, bucket_name):
 
 def _create(aws_profile_name, aws_region_name, bucket_name):
     S3 = get_S3client(aws_profile_name, aws_region_name)
-    RESULT = S3.create_bucket(bucket_name)
+    RESULT = S3.create_bucket(bucket_name, aws_region_name)
     if RESULT:
         Log.info(f"bucket: {bucket_name} created in region: {aws_region_name} successfully.")
         return RESULT
@@ -52,6 +52,7 @@ def download(ctx, source, destination):
                     continue
                 if PROFILE == aws_profile_name:
                     CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                    CACHED_BUCKETS.pop('last_cache_update', None)
             INPUT = f'Downloads => {aws_profile_name}'
             CHOICE = runMenu(CACHED_BUCKETS, INPUT)
             if CHOICE:
@@ -70,7 +71,7 @@ def download(ctx, source, destination):
                             CHOICE = runMenu(CACHED_CONTENTS, INPUT)
                             if CHOICE:
                                 CHOICE = ''.join(CHOICE)
-                                if _download(aws_profile_name, source, destination, CHOICE):
+                                if _download(aws_profile_name, aws_region_name, source, destination, CHOICE):
                                     Log.info(f"downloading {CHOICE} from bucket {source} completed")
                                 else:
                                     Log.critical(f"failed to download {CHOICE} from s3 bucket {source} to {destination}")
@@ -92,7 +93,7 @@ def download(ctx, source, destination):
                         CHOICE = runMenu(CACHED_CONTENTS, INPUT)
                         if CHOICE:
                             CHOICE = ''.join(CHOICE)
-                            if _download(aws_profile_name, source, destination, CHOICE):
+                            if _download(aws_profile_name, aws_region_name, source, destination, CHOICE):
                                 Log.info(f"downloading {CHOICE} from bucket {source} completed")
                             else:
                                 Log.critical(f"failed to download {CHOICE} from s3 bucket {source} to {destination}")
@@ -114,7 +115,7 @@ def download(ctx, source, destination):
                     CHOICE = runMenu(CACHED_CONTENTS, INPUT)
                     if CHOICE:
                         CHOICE = ''.join(CHOICE)
-                        if _download(aws_profile_name, source, destination, CHOICE):
+                        if _download(aws_profile_name, aws_region_name, source, destination, CHOICE):
                             Log.info(f"downloading {CHOICE} from bucket {source} completed")
                         else:
                             Log.critical(f"failed to download {CHOICE} from s3 bucket {source} to {destination}")
@@ -142,6 +143,7 @@ def upload(ctx, source, destination):
         for PROFILE in CONFIG.PROFILES:
             if PROFILE == aws_profile_name:
                 CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                CACHED_BUCKETS.pop('last_cache_update', None)
         INPUT = f'Uploads => {aws_profile_name}'
         CHOICE = runMenu(CACHED_BUCKETS, INPUT)
         if CHOICE:
@@ -150,7 +152,7 @@ def upload(ctx, source, destination):
                 if aws_profile_name in ignore:
                     continue
                 if destination in CONFIG.get_metadata('cached_buckets', aws_profile_name):
-                    if _upload(aws_profile_name, source, destination):
+                    if _upload(aws_profile_name, aws_region_name, source, destination):
                         Log.info(f"uploading local files from {source} to s3 bucket {destination} completed")
                     else:
                         Log.critical(f"failed to upload local files from {source} to s3 bucket {destination}")
@@ -161,7 +163,7 @@ def upload(ctx, source, destination):
                 continue
             if destination in CONFIG.get_metadata('cached_buckets', PROFILE):
                 aws_profile_name = PROFILE
-                if _upload(aws_profile_name, source, destination):
+                if _upload(aws_profile_name, aws_region_name, source, destination):
                     Log.info(f"uploading local files from {source} to s3 bucket {destination} completed")
                 else:
                     Log.critical(f"failed to upload local files from {source} to s3 bucket {destination}")
@@ -189,6 +191,7 @@ def delete(ctx, bucket):
                     continue
                 if PROFILE == aws_profile_name:
                     CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                    CACHED_BUCKETS.pop('last_cache_update', None)
             INPUT = f'Deletion => {aws_profile_name}'
             CHOICE = runMenu(CACHED_BUCKETS, INPUT)
             if CHOICE:
@@ -198,7 +201,7 @@ def delete(ctx, bucket):
                         continue
                     if bucket in CONFIG.get_metadata('cached_buckets', PROFILE):
                         aws_profile_name = PROFILE
-                        _delete(bucket, aws_profile_name)
+                        _delete(bucket, aws_profile_name, aws_region_name)
                         break
         else:
             for PROFILE in CONFIG.PROFILES:
@@ -206,7 +209,7 @@ def delete(ctx, bucket):
                     continue
                 if bucket in CONFIG.get_metadata('cached_buckets', PROFILE):
                     aws_profile_name = PROFILE
-                    _delete(bucket, aws_profile_name)
+                    _delete(bucket, aws_profile_name, aws_region_name)
                     break
     else:
         for PROFILE in CONFIG.PROFILES:
@@ -214,12 +217,12 @@ def delete(ctx, bucket):
                 continue
             if bucket in CONFIG.get_metadata('cached_buckets', PROFILE):
                 aws_profile_name = PROFILE
-                _delete(bucket, aws_profile_name)
+                _delete(bucket, aws_profile_name, aws_region_name)
                 break
 
 def _delete(bucket, aws_profile_name, aws_region_name):
     S3 = get_S3client(aws_profile_name, aws_region_name)
-    RESULT = S3.delete_bucket(bucket, aws_profile_name)
+    RESULT = S3.delete_bucket(bucket, aws_profile_name, aws_region_name)
     if RESULT:
         Log.info(f"bucket: {bucket} deleted in region: {aws_region_name} successfully.")
         return True
@@ -256,6 +259,7 @@ def show(ctx, bucket):
                 if PROFILE == aws_profile_name:
                     try:
                         CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                        CACHED_BUCKETS.pop('last_cache_update', None)
                     except:
                         Log.critical(f"there are 0 cached buckets for {PROFILE}")
             INPUT = f'Bucket List => {aws_profile_name}'

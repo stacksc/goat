@@ -323,6 +323,10 @@ Commands:
 ```
 
 ### init slacktools
+* pre-requisites:
+ - slack bot and token
+   - users are responsible for getting the right privileges and access token for their respective workspace.
+   - slack permissions are out of scope for this document
 
 1. To use slacktools, you will be prompted for a slack bot token as in this example:
 ```

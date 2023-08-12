@@ -25,13 +25,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-GOAT ("goat") - a front-end application for the Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, & Azure). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br><br>
-The repository and code is for demonstration purposes at this time; this is only to showcase a basic application to common APIs.
+GOAT ("goat") - a front-end application for the Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, & Azure). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br>
 
-## cache
-1. to recreate your cache, you can remove all configs and keys from this directory: `~/goat`
-2. files will look like those listed below.
-3. if these files are removed, you will need to reauthenticate/setup each module.
+## cache data
+1. The cache is used to store credentials and configuration data per module.
+2. The .cfg files are encrypted with Fernet and only GOAT can access the keys.
+3. to recreate your cache, you can remove the configs and keys from this directory: `~/goat`
+4. files will look like those listed below.
+5. if these files are removed, you will need to reauthenticate/setup each module.
 
 ```
 $ find ~/goat -type f -name "*.key" -o -name "*.cfg"

@@ -58,7 +58,7 @@ $ find ~/goat -type f -name "*.key" -o -name "*.cfg"
 <!-- CURRENT USAGE -->
 ## Current Usage
 ```
-goat -h
+$ goat -h
 Usage: goat [OPTIONS] COMMAND [ARGS]...
 
   goat => GCP, OCI, & AWS TK

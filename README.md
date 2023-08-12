@@ -153,27 +153,17 @@ INFO: Caching facts complete
 ## AWS Authentication
 1. The following example demonstrates AWS authentication for the first time:
 ```
-$ goat aws -p default iam authenticate --region us-gov-west-1 --output json
-Please enter AWS_KEY_ID: AKIARO3EFWTTEEIKKCFH
+goat aws -p centerupt iam authenticate -r us-east-1 -o json
+Please enter AWS_KEY_ID: AKIAUMD5PPM4KSDFGOLR
 Please enter AWS_SECRET_ACCESS_KEY: ****************************************
 INFO: credentials saved successfully
 INFO: aws profile caching initialized
 INFO: caching s3 data...
 INFO: caching ec2 data...
 INFO: caching rds data...
-INFO: you can now use your new profile with 'aws --profile default
+INFO: you can now use your new profile with 'aws --profile centerupt
 ```
-2. The following example shows how to assume a role after authentication:
-```
-$ goat aws iam assume-role atlcs
-INFO: successfully assumed the role
-INFO: aws profile caching initialized
-INFO: caching s3 data...
-INFO: caching ec2 data...
-INFO: caching rds data...
-INFO: run source ~/goatrole.sh
-```
-3. Override the default region with: `goat aws -r {regionName}`; i.e. `goat aws -r us-west-1`
+2. Override the default region with: `goat aws -r {regionName}`; i.e. `goat aws -r us-west-1`
 
 ## Jenkins Tasks
 ```

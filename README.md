@@ -17,7 +17,8 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contacts">Contacts</a></li>
-    <li><a href="#cache_data">Cache</a></li>
+    <li><a href="#cache-data">Cache</a></li>
+    <li><a href="#current-usage">Usage</a></li>
     <li><a href="#mp4-and-image-collections">MP4 & Image Collections</a></li>
   </ol>
 </details>
@@ -53,6 +54,7 @@ $ find ~/goat -type f -name "*.key" -o -name "*.cfg"
 ./.refresh.cfg
 ```
 
+<!-- CURRENT USAGE -->
 ## Current Usage
 ```
 goat -h

@@ -322,6 +322,17 @@ Commands:
 
 ```
 
+### init slacktools
+
+1. To use slacktools, you will be prompted for a slack bot token as in this example:
+```
+goat slack post -m "Hello - this is a test from stacks" C05LXFYUNNM
+WARN: Encryption key not detected. Generating a new one
+INFO: Please enter the API token for Slack profile 'default'
+Paste Slack token here: *********************************************************
+INFO: Message sent at 1691849015.552989
+```
+
 ### post a message
 ```
 $ goat slack post -m "Hello - this is a test from stacks" C05LXFYUNNM

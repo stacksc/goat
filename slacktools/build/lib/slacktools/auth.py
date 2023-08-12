@@ -2,6 +2,7 @@ import os, getpass
 from toolbox.logger import Log
 from configstore.configstore import Config
 from slack_sdk import WebClient
+from toolbox.getpass import getOtherToken
 
 def get_slack_session(user_profile):
     try:
@@ -15,25 +16,6 @@ def get_slack_session(user_profile):
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
         Log.critical(MSG)
     return SLACK_SESSION
-    '''
-    if PROFILE is None or PROFILE['config'] == {}:
-        Log.debug(f"Profile '{profile_name}' not found; creating a new profile")
-        if jira_url is None:
-            Log.warn("Please run the auth command first and setup a jira connection profile")
-            sys.exit()
-        while auth_mode != 'pass' and auth_mode != 'token':
-            auth_mode = input('Please select authentication mode (pass/token): ')
-        CONFIGSET = {
-           'mode': auth_mode,
-            'url': jira_url
-        }
-        CONFIG.add_profile(profile_name)
-        CONFIG.set_config(CONFIGSET, profile_name=profile_name)
-        if auth_mode == "pass":
-            return setup_jira_pass_auth(profile_name)
-        if auth_mode == "token":
-            return setup_jira_token_auth(profile_name)
-    '''
 
 def get_slack_token(user_profile):
     CONFIG = Config('slacktools')
@@ -49,7 +31,7 @@ def get_slack_token(user_profile):
                     break
                 Log.debug("Slack token not present in environmental variables")
             Log.info(f"Please enter the API token for Slack profile '{user_profile}'")
-            SLACK_TOKEN = getpass.getpass(prompt="Slack token: ")
+            SLACK_TOKEN = getOtherToken("Slack")
             if SLACK_TOKEN != "":
                 break
         CONFIGSET = {

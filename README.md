@@ -173,7 +173,7 @@ INFO: caching ec2 data...
 INFO: caching rds data...
 INFO: run source ~/goatrole.sh
 ```
-3. Override the default region with: `goat aws -r {regionName}`
+3. Override the default region with: `goat aws -r {regionName}`; i.e. `goat aws -r us-west-1`
 
 ## Jenkins Tasks
 ```

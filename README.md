@@ -29,7 +29,7 @@ GOAT ("goat") - a front-end application for the Python modules to communicate wi
 The repository and code is for demonstration purposes at this time; this is only to showcase a basic application to common APIs.
 
 ## cache
-1. to recreate your cache for testing and multiple clones, you can remove all configs and keys from this directory: ~/goat
+1. to recreate your cache, you can remove all configs and keys from this directory: `~/goat`
 2. files will look like those listed below.
 3. if these files are removed, you will need to reauthenticate/setup each module.
 

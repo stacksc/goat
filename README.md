@@ -19,7 +19,8 @@
     <li><a href="#contacts">Contacts</a></li>
     <li><a href="#cache-data">Cache</a></li>
     <li><a href="#current-usage">Usage</a></li>
-    <li><a href="#mp4-and-image-collections">MP4 & Image Collections</a></li>
+    <li><a href="#versions">Versions</a></li>
+    <li><a href="#jira-authentication">JIRA authentication</a></li>
   </ol>
 </details>
 
@@ -138,17 +139,7 @@ After making changes to the source code, please remember to build a new wheel fo
 ## Contacts
 Christopher Stacks - <centerupt@gmail.com>
 
-<!-- MP4_Collections -->
-## MP4 and Image Collections
-
-<br><br>
-The following image is demonstrated where specific modules are loaded.
-<br><br>
-GOAT is fine-tuned to behave differently based on the environment.
-<br><br>
-<img src="./images/usage.png" alt="usage" width="600"/>
-<br><br>
-
+<!-- JIRA AUTHENTICATION -->
 ## JIRA Authentication
 1. The following example demonstrates JIRA authentication for the first time:
 ```

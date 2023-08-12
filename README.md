@@ -17,8 +17,8 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contacts">Contacts</a></li>
+    <li><a href="#cache_data">Cache</a></li>
     <li><a href="#mp4-and-image-collections">MP4 & Image Collections</a></li>
-    <li><a href="#docker-example">Docker Example</a></li>
   </ol>
 </details>
 
@@ -27,6 +27,7 @@
 
 GOAT ("goat") - a front-end application for the Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, & Azure). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br>
 
+<!-- CACHE DATA -->
 ## cache data
 1. The cache is used to store credentials and configuration data per module.
 2. The .cfg files are encrypted with Fernet and only GOAT can access the keys.
@@ -145,157 +146,6 @@ GOAT is fine-tuned to behave differently based on the environment.
 <br><br>
 <img src="./images/usage.png" alt="usage" width="600"/>
 <br><br>
-
-<!-- DOCKER_EXAMPLE -->
-## Docker Example
-<details><summary>Docker Example</summary>
-
-```
-$ ./prep_env.sh
-INFO: preparing to build our docker container
-      using multiple tools, scripts and utilities to make the magic happen. Enjoy!
-
-INFO: AWS ACCESS KEY ID & SECRET KEY can be retrieved from: https://sks-gov-ctrl.signin.amazonaws-us-gov.com
-INFO: generate new keys if they are inactive, lost, etc...
-
-[0] would you like to use /Users/stacksc/.env for docker preparation? [y/n] y
-[1] Enter SSO PASSWORD: **************
-
-===================================================================================
-INFO: verify the following information is accurate:
-===================================================================================
-
-INFO: GUID User ID:                  stacksc
-INFO: AWS_ACCESS_KEY_ID:             ********************
-INFO: AWS_SECRET_ACCESS_KEY:         *********************************
-INFO: SLACK_BOT_TOKEN:               xoxb-2154537752-4006410458018-2ksepJwq1D21SRY75jI3bfg7
-INFO: GIT:                           /home/stacksc/git
-INFO: REGION:                        us-gov-west-1
-
-INFO: starting the docker build process, which will stop any running GOAT containers, & prune prior to starting
-
-WARNING! This will remove:
-  - all stopped containers
-  - all networks not used by at least one container
-  - all dangling images
-  - all dangling build cache
-
-Are you sure you want to continue? [y/N] Deleted Containers:
-b37c7ffa0071627befc0b8b54115edf60b5a88e1e5b6c62c215fca61513d86cf
-2c846706a46a3cad72cef1d8ee9f4362db953971bb9f5d013325b51d89aa7c54
-
-Deleted Images:
-deleted: sha256:5b6dd0cb7e97b2d1fab2d74a407afc1b1eee03ce6988478a3778cdd8843c1c4d
-
-Deleted build cache objects:
-qd67x2au3xf6brr6cjpwvmwh4
-2wpusx7ucmrp2edl02lcf7sd5
-aqsfo8vs5v5skv6mthrle4r6z
-w4gqsg25sm6hgmtjinjdmeus2
-ynipegnjgpcz657oy1ci87i5w
-ytvi0c4h1c3s0uf8o3c7tnf2m
-igoa04qaw7uzu2790bk0z89b3
-8hsnwlmvxg2mzl3fsiu1sgzey
-rn53li7h1xi8n0isfwh5y1xkl
-p3l2j3hsg3g3mio5qx3zf3nnr
-rd4wjldmril0aj97j53nd2cnc
-6wewwix0y5s9hfytnajp7tjlm
-uywzzq3n8yo2du31rl765lezs
-pb6drc62embfahaorwbzobf0j
-uizqb6hb0tnecuj8n2y5k97zr
-992999iaxrfjo5hjvodwqyzla
-dpvmkt8zuyhept06ca4rntygr
-c01bx8vp6gvlkip1zprqgakrf
-apcbjyqemohukxslfa6rm29d9
-1ycgp691ygesqdzih6meq3khy
-szd99mt1c2hvf52uknru5u94e
-wprqg4h54ugqq17fv7rvdko66
-mr8pqxo264soyit2b1lkbaxf2
-vjk954fpe2mfs63ry8ma6802u
-7ucy70bl9rkowbw3e3ni6zzjz
-0vy3a12gz90rk0kiwsgitvimn
-m4reyneza1i2o7m9v1iidj4r2
-izysx9q540l1vaukn7xaqm96n
-qrh1lxe3khxvobbzyc8lykg4h
-yo9zyoqwci74qxpffddhh9p3p
-1b82fn70c29xqolq1o6s0m7zw
-nkl1e7l9rqdjr1v2c3gnp9s5s
-sr5cshjibrja38ljp0jjaevcq
-
-Total reclaimed space: 1.317GB
-
-[+] Building 76.8s (35/52)
-[+] Building 157.1s (53/53) FINISHED
- => [internal] load build definition from Dockerfile                                                                                                                            0.0s
- => => transferring dockerfile: 5.90kB                                                                                                                                          0.0s
- => [internal] load .dockerignore                                                                                                                                               0.0s
- => => transferring context: 2B                                                                                                                                                 0.0s
- => [internal] load metadata for docker.io/library/centos:latest                                                                                                                1.3s
- => [internal] load build context                                                                                                                                               7.3s
- => => transferring context: 319.16MB                                                                                                                                           7.2s
- => [ 1/48] FROM docker.io/library/centos@sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177                                                               0.0s
- => CACHED [ 2/48] RUN dnf --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos -y # buildkit                                                      0.0s
- => CACHED [ 3/48] RUN yum -y update # buildkit                                                                                                                                 0.0s
- => CACHED [ 4/48] RUN yum install man git gcc openssl-devel bzip2-devel libffi-devel zlib-devel zlib-devel sqlite-devel wget vim sudo net-tools yum-utils vim sudo net-tools   0.0s
- => CACHED [ 5/48] RUN curl https://www.python.org/ftp/python/3.9.15/Python-3.9.15.tgz --output /tmp/Python-3.9.15.tgz # buildkit                                               0.0s
- => CACHED [ 6/48] WORKDIR /tmp                                                                                                                                                 0.0s
- => CACHED [ 7/48] RUN tar xzf Python-3.9.15.tgz # buildkit                                                                                                                     0.0s
- => CACHED [ 8/48] WORKDIR /tmp/Python-3.9.15                                                                                                                                   0.0s
- => CACHED [ 9/48] RUN ./configure --enable-optimizations # buildkit                                                                                                            0.0s
- => CACHED [10/48] RUN yum install make -y # buildkit                                                                                                                           0.0s
- => CACHED [11/48] RUN make altinstall # buildkit                                                                                                                               0.0s
- => CACHED [12/48] RUN yum install sudo which -y # buildkit                                                                                                                     0.0s
- => CACHED [13/48] WORKDIR /tmp                                                                                                                                                 0.0s9 => CACHED [14/48] RUN rm -r Python-3.9.15.tgz # buildkit                                                                                                                       0.0s
- => CACHED [15/48] RUN yum -y install epel-release coreutils python3-argcomplete --allowerasing # buildkit                                                                      0.0s
- => CACHED [16/48] RUN curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py # buildkit                                                                                 0.0s
- => CACHED [17/48] RUN python3.9 get-pip.py # buildkit                                                                                                                          0.0s
- => CACHED [18/48] RUN python3.9 -m pip install --upgrade pip # buildkit                                                                                                        0.0s
- => CACHED [19/48] WORKDIR /var/tmp                                                                                                                                             0.0s
- => [20/48] COPY . /var/tmp/                                                                                                                                                    0.7s
- => [21/48] RUN yum -y install openssh-server openssh-clients sudo pinentry # buildkit                                                                                         25.4s
- => [22/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && adduser -m stacksc --shell /bin/bash --comment "goat user" &&     usermod -aG wheel stacksc &&      1.4s
- => [23/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && echo "$SSH_PRV_KEY" > /home/stacksc/.ssh/id_rsa &&     echo "$SSH_PUB_KEY" > /home/stacksc/.ssh/id  0.2s
- => [24/48] RUN yum -y install python3-boto3 jq awscli gnupg2 npm python3-tabulate # buildkit                                                                                   9.6s
- => [25/48] RUN systemctl enable sshd.service # buildkit                                                                                                                        0.2s
- => [26/48] RUN unlink /usr/bin/python3                                                                                                                                         0.2s
- => [27/48] RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3                                                                                                                 0.2s
- => [28/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && touch /home/stacksc/.gnupg/gpg-agent.conf &&     chmod 700 -R /home/stacksc/.gnupg &&     chown -R  0.2s
- => [29/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "/usr/bin/python3 -m pip install click-man bs4 importlib_resources gnureadlin  5.7s
- => [30/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "git config --global user.email centerupt@gmail.com"                           0.2s
- => [31/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "git config --global user.name stacksc"                                        0.2s
- => [32/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "cd /home/stacksc/git && git clone git@github.com/stacksc/goat                 4.9s
- => [33/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "cd /home/stacksc/git/govcloud-devops-python && bash ./bulk.sh --action rebu  68.4s
- => [34/48] RUN cp /var/tmp/legacy/vmcgov/load_prompt.sh /home/stacksc/                                                                                                         0.2s
- => [35/48] RUN cp /var/tmp/legacy/.bashrc /home/stacksc/                                                                                                                       0.3s
- => [36/48] RUN cp /var/tmp/legacy/.bash_profile /home/stacksc/                                                                                                                 0.2s
- => [37/48] RUN chown stacksc:stacksc /home/stacksc/.bashrc                                                                                                                     0.2s
- => [38/48] RUN chown stacksc:stacksc /home/stacksc/.bash_profile                                                                                                               0.2s
- => [39/48] RUN chown stacksc:stacksc /home/stacksc/load_prompt.sh                                                                                                              0.2s
- => [40/48] RUN chmod 777 /usr/share/man/man1                                                                                                                                   0.3s
- => [41/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=stacksc; /home/stacksc/.lo  2.1s
- => [42/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "export JIRA_API_TOKEN=${SSO_PASS}; export LOGNAME=stacksc; /home/stacksc/.lo  2.8s
- => [43/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "export SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}; export LOGNAME=stacksc; goat slac  1.0s
- => [44/48] RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - stacksc -c "click-man goat -t /usr/share/man/man1"                                        1.2s
- => [45/48] RUN python3.9 -m pip install --upgrade pip # buildkit                                                                                                               0.7s
- => [46/48] RUN sudo activate-global-python-argcomplete # buildkit                                                                                                              0.3s
- => [47/48] RUN sudo chmod 755 /usr/share/man/man1                                                                                                                              0.2s
- => [48/48] WORKDIR /home/stacksc                                                                                                                                               0.0s
- => exporting to image                                                                                                                                                          1.1s
- => => exporting layers                                                                                                                                                         1.1s
- => => writing image sha256:38eb56084fead8cd123bfc7c30655ded108fed4866abdf3ab21f3fd773e36223                                                                                    0.0s
- => => naming to docker.io/library/goat                                                                                                                                         0.0s
-
-fb073a69d77a5b851e24e93564392711e063d617214dceb64035819c892b8f47
-
-CONTAINER ID   IMAGE     COMMAND       CREATED                  STATUS                  PORTS     NAMES
-fb073a69d77a   goat      "/bin/bash"   Less than a second ago   Up Less than a second             affectionate_lederberg
-
-INFO: login to goat now with: docker exec -it $(docker ps -a| grep goat | awk '{print $1}') bash -l
-INFO: copying .env to /Users/stacksc and out of the main repository
-INFO: goat docker build is complete!
-```
-
-</details>
 
 ## JIRA Authentication
 1. The following example demonstrates JIRA authentication for the first time:

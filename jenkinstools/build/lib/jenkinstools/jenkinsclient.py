@@ -139,11 +139,14 @@ class JenkinsClient:
             if CRUMB_TOKEN_AGE < self.CRUMB_TOKEN_MAX_AGE:
                 return self._get_crumb_token(user_profile)
         Log.info("crumb token expired or not found. Generating a new one")
-        CRUMB_TOKEN_DATA = self.generate_crumb(user_profile)
-        self.update_config(new_data={
-                    'crumb_token': CRUMB_TOKEN_DATA
-                }, profile_name=user_profile)
-        return CRUMB_TOKEN_DATA['token']
+        try:
+            CRUMB_TOKEN_DATA = self.generate_crumb(user_profile)
+            self.update_config(new_data={
+                        'crumb_token': CRUMB_TOKEN_DATA
+                    }, profile_name=user_profile)
+            return CRUMB_TOKEN_DATA['token']
+        except:
+            pass
 
     def get_access_token(self, user_profile='default'):
         CONFIG = Config('jenkinstools')

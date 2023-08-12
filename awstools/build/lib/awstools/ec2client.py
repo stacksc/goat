@@ -161,7 +161,7 @@ class EC2client():
     def show_cache(self, aws_profile_name, type, aws_region, display):
         self.auto_refresh(aws_profile_name)
         DATA = []
-        if type != 'cached_regions':
+        if type == 'cached_instances':
             for ENTRY in self.CONFIGSTORE.PROFILES[aws_profile_name]['metadata'][type][aws_region]:
                 DATA_ENTRY = {}
                 if ENTRY != 'last_cache_update':

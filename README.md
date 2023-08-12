@@ -173,6 +173,7 @@ INFO: caching ec2 data...
 INFO: caching rds data...
 INFO: run source ~/goatrole.sh
 ```
+3. Override the default region with: `goat aws -r {regionName}`
 
 ## Jenkins Tasks
 ```
@@ -602,6 +603,8 @@ $ goat configs show ocitools
     fingerprint=1f:ce:1a:08:94:93:b7:a9:56:29:38:71:20:a0:63:4e
     key_file=~/.oci/oci_api_key.pem
 ```
+
+1. Override the default region with: `goat oci -r {regionName}`; i.e. `goat oci -r us-phoenix-1`
 
 ### OCI usage
 ```

@@ -324,11 +324,14 @@ Commands:
 
 ### init slacktools
 * pre-requisites:
-   - slack bot and token:
+   - slack bot / application:
       - users are responsible for getting the right privileges and access token for their respective workspace.
-      - slack permissions are out of scope for this document
+      - slack permissions are out of scope for this document.
+   - bot tokens start with: `xoxb-`
+   - app level tokens start with: `xapp-`
 
-1. To use slacktools, you will be prompted for a slack bot token as in this example:
+1. Users will be prompted for a slack bot token the first time the module is launched,<br>
+   and this is stored in the configstore.
 ```
 $ goat slack post -m "Hello - this is a test from stacks" C05LXFYUNNM
 WARN: Encryption key not detected. Generating a new one

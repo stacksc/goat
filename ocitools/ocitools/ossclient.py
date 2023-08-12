@@ -16,7 +16,6 @@ class OSSclient():
     def __init__(self, profile_name, region='us-ashburn-1', cache_only=False):
         CONFIGSTORE = Config('ocitools')
         self.CONFIG = OCIconfig()
-        self.CONFIG_FROM_FILE = oci.config.from_file(profile_name=profile_name)
         self.CONFIGSTORE = Config('ocitools')
         self.size_table={0: 'Bs', 1: 'KBs', 2: 'MBs', 3: 'GBs', 4: 'TBs', 5: 'PBs', 6: 'EBs'}
         self.CACHE_UPDATE_INTERVAL = 60*60*24*7 # update cache every week
@@ -24,6 +23,18 @@ class OSSclient():
         self.OCI_REGION = region
         self.CACHE_ONLY = cache_only
         self.OCID = CONFIGSTORE.get_metadata('tenancy', profile_name)
+        self.CONFIG_FROM_FILE = {
+                'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
+                'user': CONFIGSTORE.get_metadata('user', profile_name),
+                'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
+                'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
+                'region': self.OCI_REGION
+        }
+        try:
+            oci.config.validate_config(self.CONFIG_FROM_FILE)
+        except:
+            Log.critical('unable to setup a proper oci configuration file')
+
         if not self.CACHE_ONLY:
             self.get_connections()
 
@@ -214,7 +225,9 @@ class OSSclient():
                 pass
 
         BUCKETS_CACHE['last_cache_update'] = TIMESTAMP
-        self.CONFIGSTORE.update_metadata(BUCKETS_CACHE, 'cached_buckets', profile_name, True)
+        DICT = {}
+        DICT[self.OCI_REGION] = BUCKETS_CACHE
+        self.CONFIGSTORE.update_metadata(DICT, 'cached_buckets', profile_name, True)
 
     def get_cache(self, type, profile_name, subtype=None):
         if profile_name not in self.CONFIGSTORE.PROFILES:
@@ -273,3 +286,17 @@ class OSSclient():
         if bucket.data.etag:
             Log.info("bucket created for " + profile_name + " and bucket tag " + bucket.data.etag)
             return True
+
+def setup_config_file():
+    self.CONFIG_FROM_FILE = {
+        'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
+        'user': CONFIGSTORE.get_metadata('user', profile_name),
+        'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
+        'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
+        'region': self.OCI_REGION
+    }
+    try:
+        oci.config.validate_config(self.CONFIG_FROM_FILE)
+    except:
+        Log.critical('unable to setup a proper oci configuration file')
+    return self.CONFIG_FROM_FILE    

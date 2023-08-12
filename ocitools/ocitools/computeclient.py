@@ -15,10 +15,20 @@ class MyComputeClient():
     def __init__(self, profile_name, region='us-ashburn-1', cache_only=False):
         self.CONFIGSTORE = Config('ocitools')
         self.CONFIG = OCIconfig()
-        self.CONFIG_FROM_FILE = oci.config.from_file(profile_name=profile_name)
+        self.OCI_REGION = region
+        self.CONFIG_FROM_FILE = {
+                'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
+                'user': CONFIGSTORE.get_metadata('user', profile_name),
+                'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
+                'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
+                'region': self.OCI_REGION
+        }
+        try:
+            oci.config.validate_config(self.CONFIG_FROM_FILE)
+        except:
+            Log.critical('unable to setup a proper oci configuration file')
         self.CACHE_UPDATE_INTERVAL = 60*60*24*7 # update cache every week
         self.OCI_PROFILE = profile_name
-        self.OCI_REGION = region
         self.CACHE_ONLY = cache_only
         self.OCID = CONFIGSTORE.get_metadata('tenancy', profile_name)
         if not self.CACHE_ONLY:
@@ -140,7 +150,9 @@ class MyComputeClient():
                         if DATA:
                             DATADICT = DATA
                         Log.info(f"\n{tabulate(DATADICT, headers='keys', tablefmt='rst')}\n")
-                        self.CONFIGSTORE.update_metadata(COMPUTE_CACHE, 'cached_instances', profile_name, True)
+                        DICT = {}
+                        DICT[self.OCI_REGION] = COMPUTE_CACHE 
+                        self.CONFIGSTORE.update_metadata(DICT, 'cached_instances', profile_name, True)
                         self.CONFIGSTORE = Config('ocitools')
                 except:
                     pass

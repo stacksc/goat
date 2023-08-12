@@ -1,6 +1,6 @@
 import click, json, os, oci
 from toolbox.logger import Log
-from .ossclient import OSSclient
+from .ossclient import OSSclient, setup_config_file
 from configstore.configstore import Config
 from toolbox.menumaker import Menu
 from toolbox.misc import set_terminal_width
@@ -24,9 +24,9 @@ def oss(ctx, menu):
 @click.pass_context
 def create(ctx, bucket_name):
     profile_name = ctx.obj['PROFILE']
-    OSS = get_OSSclient(profile_name)
-    OCI_REGION = OSS.get_region_from_profile(profile_name)
-    COMPARTMENTS = OSS
+    OCI_REGION = get_region(ctx, profile_name)
+    OSS = get_OSSclient(profile_name, OCI_REGION)
+    OCI_REGION = get_region(ctx, profile_name)
     for PROFILE in CONFIG.PROFILES:
         if PROFILE in ignore:
             continue
@@ -49,8 +49,8 @@ def create(ctx, bucket_name):
     _refresh(profile_name)
 
 def _create(profile_name, bucket_name, ocid, oci_region):
-    MYOSS = get_OSSclient(profile_name)
-    config = oci.config.from_file(profile_name=profile_name)
+    MYOSS = get_OSSclient(profile_name, oci_region)
+    config = setup_config_file()
     object_storage = oci.object_storage.ObjectStorageClient(config)
     namespace = object_storage.get_namespace(compartment_id=ocid).data
     RESULT = MYOSS.create_bucket(ocid, namespace, bucket_name, profile_name)
@@ -66,6 +66,7 @@ def _create(profile_name, bucket_name, ocid, oci_region):
 @click.option('--destination', help="provide a local destination for download", type=str, required=False, default=os.environ["HOME"], show_default=True)
 def download(ctx, source, destination):
     profile_name = ctx.obj['PROFILE']
+    oci_region = get_region(ctx, profile_name)
     if ctx.obj["MENU"] or source is None:
         if source is None:
             CACHED_BUCKETS = {}
@@ -74,7 +75,7 @@ def download(ctx, source, destination):
                 if PROFILE in ignore:
                     continue
                 if PROFILE == profile_name:
-                    CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                    CACHED_BUCKETS.update(CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region))
                     CACHED_BUCKETS.pop('last_cache_update', None)
             INPUT = f'Downloads => {profile_name}'
             CHOICE = runMenu(CACHED_BUCKETS, INPUT)
@@ -83,7 +84,7 @@ def download(ctx, source, destination):
                 for PROFILE in CONFIG.PROFILES:
                     if PROFILE in ignore:
                         continue
-                    if CONFIG.get_metadata('cached_buckets', PROFILE) and source in CONFIG.get_metadata('cached_buckets', PROFILE):
+                    if CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region) and source in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                         profile_name = PROFILE
                         OSS = get_OSSclient(PROFILE)
                         CONTENTS = OSS.show_bucket_content(source, profile_name)
@@ -105,7 +106,7 @@ def download(ctx, source, destination):
             for PROFILE in CONFIG.PROFILES:
                 if PROFILE in ignore:
                     continue
-                if CONFIG.get_metadata('cached_buckets', PROFILE) and source in CONFIG.get_metadata('cached_buckets', PROFILE):
+                if CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region) and source in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                     profile_name = PROFILE
                     OSS = get_OSSclient(PROFILE)
                     CONTENTS = OSS.show_bucket_content(source, profile_name)
@@ -127,7 +128,7 @@ def download(ctx, source, destination):
             if profile_name in ignore:
                 continue
             PROFILE = profile_name
-            if CONFIG.get_metadata('cached_buckets', PROFILE) and source in CONFIG.get_metadata('cached_buckets', PROFILE):
+            if CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region) and source in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                 OSS = get_OSSclient(PROFILE)
                 CONTENTS = OSS.show_bucket_content(source, profile_name)
                 if type(CONTENTS) is not bool:
@@ -164,11 +165,12 @@ def _download(profile_name, source, destination, filename):
 @click.pass_context
 def upload(ctx, source, destination):
     profile_name = ctx.obj['PROFILE']
+    oci_region = get_region(ctx, profile_name)
     CACHED_BUCKETS = {}
     if destination is None:
         for PROFILE in CONFIG.PROFILES:
             if PROFILE == profile_name:
-                CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                CACHED_BUCKETS.update(CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region))
                 CACHED_BUCKETS.pop('last_cache_update', None)
         INPUT = f'Uploads => {profile_name}'
         CHOICE = runMenu(CACHED_BUCKETS, INPUT)
@@ -177,7 +179,7 @@ def upload(ctx, source, destination):
             for profile_name in CONFIG.PROFILES:
                 if profile_name in ignore:
                     continue
-                if destination in CONFIG.get_metadata('cached_buckets', profile_name):
+                if destination in CONFIG.get_metadata_aws('cached_buckets', profile_name, oci_region):
                     if _upload(profile_name, source, destination):
                         Log.info(f"uploading local files from {source} to OSS bucket {destination} completed")
                     else:
@@ -187,7 +189,7 @@ def upload(ctx, source, destination):
         for PROFILE in CONFIG.PROFILES:
             if PROFILE in ignore:
                 continue
-            if destination in CONFIG.get_metadata('cached_buckets', PROFILE):
+            if destination in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                 profile_name = PROFILE
                 if _upload(profile_name, source, destination):
                     Log.info(f"uploading local files from {source} to OSS bucket {destination} completed")
@@ -212,6 +214,7 @@ def _upload(profile_name, source, destination):
 @click.argument('bucket', required=False, default=None)
 def delete(ctx, bucket):
     profile_name = ctx.obj['PROFILE']
+    oci_region = get_region(ctx, profile_name)
     if bucket is None:
         if bucket is None:
             CACHED_BUCKETS = {}
@@ -219,7 +222,7 @@ def delete(ctx, bucket):
                 if PROFILE in ignore:
                     continue
                 if PROFILE == profile_name:
-                    CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                    CACHED_BUCKETS.update(CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region))
                     CACHED_BUCKETS.pop('last_cache_update', None)
             INPUT = f'Deletion => {profile_name}'
             CHOICE = runMenu(CACHED_BUCKETS, INPUT)
@@ -228,7 +231,7 @@ def delete(ctx, bucket):
                 for PROFILE in CONFIG.PROFILES:
                     if PROFILE in ignore:
                         continue
-                    if bucket in CONFIG.get_metadata('cached_buckets', PROFILE):
+                    if bucket in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                         profile_name = PROFILE
                         _delete(bucket, profile_name)
                         Log.info('refreshing cache now for buckets after deletion')
@@ -238,7 +241,7 @@ def delete(ctx, bucket):
             for PROFILE in CONFIG.PROFILES:
                 if PROFILE in ignore:
                     continue
-                if bucket in CONFIG.get_metadata('cached_buckets', PROFILE):
+                if bucket in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                     profile_name = PROFILE
                     _delete(bucket, profile_name)
                     Log.info('refreshing cache now for buckets after deletion')
@@ -248,7 +251,7 @@ def delete(ctx, bucket):
         for PROFILE in CONFIG.PROFILES:
             if PROFILE in ignore:
                 continue
-            if bucket in CONFIG.get_metadata('cached_buckets', PROFILE):
+            if bucket in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                 profile_name = PROFILE
                 _delete(bucket, profile_name)
                 Log.info('refreshing cache now for buckets after deletion')
@@ -261,7 +264,7 @@ def _delete(bucket, profile_name):
     for BUCKETNAME in BUCKETS:
         if BUCKETNAME == bucket:
             NAMESPACE = BUCKETS[BUCKETNAME]['namespace']
-    OCI_REGION = OSS.get_region_from_profile(profile_name)
+    OCI_REGION = get_region(ctx, profile_name)
     RESULT = OSS.delete_bucket(NAMESPACE, bucket, profile_name)
     if RESULT:
         Log.info(f"bucket: {bucket} deleted in region: {OCI_REGION} successfully.")
@@ -273,12 +276,12 @@ def _delete(bucket, profile_name):
 @click.pass_context
 def refresh(ctx):
     profile_name = ctx.obj['PROFILE']
-    _refresh(profile_name)
+    OCI_REGION = get_region(ctx, profile_name)
+    _refresh(profile_name, OCI_REGION)
 
-def _refresh(profile_name):
-    OSS = get_OSSclient(profile_name, auto_refresh=False)
+def _refresh(profile_name, oci_region):
     try:
-        OSS = get_OSSclient(profile_name, auto_refresh=False)
+        OSS = get_OSSclient(profile_name, oci_region, auto_refresh=False)
         OSS.cache_buckets(profile_name)
         return True
     except:
@@ -289,6 +292,7 @@ def _refresh(profile_name):
 @click.argument('bucket', required=False, default=None)
 def show(ctx, bucket):
     profile_name = ctx.obj['PROFILE']
+    oci_region = get_region(ctx, profile_name)
     if ctx.obj["MENU"]:
         if bucket is None:
             CACHED_BUCKETS = {}
@@ -297,7 +301,7 @@ def show(ctx, bucket):
                    continue
                 if PROFILE == profile_name:
                     try:
-                        CACHED_BUCKETS.update(CONFIG.get_metadata('cached_buckets', PROFILE))
+                        CACHED_BUCKETS.update(CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region))
                         CACHED_BUCKETS.pop('last_cache_update', None)
                     except:
                         Log.critical(f"there are 0 cached buckets for {PROFILE}")
@@ -308,7 +312,7 @@ def show(ctx, bucket):
                 for PROFILE in CONFIG.PROFILES:
                     if PROFILE in ignore:
                         continue
-                    if CONFIG.get_metadata('cached_buckets', PROFILE) and ''.join(CHOICE) in CONFIG.get_metadata('cached_buckets', PROFILE):
+                    if CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region) and ''.join(CHOICE) in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                         OSS = get_OSSclient(PROFILE)
                         CONTENTS = OSS.show_bucket_content(''.join(CHOICE), profile_name)
                         if type(CONTENTS) is not bool:
@@ -321,7 +325,7 @@ def show(ctx, bucket):
             for PROFILE in CONFIG.PROFILES:
                 if PROFILE in ignore:
                     continue
-                if bucket in CONFIG.get_metadata('cached_buckets', PROFILE):
+                if bucket in CONFIG.get_metadata_aws('cached_buckets', PROFILE, oci_region):
                     OSS = get_OSSclient(PROFILE)
                     CONTENTS, TOTAL, LASTMOD = OSS.show_bucket_content(bucket, PROFILE)
                     if type(CONTENTS) is not bool:
@@ -372,3 +376,10 @@ def runMenu(DATA, INPUT):
     FINAL_MENU = Menu(FINAL, TITLE, JOINER, SUBTITLE)
     CHOICE = FINAL_MENU.display()
     return CHOICE
+
+def get_region(ctx, profile_name):
+    OCI_REGION = ctx.obj['REGION']
+    if not OCI_REGION:
+        OSS = get_OSSclient(profile_name)
+        OCI_REGION = OSS.get_region_from_profile(profile_name)
+    return OCI_REGION

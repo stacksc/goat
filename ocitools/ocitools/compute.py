@@ -26,11 +26,12 @@ def compute(ctx, menu):
 @click.argument('cache_type', required=False, default='all', type=click.Choice(['all', 'instances', 'public_ips', 'regions', 'auto']))
 def refresh(ctx, cache_type):
     profile_name = ctx.obj['PROFILE']
-    _refresh(cache_type, profile_name)
+    OCI_REGION = get_region(ctx, profile_name)
+    _refresh(cache_type, profile_name, OCI_REGION)
 
-def _refresh(cache_type, profile_name):
+def _refresh(cache_type, profile_name, oci_region):
     try:    
-        COMPUTE = get_compute_client(profile_name, auto_refresh=False, cache_only=True)
+        COMPUTE = get_compute_client(profile_name, oci_region, auto_refresh=False, cache_only=True)
         if cache_type == 'all':
             COMPUTE.refresh(profile_name)
         if cache_type == 'instances':
@@ -50,6 +51,7 @@ def _refresh(cache_type, profile_name):
 @click.argument('target', required=False, default='all', type=click.Choice(['all', 'instances', 'public_ips', 'regions', 'orphaned_ebs', 'orphaned_snaps']))
 def show(ctx, target):
     profile_name = ctx.obj['PROFILE']
+    oci_region = get_region(ctx, profile_name)
     if ctx.obj["MENU"] and target == "instances":
         CACHED_INSTANCES = {}
         DATA = []
@@ -57,7 +59,7 @@ def show(ctx, target):
             if PROFILE == 'latest':
                 continue
             if PROFILE == profile_name:
-                COMPUTE = get_compute_client(profile_name, auto_refresh=False, cache_only=True)
+                COMPUTE = get_compute_client(profile_name, oci_region, auto_refresh=False, cache_only=True)
                 RES = COMPUTE.show_cache(profile_name, 'cached_instances', display=False)
                 for data in RES:
                     NAME = data["display_name"].ljust(50)
@@ -72,11 +74,11 @@ def show(ctx, target):
             IP = CHOICE[0].split("\t")[1]
             Log.info(f"you chose to SSH to {IP} which will be implemented later...")
     else:
-        _show(target, profile_name, display=True)
+        _show(target, profile_name, oci_region, display=True)
 
-def _show(target, profile_name, display):
+def _show(target, profile_name, oci_region, display):
     try:
-        COMPUTE = get_compute_client(profile_name, auto_refresh=False, cache_only=True)
+        COMPUTE = get_compute_client(profile_name, oci_region, auto_refresh=False, cache_only=True)
         if target == 'instances' or target == 'all':
             COMPUTE.show_cache(profile_name, 'cached_instances', display)
         if target == 'public_ips' or target == 'all':
@@ -108,3 +110,9 @@ def runMenu(DATA, INPUT):
     CHOICE = FINAL_MENU.display()
     return CHOICE
 
+def get_region(ctx, profile_name):
+    OCI_REGION = ctx.obj['REGION']
+    if not OCI_REGION:
+        OSS = get_OSSclient(profile_name)
+        OCI_REGION = OSS.get_region_from_profile(profile_name)
+    return OCI_REGION

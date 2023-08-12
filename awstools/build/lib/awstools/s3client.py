@@ -112,10 +112,7 @@ class S3client():
         CLIENT = self.SESSION.client('s3')
         GET_LAST_MODIFIED = lambda obj: int(obj['LastModified'].strftime('%Y%m%d%H%M%S'))
         try:
-            if bucket_name != 'com.vmw.delta.us-gov-west-1.prod.nexus.efs.backups':
-                RESPONSE = CLIENT.list_objects(Bucket=bucket_name)
-            else:
-                return False, False, False
+            RESPONSE = CLIENT.list_objects(Bucket=bucket_name)
             if 'Contents' in RESPONSE:
                 OBJECTS = RESPONSE['Contents']
                 FILES = sorted(OBJECTS, key=GET_LAST_MODIFIED, reverse=False)
@@ -180,7 +177,6 @@ class S3client():
         SIZE_TABLE = {0: 'Bs', 1: 'KBs', 2: 'MBs', 3: 'GBs', 4: 'TBs', 5: 'PBs', 6: 'EBs'} # appears to be redundant
         # https://wasabi-support.zendesk.com/hc/en-us/articles/360058028992-How-do-I-mass-delete-non-current-versions-inside-a-bucket-
         # include latest verions too so we can nuke the bucket
-        #DELETE_MARKER_SIZE = 0 # appears to be redundant
         PAGINATOR = aws_client.get_paginator('list_object_versions')
         PARAMETERS = {'Bucket': bucket_name}
         DELETE_MARKER_COUNT = 0

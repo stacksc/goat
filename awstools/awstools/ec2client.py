@@ -83,7 +83,6 @@ class EC2client():
                 'PrivateIpAddress': INSTANCE['PrivateIpAddress']
             }
             INSTANCES_CACHE[INSTANCE_NAME] = INSTANCE_DICT
-            #INSTANCES_CACHE[self.AWS_REGION] = INSTANCE_DICT
         INSTANCES_CACHE['last_cache_update'] = TIMESTAMP
         DICT = {}
         DICT[self.AWS_REGION] = INSTANCES_CACHE 

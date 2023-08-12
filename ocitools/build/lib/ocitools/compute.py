@@ -26,8 +26,8 @@ def compute(ctx, menu):
 @click.argument('cache_type', required=False, default='all', type=click.Choice(['all', 'instances', 'public_ips', 'regions', 'auto']))
 def refresh(ctx, cache_type):
     profile_name = ctx.obj['PROFILE']
-    OCI_REGION = get_region(ctx, profile_name)
-    _refresh(cache_type, profile_name, OCI_REGION)
+    oci_region = get_region(ctx, profile_name)
+    _refresh(cache_type, profile_name, oci_region)
 
 def _refresh(cache_type, profile_name, oci_region):
     try:    
@@ -60,7 +60,7 @@ def show(ctx, target):
                 continue
             if PROFILE == profile_name:
                 COMPUTE = get_compute_client(profile_name, oci_region, auto_refresh=False, cache_only=True)
-                RES = COMPUTE.show_cache(profile_name, 'cached_instances', display=False)
+                RES = COMPUTE.show_cache(profile_name, oci_region, 'cached_instances', display=False)
                 for data in RES:
                     NAME = data["display_name"].ljust(50)
                     IP = data["private_ips"].strip()
@@ -80,11 +80,11 @@ def _show(target, profile_name, oci_region, display):
     try:
         COMPUTE = get_compute_client(profile_name, oci_region, auto_refresh=False, cache_only=True)
         if target == 'instances' or target == 'all':
-            COMPUTE.show_cache(profile_name, 'cached_instances', display)
+            COMPUTE.show_cache(profile_name, oci_region, 'cached_instances', display)
         if target == 'public_ips' or target == 'all':
-            COMPUTE.show_cache(profile_name, 'cached_public_ips', display)
+            COMPUTE.show_cache(profile_name, oci_region, 'cached_public_ips', display)
         if target == 'regions' or target == 'all':
-            COMPUTE.show_cache(profile_name, 'cached_regions', display)
+            COMPUTE.show_cache(profile_name, oci_region, 'cached_regions', display)
         return True
     except:
         return False
@@ -111,8 +111,8 @@ def runMenu(DATA, INPUT):
     return CHOICE
 
 def get_region(ctx, profile_name):
-    OCI_REGION = ctx.obj['REGION']
-    if not OCI_REGION:
+    oci_region = ctx.obj['REGION']
+    if not oci_region:
         OSS = get_OSSclient(profile_name)
-        OCI_REGION = OSS.get_region_from_profile(profile_name)
-    return OCI_REGION
+        oci_region = OSS.get_region_from_profile(profile_name)
+    return oci_region

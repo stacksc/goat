@@ -186,7 +186,7 @@ class EC2client():
                     Log.info(f"{type}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
                 return DATA
 
-    def show_all_cache(self, aws_profile_name):
-        self.show_cache(aws_profile_name, 'cached_instances', display=False)
-        self.show_cache(aws_profile_name, 'cached_public_ips', display=False)
-        self.show_cache(aws_profile_name, 'cached_regions', display=False)
+    def show_all_cache(self, aws_profile_name, aws_region):
+        self.show_cache(aws_profile_name, 'cached_instances', aws_region, display=False)
+        self.show_cache(aws_profile_name, 'cached_public_ips', aws_region, display=False)
+        self.show_cache(aws_profile_name, 'cached_regions', aws_region, display=False)

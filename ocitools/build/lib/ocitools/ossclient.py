@@ -172,7 +172,7 @@ class OSSclient():
         return COMPARTMENTS
        
     def show_bucket_content(self, bucket_name, profile_name, total=0):
-        BUCKETS = CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_buckets']
+        BUCKETS = CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_buckets'][self.OCI_REGION]
         for BUCKETNAME in BUCKETS:
             if BUCKETNAME == bucket_name:
                 namespace = BUCKETS[BUCKETNAME]['namespace']
@@ -235,17 +235,17 @@ class OSSclient():
         if type not in self.CONFIGSTORE.PROFILES[profile_name]['metadata']:
             return None
         if subtype is None:
-            return self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type]
+            return self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][oci_region]
         else:
             if subtype in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type]:
                 return self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][subtype]
             else:
                 return None
 
-    def show_cache(self, type, profile_name):
-        self.auto_refresh(profile_name)
+    def show_cache(self, type, profile_name, oci_region):
+        #self.auto_refresh(profile_name)
         DATA = []
-        for ENTRY in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type]:
+        for ENTRY in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][oci_region]:
             DATA_ENTRY = {}
             if ENTRY != 'last_cache_update' and ENTRY != 'lastmod' and ENTRY != 'total':
                 DATA_ENTRY['Name'] = ENTRY
@@ -287,16 +287,16 @@ class OSSclient():
             Log.info("bucket created for " + profile_name + " and bucket tag " + bucket.data.etag)
             return True
 
-def setup_config_file():
-    self.CONFIG_FROM_FILE = {
+def setup_config_file(profile_name, oci_region):
+    CONFIG_FROM_FILE = {
         'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
         'user': CONFIGSTORE.get_metadata('user', profile_name),
         'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
         'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
-        'region': self.OCI_REGION
+        'region': oci_region
     }
     try:
-        oci.config.validate_config(self.CONFIG_FROM_FILE)
+        oci.config.validate_config(CONFIG_FROM_FILE)
     except:
         Log.critical('unable to setup a proper oci configuration file')
-    return self.CONFIG_FROM_FILE    
+    return CONFIG_FROM_FILE    

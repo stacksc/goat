@@ -157,23 +157,22 @@ class MyComputeClient():
                 except:
                     pass
 
-    def show_cache(self, profile_name, type, display):
-        self.auto_refresh(profile_name)
+    def show_cache(self, profile_name, oci_region, type, display):
         DATA = []
-        for ENTRY in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type]:
+        for ENTRY in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][oci_region]:
             DATA_ENTRY = {}
             if ENTRY != 'last_cache_update':
                 DATA_ENTRY['Name/ID'] = ENTRY
-                for PROPERTY in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][ENTRY]:
-                    DATA_ENTRY[PROPERTY] = self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][ENTRY][PROPERTY]
+                for PROPERTY in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][oci_region][ENTRY]:
+                    DATA_ENTRY[PROPERTY] = self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][oci_region][ENTRY][PROPERTY]
                 DATA.append(DATA_ENTRY)
         if DATA != []:
             if display is True:
                 Log.info(f"{type}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
             return DATA
 
-    def show_all_cache(self, profile_name):
-        self.show_cache(profile_name, 'cached_instances', display=False)
-        self.show_cache(profile_name, 'cached_public_ips', display=False)
-        self.show_cache(profile_name, 'cached_regions', display=False)
+    def show_all_cache(self, oci_region, profile_name):
+        self.show_cache(profile_name, oci_region, 'cached_instances', display=False)
+        self.show_cache(profile_name, oci_region, 'cached_public_ips', display=False)
+        self.show_cache(profile_name, oci_region, 'cached_regions', display=False)
 

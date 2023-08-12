@@ -43,7 +43,7 @@ class REGIONSclient():
             KEY = DATA.region_key
             NAME = DATA.region_name
             STATUS = DATA.status
-            REGION_CACHE[KEY] = {
+            REGION_CACHE[NAME] = {
                  'region_key': KEY,
                  'region_name': NAME,
                  'status': STATUS,

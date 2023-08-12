@@ -4,6 +4,34 @@ from pathlib import Path
 from configstore.configstore import Config
 from toolbox.misc import detect_environment
 
+def complete_aws_regions(ctx, param, incomplete):
+    CONFIG = Config('awstools')
+    DATA = []
+    NAMES = []
+    for PROFILE in CONFIG.PROFILES:
+        if 'latest' not in PROFILE:
+            NAMES.append(PROFILE.strip())
+    for PROFILE in NAMES:
+        for ENTRY in CONFIG.PROFILES[PROFILE]['metadata']['cached_regions']:
+            DATA_ENTRY = {}
+            if ENTRY != 'last_cache_update':
+                DATA.append(ENTRY)
+    return [k for k in DATA if k.startswith(incomplete)]
+
+def complete_oci_regions(ctx, param, incomplete):
+    CONFIG = Config('ocitools')
+    DATA = []
+    NAMES = []
+    for PROFILE in CONFIG.PROFILES:
+        if 'latest' not in PROFILE:
+            NAMES.append(PROFILE.strip())
+    for PROFILE in NAMES:
+        for ENTRY in CONFIG.PROFILES[PROFILE]['metadata']['cached_regions']:
+            DATA_ENTRY = {}
+            if ENTRY != 'last_cache_update':
+                DATA.append(ENTRY)
+    return [k for k in DATA if k.startswith(incomplete)]
+
 def complete_idp_profiles(ctx, param, incomplete):
     CONFIG = Config('idptools')
     NAMES = []

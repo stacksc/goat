@@ -38,10 +38,11 @@ def setup(ctx):
 
 def get_jenkins_url(profile='default'):
     CONFIG = Config('jenkinstools')
-    URL = CONFIG.get_metadata('JENKINS_URL', 'preset')
+    URL = CONFIG.get_metadata('JENKINS_URL', profile)
     if URL:
         return URL
-    return profile
+    else:
+        return profile
 
 def update_latest_profile(profile_name):
     BASICS = Config('jenkinstools')

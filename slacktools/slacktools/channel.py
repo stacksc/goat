@@ -3,7 +3,6 @@
 from . import auth
 from slack_sdk.errors import SlackApiError
 from toolbox.logger import Log
-from nested_lookup import nested_lookup
 
 help = "manage channels on Slack"
 

@@ -12,11 +12,17 @@ def complete_aws_regions(ctx, param, incomplete):
         if 'latest' not in PROFILE:
             NAMES.append(PROFILE.strip())
     for PROFILE in NAMES:
-        for ENTRY in CONFIG.PROFILES[PROFILE]['metadata']['cached_regions']:
-            DATA_ENTRY = {}
-            if ENTRY != 'last_cache_update':
-                DATA.append(ENTRY)
-    return [k for k in DATA if k.startswith(incomplete)]
+        try:
+            for ENTRY in CONFIG.PROFILES[PROFILE]['metadata']['cached_regions']:
+                DATA_ENTRY = {}
+                if ENTRY != 'last_cache_update':
+                    DATA.append(ENTRY)
+        except:
+            pass
+    if DATA:
+        return [k for k in DATA if k.startswith(incomplete)]
+    else:
+        return None
 
 def complete_oci_regions(ctx, param, incomplete):
     CONFIG = Config('ocitools')
@@ -26,11 +32,17 @@ def complete_oci_regions(ctx, param, incomplete):
         if 'latest' not in PROFILE:
             NAMES.append(PROFILE.strip())
     for PROFILE in NAMES:
-        for ENTRY in CONFIG.PROFILES[PROFILE]['metadata']['cached_regions']:
-            DATA_ENTRY = {}
-            if ENTRY != 'last_cache_update':
-                DATA.append(ENTRY)
-    return [k for k in DATA if k.startswith(incomplete)]
+        try:
+            for ENTRY in CONFIG.PROFILES[PROFILE]['metadata']['cached_regions']:
+                DATA_ENTRY = {}
+                if ENTRY != 'last_cache_update':
+                    DATA.append(ENTRY)
+        except:
+            pass
+    if DATA:
+        return [k for k in DATA if k.startswith(incomplete)]
+    else:
+        return None
 
 def complete_idp_profiles(ctx, param, incomplete):
     CONFIG = Config('idptools')

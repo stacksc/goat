@@ -27,7 +27,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-GOAT ("goat") - a front-end application for the Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, & Azure). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br>
+GOAT ("goat") - a front-end application for Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, & Azure). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br>
 
 <!-- CACHE DATA -->
 ## cache data

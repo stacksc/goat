@@ -318,7 +318,7 @@ Commands:
       - users are responsible for getting the right privileges and access token for their respective workspace.
       - slack permissions are out of scope for this document.
    - bot tokens start with: `xoxb-`
-   - app level tokens start with: `xapp-`
+   - app tokens start with: `xapp-`
 
 1. Users will be prompted for a slack bot token the first time the module is launched,<br>
    and this is stored in the configstore.

@@ -116,34 +116,6 @@ function trap_exit() {
   exit 0
 }
 
-function get_sso() {
-  qcnt=$(expr $qcnt + 1)
-  echo -ne "[${qcnt}] Enter SSO PASSWORD: "
-
-  unset password
-  unset charcount
-  unset char
-  unset prompt
-  unset SSO_PASS
-
-  while IFS= read -p "$prompt" -r -s -n 1 char
-  do
-    if [[ $char == $'\0' ]] ; then
-      break
-    fi
-    if [[ $char == $'' ]] ; then
-      prompt=$'\b \b'
-      password="${password%?}"
-    else
-      prompt='*'
-      password+="$char"
-    fi
-  done
-  SSO_PASS=$password
-  echo
-  export SSO_PASS
-}
-
 chk_os;
 
 trap 'trap_exit; \
@@ -154,7 +126,7 @@ printf "${COLOR_OFF}"
 printf "INFO: preparing to build our docker container\n"
 printf "      using multiple tools, scripts and utilities to make the magic happen. Enjoy!\n"
 echo
-printf "INFO: AWS ACCESS KEY ID & SECRET KEY can be retrieved from: https://sks-gov-ctrl.signin.amazonaws-us-gov.com\n"
+printf "INFO: AWS ACCESS KEY ID & SECRET KEY can be retrieved from: https://console.aws.amazon.com => Security Credentials"
 printf "INFO: generate new keys if they are inactive, lost, etc...\n"
 echo
 
@@ -165,9 +137,9 @@ function ask() {
 
   if [[ -z ${REGION} ]];
   then
-    read -ep "[${qcnt}] Enter default home region [us-gov-west-1]: " REGION; export REGION
+    read -ep "[${qcnt}] Enter default home region [us-east-1]: " REGION; export REGION
   fi
-  [[ -z ${REGION} ]] && REGION="us-gov-west-1" && export REGION
+  [[ -z ${REGION} ]] && REGION="us-east-1" && export REGION
 
   if [[ -z ${AWS_ACCESS_KEY_ID} ]];
   then
@@ -188,11 +160,8 @@ function ask() {
     qcnt=$(expr $qcnt + 1)
     read -ep "[${qcnt}] Enter SLACK_BOT_TOKEN: " SLACK_BOT_TOKEN; export SLACK_BOT_TOKEN
   fi
-  [[ -z ${SLACK_BOT_TOKEN} ]] && echo "INFO: please provide the slack bot token for GOAT (stored in production password state)" && exit 1
-
-  get_sso;
+  [[ -z ${SLACK_BOT_TOKEN} ]] && echo "INFO: please provide the slack bot token for GOAT to use for communication:" && exit 1
   qcnt=$(expr $qcnt + 1)
-
   SSH_PUB_KEY="$(cat ${HOME}/.ssh/id_rsa.pub)"
   SSH_PRV_KEY="$(cat ${HOME}/.ssh/id_rsa)"
 }
@@ -247,7 +216,6 @@ AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
 AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
 SLACK_BOT_TOKEN="${SLACK_BOT_TOKEN}"
 USER="${USER}"
-SSO_PASS="${SSO_PASS}"
 SSH_PUB_KEY="${SSH_PUB_KEY}"
 SSH_PRV_KEY="${SSH_PRV_KEY}"
 LOGNAME="${USER}"
@@ -267,8 +235,8 @@ echo
 echo
 echo "INFO: login to goat now with: docker exec -it \$(docker ps -a| grep goat | awk '{print \$1}') bash -l"
 echo "INFO: copying .env to ${HOME} and out of the main repository"
-cat ${MYDIR}/.env > ${HOME}/.env 2>/dev/null
-[[ -f .env ]] && rm -f .env >/dev/null 2>&1
+cp -f ${MYDIR}/.env ${HOME}/.env 2>/dev/null
+[[ -f ${MYDIR}/.env ]] && rm -f ${MYDIR}/.env >/dev/null 2>&1
 echo "INFO: goat docker build is complete!"
 echo
 popd >/dev/null

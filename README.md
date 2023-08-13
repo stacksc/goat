@@ -21,6 +21,7 @@
     <li><a href="#current-usage">Usage</a></li>
     <li><a href="#versions">Versions</a></li>
     <li><a href="#jira-authentication">JIRA authentication</a></li>
+    <li><a href="#user-manuals">User Manuals</a></li>
   </ol>
 </details>
 
@@ -149,6 +150,16 @@ Enter password: **************
 INFO: Caching some system info now to save time later... please wait
 INFO: Caching facts complete
 ```
+
+<!-- USER MANUALS -->
+## User Manuals
+1. The following example demonstrates how to search the user manuals for a command using the `-m` switch:
+```
+$ goat -m jira -m search
+```
+This will find all manual pages containing patterns "jira" and "search":
+<img src="./images/user_manuals.png" alt="manuals" width="600"/>
+<img src="./images/user_manuals2.png" alt="manuals" width="600"/>
 
 ## AWS Authentication
 1. The following example demonstrates AWS authentication for the first time:
@@ -662,4 +673,3 @@ Commands:
 #### Native Notifications
 * native notifications are included on more critical tasks as in the following example:
 <img src="./images/native_notifications.png" alt="notifications" width="600"/>
-<br>

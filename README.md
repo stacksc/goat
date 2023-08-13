@@ -159,7 +159,7 @@ $ goat -m jira -m search
 ```
 This will find all manual pages containing patterns "jira" and "search":
 <img src="./images/user_manuals.png" alt="manuals" width="600"/>
-<img src="./images/user_manuals2.png" alt="manuals" width="600"/>
+<img src="./images/user_manuals2.png" alt="manuals" width="900"/>
 
 ## AWS Authentication
 1. The following example demonstrates AWS authentication for the first time:

@@ -243,7 +243,6 @@ class OSSclient():
                 return None
 
     def show_cache(self, type, profile_name, oci_region):
-        #self.auto_refresh(profile_name)
         DATA = []
         for ENTRY in self.CONFIGSTORE.PROFILES[profile_name]['metadata'][type][oci_region]:
             DATA_ENTRY = {}

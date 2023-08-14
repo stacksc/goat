@@ -57,8 +57,8 @@ def _show(ctx, profile_name, region):
                 CHOICE = ''.join(CHOICE) 
             except:
                 Log.critical("please select a region identifier to continue...")
-            RESPONSE = REGIONS.describe(CHOICE)
-            Log.info(f"describing {CHOICE}:\n" + json.dumps(RESPONSE, indent=2, sort_keys=True, default=str))
+            RESPONSE, DATA = REGIONS.describe(profile_name)
+            print(RESPONSE, DATA)
         else:
             REGIONS = get_REGIONclient(profile_name, auto_refresh=False, cache_only=True)
             RESPONSE = REGIONS.get_cached_regions(profile_name)

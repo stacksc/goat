@@ -4,6 +4,7 @@ from toolbox.logger import Log
 from .iam import iam
 from .oss import oss
 from .dbs import dbs
+from .vault import vault
 from .regions import regions
 from .compute import compute
 from .ocicli_wrapper import cli
@@ -33,6 +34,7 @@ CLI.add_command(iam)
 CLI.add_command(oss)
 CLI.add_command(regions)
 CLI.add_command(show)
+CLI.add_command(vault)
 
 if __name__ == "__main__":
     cli(ctx)

@@ -25,6 +25,7 @@ class REGIONSclient():
             self.get_connections()
 
     def get_connections(self):
+        oci.regions.enable_instance_metadata_service()
         Log.info(f"connecting to OCI as {self.OCI_PROFILE} via {self.OCI_REGION}...")
         self.CLIENT = oci.identity.IdentityClient(self.CONFIG_FROM_FILE)
         self.TENANTNAME = self.CLIENT.get_tenancy(tenancy_id=self.OCID).data.name
@@ -73,3 +74,14 @@ class REGIONSclient():
             self.get_region_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 
+    def describe(self, profile_name):
+        self.get_connections()
+        # Get the current user
+        USER = self.CLIENT.get_user(self.CONFIG_FROM_FILE["user"]).data
+        TENANCY = self.CLIENT.get_tenancy(tenancy_id=self.OCID).data
+        return USER, TENANCY
+   
+    def list_regions(self, profile_name):
+        if not self.CLIENT:
+            self.get_connections()
+        return self.CLIENT.list_regions().data 

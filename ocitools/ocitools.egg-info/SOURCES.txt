@@ -20,6 +20,8 @@ ocitools/ossclient.py
 ocitools/regions.py
 ocitools/regionsclient.py
 ocitools/shapes.py
+ocitools/vault.py
+ocitools/vaultclient.py
 ocitools.egg-info/PKG-INFO
 ocitools.egg-info/SOURCES.txt
 ocitools.egg-info/dependency_links.txt

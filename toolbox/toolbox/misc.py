@@ -1,5 +1,5 @@
 # misc functions
-import sys, os, shutil, getpass, importlib_resources, glob, gnupg, json, gnureadline, re, operator
+import sys, os, shutil, getpass, importlib_resources, glob, gnupg, json, gnureadline, re, operator, base64
 from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from pathlib import Path
@@ -36,6 +36,10 @@ def convertTuple(tup):
     for item in tup:
         str = str + item
     return str
+
+def decode_string(string):
+    string_bytes = string.encode('ascii')
+    return base64.b64decode(string_bytes).decode('ascii')
 
 def set_terminal_width():
     return max(80, shutil.get_terminal_size().columns - 2)

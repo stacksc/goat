@@ -4,6 +4,30 @@ from pathlib import Path
 from configstore.configstore import Config
 from toolbox.misc import detect_environment
 
+def complete_oci_profiles(ctx, param, incomplete):
+    CONFIG = Config('ocitools')
+    DATA = []
+    NAMES = []
+    for PROFILE in CONFIG.PROFILES:
+        if 'latest' not in PROFILE:
+            NAMES.append(PROFILE.strip())
+    if NAMES:
+        return [k for k in NAMES if k.startswith(incomplete)]
+    else:
+        return None
+
+def complete_aws_profiles(ctx, param, incomplete):
+    CONFIG = Config('awstools')
+    DATA = []
+    NAMES = []
+    for PROFILE in CONFIG.PROFILES:
+        if 'latest' not in PROFILE:
+            NAMES.append(PROFILE.strip())
+    if NAMES:
+        return [k for k in NAMES if k.startswith(incomplete)]
+    else:
+        return None
+
 def complete_aws_regions(ctx, param, incomplete):
     CONFIG = Config('awstools')
     DATA = []

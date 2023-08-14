@@ -19,6 +19,8 @@ ocitools/oss.py
 ocitools/ossclient.py
 ocitools/regions.py
 ocitools/regionsclient.py
+ocitools/secrets.py
+ocitools/secretsclient.py
 ocitools/shapes.py
 ocitools/vault.py
 ocitools/vaultclient.py

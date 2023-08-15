@@ -53,7 +53,7 @@ def _show(ctx, profile_name, secret, decrypt):
             for I in RESPONSE:
                 if I not in 'last_cache_update':
                     NAME = RESPONSE[I]['secret_name']
-                    ID = RESPONSE[I]['id'].ljust(50)
+                    ID = I.ljust(50)
                     DATA.append(ID + '\t' + NAME)
             INPUT = 'Secrets Manager'
             CHOICE = runMenu(DATA, INPUT)

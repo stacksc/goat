@@ -78,7 +78,7 @@ class SECRETclient():
                                 'content': CONTENT,
                                 'type': TYPE,
                                 'description': DESC,
-                                'id': ID,
+                                'compartment': COMP_NAME,
                                 'lifecycle_state': STATE
                             }
             except oci.exceptions.ServiceError as e:

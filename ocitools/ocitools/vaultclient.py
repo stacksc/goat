@@ -68,6 +68,7 @@ class VAULTclient():
                             STATE = DATA.lifecycle_state
                             VAULTS_CACHE[ID] = {
                                 'display_name': NAME,
+                                'compartment': COMP_NAME,
                                 'crypto_endpoint': CRYPTO_ENDPOINT,
                                 'management_endpoint': MGMT_ENDPOINT,
                                 'lifecycle_state': STATE

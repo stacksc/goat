@@ -92,7 +92,7 @@ def _show(ctx, profile_name, secret, decrypt):
             RESPONSE = SECRETS.get_cached_secrets(profile_name)
             show_as_table(RESPONSE, decrypt)
     else:
-        SECRETS = get_SECRDTclient(profile_name, auto_refresh=False, cache_only=True)
+        SECRETS = get_SECRETclient(profile_name, auto_refresh=False, cache_only=True)
         RESPONSE = SECRETS.describe(secret, profile_name)
         Log.info(f"describing {secret}:\n" + json.dumps(RESPONSE, indent=2, sort_keys=True, default=str))
 
@@ -103,10 +103,12 @@ def show_as_table(source_data, decrypt):
     try:
         for I in source_data:
             if I not in IGNORE:
-                SECRET = source_data[I]['content']
                 if decrypt:
-                    SECRET = decode_string(SECRET)
-                    source_data[I]['content'] = SECRET
+                    try:
+                        SECRET = decode_string(source_data[I]['content'])
+                        source_data[I]['content'] = SECRET
+                    except:
+                        pass
                 DATA.append(source_data[I])
                 if DATA:
                     DATADICT = DATA

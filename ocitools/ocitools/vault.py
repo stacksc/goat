@@ -3,25 +3,14 @@ from toolbox.logger import Log
 from .vaultclient import VAULTclient
 from tabulate import tabulate
 from configstore.configstore import Config
-from toolbox.misc import set_terminal_width, decode_string
+from toolbox.misc import set_terminal_width
 from .iam import get_latest_profile
 from toolbox.menumaker import Menu
 
 CONFIG = Config('ocitools')
 
-class my_dict(dict):
-    def subdict(self, keywords, fragile=False):
-        d = {}
-        for k in keywords:
-            try:
-                d[k] = self[k]
-            except KeyError:
-                if fragile:
-                    raise
-        return d
-
-@click.group('vault', invoke_without_command=True, help='module to manage vault and secrets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
-@click.option('-m', '--menu', help='use the menu to perform DBS actions', is_flag=True, show_default=True, default=False, required=False)
+@click.group('vault', invoke_without_command=True, help='module to manage vaults', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
+@click.option('-m', '--menu', help='use the menu to perform vault actions', is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
 def vault(ctx, menu):
     profile_name = ctx.obj['PROFILE']
@@ -31,82 +20,66 @@ def vault(ctx, menu):
         ctx.obj['MENU'] = False
     pass
 
-@vault.command(help='manually refresh vault secrets stored in cache', context_settings={'help_option_names':['-h','--help']})
+@vault.command(help='manually refresh vaults stored in cache', context_settings={'help_option_names':['-h','--help']})
 @click.pass_context
 def refresh(ctx):
     profile_name = ctx.obj['PROFILE']
-    _refresh('cached_secrets', profile_name)
+    _refresh('cached_vaults', profile_name)
 
 def _refresh(cache_type, profile_name):
     try:
-        if cache_type == 'cached_secrets':
+        if cache_type == 'cached_vaults':
             VAULT = get_VAULTclient(profile_name, auto_refresh=False)
-            RESULT = VAULT.refresh('cached_secrets', profile_name)
+            RESULT = VAULT.refresh('cached_vaults', profile_name)
         return True
     except:
         False
     
 @vault.command(help='show the data stored in cached vault', context_settings={'help_option_names':['-h','--help']})
-@click.option('-d', '--decrypt', help='decrypt secret content of type base64', is_flag=True, show_default=True, default=False, required=False)
-@click.argument('secret', required=False)
+@click.argument('vault', required=False)
 @click.pass_context
-def show(ctx, decrypt, secret):
+def show(ctx, vault):
     profile_name = ctx.obj['PROFILE']
-    _show(ctx, profile_name, secret, decrypt)
+    _show(ctx, profile_name, vault)
 
-def _show(ctx, profile_name, secret, decrypt):
-    if not secret:
+def _show(ctx, profile_name, vault):
+    if not vault:
         if ctx.obj["MENU"]:
             DATA = []
             DICT = {}
             VAULT = get_VAULTclient(profile_name, auto_refresh=False, cache_only=True)
-            RESPONSE = VAULT.get_cached_secrets(profile_name)
+            RESPONSE = VAULT.get_cached_vaults(profile_name)
             for I in RESPONSE:
                 if I not in 'last_cache_update':
-                    NAME = RESPONSE[I]['secret_name']
-                    ID = RESPONSE[I]['id'].ljust(50)
-                    DATA.append(ID + '\t' + NAME)
-            INPUT = 'Secrets Manager'
+                    NAME = RESPONSE[I]['display_name']
+                    DATA.append(I + '\t' + NAME)
+            INPUT = 'Vault Manager'
             CHOICE = runMenu(DATA, INPUT)
             try:
                 CHOICE = ''.join(CHOICE)
                 OCID = CHOICE.split('\t')[0].strip()
             except:
-                Log.critical("please select a secret to continue...")
+                Log.critical("please select a vault to continue...")
             RESPONSE = VAULT.describe(OCID, profile_name)
-            DATA = {}
-            Log.info(f"describing {OCID}:")
+            Log.info(f"describing {OCID}:\n")
             for I in RESPONSE:
-                if 'content' in I:
-                    SECRET = RESPONSE[I]
-                    continue
                 print(RESPONSE[I])
-            print("************************************************************")
-            print(f"INFO: secret content is: {SECRET}")
-            if decrypt:
-                SECRET = decode_string(SECRET)
-                print(f"INFO: decoded secret is: {SECRET}")
-            print("************************************************************")
         else:
             VAULT = get_VAULTclient(profile_name, auto_refresh=False, cache_only=True)
-            RESPONSE = VAULT.get_cached_secrets(profile_name)
-            show_as_table(RESPONSE, decrypt)
+            RESPONSE = VAULT.get_cached_vaults(profile_name)
+            show_as_table(RESPONSE)
     else:
         VAULT = get_VAULTclient(profile_name, auto_refresh=False, cache_only=True)
-        RESPONSE = VAULT.describe(secret, profile_name)
+        RESPONSE = VAULT.describe(vault)
         Log.info(f"describing {secret}:\n" + json.dumps(RESPONSE, indent=2, sort_keys=True, default=str))
 
-def show_as_table(source_data, decrypt):
+def show_as_table(source_data):
     IGNORE = ['last_cache_update']
     DATADICT = {}
     DATA = []
     try:
         for I in source_data:
             if I not in IGNORE:
-                SECRET = source_data[I]['content']
-                if decrypt:
-                    SECRET = decode_string(SECRET)
-                    source_data[I]['content'] = SECRET
                 DATA.append(source_data[I])
                 if DATA:
                     DATADICT = DATA

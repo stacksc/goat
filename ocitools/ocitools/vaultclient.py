@@ -1,12 +1,11 @@
 from toolbox.logger import Log
-from toolbox.misc import detect_environment, decode_string
+from toolbox.misc import detect_environment
 from configstore.configstore import Config
 from .oci_config import OCIconfig
 from . import iam_nongc
 import datetime
 from tabulate import tabulate
 import os, oci, json
-from . import shapes
 
 CONFIGSTORE = Config('ocitools')
 
@@ -41,11 +40,11 @@ class VAULTclient():
         self.TENANTNAME = self.CLIENT.get_tenancy(tenancy_id=self.OCID).data.name
         self.VAULT = oci.vault.VaultsClient(self.CONFIG_FROM_FILE)
         self.SECRETS = oci.secrets.SecretsClient(self.CONFIG_FROM_FILE)
-        return self.CLIENT, self.TENANTNAME, self.VAULT, self.SECRETS
+        self.KMS_VAULT = oci.key_management.KmsVaultClient(self.CONFIG_FROM_FILE)
+        return self.CLIENT, self.TENANTNAME, self.VAULT, self.SECRETS, self.KMS_VAULT
 
-    def get_secrets_cache(self, profile_name='default'):
-        FIELDS = ['id','key_id','lifecycle_state','secret_name','description']
-        SECRETS_CACHE = {}
+    def get_vaults_cache(self, profile_name='default'):
+        VAULTS_CACHE = {}
         if profile_name not in self.CONFIGSTORE.PROFILES:
             self.CONFIGSTORE.create_profile(profile_name)
         TIMESTAMP = str(datetime.datetime.now().timestamp())
@@ -53,66 +52,55 @@ class VAULTclient():
         Log.info("caching vault data across all compartments...")
         COMPARTMENTS = self.get_compartments()
         for COMPARTMENT in COMPARTMENTS:
-            SECRETS = []
+            VAULTS = []
             try:
-                SECRETS = self.VAULT.list_secrets(compartment_id=COMPARTMENT.id).data
+                VAULTS = self.KMS_VAULT.list_vaults(compartment_id=COMPARTMENT.id).data
                 COMP_NAME = str(COMPARTMENT.name)
                 COMP_OCID = str(COMPARTMENT.id)
-                if len(SECRETS) > 0:
-                    Log.info("compartment name: " + COMP_NAME + " holds secrets in region " + self.OCI_REGION)
-                    for DATA in SECRETS:
+                if len(VAULTS) > 0:
+                    Log.info("compartment name: " + COMP_NAME + " holds vaults in region " + self.OCI_REGION)
+                    for DATA in VAULTS:
                         if DATA:
                             ID = DATA.id
-                            KEY_ID = DATA.key_id
-                            SECRET_RESPONSE = self.SECRETS.get_secret_bundle(secret_id=ID).data
-                            TYPE = SECRET_RESPONSE.secret_bundle_content.content_type
-                            CONTENT = SECRET_RESPONSE.secret_bundle_content.content
-                            SECRET_NAME = DATA.secret_name
-                            DESC = DATA.description
-                            VAULT_ID = DATA.vault_id
+                            NAME = DATA.display_name
+                            CRYPTO_ENDPOINT = DATA.crypto_endpoint
+                            MGMT_ENDPOINT = DATA.management_endpoint
                             STATE = DATA.lifecycle_state
-                            SECRETS_CACHE[ID] = {
-                                'secret_name': SECRET_NAME,
-                                'content': CONTENT,
-                                'type': TYPE,
-                                'description': DESC,
-                                'id': ID,
+                            VAULTS_CACHE[ID] = {
+                                'display_name': NAME,
+                                'crypto_endpoint': CRYPTO_ENDPOINT,
+                                'management_endpoint': MGMT_ENDPOINT,
                                 'lifecycle_state': STATE
                             }
             except oci.exceptions.ServiceError as e:
-                SECRETS = ''
+                VAULTS = ''
                 pass
-
-        SECRETS_CACHE['last_cache_update'] = TIMESTAMP
+        VAULTS_CACHE['last_cache_update'] = TIMESTAMP
         DICT = {}
-        DICT[self.OCI_REGION] = SECRETS_CACHE
-        self.CONFIGSTORE.update_metadata(DICT, 'cached_secrets', profile_name, True)
+        DICT[self.OCI_REGION] = VAULTS_CACHE
+        self.CONFIGSTORE.update_metadata(DICT, 'cached_vaults', profile_name, True)
 
-    def describe(self, secret_ocid, profile_name):
+    def describe(self, vault_ocid, profile_name):
         try:
             self.get_connections()
         except:
             return None
-        SECRET_RESPONSE = self.SECRETS.get_secret_bundle(secret_id=secret_ocid).data
-        TYPE = SECRET_RESPONSE.secret_bundle_content.content_type
-        CONTENT = SECRET_RESPONSE.secret_bundle_content.content
-        DATA = self.VAULT.get_secret(secret_id=secret_ocid).data
+        RESPONSE = self.KMS_VAULT.get_vault(vault_ocid).data
         DICT = {}
-        DICT[secret_ocid] = DATA
-        DICT['content'] = CONTENT
+        DICT[vault_ocid] = RESPONSE
         return DICT
 
-    def get_cached_secrets(self, profile_name):
+    def get_cached_vaults(self, profile_name):
         if profile_name in self.CONFIGSTORE.PROFILES:
-            if 'cached_secrets' in self.CONFIGSTORE.PROFILES[profile_name]['metadata']:
-                return self.CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_secrets'][self.OCI_REGION]
+            if 'cached_vaults' in self.CONFIGSTORE.PROFILES[profile_name]['metadata']:
+                return self.CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_vaults'][self.OCI_REGION]
         else:
             return None
 
     def refresh(self, type, profile_name):
-        if type == 'cached_secrets':
-            Log.info("caching secrets...")
-            self.get_secrets_cache(profile_name)
+        if type == 'cached_vaults':
+            Log.info("caching vaults...")
+            self.get_vaults_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 
     def get_compartments(self):

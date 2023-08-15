@@ -9,19 +9,8 @@ from toolbox.menumaker import Menu
 
 CONFIG = Config('ocitools')
 
-class my_dict(dict):
-    def subdict(self, keywords, fragile=False):
-        d = {}
-        for k in keywords:
-            try:
-                d[k] = self[k]
-            except KeyError:
-                if fragile:
-                    raise
-        return d
-
 @click.group('secret', invoke_without_command=True, help='module to manage secrets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
-@click.option('-m', '--menu', help='use the menu to perform DBS actions', is_flag=True, show_default=True, default=False, required=False)
+@click.option('-m', '--menu', help='use the menu to perform secret actions', is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
 def secrets(ctx, menu):
     profile_name = ctx.obj['PROFILE']

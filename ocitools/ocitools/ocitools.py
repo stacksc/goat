@@ -5,6 +5,7 @@ from .iam import iam
 from .oss import oss
 from .dbs import dbs
 from .secrets import secrets
+from .vault import vault
 from .regions import regions
 from .compute import compute
 from .ocicli_wrapper import cli
@@ -41,6 +42,7 @@ CLI.add_command(oss)
 CLI.add_command(regions)
 CLI.add_command(secrets)
 CLI.add_command(show)
+CLI.add_command(vault)
 
 if __name__ == "__main__":
     cli(ctx)

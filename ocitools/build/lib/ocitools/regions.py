@@ -10,7 +10,7 @@ from toolbox.menumaker import Menu
 CONFIG = Config('ocitools')
 
 @click.group('regions', invoke_without_command=True, help='module to manage region subscriptions', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
-@click.option('-m', '--menu', help='use the menu to perform DBS actions', is_flag=True, show_default=True, default=False, required=False)
+@click.option('-m', '--menu', help='use the menu to perform region actions', is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
 def regions(ctx, menu):
     profile_name = ctx.obj['PROFILE']

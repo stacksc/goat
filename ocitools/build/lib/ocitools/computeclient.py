@@ -149,7 +149,6 @@ class MyComputeClient():
                                 DATA.append(COMPUTE_CACHE[I])
                         if DATA:
                             DATADICT = DATA
-                        Log.info(f"\n{tabulate(DATADICT, headers='keys', tablefmt='rst')}\n")
                         DICT = {}
                         DICT[self.OCI_REGION] = COMPUTE_CACHE 
                         self.CONFIGSTORE.update_metadata(DICT, 'cached_instances', profile_name, True)

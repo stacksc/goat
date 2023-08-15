@@ -47,7 +47,6 @@ class DBSclient():
         CACHE = self.get_cached_dbs_instances(profile_name)
         if CACHE is not None:
             return CACHE
-        #self.get_dbs_instances(profile_name)
 
     def DisplayInstances(self, instances, compartmentName, instancetype, region_name):
 
@@ -192,7 +191,6 @@ class DBSclient():
                 DATA.append(REGION_CACHE[I])
             if DATA:
                  DATADICT = DATA
-                 Log.info(f"\n{tabulate(DATADICT, headers='keys', tablefmt='rst')}\n")
                  self.CONFIGSTORE.update_metadata(REGION_CACHE, 'cached_regions', profile_name, True)
                  self.CONFIGSTORE = Config('ocitools')
 
@@ -226,7 +224,6 @@ class DBSclient():
                                 DATA.append(DBS_CACHE[I])
                         if DATA:
                             DATADICT = DATA
-                            Log.info(f"\n{tabulate(DATADICT, headers='keys', tablefmt='rst')}\n")
                             DICT = {}
                             DICT[self.OCI_REGION] = DBS_CACHE
                             self.CONFIGSTORE.update_metadata(DICT, 'cached_dbs_instances', profile_name, True)
@@ -245,7 +242,6 @@ class DBSclient():
                                 DATA.append(ADW_CACHE[I])
                         if DATA:
                             DATADICT = DATA
-                            Log.info(f"\n{tabulate(DATADICT, headers='keys', tablefmt='rst')}\n")
                             DICT = {}
                             DICT[self.OCI_REGION] = ADW_CACHE
                             self.CONFIGSTORE.update_metadata(DICT, 'cached_dbs_instances', profile_name, True)
@@ -264,7 +260,6 @@ class DBSclient():
                                 DATA.append(ATP_CACHE[I])
                         if DATA:
                             DATADICT = DATA
-                            Log.info(f"\n{tabulate(DATADICT, headers='keys', tablefmt='rst')}\n")
                             DICT = {}
                             DICT[self.OCI_REGION] = ATP_CACHE
                             self.CONFIGSTORE.update_metadata(DICT, 'cached_dbs_instances', profile_name, True)

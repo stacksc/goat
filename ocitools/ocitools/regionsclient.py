@@ -57,7 +57,6 @@ class REGIONSclient():
                 DATA.append(REGION_CACHE[I])
             if DATA:
                  DATADICT = DATA
-                 Log.info(f"\n{tabulate(DATADICT, headers='keys', tablefmt='rst')}\n")
                  self.CONFIGSTORE.update_metadata(REGION_CACHE, 'cached_regions', profile_name, True)
                  self.CONFIGSTORE = Config('ocitools')
 

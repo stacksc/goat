@@ -27,8 +27,6 @@ def slack(ctx, profile):
 @click.pass_context
 def post(ctx, channel, message, reply):
     profile = ctx.obj['PROFILE']
-    print(profile)
-    exit()
     RESPONSES = post_slack_message(channel, message, reply, profile)
     for RESPONSE in RESPONSES:
         Log.info(f"Message sent at {RESPONSE['ts']}")

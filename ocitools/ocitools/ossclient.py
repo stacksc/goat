@@ -1,4 +1,4 @@
-import datetime, time, os, importlib_resources, json, re, oci
+import datetime, time, os, json, re, oci
 from toolbox.logger import Log
 from toolbox.misc import detect_environment
 from configstore.configstore import Config
@@ -8,6 +8,10 @@ from tabulate import tabulate
 from pathlib import Path
 from tqdm.auto import tqdm
 from oci.object_storage.models import CreateBucketDetails
+try:
+    import importlib_resources
+except:
+    from importlib import resources
 
 CONFIGSTORE = Config('ocitools')
 

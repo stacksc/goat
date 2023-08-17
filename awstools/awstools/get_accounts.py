@@ -1,5 +1,8 @@
 import sys, os
-import importlib_resources
+try:
+    import importlib_resources
+except:
+    from importlib import resources
 
 def get_accounts():
 

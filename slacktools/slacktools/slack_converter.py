@@ -1,5 +1,8 @@
 import sys, os
-import importlib_resources
+try:
+    import importlib_resources
+except:
+    from importlib import resources
 
 def convert_slack_names(target_names):
 

@@ -1,8 +1,12 @@
 # misc functions
-import sys, os, shutil, getpass, importlib_resources, glob, gnupg, json, gnureadline, re, operator, base64
+import sys, os, shutil, getpass, glob, gnupg, json, gnureadline, re, operator, base64
 from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from pathlib import Path
+try:
+    import importlib_resources
+except:
+    from importlib import resources
 
 MOVE = '\033[40G'
 MOVE2 = '\033[75G'

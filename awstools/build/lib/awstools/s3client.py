@@ -1,4 +1,4 @@
-import datetime, time, os, importlib_resources, json, re
+import datetime, time, os, json, re
 from toolbox.logger import Log
 from toolbox.misc import detect_environment
 from configstore.configstore import Config
@@ -7,6 +7,10 @@ from .aws_config import AWSconfig
 from botocore.exceptions import ClientError
 from tabulate import tabulate
 from pathlib import Path
+try:
+    import importlib_resources
+except:
+    from importlib import resources
 
 CONFIGSTORE = Config('awstools')
 

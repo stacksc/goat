@@ -1,6 +1,9 @@
 import sys, os
-import importlib_resources
 from toolbox.misc import detect_environment
+try:
+    import importlib_resources
+except:
+    from importlib import resources
 
 def get_accounts(target_names):
 

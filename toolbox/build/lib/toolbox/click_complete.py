@@ -1,8 +1,12 @@
 # these are some examples of click auto completion for projects and slack emoji names
-import os, importlib_resources, glob
+import os, glob
 from pathlib import Path
 from configstore.configstore import Config
 from toolbox.misc import detect_environment
+try:
+    import importlib_resources
+except:
+    from importlib import resources
 
 def complete_oci_profiles(ctx, param, incomplete):
     CONFIG = Config('ocitools')

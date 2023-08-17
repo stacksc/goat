@@ -15,7 +15,6 @@
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contacts">Contacts</a></li>
     <li><a href="#cache-data">Cache</a></li>
     <li><a href="#current-usage">Usage</a></li>
@@ -125,22 +124,6 @@ GOAT:			1.0.0
 ## Roadmap
 
 - [ ] TBD - roadmap not yet available or determined.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-## Contributing
-Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-1. Fork the Project (optional)
-2. Create your Feature Branch: `git checkout -b feature/AmazingFeature`
-3. Commit your Changes: `git commit -m 'Add some AmazingFeature'`
-4. Push to the Branch: `git push origin feature/AmazingFeature`
-5. Open a Pull Request
-
-After making changes to the source code, please remember to build a new wheel for the project by running `python3 -m build --wheel` in the root of the project (where .toml file is)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

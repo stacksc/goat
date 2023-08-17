@@ -32,3 +32,6 @@ ocitools.egg-info/dependency_links.txt
 ocitools.egg-info/entry_points.txt
 ocitools.egg-info/requires.txt
 ocitools.egg-info/top_level.txt
+ocitools/archive/add_api_key.py
+ocitools/archive/find_storage.py
+ocitools/archive/list_instances.py

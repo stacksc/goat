@@ -103,11 +103,19 @@ GOAT:			1.0.0
 ### Prerequisites
 ### Installation
 
-1. Clone the repo:
+1. Create a virtual environment. We will call it `prod`:
+   ```sh
+   python3 -m venv ~/prod
+   ```
+2. Activate virtual environment:
+   ```sh
+   cd ~/prod && source bin/activate
+   ```
+3. Clone the repo:
    ```sh
    git clone git@github.com:stacksc/goat.git
    ```
-2. Install all required packages with 1 script from the main repository: 
+4. Install all required packages with 1 script from the main repository: 
    ```sh
    ./bulk.sh --action rebuild --target all
    ```

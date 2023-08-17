@@ -2,6 +2,7 @@
 import sys, click
 from toolbox.logger import Log
 from .iam import iam
+from .compartment import compartment
 from .oss import oss
 from .dbs import dbs
 from .secrets import secrets
@@ -36,6 +37,7 @@ def CLI(ctx, profile_name, region, toggle):
     
 CLI.add_command(cli)
 CLI.add_command(compute)
+CLI.add_command(compartment)
 CLI.add_command(dbs)
 CLI.add_command(iam)
 CLI.add_command(oss)

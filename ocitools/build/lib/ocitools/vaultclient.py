@@ -41,7 +41,8 @@ class VAULTclient():
         self.VAULT = oci.vault.VaultsClient(self.CONFIG_FROM_FILE)
         self.SECRETS = oci.secrets.SecretsClient(self.CONFIG_FROM_FILE)
         self.KMS_VAULT = oci.key_management.KmsVaultClient(self.CONFIG_FROM_FILE)
-        return self.CLIENT, self.TENANTNAME, self.VAULT, self.SECRETS, self.KMS_VAULT
+        self.COMPOSITE = oci.key_management.KmsVaultClientCompositeOperations(self.KMS_VAULT)
+        return self.CLIENT, self.TENANTNAME, self.VAULT, self.SECRETS, self.KMS_VAULT, self.COMPOSITE
 
     def get_vaults_cache(self, profile_name='default'):
         VAULTS_CACHE = {}
@@ -105,8 +106,32 @@ class VAULTclient():
         self.CONFIGSTORE = Config('ocitools')
 
     def get_compartments(self):
+        try:
+            self.get_connections()
+        except:
+            return None
         COMPARTMENTS = self.CLIENT.list_compartments(self.OCID, compartment_id_in_subtree=True).data
         ROOT_COMPARTMENT = self.CLIENT.get_compartment(compartment_id=self.OCID).data
         COMPARTMENTS.append(ROOT_COMPARTMENT)
         return COMPARTMENTS
+
+    def create_vault(self, comp_id, vault_name):
+        DETAILS = oci.key_management.models.CreateVaultDetails(compartment_id=comp_id, vault_type="DEFAULT", display_name=vault_name)
+        RESPONSE = self.COMPOSITE.create_vault_and_wait_for_state(DETAILS, wait_for_states=[oci.key_management.models.Vault.LIFECYCLE_STATE_ACTIVE])
+        return RESPONSE
+
+    def delete_vault(self, vault_id, deletion_time):
+        schedule_vault_deletion_details = oci.key_management.models.ScheduleVaultDeletionDetails(time_of_deletion=deletion_time)
+        RESPONSE = self.COMPOSITE.schedule_vault_deletion_and_wait_for_state(vault_id, schedule_vault_deletion_details=schedule_vault_deletion_details, wait_for_states=[oci.key_management.models.Vault.LIFECYCLE_STATE_PENDING_DELETION])
+        return RESPONSE
+
+    def get_region_from_profile(self, profile_name):
+        REGION = self.CONFIG.get_from_config('config', 'region', profile_name=profile_name)
+        if REGION is None:
+            Log.critical("Please run goat oci iam authenticate for the target profile before using the oss module")
+        return REGION
+
+    def get_vaults(self, comp_id):
+        VAULTS = self.KMS_VAULT.list_vaults(compartment_id=comp_id, sort_by='DISPLAYNAME', sort_order='ASC').data
+        return VAULTS
 

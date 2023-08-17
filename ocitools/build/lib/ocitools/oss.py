@@ -42,7 +42,7 @@ def create(ctx, bucket_name):
         CHOICE = ''.join(CHOICE)
         ocid = CHOICE.split('\t')[0].strip()
     else:
-        Log.critical('please choose a bucket')
+        Log.critical('please choose a compartment')
     _create(profile_name, bucket_name, ocid, oci_region)
     Log.info('refreshing cache now for buckets after creation')
     _refresh(profile_name, oci_region)

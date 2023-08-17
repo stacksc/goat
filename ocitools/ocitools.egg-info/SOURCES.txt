@@ -2,6 +2,7 @@ pyproject.toml
 ocitools/add_api_key.py
 ocitools/color.py
 ocitools/common.py
+ocitools/compartment.py
 ocitools/compute.py
 ocitools/computeclient.py
 ocitools/dbs.py
@@ -9,6 +10,7 @@ ocitools/dbsclient.py
 ocitools/find_storage.py
 ocitools/iam.py
 ocitools/iam_nongc.py
+ocitools/iamclient.py
 ocitools/list_instances.py
 ocitools/myoss.py
 ocitools/oci_config.py

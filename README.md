@@ -116,7 +116,7 @@ GOAT:			1.0.0
    ```
 4. Install all required packages with 1 script from the main repository: 
    ```sh
-   ./bulk.sh --action rebuild --target all
+   cd ~/prod/goat && ./bulk.sh --action rebuild --target all
    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

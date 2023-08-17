@@ -1,3 +1,4 @@
-click
+click>=7
 importlib_metadata
 click-man
+prompt_toolkit>=3

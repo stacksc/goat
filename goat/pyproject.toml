@@ -12,9 +12,10 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-  "click",
+  "click >= 7",
   "importlib_metadata",
-  "click-man"
+  "click-man",
+  "prompt_toolkit >= 3"
 ]
 
 [build-system]

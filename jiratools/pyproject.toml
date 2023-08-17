@@ -14,7 +14,7 @@ classifiers = [
 dependencies = [
   "toolbox",
   "configstore",
-  "click",
+  "click >= 7",
   "jira",
   "tabulate",
   "prompt_toolkit"

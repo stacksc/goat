@@ -128,7 +128,7 @@ def _delete(ctx, profile_name, oci_region):
         Log.critical(f'problem while scheduling the deletion of {VAULT_NAME}')
 
 @vault.command(help='show the data stored in cached vault', context_settings={'help_option_names':['-h','--help']})
-@click.argument('show', required=False)
+@click.argument('vault', required=False)
 @click.pass_context
 def show(ctx, vault):
     profile_name = ctx.obj['PROFILE']

@@ -3,6 +3,7 @@ from toolbox.logger import Log
 from .secretsclient import SECRETclient
 from .vaultclient import VAULTclient
 from tabulate import tabulate
+from .misc import get_random_password
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width, decode_string
 from .iam import get_latest_profile
@@ -39,12 +40,23 @@ def _refresh(cache_type, profile_name):
 
 @secrets.command(help='create OCI secrets for region and tenant', context_settings={'help_option_names':['-h','--help']})
 @click.option('-n', '--name', help='secret name', default=None, required=True, type=str)
-@click.option('-d', '--description', help='short description for the secret', default=None, required=False, type=str)
-@click.option('-c', '--content', help='secret content', default=None, required=False, type=str)
+@click.option('-d', '--description', help='short description for the secret; default uses the name of the secret as the description', default=None, required=False, type=str)
+@click.option('-c', '--content', help='secret content; default creates a random 16 character password', default=None, required=False, type=str)
 @click.pass_context
 def create(ctx, name, description, content):
     profile_name = ctx.obj['PROFILE']
     oci_region = get_region(ctx, profile_name)
+    if content is None:
+        import base64
+        content = get_random_password(12)
+        content_bytes = content.encode('ascii')
+        base64_bytes = base64.b64encode(content_bytes)
+        content = base64_bytes.decode("ascii")
+    else:
+        import base64
+        content_bytes = content.encode('ascii')
+        base64_bytes = base64.b64encode(content_bytes)
+        content = base64_bytes.decode("ascii")
     _create(ctx, profile_name, oci_region, name, description, content)
 
 def _create(ctx, profile_name, oci_region, name, description, content):
@@ -93,6 +105,7 @@ def _create(ctx, profile_name, oci_region, name, description, content):
     RESPONSE = SECRET.create_key(name, COMP_OCID, ENDPOINT)
     KEY_NAME = RESPONSE.display_name.ljust(25)
     KEY_OCID = RESPONSE.id.ljust(50)
+    Log.info(f'creating the base64 secret now, please wait...')
     if KEY_OCID:
         RESPONSE = SECRET.create_secret(COMP_OCID, content, name, VAULT_OCID, KEY_OCID, description)
         if RESPONSE:

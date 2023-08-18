@@ -87,7 +87,7 @@ def listToStringWithoutBrackets(list1):
 def cache_all_hack(profile_name):
     CONFIG = Config('ocitools')
     Log.info('oci profile caching initialized')
-    MODULES = ['oss', 'compute', 'dbs', 'regions', 'vault', 'secret']
+    MODULES = ['oss', 'compute', 'dbs', 'regions', 'vault', 'secret', 'compartment']
     for MODULE in MODULES:
         if MODULE == 'oss':
             CACHED = {}
@@ -107,6 +107,20 @@ def cache_all_hack(profile_name):
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_vaults', profile_name))
+            except:
+                pass
+            if not CACHED: 
+                Log.info(f'caching {MODULE} data...')
+                try:
+                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                except:
+                    pass
+            else:
+                Log.info(f'cache exists for {MODULE} data...')
+        elif MODULE == 'compartment':
+            CACHED = {}
+            try:
+                CACHED.update(CONFIG.get_metadata('cached_compartments', profile_name))
             except:
                 pass
             if not CACHED: 

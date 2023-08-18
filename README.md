@@ -79,14 +79,14 @@ Commands:
 ## Versions
 ```
 $ goat -v
-GOAT:			1.0.0
-- awstools:		1.0.3
-- configstore:		1.0.0
-- jenkinstools:		0.0.7
-- jiratools:		1.0.0
-- ocitools:		0.0.3
-- slacktools:		1.0.0
-- toolbox:		1.0.0
+GOAT:			2023.8.17.1901
+- awstools:		2023.8.17.1901
+- configstore:		2023.8.17.1901
+- jenkinstools:		2023.8.17.1903
+- jiratools:		2023.8.17.1901
+- ocitools:		2023.8.17.1901
+- slacktools:		2023.8.17.1901
+- toolbox:		2023.8.17.1901
 
         (_(
         /_/'_____/)

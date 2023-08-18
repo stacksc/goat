@@ -4,7 +4,7 @@ from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from pathlib import Path
 try:
-    import importlib_resources
+    import importlib_resources as resources
 except:
     from importlib import resources
 
@@ -91,7 +91,7 @@ def search_man_pages(manuals):
     MINE = []
     SAVE = []
 
-    MY_RESOURCES = importlib_resources.files("goat")
+    MY_RESOURCES = resources.files("goat")
     DATA = (MY_RESOURCES / "manuals")
 
     # compile a list of patterns

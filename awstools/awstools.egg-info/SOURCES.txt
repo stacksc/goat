@@ -1,4 +1,5 @@
 pyproject.toml
+awstools/__init__.py
 awstools/accounts.py
 awstools/aws_config.py
 awstools/awscli_wrapper.py

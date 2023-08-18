@@ -1,11 +1,9 @@
 [project]
 name = "jiratools"
-version = "1.0.0" # reviewed
 authors = [
   { name="Chris Stacks", email="centerupt@gmail.com" }
 ]
 description = "jiratools - a CLI client for Jira included by default"
-readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -19,11 +17,18 @@ dependencies = [
   "tabulate",
   "prompt_toolkit"
 ]
+dynamic = ["version", "readme"]
 
 [build-system]
 requires = [
-  "setuptools >= 40.9.0"
+  "setuptools >= 61.0.0",
+  "toolbox",
+  "configstore"
 ]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {attr = "jiratools.__version__"}
 
 [project.scripts]
 jiratools = "jiratools.jiraclient:cli"

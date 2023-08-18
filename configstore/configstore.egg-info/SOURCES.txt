@@ -1,4 +1,5 @@
 pyproject.toml
+configstore/__init__.py
 configstore/configstore.py
 configstore/configstore_ctrl.py
 configstore.egg-info/PKG-INFO

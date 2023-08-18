@@ -1,4 +1,5 @@
 pyproject.toml
+jiratools/__init__.py
 jiratools/auth.py
 jiratools/issue.py
 jiratools/jiraclient.py

@@ -1,4 +1,5 @@
 pyproject.toml
+jenkinstools/__init__.py
 jenkinstools/jenkins_auth.py
 jenkinstools/jenkins_show.py
 jenkinstools/jenkinsclient.py

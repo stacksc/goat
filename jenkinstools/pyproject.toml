@@ -1,11 +1,9 @@
 [project]
 name = "jenkinstools"
-version = "0.0.7"
 authors = [
   { name="Chris Stacks", email="centerupt@gmail.com" },
 ]
 description = "jenkinstools - everything you need to interact with Jenkins"
-readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -17,11 +15,18 @@ dependencies = [
   "python-jenkins",
   "click"
 ]
+dynamic = ["version", "readme"]
 
 [build-system]
 requires = [
-  "setuptools >= 40.9.0"
+  "setuptools >= 61.0.0",
+  "toolbox",
+  "configstore"
 ]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {attr = "jenkinstools.__version__"}
 
 [project.scripts]
 jenkinstools = "jenkinstools.jenkinstools:cli"

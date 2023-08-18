@@ -1,4 +1,5 @@
 pyproject.toml
+goat/__init__.py
 goat/cmd_preset.py
 goat/cmd_slack.py
 goat/goat.py

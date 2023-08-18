@@ -1,11 +1,9 @@
 [project]
 name = "toolbox"
-version = "1.0.0"
 authors = [
   { name="Chris Stacks", email="centerupt@gmail.com" }
 ]
 description = "toolbox - a library of standalone python modules ready for use"
-readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -18,10 +16,18 @@ dependencies = [
   "cryptography",
   "gnureadline",
 ]
+dynamic = ["version", "readme"]
 
 [build-system]
-requires = [ "setuptools >= 42.0.0" ]
+requires = [
+  "setuptools >= 61.0.0",
+]
+
 build-backend = 'setuptools.build_meta'
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {attr = "toolbox.__version__"}
 
 [tool.setuptools.packages]
 find = {}
@@ -29,4 +35,3 @@ find = {}
 # include our emoji.lst and other data
 [tool.setuptools.package-data]
 "*" = ["*.lst"]
-

@@ -42,7 +42,8 @@ class SECRETclient():
         self.VAULT = oci.vault.VaultsClient(self.CONFIG_FROM_FILE)
         self.SECRETS = oci.secrets.SecretsClient(self.CONFIG_FROM_FILE)
         self.KEYS = oci.key_management.KmsVaultClient(self.CONFIG_FROM_FILE)
-        return self.CLIENT, self.TENANTNAME, self.VAULT, self.SECRETS, self.KEYS
+        self.COMPOSITE = oci.key_management.KmsVaultClientCompositeOperations(self.KEYS)
+        return self.CLIENT, self.TENANTNAME, self.VAULT, self.SECRETS, self.KEYS, self.COMPOSITE
 
     def get_secrets_cache(self, profile_name='default'):
         FIELDS = ['id','key_id','lifecycle_state','secret_name','description']
@@ -134,3 +135,20 @@ class SECRETclient():
         self.get_connections()
         SECRETS = self.VAULT.list_secrets(compartment_id=ocid, lifecycle_state="ACTIVE").data
         return SECRETS
+
+    def create_secret(self, compartment_id, secret_content, secret_name, vault_id, key_id, secret_description):
+        self.get_connections()
+        VAULT_COMPOSITE = oci.vault.VaultsClientCompositeOperations(self.VAULT)
+        SECRET_CONTENT_DETAILS = oci.vault.models.Base64SecretContentDetails(content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64, name=secret_content, stage="CURRENT", content=secret_content)
+        SECRETS_DETAILS = oci.vault.models.CreateSecretDetails(compartment_id=compartment_id, description=secret_description, secret_content=SECRET_CONTENT_DETAILS, secret_name=secret_name, vault_id=vault_id, key_id=key_id)
+        RESPONSE = VAULT_COMPOSITE.create_secret_and_wait_for_state(create_secret_details=SECRETS_DETAILS, wait_for_states=[oci.vault.models.Secret.LIFECYCLE_STATE_ACTIVE])
+        return RESPONSE.data
+
+    def create_key(self, key_name, compartment_id, service_endpoint):
+        vault_management_client = oci.key_management.KmsManagementClient(self.CONFIG_FROM_FILE, service_endpoint=service_endpoint)
+        vault_management_client_composite = oci.key_management.KmsManagementClientCompositeOperations(vault_management_client)
+        KEY_SHAPE = oci.key_management.models.KeyShape(algorithm="AES", length=32)
+        KEY_DETAILS = oci.key_management.models.CreateKeyDetails(compartment_id=compartment_id, display_name=key_name, key_shape=KEY_SHAPE)
+        RESPONSE = vault_management_client_composite.create_key_and_wait_for_state(KEY_DETAILS, wait_for_states=[oci.key_management.models.Key.LIFECYCLE_STATE_ENABLED])
+        return RESPONSE.data
+

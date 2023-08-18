@@ -37,7 +37,69 @@ def _refresh(cache_type, profile_name):
     except:
         False
 
-@secrets.command(help='menu-guided solution to delete OCI secretss for region and tenant', context_settings={'help_option_names':['-h','--help']})
+@secrets.command(help='create OCI secrets for region and tenant', context_settings={'help_option_names':['-h','--help']})
+@click.option('-n', '--name', help='secret name', default=None, required=True, type=str)
+@click.option('-d', '--description', help='short description for the secret', default=None, required=False, type=str)
+@click.option('-c', '--content', help='secret content', default=None, required=False, type=str)
+@click.pass_context
+def create(ctx, name, description, content):
+    profile_name = ctx.obj['PROFILE']
+    oci_region = get_region(ctx, profile_name)
+    _create(ctx, profile_name, oci_region, name, description, content)
+
+def _create(ctx, profile_name, oci_region, name, description, content):
+    if description is None:
+        description = name
+    VAULT = get_VAULTclient(profile_name, oci_region, auto_refresh=False, cache_only=True)
+    SECRET = get_SECRETclient(profile_name, oci_region, auto_refresh=False, cache_only=True)
+    for PROFILE in CONFIG.PROFILES:
+        if PROFILE in IGNORE:
+            continue
+        CACHED_COMPARTMENTS = VAULT.get_compartments()
+        DATA = []
+        for COMPARTMENT in CACHED_COMPARTMENTS:
+            COMP_NAME = str(COMPARTMENT.name).ljust(50)
+            COMP_OCID = str(COMPARTMENT.id).ljust(100)
+            STR = COMP_OCID + '\t' + COMP_NAME
+            DATA.append(STR)
+    INPUT = f'Compartments => {profile_name}'
+    CHOICE = runMenu(DATA, INPUT)
+    if CHOICE:
+        CHOICE = ''.join(CHOICE)
+        COMP_OCID = CHOICE.split('\t')[0].strip()
+        COMP_NAME = CHOICE.split('\t')[1].strip()
+    else:
+        Log.critical('please choose a compartment')
+    DATA = []
+    VAULTS = VAULT.get_vaults(COMP_OCID)
+    for V in VAULTS:
+        if V.lifecycle_state not in 'ACTIVE':
+            continue
+        VAULT_NAME = V.display_name.ljust(25)
+        VAULT_OCID = V.id.ljust(50)
+        ENDPOINT = V.management_endpoint
+        DATA.append(VAULT_OCID + '\t' + VAULT_NAME + '\t' + ENDPOINT)
+    INPUT = f'Vaults => {profile_name}'
+    CHOICE = runMenu(DATA, INPUT)
+    if CHOICE:
+        CHOICE = ''.join(CHOICE)
+        VAULT_OCID = CHOICE.split('\t')[0].strip()
+        VAULT_NAME = CHOICE.split('\t')[1].strip()
+        ENDPOINT = CHOICE.split('\t')[2].strip()
+    else:
+        Log.critical('please choose a vault for secret creation')
+    DATA = []
+    Log.info(f'creating related AES encrypted key, please wait...')
+    RESPONSE = SECRET.create_key(name, COMP_OCID, ENDPOINT)
+    KEY_NAME = RESPONSE.display_name.ljust(25)
+    KEY_OCID = RESPONSE.id.ljust(50)
+    if KEY_OCID:
+        RESPONSE = SECRET.create_secret(COMP_OCID, content, name, VAULT_OCID, KEY_OCID, description)
+        if RESPONSE:
+            Log.info(f'completed the creation of secret name {name}')
+            print(RESPONSE)
+
+@secrets.command(help='menu-guided solution to delete OCI secrets for region and tenant', context_settings={'help_option_names':['-h','--help']})
 @click.pass_context
 def delete(ctx):
     profile_name = ctx.obj['PROFILE']
@@ -82,7 +144,7 @@ def _delete(ctx, profile_name, oci_region):
     else:
         Log.critical('please choose a secret for deletion')
     Log.info(f'deleting secret {SECRET_NAME} in compartment {NAME}')
-    RESPONSE = SECRET.delete_secret(OCID)
+    RESPONSE = SECRET.delete_secret(OCID).data
 
 @secrets.command(help='show the secrets stored in cache', context_settings={'help_option_names':['-h','--help']})
 @click.option('-d', '--decrypt', help='decrypt secret content of type base64', is_flag=True, show_default=True, default=False, required=False)

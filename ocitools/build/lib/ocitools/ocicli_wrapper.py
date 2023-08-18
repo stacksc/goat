@@ -13,7 +13,7 @@ if LATEST is None:
 else:
     LATEST = LATEST['config']['name']
 
-CONTEXT_SETTINGS = {'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width(), 'ignore_unknown_options': True, 'allow_extra_args': True}
+CONTEXT_SETTINGS = {'help_option_names':['-h'], 'max_content_width': set_terminal_width(), 'ignore_unknown_options': True, 'allow_extra_args': True}
 
 @click.command(help="run any ocicli (oci) command while leveraging ocitools profile functionality", context_settings=CONTEXT_SETTINGS)
 @click.argument('ocicli_command', nargs=-1, type=str, required=True)

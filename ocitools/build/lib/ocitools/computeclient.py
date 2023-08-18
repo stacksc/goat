@@ -35,7 +35,6 @@ class MyComputeClient():
             self.get_connections()
 
     def get_connections(self):
-        Log.info(f"connecting to OCI compute as {self.OCI_PROFILE} via {self.OCI_REGION}...")
         self.CLIENT = oci.identity.IdentityClient(self.CONFIG_FROM_FILE)
         self.TENANTNAME = self.CLIENT.get_tenancy(tenancy_id=self.OCID).data.name
         self.COMPUTE = oci.core.ComputeClient(self.CONFIG_FROM_FILE)
@@ -136,7 +135,7 @@ class MyComputeClient():
         for compartment in compartments:
             compartmentName = compartment.name
             if compartment.lifecycle_state == "ACTIVE":
-                Log.info("processing compartment:  " + compartmentName)
+                Log.debug("processing compartment:  " + compartmentName)
                 compartmentID = compartment.id
                 try:
                     response = oci.pagination.list_call_get_all_results(self.COMPUTE.list_instances,compartment_id=compartmentID)

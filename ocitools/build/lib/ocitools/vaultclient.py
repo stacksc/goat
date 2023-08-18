@@ -35,7 +35,7 @@ class VAULTclient():
             self.get_connections()
 
     def get_connections(self):
-        Log.info(f"connecting to OCI as {self.OCI_PROFILE} via {self.OCI_REGION}...")
+        #Log.info(f"connecting to OCI as {self.OCI_PROFILE} via {self.OCI_REGION}...")
         self.CLIENT = oci.identity.IdentityClient(self.CONFIG_FROM_FILE)
         self.TENANTNAME = self.CLIENT.get_tenancy(tenancy_id=self.OCID).data.name
         self.VAULT = oci.vault.VaultsClient(self.CONFIG_FROM_FILE)
@@ -59,7 +59,7 @@ class VAULTclient():
                 COMP_NAME = str(COMPARTMENT.name)
                 COMP_OCID = str(COMPARTMENT.id)
                 if len(VAULTS) > 0:
-                    Log.info("compartment name: " + COMP_NAME + " holds vaults in region " + self.OCI_REGION)
+                    Log.debug("compartment name: " + COMP_NAME + " holds vaults in region " + self.OCI_REGION)
                     for DATA in VAULTS:
                         if DATA:
                             ID = DATA.id

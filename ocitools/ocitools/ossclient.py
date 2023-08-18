@@ -43,7 +43,7 @@ class OSSclient():
             self.get_connections()
 
     def get_connections(self):
-        Log.info(f"connecting to OSS as {self.OCI_PROFILE} via {self.OCI_REGION}...")
+        #Log.info(f"connecting to OSS as {self.OCI_PROFILE} via {self.OCI_REGION}...")
         self.OSS = oci.object_storage.ObjectStorageClient(self.CONFIG_FROM_FILE)
         self.CLIENT = oci.identity.IdentityClient(self.CONFIG_FROM_FILE)
         self.NAMESPACE = self.OSS.get_namespace(compartment_id=self.OCID).data
@@ -213,7 +213,7 @@ class OSSclient():
                 COMP_NAME = str(COMPARTMENT.name)
                 COMP_OCID = str(COMPARTMENT.id)
                 if len(BUCKETS) > 0:
-                    Log.info("compartment name: " + COMP_NAME + " holds object storage buckets in region " + self.OCI_REGION)
+                    Log.debug("compartment name: " + COMP_NAME + " holds object storage buckets in region " + self.OCI_REGION)
                     for BUCKET in BUCKETS:
                         if BUCKET:
                             BUCKETNAME = str(BUCKET.name)

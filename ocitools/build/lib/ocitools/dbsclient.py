@@ -35,7 +35,6 @@ class DBSclient():
             self.get_connections()
 
     def get_connections(self):
-        Log.info(f"connecting to OCI DBS as {self.OCI_PROFILE} via {self.OCI_REGION}...")
         self.CLIENT = oci.identity.IdentityClient(self.CONFIG_FROM_FILE)
         self.TENANTNAME = self.CLIENT.get_tenancy(tenancy_id=self.OCID).data.name
         self.COMPUTE = oci.core.ComputeClient(self.CONFIG_FROM_FILE)
@@ -200,7 +199,7 @@ class DBSclient():
             self.CONFIGSTORE.create_profile(profile_name)
         TIMESTAMP = str(datetime.datetime.now().timestamp())
         self.get_connections()
-        Log.info("caching DBS instances...")
+        Log.info("caching DBS instances across all compartments...")
         response = oci.pagination.list_call_get_all_results(self.CLIENT.list_compartments,self.OCID,compartment_id_in_subtree=True)
         compartments = response.data
         RootCompartment = oci.identity.models.Compartment()
@@ -211,7 +210,7 @@ class DBSclient():
         for compartment in compartments:
             compartmentName = compartment.name
             if compartment.lifecycle_state == "ACTIVE":
-                Log.info("processing compartment:  " + compartmentName)
+                Log.debug("processing compartment:  " + compartmentName)
                 compartmentID = compartment.id
                 try:
                     response = oci.pagination.list_call_get_all_results(self.DBS.list_instances,compartment_id=compartmentID)

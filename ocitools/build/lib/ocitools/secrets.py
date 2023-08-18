@@ -1,6 +1,7 @@
 import click, os, json
 from toolbox.logger import Log
 from .secretsclient import SECRETclient
+from .vaultclient import VAULTclient
 from tabulate import tabulate
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width, decode_string
@@ -8,6 +9,7 @@ from .iam import get_latest_profile
 from toolbox.menumaker import Menu
 
 CONFIG = Config('ocitools')
+IGNORE = ['latest']
 
 @click.group('secret', invoke_without_command=True, help='module to manage secrets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
 @click.option('-m', '--menu', help='use the menu to perform secret actions', is_flag=True, show_default=True, default=False, required=False)
@@ -34,7 +36,54 @@ def _refresh(cache_type, profile_name):
         return True
     except:
         False
-    
+
+@secrets.command(help='menu-guided solution to delete OCI secretss for region and tenant', context_settings={'help_option_names':['-h','--help']})
+@click.pass_context
+def delete(ctx):
+    profile_name = ctx.obj['PROFILE']
+    oci_region = get_region(ctx, profile_name)
+    _delete(ctx, profile_name, oci_region)
+
+def _delete(ctx, profile_name, oci_region):
+    VAULT = get_VAULTclient(profile_name, oci_region, auto_refresh=False, cache_only=True)
+    SECRET = get_SECRETclient(profile_name, oci_region, auto_refresh=False, cache_only=True)
+    for PROFILE in CONFIG.PROFILES:
+        if PROFILE in IGNORE:
+            continue
+        CACHED_COMPARTMENTS = VAULT.get_compartments()
+        DATA = []
+        for COMPARTMENT in CACHED_COMPARTMENTS:
+            COMP_NAME = str(COMPARTMENT.name).ljust(50)
+            COMP_OCID = str(COMPARTMENT.id).ljust(100)
+            STR = COMP_OCID + '\t' + COMP_NAME
+            DATA.append(STR)
+    INPUT = f'Compartments => {profile_name}'
+    CHOICE = runMenu(DATA, INPUT)
+    if CHOICE:
+        CHOICE = ''.join(CHOICE)
+        OCID = CHOICE.split('\t')[0].strip()
+        NAME = CHOICE.split('\t')[1].strip()
+    else:
+        Log.critical('please choose a compartment')
+    SECRETS = SECRET.list_secrets(OCID)
+    DATA = []
+    for S in SECRETS:
+        if S.lifecycle_state not in 'ACTIVE':
+            continue
+        SECRET_NAME = S.secret_name.ljust(50)
+        OCID = S.id.ljust(100)
+        DATA.append(OCID + '\t' + SECRET_NAME)
+    INPUT = f'Secrets => {profile_name}'
+    CHOICE = runMenu(DATA, INPUT)
+    if CHOICE:
+        CHOICE = ''.join(CHOICE)
+        OCID = CHOICE.split('\t')[0].strip()
+        SECRET_NAME = CHOICE.split('\t')[1].strip()
+    else:
+        Log.critical('please choose a secret for deletion')
+    Log.info(f'deleting secret {SECRET_NAME} in compartment {NAME}')
+    RESPONSE = SECRET.delete_secret(OCID)
+
 @secrets.command(help='show the secrets stored in cache', context_settings={'help_option_names':['-h','--help']})
 @click.option('-d', '--decrypt', help='decrypt secret content of type base64', is_flag=True, show_default=True, default=False, required=False)
 @click.argument('secret', required=False)
@@ -112,6 +161,12 @@ def get_SECRETclient(profile_name, region='us-ashburn-1', auto_refresh=True, cac
         CLIENT.auto_refresh(profile_name)
     return CLIENT
 
+def get_VAULTclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
+    CLIENT = VAULTclient(profile_name, region, cache_only)
+    if auto_refresh:
+        CLIENT.auto_refresh(profile_name)
+    return CLIENT
+
 def runMenu(DATA, INPUT):
     COUNT = 0
     FINAL = []
@@ -126,3 +181,10 @@ def runMenu(DATA, INPUT):
     FINAL_MENU = Menu(FINAL, TITLE, JOINER, SUBTITLE)
     CHOICE = FINAL_MENU.display()
     return CHOICE
+
+def get_region(ctx, profile_name):
+    OCI_REGION = ctx.obj['REGION']
+    if not OCI_REGION:
+        VAULT = get_VAULTclient(profile_name)
+        OCI_REGION = VAULT.get_region_from_profile(profile_name)
+    return OCI_REGION

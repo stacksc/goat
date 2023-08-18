@@ -124,3 +124,13 @@ class SECRETclient():
         ROOT_COMPARTMENT = self.CLIENT.get_compartment(compartment_id=self.OCID).data
         COMPARTMENTS.append(ROOT_COMPARTMENT)
         return COMPARTMENTS
+
+    def delete_secret(self, ocid):
+        DETAILS = oci.vault.models.ScheduleSecretDeletionDetails()
+        RESPONSE = self.VAULT.schedule_secret_deletion(ocid, DETAILS)
+        return RESPONSE
+
+    def list_secrets(self, ocid):
+        self.get_connections()
+        SECRETS = self.VAULT.list_secrets(compartment_id=ocid, lifecycle_state="ACTIVE").data
+        return SECRETS

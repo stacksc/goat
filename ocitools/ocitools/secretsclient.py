@@ -54,6 +54,8 @@ class SECRETclient():
         Log.info("caching secrets across all compartments...")
         COMPARTMENTS = self.get_compartments()
         for COMPARTMENT in COMPARTMENTS:
+            if COMPARTMENT.lifecycle_state != 'ACTIVE':
+                continue
             SECRETS = []
             VAULT_ID = ''
             try:

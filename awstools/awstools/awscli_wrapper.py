@@ -13,9 +13,11 @@ if LATEST is None:
 else:
     LATEST = LATEST['config']['role']
 
-@click.command(help="run any awscli (aws) command while leveraging awstools profile functionality", context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
+CONTEXT_SETTINGS = {'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width(), 'ignore_unknown_options': True, 'allow_extra_args': True}
+
+@click.command(help="run any awscli (aws) command while leveraging awstools profile functionality", context_settings=CONTEXT_SETTINGS)
 @click.argument('awscli_command', nargs=-1, type=str, required=True)
-@click.option('-r', '--region', 'aws_region', help='AWS region to authenticate against', required=False, default='us-gov-west-1')
+@click.option('-r', '--region', 'aws_region', help='AWS region to authenticate against', required=False, default='us-east-1')
 @click.pass_context
 def cli(ctx, awscli_command, aws_region):
     aws_profile_name = ctx.obj['PROFILE']
@@ -27,7 +29,7 @@ def cli(ctx, awscli_command, aws_region):
     print(RESULT)
 
 class AWScli():
-    def __init__(self, aws_profile_name, in_boundary, aws_region='us-gov-west-1'):
+    def __init__(self, aws_profile_name, in_boundary, aws_region='us-east-1'):
         self.INB = detect_environment()
         self.AWS_PROFILE = aws_profile_name
         self.AWS_REGION = aws_region
@@ -59,7 +61,7 @@ class AWScli():
         RESULT = run_command(cmd)
         return RESULT
 
-def get_AWScli(aws_profile_name, aws_region='us-gov-west-1'):
+def get_AWScli(aws_profile_name, aws_region='us-east-1'):
     inb = False
     return AWScli(aws_profile_name, inb, aws_region)
 

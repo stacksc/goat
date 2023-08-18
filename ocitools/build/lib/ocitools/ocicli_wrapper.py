@@ -1,4 +1,4 @@
-import click, os, subprocess, tempfile
+import click, os, subprocess, tempfile, re
 from toolbox.logger import Log
 from .oci_config import OCIconfig
 from . import iam_nongc
@@ -13,7 +13,9 @@ if LATEST is None:
 else:
     LATEST = LATEST['config']['name']
 
-@click.command(help="run any ocicli (oci) command while leveraging ocitools profile functionality", context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
+CONTEXT_SETTINGS = {'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width(), 'ignore_unknown_options': True, 'allow_extra_args': True}
+
+@click.command(help="run any ocicli (oci) command while leveraging ocitools profile functionality", context_settings=CONTEXT_SETTINGS)
 @click.argument('ocicli_command', nargs=-1, type=str, required=True)
 @click.option('-r', '--region', 'region', help='OCI region to authenticate against', required=False, default='us-ashburn-1')
 @click.pass_context

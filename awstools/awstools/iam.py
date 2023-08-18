@@ -21,4 +21,3 @@ def get_latest_profile():
 
 if misc.detect_environment() == 'non-gc':
     iam.add_command(iam_nongc.authenticate)
-    iam.add_command(iam_nongc.assume_role)

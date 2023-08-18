@@ -49,35 +49,6 @@ def _authenticate(profile_name, aws_region='us-east-1', aws_output='json'):
         CONFIG.add_aws_profile(AWS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_OUTPUT, profile_name)
     return SESSION
 
-@click.command('assume-role', help='login using existing IAM creds or add new creds to config', context_settings={'help_option_names':['-h','--help']})
-@click.argument('aws_profile_name', nargs=-1, type=str)
-@click.option('-r', '--role', 'aws_role_name', help='name of the role to assume; i.e. PowerUser', required=False, default='PowerUser')
-@click.option('-c', '--creds', 'creds_profile_name', help='aws credential file to source for the IAM credentials', required=False, default=None)
-@click.option('-a', '--account', 'aws_account_number', help='aws account number to register new IAM credentials', required=False, default=None)
-def assume_role(aws_profile_name, aws_role_name, creds_profile_name, aws_account_number):
-    CONFIG.unset_aws_profile()
-    aws_profile_name = ''.join(aws_profile_name)
-    SESSION, KEY_ID, ACCESS_TOKEN, SESSION_TOKEN = _assume_role(aws_account_number, aws_profile_name, creds_profile_name, aws_role_name)
-    if SESSION_TOKEN is None:
-        Log.critical("failed to assume the role. most likely you supplied incorrect profile to source for IAM authentication")
-        MSG = f'failed to assume the role; {aws_profile_name} is an incorrect profile to source'
-        LINK = None
-        CMD = None
-        SUBTITLE = 'CRITICAL'
-        TITLE = 'GOAT'
-        Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
-    else:
-        Log.info("successfully assumed the role")
-        cache_all_hack(aws_profile_name)
-        print_role_info(KEY_ID, ACCESS_TOKEN, SESSION_TOKEN)
-        update_latest_profile(aws_profile_name)
-        MSG = f'{aws_profile_name} has been assumed successfully!'
-        LINK = None
-        CMD = None
-        SUBTITLE = 'INFO'
-        TITLE = 'GOAT'
-        Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
-
 def update_latest_profile(aws_profile_name):
     BASICS = Config('awstools')
     LATEST = BASICS.get_profile('latest')
@@ -89,32 +60,6 @@ def update_latest_profile(aws_profile_name):
 
 def listToStringWithoutBrackets(list1):
     return str(list1).replace('[','').replace(']','').replace("'", "")
-
-def _assume_role(aws_account_number=None, aws_profile_name=None, creds_profile=None, aws_role=None):
-    if aws_account_number is None:
-        AWS_ROLE_ARN = CONFIG.get_from_config('creds', 'role_arn', 'string', "", aws_profile_name)
-        if AWS_ROLE_ARN == "":
-            try:
-                aws_account_number = listToStringWithoutBrackets(get_accounts(aws_profile_name))
-                AWS_ROLE_ARN = f"arn:aws-us-gov:sts::{aws_account_number}:role/{aws_role}"
-            except:
-                MSG = 'Please supply an AWS account number when assuming a role for the first time'
-                LINK = 'https://github.com/stacksc/goat'
-                Log.notify(MSG, LINK)
-                Log.critical(MSG)
-    else:
-        AWS_ROLE_ARN = f"arn:aws-us-gov:sts::{aws_account_number}:role/{aws_role}"
-    if aws_profile_name == 'default':
-        Log.critical(f'{aws_profile_name} is not allowed for this method; please choose a different name')
-    CREDS_PROFILE = CONFIG.get_from_config('creds', 'source_profile', 'string', 'default', aws_profile_name, creds_profile)
-    CREDS_SESSION = _authenticate(CREDS_PROFILE)
-    AWS_REGION = CONFIG.get_from_config('config', 'region', 'string', 'us-east-1', aws_profile_name)
-    AWS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN = get_role_iam(CREDS_SESSION, AWS_ROLE_ARN, AWS_REGION)
-    if AWS_SECRET_ACCESS_KEY is not None:
-        CONFIG.unset_aws_profile()
-        CONFIG.config_add_role(aws_profile_name, AWS_ROLE_ARN, CREDS_PROFILE)
-    SESSION = get_role_session(AWS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
-    return SESSION, AWS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN
 
 def get_aws_session(aws_key_id, aws_secret_access_key, aws_region):
     CONFIG.unset_aws_profile()
@@ -154,17 +99,6 @@ def get_aws_roles(aws_session):
     for ROLE in CLIENT.list_roles()['Roles']:
         RESULT.append(ROLE['Arn'])
     return RESULT
-
-def get_role_iam(session, role_arn, aws_region):
-    try:
-        RANDOM_NAME = ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
-        CLIENT = session.client('sts', region_name=aws_region)
-        CREDS = CLIENT.assume_role(
-            RoleArn=role_arn,
-            RoleSessionName=RANDOM_NAME)
-        return CREDS['Credentials']['AccessKeyId'], CREDS['Credentials']['SecretAccessKey'], CREDS['Credentials']['SessionToken']
-    except:
-        Log.critical('failed to retrieve AWS IAM credentials')
 
 def print_role_info(KEY_ID, ACCESS_TOKEN, SESSION_TOKEN):
     EXPORT_CMDS = f"\nexport AWS_ACCESS_KEY_ID={KEY_ID}\nexport AWS_SECRET_ACCESS_KEY={ACCESS_TOKEN}\nexport AWS_SESSION_TOKEN={SESSION_TOKEN}"

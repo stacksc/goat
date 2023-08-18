@@ -77,35 +77,6 @@ class S3client():
             Log.warn('unknown error encountered')
             return False
 
-    def set_bucket_policy(self, mode, bucket, aws_profile_name):
-        CLIENT = self.SESSION.client('s3')
-        MY_RESOURCES = resources.files("toolbox")
-        if (re.search('ATLAS', aws_profile_name, re.IGNORECASE)):
-            FILENAME = f'govcloud-atlas-us-gov-west-1-prd-s3-bucket-vpc-restriction-{mode}.json'
-        else:
-            FILENAME = f'govcloud-us-gov-west-1-prd-s3-bucket-vpc-restriction-{mode}.json'
-        DATA = (MY_RESOURCES / f"policies/{FILENAME}")
-
-        with open(DATA) as f:
-            JSON = json.load(f)
-            STRING = json.dumps(JSON)
-        if not STRING:
-            Log.warn(f"unable to load JSON file: {FILENAME}")
-            return False
-        try:
-            RESULT = CLIENT.put_bucket_policy(Bucket=bucket, Policy=STRING)
-            if RESULT:
-                return RESULT
-            else:
-                Log.critical(f"unable to set the attached policy to bucket {bucket_name}")
-                return False
-        except ClientError:
-            Log.warn("insufficient privileges or problem loading json policy")
-            return False
-        except:
-            Log.warn('unknown error encountered')
-            return False
-
     def show_bucket_content(self, bucket_name, total=0):
         TIMEOUT = time.time() + 90
         ITEMS = []

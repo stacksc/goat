@@ -54,16 +54,19 @@ class SECRETclient():
         Log.info("caching secrets across all compartments...")
         COMPARTMENTS = self.get_compartments()
         for COMPARTMENT in COMPARTMENTS:
+            if COMPARTMENT.lifecycle_state != 'ACTIVE':
+                continue
             SECRETS = []
             VAULT_ID = ''
             try:
-                SECRETS = self.VAULT.list_secrets(compartment_id=COMPARTMENT.id).data
+                SECRETS = self.VAULT.list_secrets(compartment_id=COMPARTMENT.id, lifecycle_state="ACTIVE").data
                 COMP_NAME = str(COMPARTMENT.name)
                 COMP_OCID = str(COMPARTMENT.id)
                 if len(SECRETS) > 0:
                     Log.info("compartment name: " + COMP_NAME + " holds secrets in region " + self.OCI_REGION)
                     for DATA in SECRETS:
                         if DATA:
+                            print(DATA)
                             ID = DATA.id
                             KEY_ID = DATA.key_id
                             SECRET_RESPONSE = self.SECRETS.get_secret_bundle(secret_id=ID).data

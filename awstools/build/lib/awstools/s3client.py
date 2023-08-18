@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 from tabulate import tabulate
 from pathlib import Path
 try:
-    import importlib_resources
+    import importlib_resources as resources
 except:
     from importlib import resources
 
@@ -79,7 +79,7 @@ class S3client():
 
     def set_bucket_policy(self, mode, bucket, aws_profile_name):
         CLIENT = self.SESSION.client('s3')
-        MY_RESOURCES = importlib_resources.files("toolbox")
+        MY_RESOURCES = resources.files("toolbox")
         if (re.search('ATLAS', aws_profile_name, re.IGNORECASE)):
             FILENAME = f'govcloud-atlas-us-gov-west-1-prd-s3-bucket-vpc-restriction-{mode}.json'
         else:

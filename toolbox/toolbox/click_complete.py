@@ -4,7 +4,7 @@ from pathlib import Path
 from configstore.configstore import Config
 from toolbox.misc import detect_environment
 try:
-    import importlib_resources
+    import importlib_resources as resources
 except:
     from importlib import resources
 
@@ -124,7 +124,7 @@ def complete_emojis(ctx, param, incomplete):
 
 def listAllEmojis():
     EMOJIS = []
-    MY_RESOURCES = importlib_resources.files("toolbox")
+    MY_RESOURCES = resources.files("toolbox")
     DATA = (MY_RESOURCES / "emoji.lst")
     with open(DATA) as f:
         CONTENTS = f.read()

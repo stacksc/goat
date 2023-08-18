@@ -1,13 +1,13 @@
 import sys, os
 try:
-    import importlib_resources
+    import importlib_resources as resources
 except:
     from importlib import resources
 
 def get_accounts():
 
     TARGETS = []
-    MY_RESOURCES = importlib_resources.files("toolbox")
+    MY_RESOURCES = resources.files("toolbox")
     DATA = (MY_RESOURCES / "stage_accounts.csv")
 
     with open(DATA) as f:

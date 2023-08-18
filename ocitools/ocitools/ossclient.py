@@ -9,7 +9,7 @@ from pathlib import Path
 from tqdm.auto import tqdm
 from oci.object_storage.models import CreateBucketDetails
 try:
-    import importlib_resources
+    import importlib_resources as resources
 except:
     from importlib import resources
 

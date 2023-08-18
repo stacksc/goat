@@ -1,7 +1,7 @@
 import sys, os
 from toolbox.misc import detect_environment
 try:
-    import importlib_resources
+    import importlib_resources as resources
 except:
     from importlib import resources
 
@@ -9,7 +9,7 @@ def get_accounts(target_names):
 
     TARGETS = []
     RESULT = detect_environment()
-    MY_RESOURCES = importlib_resources.files("toolbox")
+    MY_RESOURCES = resources.files("toolbox")
     if 'prod' in RESULT:
         DATA = (MY_RESOURCES / "prod_accounts.lst")
     else:

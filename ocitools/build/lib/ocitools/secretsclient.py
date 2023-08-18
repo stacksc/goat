@@ -66,7 +66,6 @@ class SECRETclient():
                     Log.info("compartment name: " + COMP_NAME + " holds secrets in region " + self.OCI_REGION)
                     for DATA in SECRETS:
                         if DATA:
-                            print(DATA)
                             ID = DATA.id
                             KEY_ID = DATA.key_id
                             SECRET_RESPONSE = self.SECRETS.get_secret_bundle(secret_id=ID).data

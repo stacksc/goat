@@ -12,7 +12,7 @@ from toolbox.menumaker import Menu
 CONFIG = Config('ocitools')
 IGNORE = ['latest']
 
-@click.group('secret', invoke_without_command=True, help='module to manage secrets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
+@click.group('secrets', invoke_without_command=True, help='module to manage secrets', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
 @click.option('-m', '--menu', help='use the menu to perform secret actions', is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
 def secrets(ctx, menu):
@@ -113,13 +113,14 @@ def _create(ctx, profile_name, oci_region, name, description, content):
             print(RESPONSE)
 
 @secrets.command(help='menu-guided solution to delete OCI secrets for region and tenant', context_settings={'help_option_names':['-h','--help']})
+@click.option('-a', '--all', help='delete all secrets found', is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
-def delete(ctx):
+def delete(ctx, all):
     profile_name = ctx.obj['PROFILE']
     oci_region = get_region(ctx, profile_name)
-    _delete(ctx, profile_name, oci_region)
+    _delete(ctx, profile_name, oci_region, all)
 
-def _delete(ctx, profile_name, oci_region):
+def _delete(ctx, profile_name, oci_region, all):
     VAULT = get_VAULTclient(profile_name, oci_region, auto_refresh=False, cache_only=True)
     SECRET = get_SECRETclient(profile_name, oci_region, auto_refresh=False, cache_only=True)
     for PROFILE in CONFIG.PROFILES:
@@ -148,16 +149,26 @@ def _delete(ctx, profile_name, oci_region):
         SECRET_NAME = S.secret_name.ljust(50)
         OCID = S.id.ljust(100)
         DATA.append(OCID + '\t' + SECRET_NAME)
-    INPUT = f'Secrets => {profile_name}'
-    CHOICE = runMenu(DATA, INPUT)
-    if CHOICE:
-        CHOICE = ''.join(CHOICE)
-        OCID = CHOICE.split('\t')[0].strip()
-        SECRET_NAME = CHOICE.split('\t')[1].strip()
+    if all is not True:
+        INPUT = f'Secrets => {profile_name}'
+        CHOICE = runMenu(DATA, INPUT)
+        if CHOICE:
+            CHOICE = ''.join(CHOICE)
+            OCID = CHOICE.split('\t')[0].strip()
+            SECRET_NAME = CHOICE.split('\t')[1].strip()
+        else:
+            Log.critical('please choose a secret for deletion')
+        Log.info(f'deleting secret {SECRET_NAME} in compartment {NAME}')
+        RESPONSE = SECRET.delete_secret(OCID).data
     else:
-        Log.critical('please choose a secret for deletion')
-    Log.info(f'deleting secret {SECRET_NAME} in compartment {NAME}')
-    RESPONSE = SECRET.delete_secret(OCID).data
+        for S in SECRETS:
+            if S.lifecycle_state not in 'ACTIVE':
+                continue
+            SECRET_NAME = S.secret_name.ljust(50)
+            OCID = S.id.ljust(100)
+            DATA.append(OCID + '\t' + SECRET_NAME)
+            Log.info(f'deleting secret {SECRET_NAME} in compartment {NAME}')
+            RESPONSE = SECRET.delete_secret(OCID).data
 
 @secrets.command(help='show the secrets stored in cache', context_settings={'help_option_names':['-h','--help']})
 @click.option('-d', '--decrypt', help='decrypt secret content of type base64', is_flag=True, show_default=True, default=False, required=False)

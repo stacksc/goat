@@ -171,8 +171,6 @@ def show_as_table(source_data):
 
 def get_IAMclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
     CLIENT = IAMclient(profile_name, region, cache_only)
-    if auto_refresh:
-        CLIENT.auto_refresh(profile_name)
     return CLIENT
 
 def runMenu(DATA, INPUT):

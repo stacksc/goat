@@ -22,7 +22,6 @@ class RDSclient():
             self.get_session()
             
     def get_session(self):
-        Log.info(f"connecting to RDS as {self.AWS_PROFILE} via {self.AWS_REGION}...")
         if detect_environment() == 'non-gc':
             if self.CONFIG.profile_or_role(self.AWS_PROFILE):
                 self.SESSION = iam_nongc._authenticate(self.AWS_PROFILE, self.AWS_REGION)
@@ -40,16 +39,14 @@ class RDSclient():
         return RDS_INSTANCES
 
     def describe(self, database):
-        if self.CACHE_ONLY and hasattr(self, 'SESSION') is False:
-            self.get_session()
+        self.get_session()
         CLIENT = self.SESSION.client('rds')
         RESPONSE = CLIENT.describe_db_instances(DBInstanceIdentifier=database)
         return RESPONSE
 
     def get_rds_instances(self):
         C=0
-        if self.CACHE_ONLY and hasattr(self, 'SESSION') is False:
-            self.get_session()
+        self.get_session()
         CLIENT = self.SESSION.client('rds')
         RESPONSE = CLIENT.describe_db_instances()
         RDS_INSTANCES = {}
@@ -104,3 +101,11 @@ class RDSclient():
             Log.info('automatic refresh of rds instance cache initiated')
             self.refresh('cached_rds_instances', aws_profile_name)
 
+    def get_region_from_profile(self, aws_profile_name):
+        AWS_REGION = self.CONFIG.get_from_config('creds', 'region', profile_name=aws_profile_name)
+        if AWS_REGION is None: # this is for when the user wants to use a profile which sources another profile for IAM creds
+            CREDS_PROFILE = self.CONFIG.get_from_config('creds', 'source_profile', profile_name=aws_profile_name)
+            AWS_REGION = self.CONFIG.get_from_config('config', 'region', profile_name=CREDS_PROFILE)
+        if AWS_REGION is None:
+            Log.critical("unable to get the correct region from the config")
+        return AWS_REGION

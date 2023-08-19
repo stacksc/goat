@@ -5,7 +5,6 @@ from .iam import iam
 from .compartment import compartment
 from .oss import oss
 from .dbs import dbs
-from .secrets import secrets
 from .vault import vault
 from .regions import regions
 from .compute import compute
@@ -15,7 +14,7 @@ from .oci_config import OCIconfig
 from toolbox import misc
 from toolbox.misc import debug
 from .iam import get_latest_profile, get_latest_region
-from .iam_nongc import update_latest_profile
+from .iam_nongc import update_latest_profile, force_cache
 from toolbox.click_complete import complete_oci_regions, complete_oci_profiles
 
 MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET + misc.MOVE2 + " Region: " + misc.GREEN + misc.UNDERLINE + get_latest_region(get_latest_profile()).upper() + misc.RESET
@@ -24,15 +23,19 @@ MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.U
 @click.option('-p', '--profile', 'profile_name', help='profile name to use when working with ocitools', required=False, default=get_latest_profile())
 @click.option('-r', '--region', 'region', help='region name to use when working with ocitools', required=False, type=str, shell_complete=complete_oci_regions, default=None)
 @click.option('-t', '--toggle', 'toggle', help='toggle default profile to use when working with ocitools', required=False, type=str, shell_complete=complete_oci_profiles, default=get_latest_profile())
+@click.option('-c', '--cache', help="refresh all cache for region and tenant", is_flag=True, required=False, default=False, show_default=True)
 @click.pass_context
-def CLI(ctx, profile_name, region, toggle):
+def CLI(ctx, profile_name, region, toggle, cache):
     ctx.ensure_object(dict)
     ctx.obj['PROFILE'] = profile_name
     ctx.obj['REGION'] = region
     if toggle:
         if toggle != get_latest_profile(): 
             update_latest_profile(toggle)
-            exit()
+            sys.exit()
+    if cache is True:
+        force_cache(profile_name)
+        sys.exit()
     if region != get_latest_region(profile_name) and region != None:
         CONFIG = OCIconfig()
         CONFIG.update_oci_config('config', profile_name, 'region', region)
@@ -46,7 +49,6 @@ CLI.add_command(dbs)
 CLI.add_command(iam)
 CLI.add_command(oss)
 CLI.add_command(regions)
-CLI.add_command(secrets)
 CLI.add_command(show)
 CLI.add_command(vault)
 

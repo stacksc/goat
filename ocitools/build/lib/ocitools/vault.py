@@ -1,6 +1,8 @@
 import click, os, json
 from toolbox.logger import Log
 from .vaultclient import VAULTclient
+from .secrets import secrets
+from .keys import keys
 from tabulate import tabulate
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width
@@ -75,13 +77,14 @@ def _create(ctx, profile_name, oci_region, vault):
         Log.critical(f'problem while creating vault {vault}')
     
 @vault.command(help='menu-guided solution to delete OCI vault\'s for region and tenant', context_settings={'help_option_names':['-h','--help']})
+@click.option('-a', '--all', help='delete all vaults found', is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
 def delete(ctx):
     profile_name = ctx.obj['PROFILE']
     oci_region = get_region(ctx, profile_name)
-    _delete(ctx, profile_name, oci_region)
+    _delete(ctx, profile_name, oci_region, all)
 
-def _delete(ctx, profile_name, oci_region):
+def _delete(ctx, profile_name, oci_region, all):
     VAULT = get_VAULTclient(profile_name, oci_region, auto_refresh=False, cache_only=True)
     for PROFILE in CONFIG.PROFILES:
         if PROFILE in IGNORE:
@@ -103,29 +106,40 @@ def _delete(ctx, profile_name, oci_region):
         Log.critical('please choose a compartment')
     VAULTS = VAULT.get_vaults(OCID)
     DATA = []
+    DAYS = datetime.now() + timedelta(days=15)
     for MYVAULT in VAULTS:
         if MYVAULT.lifecycle_state not in 'ACTIVE':
             continue
         VAULT_NAME = MYVAULT.display_name.ljust(50)
         OCID = MYVAULT.id.ljust(100)
         DATA.append(OCID + '\t' + VAULT_NAME)
-    INPUT = f'Vaults => {profile_name}'
-    CHOICE = runMenu(DATA, INPUT)
-    if CHOICE:
-        CHOICE = ''.join(CHOICE)
-        OCID = CHOICE.split('\t')[0].strip()
-        VAULT_NAME = CHOICE.split('\t')[1].strip()
+    if all is not True:
+        INPUT = f'Vaults => {profile_name}'
+        CHOICE = runMenu(DATA, INPUT)
+        if CHOICE:
+            CHOICE = ''.join(CHOICE)
+            OCID = CHOICE.split('\t')[0].strip()
+            VAULT_NAME = CHOICE.split('\t')[1].strip()
+        else:
+            Log.critical('please choose a vault for deletion')
+        Log.info(f'scheduling deletion of vault {VAULT_NAME} in compartment {NAME}')
+        RESPONSE = VAULT.delete_vault(OCID, DAYS)
+        if RESPONSE:
+            Log.info(f'{VAULT_NAME} is now pending deletion on {DAYS}')
+        else:
+            Log.critical(f'problem while scheduling the deletion of {VAULT_NAME}')
     else:
-        Log.critical('please choose a vault for deletion')
-
-    DAYS = datetime.now() + timedelta(days=15)
-    Log.info(f'scheduling deletion of vault {VAULT_NAME} in compartment {NAME}')
-    RESPONSE = VAULT.delete_vault(OCID, DAYS)
-
-    if RESPONSE:
-        Log.info(f'{VAULT_NAME} is now pending deletion on {DAYS}')
-    else:
-        Log.critical(f'problem while scheduling the deletion of {VAULT_NAME}')
+        for MYVAULT in VAULTS:
+            if MYVAULT.lifecycle_state not in 'ACTIVE':
+                continue
+            VAULT_NAME = MYVAULT.display_name.ljust(50)
+            OCID = MYVAULT.id.ljust(100)
+            Log.info(f'scheduling deletion of vault {VAULT_NAME} in compartment {NAME}')
+            RESPONSE = VAULT.delete_vault(OCID, DAYS)
+            if RESPONSE:
+                Log.info(f'{VAULT_NAME} is now pending deletion on {DAYS}')
+            else:
+                Log.critical(f'problem while scheduling the deletion of {VAULT_NAME}')
 
 @vault.command(help='show the data stored in cached vault', context_settings={'help_option_names':['-h','--help']})
 @click.argument('vault', required=False)
@@ -207,3 +221,6 @@ def get_region(ctx, profile_name):
         VAULT = get_VAULTclient(profile_name)
         OCI_REGION = VAULT.get_region_from_profile(profile_name)
     return OCI_REGION
+
+vault.add_command(keys)
+vault.add_command(secrets)

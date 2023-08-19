@@ -111,6 +111,6 @@ def runMenu(DATA, INPUT):
 def get_region(ctx, profile_name):
     OCI_REGION = ctx.obj['REGION']
     if not OCI_REGION:
-        OSS = get_OSSclient(profile_name)
-        OCI_REGION = OSS.get_region_from_profile(profile_name)
+        DBS = get_DBSclient(profile_name)
+        OCI_REGION = DBS.get_region_from_profile(profile_name)
     return OCI_REGION

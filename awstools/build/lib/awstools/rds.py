@@ -82,7 +82,7 @@ def show_as_table(source_data, name=None):
     if DATA != []:
         Log.info(f"{name}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
 
-def get_RDSclient(aws_profile_name, aws_region='us-east-1', auto_refresh=True, cache_only=False):
+def get_RDSclient(aws_profile_name, aws_region='us-east-1', auto_refresh=False, cache_only=True):
     CLIENT = RDSclient(aws_profile_name, aws_region, False, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(aws_profile_name)
@@ -106,5 +106,6 @@ def runMenu(DATA, INPUT):
 def get_region(ctx, aws_profile_name):
     AWS_REGION = ctx.obj['REGION']
     if not AWS_REGION:
-        AWS_REGION = S3.get_region_from_profile(aws_profile_name)
+        RDS = get_RDSclient(aws_profile_name, auto_refresh=False)
+        AWS_REGION = RDS.get_region_from_profile(aws_profile_name)
     return AWS_REGION

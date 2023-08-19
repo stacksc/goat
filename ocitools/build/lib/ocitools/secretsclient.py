@@ -152,6 +152,13 @@ class SECRETclient():
         RESPONSE = vault_management_client_composite.create_key_and_wait_for_state(KEY_DETAILS, wait_for_states=[oci.key_management.models.Key.LIFECYCLE_STATE_ENABLED])
         return RESPONSE.data
 
+    def schedule_deletion_key(self, deletion_time, key_id, service_endpoint):
+        vault_management_client = oci.key_management.KmsManagementClient(self.CONFIG_FROM_FILE, service_endpoint=service_endpoint)
+        vault_management_client_composite = oci.key_management.KmsManagementClientCompositeOperations(vault_management_client)
+        SCHEDULE_KEY_DELETION_DETAILS = oci.key_management.models.sc(time_of_deletion=deletion_time)
+        RESPONSE = vault_management_client_composite.schedule_key_deletion_and_wait_for_state(schedule_key_deletion_details, wait_for_states=[oci.key_management.models.Key.LIFECYCLE_STATE_PENDING_DELETION])
+        return RESPONSE
+
     def auto_refresh(self, profile_name='default'):
         TIME_NOW = datetime.datetime.now().timestamp()
         try:

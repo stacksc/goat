@@ -117,7 +117,10 @@ class VAULTclient():
 
     def create_vault(self, comp_id, vault_name):
         DETAILS = oci.key_management.models.CreateVaultDetails(compartment_id=comp_id, vault_type="DEFAULT", display_name=vault_name)
-        RESPONSE = self.COMPOSITE.create_vault_and_wait_for_state(DETAILS, wait_for_states=[oci.key_management.models.Vault.LIFECYCLE_STATE_ACTIVE])
+        try:
+            RESPONSE = self.COMPOSITE.create_vault_and_wait_for_state(DETAILS, wait_for_states=[oci.key_management.models.Vault.LIFECYCLE_STATE_ACTIVE])
+        except Exception as err:
+            Log.critical(err)
         return RESPONSE
 
     def delete_vault(self, vault_id, deletion_time):

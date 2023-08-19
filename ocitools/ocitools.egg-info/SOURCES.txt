@@ -10,6 +10,8 @@ ocitools/dbsclient.py
 ocitools/iam.py
 ocitools/iam_nongc.py
 ocitools/iamclient.py
+ocitools/keys.py
+ocitools/keysclient.py
 ocitools/misc.py
 ocitools/oci_config.py
 ocitools/ocicli_wrapper.py

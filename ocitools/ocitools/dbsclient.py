@@ -289,3 +289,8 @@ class DBSclient():
             Log.info('automatic refresh of dbs instance cache initiated')
             self.refresh('cached_dbs_instances', profile_name)
 
+    def get_region_from_profile(self, profile_name):
+        REGION = self.CONFIG.get_from_config('config', 'region', profile_name=profile_name)
+        if REGION is None:
+            Log.critical("Please run goat oci iam authenticate for the target profile before using the oss module")
+        return REGION

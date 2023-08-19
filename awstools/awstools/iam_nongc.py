@@ -111,6 +111,14 @@ def print_role_info(KEY_ID, ACCESS_TOKEN, SESSION_TOKEN):
         chmod(f"{HOME}/goatrole.sh", MODE)
     Log.info("run source ~/goatrole.sh")
 
+def force_cache(aws_profile_name):
+    CONFIG = Config('awstools')
+    Log.info('aws profile caching initialized')
+    MODULES = ['s3', 'ec2', 'rds']
+    for MODULE in MODULES:
+        Log.info(f'caching {MODULE} data...')
+        run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
+
 def cache_all_hack(aws_profile_name):
     CONFIG = Config('awstools')
     Log.info('aws profile caching initialized')

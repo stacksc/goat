@@ -315,7 +315,7 @@ def _show(target, aws_profile_name, aws_region_name, bucket=None):
     except:
         return False
 
-def get_S3client(aws_profile_name, aws_region='us-east-1', auto_refresh=True, cache_only=False):
+def get_S3client(aws_profile_name, aws_region='us-east-1', auto_refresh=False, cache_only=False):
     CLIENT = S3client(aws_profile_name, aws_region, False, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(aws_profile_name)
@@ -339,5 +339,6 @@ def runMenu(DATA, INPUT):
 def get_region(ctx, aws_profile_name):
     AWS_REGION = ctx.obj['REGION']
     if not AWS_REGION:
+        S3 = get_S3client(aws_profile_name, 'us-east-1')
         AWS_REGION = S3.get_region_from_profile(aws_profile_name)
     return AWS_REGION

@@ -11,7 +11,7 @@ from toolbox import misc
 from toolbox.click_complete import complete_aws_regions, complete_aws_profiles
 from toolbox.misc import debug
 from .iam import get_latest_profile, get_latest_region
-from .iam_nongc import update_latest_profile
+from .iam_nongc import update_latest_profile, force_cache
 from .aws_config import AWSconfig
 
 MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET + misc.MOVE2 + " Region: " + misc.GREEN + misc.UNDERLINE + get_latest_region(get_latest_profile()).upper() + misc.RESET
@@ -20,15 +20,19 @@ MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.U
 @click.option('-p', '--profile', 'aws_profile_name', help='profile name to use when working with awstools', required=False, default=get_latest_profile())
 @click.option('-r', '--region', 'aws_region_name', help='region name to use when working with awstools', required=False, type=str, shell_complete=complete_aws_regions, default=None)
 @click.option('-t', '--toggle', 'toggle', help='toggle default profile to use when working with awstools', required=False, type=str, shell_complete=complete_aws_profiles, default=get_latest_profile())
+@click.option('-c', '--cache', 'cache', help="refresh all cache for region and tenant", is_flag=True, required=False, default=False, show_default=True)
 @click.pass_context
-def CLI(ctx, aws_profile_name, aws_region_name, toggle):
+def CLI(ctx, aws_profile_name, aws_region_name, toggle, cache):
     ctx.ensure_object(dict)
     ctx.obj['PROFILE'] = aws_profile_name
     ctx.obj['REGION'] = aws_region_name
     if toggle:
         if toggle != get_latest_profile(): 
             update_latest_profile(toggle)
-            exit()
+            sys.exit()
+    if cache is True:
+        force_cache(aws_profile_name)
+        sys.exit()
     if aws_region_name != get_latest_region(aws_profile_name) and aws_region_name != None:
         CONFIG = AWSconfig()
         CONFIG.update_aws_config('creds', aws_profile_name, 'region', aws_region_name)

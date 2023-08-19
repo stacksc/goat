@@ -29,7 +29,6 @@ class S3client():
             self.get_session()
 
     def get_session(self):
-        Log.info(f"connecting to S3 as {self.AWS_PROFILE} via {self.AWS_REGION}...")
         if detect_environment() == 'non-gc':
             if self.CONFIG.profile_or_role(self.AWS_PROFILE):
                 self.SESSION = iam_nongc._authenticate(self.AWS_PROFILE, self.AWS_REGION)
@@ -139,12 +138,12 @@ class S3client():
         return True
 
     def get_region_from_profile(self, aws_profile_name):
-        AWS_REGION = self.CONFIG.get_from_config('config', 'region', profile_name=aws_profile_name)
+        AWS_REGION = self.CONFIG.get_from_config('creds', 'region', profile_name=aws_profile_name)
         if AWS_REGION is None: # this is for when the user wants to use a profile which sources another profile for IAM creds
             CREDS_PROFILE = self.CONFIG.get_from_config('creds', 'source_profile', profile_name=aws_profile_name)
             AWS_REGION = self.CONFIG.get_from_config('config', 'region', profile_name=CREDS_PROFILE)
         if AWS_REGION is None:
-            Log.critical("Please run goat aws iam assume-role for the targer profile before using the s3 module")
+            Log.critical("Please run goat aws iam assume-role for the target profile before using the s3 module")
         return AWS_REGION
 
     def nuke_bucket(self, bucket_name, aws_client, aws_region):

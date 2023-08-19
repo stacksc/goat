@@ -146,4 +146,3 @@ def cache_all_hack(aws_profile_name):
 
 def run_command(command):
     PROC = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-

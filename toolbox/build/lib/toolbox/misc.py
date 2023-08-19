@@ -8,7 +8,7 @@ try:
 except:
     from importlib import resources
 
-MOVE = '\033[40G'
+MOVE = '\033[35G'
 MOVE2 = '\033[75G'
 HOME = os.getenv("HOME")
 RESET = '\033[0m'

@@ -54,7 +54,7 @@ def create(ctx, name, description, content):
         content = base64_bytes.decode("ascii")
     else:
         import base64
-        content_bytes = content.encode('ascii')
+        content_bytes = content.strip().encode('ascii')
         base64_bytes = base64.b64encode(content_bytes)
         content = base64_bytes.decode("ascii")
     _create(ctx, profile_name, oci_region, name, description, content)

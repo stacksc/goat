@@ -19,4 +19,11 @@ def get_latest_profile():
         PROFILE = LATEST['config']['name']
     return PROFILE
 
+def get_latest_region(profile_name):
+    CONFIG = OCIconfig()
+    REGION = CONFIG.get_from_config('config', 'region', profile_name=profile_name)
+    if REGION is None:
+        return 'us-ashburn-1'
+    return REGION
+
 iam.add_command(iam_nongc.authenticate)

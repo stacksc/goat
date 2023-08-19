@@ -5,7 +5,7 @@ from toolbox.menumaker import Menu
 from tabulate import tabulate
 from configstore.configstore import Config
 from toolbox.misc import set_terminal_width
-from .iam import get_latest_profile
+from .iam import get_latest_profile, get_latest_region
 
 CONFIG = Config('awstools')
 
@@ -27,22 +27,22 @@ def ec2(ctx, menu):
 @click.argument('cache_type', required=False, default='all', type=click.Choice(['all', 'instances', 'public_ips', 'regions', 'auto']))
 def refresh(ctx, cache_type):
     aws_profile_name = ctx.obj['PROFILE']
-    aws_region = get_region(ctx, aws_profile_name)
+    aws_region = get_latest_region(aws_profile_name)
     _refresh(cache_type, aws_profile_name, aws_region)
 
 def _refresh(cache_type, aws_profile_name, aws_region):
     try:    
         EC2 = get_EC2client(aws_profile_name, aws_region, auto_refresh=False)
         if cache_type == 'all':
-            EC2.refresh(aws_profile_name)
+            EC2.refresh(aws_profile_name, aws_region)
         if cache_type == 'instances':
-            EC2.cache_instances(aws_profile_name)
+            EC2.cache_instances(aws_profile_name, aws_region)
         if cache_type == 'public_ips':
-            EC2.cache_public_ips(aws_profile_name)
+            EC2.cache_public_ips(aws_profile_name, aws_region)
         if cache_type == 'regions':
-            EC2.cache_regions(aws_profile_name)
+            EC2.cache_regions(aws_profile_name, aws_region)
         if cache_type == 'auto':
-            EC2.auto_refresh(aws_profile_name)
+            EC2.auto_refresh(aws_profile_name, aws_region)
         return True
     except:
         return False
@@ -52,7 +52,7 @@ def _refresh(cache_type, aws_profile_name, aws_region):
 @click.argument('target', required=False, default='all', type=click.Choice(['all', 'instances', 'public_ips', 'regions', 'orphaned_ebs', 'orphaned_snaps']))
 def show(ctx, target):
     aws_profile_name = ctx.obj['PROFILE']
-    aws_region = get_region(ctx, aws_profile_name)
+    aws_region = get_latest_region(aws_profile_name)
     if ctx.obj["MENU"] and target == "instances":
         CACHED_INSTANCES = {}
         DATA = []
@@ -60,7 +60,7 @@ def show(ctx, target):
             if PROFILE == 'latest':
                 continue
             if PROFILE == aws_profile_name:
-                EC2 = get_EC2client(aws_profile_name, auto_refresh=False, cache_only=True)
+                EC2 = get_EC2client(aws_profile_name, aws_region, auto_refresh=False, cache_only=True)
                 RES = EC2.show_cache(aws_profile_name, 'cached_instances', aws_region, display=False)
                 for data in RES:
                     NAME = data["PrivateDnsName"].ljust(50)
@@ -93,7 +93,7 @@ def show(ctx, target):
 
 def _show(target, aws_profile_name, aws_region, display):
     try:
-        EC2 = get_EC2client(aws_profile_name, auto_refresh=False, cache_only=True)
+        EC2 = get_EC2client(aws_profile_name, aws_region, auto_refresh=False, cache_only=True)
         if target == 'instances' or target == 'all':
             EC2.show_cache(aws_profile_name, 'cached_instances', aws_region, display)
         if target == 'public_ips' or target == 'all':
@@ -317,8 +317,3 @@ def save_results(data, csvfile):
         writer.writeheader()
         writer.writerows(data)
 
-def get_region(ctx, aws_profile_name):
-    AWS_REGION = ctx.obj['REGION']
-    if not AWS_REGION:
-        AWS_REGION = S3.get_region_from_profile(aws_profile_name)
-    return AWS_REGION

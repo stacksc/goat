@@ -19,5 +19,12 @@ def get_latest_profile():
         AWS_PROFILE = LATEST['config']['role']
     return AWS_PROFILE
 
+def get_latest_region(profile_name):
+    CONFIG = AWSconfig()
+    REGION = CONFIG.get_from_config('creds', 'region', profile_name=profile_name)
+    if REGION is None:
+        return 'us-east-1'
+    return REGION
+
 if misc.detect_environment() == 'non-gc':
     iam.add_command(iam_nongc.authenticate)

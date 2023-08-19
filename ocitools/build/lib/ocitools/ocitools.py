@@ -13,11 +13,11 @@ from .ocicli_wrapper import cli
 from .ocitools_show import show
 from toolbox import misc
 from toolbox.misc import debug
-from .iam import get_latest_profile
+from .iam import get_latest_profile, get_latest_region
 from .iam_nongc import update_latest_profile
 from toolbox.click_complete import complete_oci_regions, complete_oci_profiles
 
-MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET
+MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET + misc.MOVE2 + " Region: " + misc.GREEN + misc.UNDERLINE + get_latest_region(get_latest_profile()).upper() + misc.RESET
 
 @click.group('oci', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', 'profile_name', help='profile name to use when working with ocitools', required=False, default=get_latest_profile())

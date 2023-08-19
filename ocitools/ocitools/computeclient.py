@@ -174,3 +174,8 @@ class MyComputeClient():
         self.show_cache(profile_name, oci_region, 'cached_public_ips', display=False)
         self.show_cache(profile_name, oci_region, 'cached_regions', display=False)
 
+    def get_region_from_profile(self, profile_name):
+        REGION = self.CONFIG.get_from_config('config', 'region', profile_name=profile_name)
+        if REGION is None:
+            Log.critical("Please run goat oci iam authenticate for the target profile before using the oss module")
+        return REGION

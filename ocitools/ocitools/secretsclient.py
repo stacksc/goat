@@ -139,7 +139,7 @@ class SECRETclient():
     def create_secret(self, compartment_id, secret_content, secret_name, vault_id, key_id, secret_description):
         self.get_connections()
         VAULT_COMPOSITE = oci.vault.VaultsClientCompositeOperations(self.VAULT)
-        SECRET_CONTENT_DETAILS = oci.vault.models.Base64SecretContentDetails(content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64, name=secret_content, stage="CURRENT", content=secret_content)
+        SECRET_CONTENT_DETAILS = oci.vault.models.Base64SecretContentDetails(content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64, name=secret_name, stage="CURRENT", content=secret_content)
         SECRETS_DETAILS = oci.vault.models.CreateSecretDetails(compartment_id=compartment_id, description=secret_description, secret_content=SECRET_CONTENT_DETAILS, secret_name=secret_name, vault_id=vault_id, key_id=key_id)
         RESPONSE = VAULT_COMPOSITE.create_secret_and_wait_for_state(create_secret_details=SECRETS_DETAILS, wait_for_states=[oci.vault.models.Secret.LIFECYCLE_STATE_ACTIVE])
         return RESPONSE.data

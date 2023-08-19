@@ -11,6 +11,7 @@ from .regions import regions
 from .compute import compute
 from .ocicli_wrapper import cli
 from .ocitools_show import show
+from .oci_config import OCIconfig
 from toolbox import misc
 from toolbox.misc import debug
 from .iam import get_latest_profile, get_latest_region
@@ -21,7 +22,7 @@ MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.U
 
 @click.group('oci', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', 'profile_name', help='profile name to use when working with ocitools', required=False, default=get_latest_profile())
-@click.option('-r', '--region', 'region', help='region name to use when working with ocitools', required=False, type=str, shell_complete=complete_oci_regions, default='us-ashburn-1')
+@click.option('-r', '--region', 'region', help='region name to use when working with ocitools', required=False, type=str, shell_complete=complete_oci_regions, default=None)
 @click.option('-t', '--toggle', 'toggle', help='toggle default profile to use when working with ocitools', required=False, type=str, shell_complete=complete_oci_profiles, default=get_latest_profile())
 @click.pass_context
 def CLI(ctx, profile_name, region, toggle):
@@ -32,6 +33,9 @@ def CLI(ctx, profile_name, region, toggle):
         if toggle != get_latest_profile(): 
             update_latest_profile(toggle)
             exit()
+    if region != get_latest_region(profile_name) and region != None:
+        CONFIG = OCIconfig()
+        CONFIG.update_oci_config('config', profile_name, 'region', region)
     Log.setup('ocitools', int(debug))
     pass
     

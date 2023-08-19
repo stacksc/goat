@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: slacktools
-Version: 2023.8.18.2150
+Version: 2023.8.19.738
 Summary: slackclient - a CLI client for GOAAT
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

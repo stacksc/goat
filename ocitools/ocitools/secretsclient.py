@@ -152,3 +152,12 @@ class SECRETclient():
         RESPONSE = vault_management_client_composite.create_key_and_wait_for_state(KEY_DETAILS, wait_for_states=[oci.key_management.models.Key.LIFECYCLE_STATE_ENABLED])
         return RESPONSE.data
 
+    def auto_refresh(self, profile_name='default'):
+        TIME_NOW = datetime.datetime.now().timestamp()
+        try:
+            SECRET_TS = self.CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_secrets']['last_cache_update']
+        except KeyError:
+            SECRET_TS = 0
+        if TIME_NOW - float(SECRET_TS) > self.CACHE_UPDATE_INTERVAL:
+            self.get_secrets_cache(profile_name)
+        self.CONFIGSTORE = Config('ocitools')

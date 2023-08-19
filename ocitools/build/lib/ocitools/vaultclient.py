@@ -135,3 +135,12 @@ class VAULTclient():
         VAULTS = self.KMS_VAULT.list_vaults(compartment_id=comp_id, sort_by='DISPLAYNAME', sort_order='ASC').data
         return VAULTS
 
+    def auto_refresh(self, profile_name='default'):
+        TIME_NOW = datetime.datetime.now().timestamp()
+        try:
+            VAULT_TS = self.CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_vaults']['last_cache_update']
+        except KeyError:
+            VAULT_TS = 0
+        if TIME_NOW - float(VAULT_TS) > self.CACHE_UPDATE_INTERVAL:
+            self.get_vaults_cache(profile_name)
+        self.CONFIGSTORE = Config('ocitools')

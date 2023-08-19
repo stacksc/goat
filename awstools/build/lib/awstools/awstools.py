@@ -14,7 +14,7 @@ from .iam import get_latest_profile, get_latest_region
 from .iam_nongc import update_latest_profile, force_cache
 from .aws_config import AWSconfig
 
-MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET + misc.MOVE2 + " Region: " + misc.GREEN + misc.UNDERLINE + get_latest_region(get_latest_profile()).upper() + misc.RESET
+MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET + " Region: " + misc.GREEN + misc.UNDERLINE + get_latest_region(get_latest_profile()).upper() + misc.RESET
 
 @click.group('aws', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', 'aws_profile_name', help='profile name to use when working with awstools', required=False, default=get_latest_profile())

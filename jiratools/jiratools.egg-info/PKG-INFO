@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: jiratools
-Version: 2023.8.19.1818
+Version: 2023.8.19.1827
 Summary: jiratools - a CLI client for Jira included by default
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

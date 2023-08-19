@@ -69,12 +69,12 @@ Options:
   -h, --help          Show this message and exit.
 
 Commands:
-  aws      AWS CLI Client              Current Profile: DEFAULT
-  configs  Config Client               Current Profile: N/A
-  jenkins  Jenkins Client              Current Profile: DEFAULT
-  jira     JIRA CLI Client             Current Profile: HTTPS://GOAAT.ATLASSIAN.NET
-  oci      OCI CLI Client              Current Profile: CENTERUPT
-  slack    Slack CLI Client            Current Profile: DEFAULT
+  aws      AWS CLI Client         Current Profile: CENTERUPT Region: AP-SOUTHEAST-1
+  configs  Config Client          Current Profile: N/A
+  jenkins  Jenkins Client         Current Profile: HTTP://LOCALHOST:8080
+  jira     JIRA CLI Client        Current Profile: HTTPS://GOAAT.ATLASSIAN.NET
+  oci      OCI CLI Client         Current Profile: CENTERUPT Region: US-ASHBURN-1
+  slack    Slack CLI Client       Current Profile: DEFAULT
 ```
 ## Versions
 ```

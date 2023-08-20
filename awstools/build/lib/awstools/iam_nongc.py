@@ -25,7 +25,7 @@ def authenticate(ctx, aws_region, aws_output):
         Log.critical(MSG)
     else:
         Log.info("credentials saved successfully")
-        cache_all_hack(profile_name)
+        cache_all_hack(profile_name, aws_region)
         Log.info(f"you can now use your new profile with 'aws --profile {profile_name}")
         update_latest_profile(profile_name)
         MSG = f'{profile_name} credentials saved successfully!'
@@ -111,46 +111,73 @@ def print_role_info(KEY_ID, ACCESS_TOKEN, SESSION_TOKEN):
         chmod(f"{HOME}/goatrole.sh", MODE)
     Log.info("run source ~/goatrole.sh")
 
-def force_cache(aws_profile_name):
+def force_cache(aws_profile_name, aws_region_name):
     CONFIG = Config('awstools')
     Log.info('aws profile caching initialized')
     MODULES = ['s3', 'ec2', 'rds']
     for MODULE in MODULES:
         Log.info(f'caching {MODULE} data...')
-        run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
+        run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} show')
 
-def cache_all_hack(aws_profile_name):
+def cache_all_hack(aws_profile_name, aws_region_name):
     CONFIG = Config('awstools')
     Log.info('aws profile caching initialized')
     MODULES = ['s3', 'ec2', 'rds']
     for MODULE in MODULES:
         if MODULE == 's3':
             CACHED = {}
+            FOUND = False
             try:
                 CACHED.update(CONFIG.get_metadata('cached_buckets', aws_profile_name))
             except:
                 pass
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
+                run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} show')
+            elif CACHED:
+                for REGION in CACHED:
+                    if aws_region_name == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} show')
         elif MODULE == 'ec2':
             CACHED = {}
+            FOUND = False
             try:
                 CACHED.update(CONFIG.get_metadata('cached_instances', aws_profile_name))
             except:
                 pass
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
+                run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} show')
+            elif CACHED:
+                for REGION in CACHED:
+                    if aws_region_name == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} show')
         elif MODULE == 'rds':
             CACHED = {}
+            FOUND = False
             try:
                 CACHED.update(CONFIG.PROFILES[aws_profile_name]['metadata']['cached_rds_instances'])
             except:
                 pass
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'goat aws -p {aws_profile_name} {MODULE} show')
+                run_command(f'goat aws -r {region_name} -p {aws_profile_name} {MODULE} show')
+            elif CACHED:
+                for REGION in CACHED:
+                    if aws_region_name == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} show')
 
 def run_command(command):
     PROC = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)

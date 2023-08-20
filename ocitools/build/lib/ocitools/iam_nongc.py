@@ -50,7 +50,7 @@ def authenticate(ctx, region, tenant, user, keyfile, fingerprint, profile):
         SUBTITLE = 'INFO'
         TITLE = 'GOAT'
         Log.notify(MSG, TITLE, SUBTITLE, LINK, CMD)
-        cache_all_hack(profile_name)
+        cache_all_hack(profile_name, region)
         update_latest_profile(profile_name)
 
 # worker function to make the method portable
@@ -84,27 +84,28 @@ def update_latest_profile(profile_name):
 def listToStringWithoutBrackets(list1):
     return str(list1).replace('[','').replace(']','').replace("'", "")
 
-def force_cache(profile_name):
+def force_cache(profile_name, region):
     CONFIG = Config('ocitools')
     Log.info('oci profile caching initialized')
     MODULES = ['oss', 'compute', 'dbs', 'regions', 'vault', 'secrets', 'compartment', 'keys']
     for MODULE in MODULES:
         if MODULE == 'secrets' or MODULE == 'keys':
-            os.system(f'goat oci -p {profile_name} vault {MODULE} refresh')
+            os.system(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
         else:
             Log.info(f'caching {MODULE} data...')
             try:
-                os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             except:
                 pass
 
-def cache_all_hack(profile_name):
+def cache_all_hack(profile_name, region):
     CONFIG = Config('ocitools')
     Log.info('oci profile caching initialized')
     MODULES = ['oss', 'compute', 'dbs', 'regions', 'vault', 'secrets', 'compartment', 'keys']
     for MODULE in MODULES:
         if MODULE == 'oss':
             CACHED = {}
+            FOUND = False
             try:
                 CACHED.update(CONFIG.get_metadata('cached_buckets', profile_name))
             except:
@@ -112,12 +113,21 @@ def cache_all_hack(profile_name):
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'vault':
+            FOUND = False
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_vaults', profile_name))
@@ -126,12 +136,21 @@ def cache_all_hack(profile_name):
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'compartment':
+            FOUND = False
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_compartments', profile_name))
@@ -140,12 +159,21 @@ def cache_all_hack(profile_name):
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'secrets':
+            FOUND = False
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_secrets', profile_name))
@@ -154,12 +182,21 @@ def cache_all_hack(profile_name):
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} vault {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} vault {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'keys':
+            FOUND = False
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_keys', profile_name))
@@ -168,12 +205,21 @@ def cache_all_hack(profile_name):
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} vault {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} vault {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'regions':
+            FOUND = False
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_regions', profile_name))
@@ -182,12 +228,21 @@ def cache_all_hack(profile_name):
             if not CACHED: 
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'compute':
+            FOUND = False
             CACHED = {}
             try:
                 CACHED.update(CONFIG.get_metadata('cached_instances', profile_name))
@@ -196,12 +251,21 @@ def cache_all_hack(profile_name):
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'dbs':
+            FOUND = False
             CACHED = {}
             try:
                 CACHED.update(CONFIG.PROFILES[profile_name]['metadata']['cached_dbs_instances'])
@@ -210,9 +274,17 @@ def cache_all_hack(profile_name):
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
                 try:
-                    os.system(f'goat oci -p {profile_name} {MODULE} refresh')
+                    os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
                     pass
+            elif CACHED:
+                for REGION in CACHED:
+                    if region == REGION:
+                        FOUND = True
+                        break
+                if FOUND is False:
+                    Log.info(f'caching {MODULE} data...')
+                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
 

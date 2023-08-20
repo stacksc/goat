@@ -825,6 +825,10 @@ Commands:
 <br>
 <img src="./images/download_1.png" alt="OCI Downloads" width="1200"/>
 
+#### OCI CLI interactive mode
+<img src="./images/oci-interactive.png" alt="OCICLI interactive" width="1200"/>
+<br>
+
 #### Native Notifications
 * native notifications are included on more critical tasks as in the following example:
 <img src="./images/native_notifications.png" alt="notifications" width="600"/>

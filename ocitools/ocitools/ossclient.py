@@ -43,7 +43,6 @@ class OSSclient():
             self.get_connections()
 
     def get_connections(self):
-        #Log.info(f"connecting to OSS as {self.OCI_PROFILE} via {self.OCI_REGION}...")
         self.OSS = oci.object_storage.ObjectStorageClient(self.CONFIG_FROM_FILE)
         self.CLIENT = oci.identity.IdentityClient(self.CONFIG_FROM_FILE)
         self.NAMESPACE = self.OSS.get_namespace(compartment_id=self.OCID).data

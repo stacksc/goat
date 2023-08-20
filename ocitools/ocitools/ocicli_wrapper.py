@@ -16,15 +16,27 @@ else:
 CONTEXT_SETTINGS = {'help_option_names':['-h'], 'max_content_width': set_terminal_width(), 'ignore_unknown_options': True, 'allow_extra_args': True}
 
 @click.command(help="run any ocicli (oci) command while leveraging ocitools profile functionality; append --help for usage on cli commands", context_settings=CONTEXT_SETTINGS)
-@click.argument('ocicli_command', nargs=-1, type=str, required=True)
-@click.option('-r', '--region', 'region', help='OCI region to authenticate against', required=False, default='us-ashburn-1')
+@click.argument('ocicli_command', nargs=-1, type=str, required=False)
+@click.option('-r', '--region', 'region', help='OCI region to authenticate against', required=False, default='us-ashburn-1', type=str)
+@click.option('-i', '--interactive', 'interactive', help='spawn the interactive shell', is_flag=True, required=False, default=False)
 @click.pass_context
-def cli(ctx, ocicli_command, region):
+def cli(ctx, ocicli_command, region, interactive):
     profile_name = ctx.obj['PROFILE']
     OCI = get_OCIcli(profile_name, region)
     CMD = ' '.join(ocicli_command) # convert tuple to string
-    RESULT = OCI.run_cmd(f"oci --profile {profile_name} --region {region} {CMD}")
-    print(RESULT)
+    if interactive is True:
+        try:
+            os.system(f"oci --profile {profile_name} --region {region} -i")
+        except:
+            Log.critical(f'unable to launch oci -i for interactive use; please install the latest OCI CLI.')
+    elif not CMD:
+        try:
+            os.system(f"oci --profile {profile_name} --region {region} -i")
+        except:
+            Log.critical(f'unable to launch oci -i for interactive use; please install the latest OCI CLI.')
+    else:
+        RESULT = OCI.run_cmd(f"oci --profile {profile_name} --region {region} {CMD}")
+        print(RESULT)
 
 class OCIcli():
     def __init__(self, profile_name, region='us-ashburn-1'):

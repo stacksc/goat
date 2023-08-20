@@ -46,7 +46,7 @@ def decode_string(string):
     return base64.b64decode(string_bytes).decode('ascii')
 
 def set_terminal_width():
-    return max(80, shutil.get_terminal_size().columns - 2)
+    return max(90, shutil.get_terminal_size().columns - 2)
 
 def get_aliases():
     COMPLETION = HOME + '/goat_completion.sh'

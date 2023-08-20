@@ -15,18 +15,30 @@ else:
 
 CONTEXT_SETTINGS = {'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width(), 'ignore_unknown_options': True, 'allow_extra_args': True}
 
-@click.command(help="run any awscli (aws) command while leveraging awstools profile functionality", context_settings=CONTEXT_SETTINGS)
-@click.argument('awscli_command', nargs=-1, type=str, required=True)
+@click.command(help="run any awscli (aws) command while leveraging awstools profile functionality; append --help for usage on cli commands", context_settings=CONTEXT_SETTINGS)
+@click.argument('awscli_command', nargs=-1, type=str, required=False)
 @click.option('-r', '--region', 'aws_region', help='AWS region to authenticate against', required=False, default='us-east-1')
+@click.option('-i', '--interactive', 'interactive', help='spawn the interactive shell', is_flag=True, required=False, default=False)
 @click.pass_context
-def cli(ctx, awscli_command, aws_region):
+def cli(ctx, awscli_command, aws_region, interactive):
     aws_profile_name = ctx.obj['PROFILE']
     if aws_profile_name == 'default':
         check_env()
     AWS = get_AWScli(aws_profile_name, aws_region)
     CMD = ' '.join(awscli_command) # convert tuple to string
-    RESULT = AWS.run_cmd(f"aws --region {aws_region} {CMD}")
-    print(RESULT)
+    if interactive is True:
+        try:
+            os.system('saws')
+        except:
+            Log.critical('unable to launch saws for an interactive shell')
+    elif not CMD:
+        try:
+            os.system('saws')
+        except:
+            Log.critical('unable to launch saws for an interactive shell')
+    else:
+        RESULT = AWS.run_cmd(f"aws --region {aws_region} {CMD}")
+        print(RESULT)
 
 class AWScli():
     def __init__(self, aws_profile_name, in_boundary, aws_region='us-east-1'):

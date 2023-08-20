@@ -526,68 +526,239 @@ $ goat configs show ocitools
         "metadata": {
             "name": "centerupt",
             "created_by": "stacksc",
-            "created_at": "1691710189.381707",
+            "created_at": "1692487004.961252",
             "fingerprint": "1f:ce:1a:08:94:93:b7:a9:56:29:38:71:20:a0:63:4e",
             "key_file": "~/.oci/oci_api_key.pem",
             "tenancy": "ocid1.tenancy.oc1..aaaaaaaajkxcejo4fjvjwfceouocuzxgmbexy7cqy423kjchmyywtpoigb5a",
             "region": "us-ashburn-1",
             "user": "ocid1.user.oc1..aaaaaaaaizly2w5xebvjn7rhty63aaq3ydavo45yueirf7ncv7s7hstpdi4a",
             "cached_buckets": {
-                "bucketeer": {
-                    "name": "bucketeer",
-                    "namespace": "idqa8rzudg50",
-                    "compartment": "test",
-                    "ocid": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a"
-                },
-                "goat-stacks": {
-                    "name": "goat-stacks",
-                    "namespace": "idqa8rzudg50",
-                    "compartment": "test",
-                    "ocid": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a"
-                },
-                "test-bucket": {
-                    "name": "test-bucket",
-                    "namespace": "idqa8rzudg50",
-                    "compartment": "test",
-                    "ocid": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a"
-                },
-                "last_cache_update": "1691710190.993007"
+                "us-ashburn-1": {
+                    "test-goat-2": {
+                        "name": "test-goat-2",
+                        "namespace": "idqa8rzudg50",
+                        "compartment": "test",
+                        "ocid": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a"
+                    },
+                    "test-goat": {
+                        "name": "test-goat",
+                        "namespace": "idqa8rzudg50",
+                        "compartment": "centerupt",
+                        "ocid": "ocid1.tenancy.oc1..aaaaaaaajkxcejo4fjvjwfceouocuzxgmbexy7cqy423kjchmyywtpoigb5a"
+                    },
+                    "last_cache_update": "1692495797.869417"
+                }
             },
             "cached_instances": {
-                "instance-20230807-1711": {
-                    "display_name": "instance-20230807-1711",
-                    "lifecycle_state": "RUNNING",
-                    "instance_type": "Compute",
-                    "shape": "VM.Standard.E2.1.Micro",
-                    "compartment_name": "root",
-                    "public_ips": "129.213.121.59 ",
-                    "private_ips": "10.0.0.202 ",
-                    "AD": "US-ASHBURN-AD-1"
-                },
-                "last_cache_update": "1691710193.441092"
+                "us-ashburn-1": {
+                    "instance-20230807-1711": {
+                        "display_name": "instance-20230807-1711",
+                        "lifecycle_state": "RUNNING",
+                        "instance_type": "Compute",
+                        "shape": "VM.Standard.E2.1.Micro",
+                        "compartment_name": "root",
+                        "public_ips": "129.213.121.59 ",
+                        "private_ips": "10.0.0.202 ",
+                        "AD": "US-ASHBURN-AD-1"
+                    },
+                    "last_cache_update": "1692487014.350064"
+                }
             },
             "cached_dbs_instances": {
-                "LLE8SPADCEIQ1DW9": {
-                    "display_name": "LLE8SPADCEIQ1DW9",
-                    "lifecycle_state": "AVAILABLE",
-                    "ocpu": 1,
-                    "memory": "n/a",
-                    "shape": "ATP",
-                    "compartment_name": "root",
-                    "type": "ATP",
-                    "public_ips": "n/a",
-                    "private_ips": "n/a",
-                    "OS": "n/a",
-                    "AD": "US-ASHBURN-1"
-                },
-                "last_cache_update": "1691710200.217792"
+                "us-ashburn-1": {
+                    "LLE8SPADCEIQ1DW9": {
+                        "display_name": "LLE8SPADCEIQ1DW9",
+                        "lifecycle_state": "STOPPED",
+                        "ocpu": 1,
+                        "memory": "n/a",
+                        "shape": "ATP",
+                        "compartment_name": "root",
+                        "type": "ATP",
+                        "public_ips": "n/a",
+                        "private_ips": "n/a",
+                        "OS": "n/a",
+                        "AD": "US-ASHBURN-1"
+                    },
+                    "last_cache_update": "1692487029.967132",
+                    "MTI4ETRAK6CBSN0C": {
+                        "display_name": "MTI4ETRAK6CBSN0C",
+                        "lifecycle_state": "AVAILABLE",
+                        "ocpu": 0,
+                        "memory": "n/a",
+                        "shape": "ATP",
+                        "compartment_name": "root",
+                        "type": "ATP",
+                        "public_ips": "n/a",
+                        "private_ips": "n/a",
+                        "OS": "n/a",
+                        "AD": "US-ASHBURN-1"
+                    }
+                }
             },
             "cached_regions": {
-                "IAD": {
+                "us-ashburn-1": {
                     "region_key": "IAD",
                     "region_name": "us-ashburn-1",
                     "status": "READY",
                     "is_home_region": true
+                }
+            },
+            "cached_vaults": {
+                "us-ashburn-1": {
+                    "ocid1.vault.oc1.iad.dvsn55nkaac7q.abuwcljtdnbc3y52gknda4m323mwghkxba6rwg6qius7ceib5zmcripeynfq": {
+                        "display_name": "JAZZYJAM",
+                        "compartment": "primary",
+                        "crypto_endpoint": "https://dvsn55nkaac7q-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn55nkaac7q-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "ACTIVE"
+                    },
+                    "ocid1.vault.oc1.iad.dvsn4n5daabia.abuwcljtwuleevaxighwb2a57dmmevvvp3l3djd4ermm3q4h2faq566pbbnq": {
+                        "display_name": "blah",
+                        "compartment": "test",
+                        "crypto_endpoint": "https://dvsn4n5daabia-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn4n5daabia-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "ocid1.vault.oc1.iad.dvsn4flyaadx4.abuwcljt3gopkgiyq3l73mv5w3stwiyjdbwthmvmuz4htxumouvriavrbwla": {
+                        "display_name": "PRIMARY-GOAT",
+                        "compartment": "test",
+                        "crypto_endpoint": "https://dvsn4flyaadx4-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn4flyaadx4-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "ocid1.vault.oc1.iad.dvsn5p7qaabwc.abuwcljrdrdiz2g3qsxts2gjfp7d735lpnowd5db2xq5dd25wpdyooyiolwq": {
+                        "display_name": "PRIMARYGOAT",
+                        "compartment": "centerupt",
+                        "crypto_endpoint": "https://dvsn5p7qaabwc-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn5p7qaabwc-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "ACTIVE"
+                    },
+                    "ocid1.vault.oc1.iad.dvsn4ncuaad2i.abuwcljrjxxf3gopfwqxylxzrr3bqxmgeicbad4l62bvfsi2z6f2b4chl7cq": {
+                        "display_name": "GOAT",
+                        "compartment": "centerupt",
+                        "crypto_endpoint": "https://dvsn4ncuaad2i-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn4ncuaad2i-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "ocid1.vault.oc1.iad.dvsn4mrwaafxg.abuwcljtkqqwxjul7vjdbnlmxukqxhpoy2hkkkrccwdykuvzhngb6hnevd4q": {
+                        "display_name": "PRIMARY-G",
+                        "compartment": "centerupt",
+                        "crypto_endpoint": "https://dvsn4mrwaafxg-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn4mrwaafxg-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "ocid1.vault.oc1.iad.dvsn4ileaaaey.abuwcljrr2e7g7vc5j3vj5pgh3en7xq4hrqtzebny7uohdt7y57nnuk5cx6q": {
+                        "display_name": "PRIMARY",
+                        "compartment": "centerupt",
+                        "crypto_endpoint": "https://dvsn4ileaaaey-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn4ileaaaey-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "ocid1.vault.oc1.iad.dvsn4fe2aaayo.abuwcljsuipzfgyaucpbrnjdwssgvn6pwk32wduqjjxjcoritnlvx73ulkva": {
+                        "display_name": "TESTING-GOAT",
+                        "compartment": "centerupt",
+                        "crypto_endpoint": "https://dvsn4fe2aaayo-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsn4fe2aaayo-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "ocid1.vault.oc1.iad.dvsnudxiaaa4e.abuwcljt4brhm6u4xhwsucrdolyxf3nuys65rn2u6k5s7crlxhkhltpqh53q": {
+                        "display_name": "TEST",
+                        "compartment": "centerupt",
+                        "crypto_endpoint": "https://dvsnudxiaaa4e-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://dvsnudxiaaa4e-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "ocid1.vault.oc1.iad.b5q42kbmaagui.abuwcljtm4664hztspkzk25tjrslamlk37ra4mdfvgg44ttnnw45tmkk2qoq": {
+                        "display_name": "Centerupt",
+                        "compartment": "centerupt",
+                        "crypto_endpoint": "https://b5q42kbmaagui-crypto.kms.us-ashburn-1.oraclecloud.com",
+                        "management_endpoint": "https://b5q42kbmaagui-management.kms.us-ashburn-1.oraclecloud.com",
+                        "lifecycle_state": "PENDING_DELETION"
+                    },
+                    "last_cache_update": "1692487034.060408"
+                }
+            },
+            "cached_secrets": {
+                "us-ashburn-1": {
+                    "ocid1.vaultsecret.oc1.iad.amaaaaaajwdohpyarnqkvteyutgrrtlozsgc2sphawozpuvsxucbo42rhzla": {
+                        "secret_name": "thisIsTest",
+                        "content": "WndleEpkb1JuMzdNY0Zs",
+                        "type": "BASE64",
+                        "description": "thisIsTest",
+                        "compartment": "centerupt",
+                        "lifecycle_state": "ACTIVE"
+                    },
+                    "last_cache_update": "1692487038.140763"
+                }
+            },
+            "cached_compartments": {
+                "us-ashburn-1": {
+                    "ocid1.compartment.oc1..aaaaaaaa3isbxyb7h3k4a5lsfrcegchfzdcyl3at7tupo2agsf66255wbz6a": {
+                        "name": "jazz.1a2AmUCn",
+                        "id": "ocid1.compartment.oc1..aaaaaaaa3isbxyb7h3k4a5lsfrcegchfzdcyl3at7tupo2agsf66255wbz6a",
+                        "lifecycle_state": "DELETED",
+                        "description": "jazz"
+                    },
+                    "ocid1.compartment.oc1..aaaaaaaa6lru6dwzpeldmemduvycx3sw6kovxzig6miumhxc3znsx4r2wdhq": {
+                        "name": "jazzyjeff.3A9fZVcg",
+                        "id": "ocid1.compartment.oc1..aaaaaaaa6lru6dwzpeldmemduvycx3sw6kovxzig6miumhxc3znsx4r2wdhq",
+                        "lifecycle_state": "DELETED",
+                        "description": "jazzyjeff"
+                    },
+                    "ocid1.compartment.oc1..aaaaaaaacqvk5lihdtkzp6svy3dmtrk5rwpjseycuigndjki3vtcu7ytbenq": {
+                        "name": "ManagedCompartmentForPaaS",
+                        "id": "ocid1.compartment.oc1..aaaaaaaacqvk5lihdtkzp6svy3dmtrk5rwpjseycuigndjki3vtcu7ytbenq",
+                        "lifecycle_state": "ACTIVE",
+                        "description": "idcs-53f91ffa8629421090151dedc15f7c93|24092907|centerupt@gmail.com-Oracle-732170"
+                    },
+                    "ocid1.compartment.oc1..aaaaaaaarx7w6xroehgvclzbe4jt34cyhyg6hzfquuyftpppkbqjcusqmilq": {
+                        "name": "primary",
+                        "id": "ocid1.compartment.oc1..aaaaaaaarx7w6xroehgvclzbe4jt34cyhyg6hzfquuyftpppkbqjcusqmilq",
+                        "lifecycle_state": "ACTIVE",
+                        "description": "primary"
+                    },
+                    "ocid1.compartment.oc1..aaaaaaaavl24h3k3ibe5w4ph57zsy7c7ja7twah4637jfdktq5vhm4xdepla": {
+                        "name": "shep",
+                        "id": "ocid1.compartment.oc1..aaaaaaaavl24h3k3ibe5w4ph57zsy7c7ja7twah4637jfdktq5vhm4xdepla",
+                        "lifecycle_state": "ACTIVE",
+                        "description": "Testing compartments holding instances"
+                    },
+                    "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a": {
+                        "name": "test",
+                        "id": "ocid1.compartment.oc1..aaaaaaaaxdgwsdrg47aattjmpu5ue3i5o5wuq4bmmpbdxzrhzrbi2iejr52a",
+                        "lifecycle_state": "ACTIVE",
+                        "description": "This is a test compartment to hold compute instances"
+                    },
+                    "ocid1.compartment.oc1..aaaaaaaa2iatkwmfk42qdqtgnno2y2isjm55eylmw3y26aevawthlh3tvkoa": {
+                        "name": "test-goat.A9nJDzlX",
+                        "id": "ocid1.compartment.oc1..aaaaaaaa2iatkwmfk42qdqtgnno2y2isjm55eylmw3y26aevawthlh3tvkoa",
+                        "lifecycle_state": "DELETED",
+                        "description": "test-goat"
+                    },
+                    "ocid1.tenancy.oc1..aaaaaaaajkxcejo4fjvjwfceouocuzxgmbexy7cqy423kjchmyywtpoigb5a": {
+                        "name": "centerupt",
+                        "id": "ocid1.tenancy.oc1..aaaaaaaajkxcejo4fjvjwfceouocuzxgmbexy7cqy423kjchmyywtpoigb5a",
+                        "lifecycle_state": "ACTIVE",
+                        "description": "centerupt"
+                    },
+                    "last_cache_update": "1692487041.320159"
+                }
+            },
+            "cached_keys": {
+                "us-ashburn-1": {
+                    "ocid1.key.oc1.iad.dvsn5p7qaabwc.abuwcljr43otebl6lj7mkqmyocnnvyhxm5i5k2opkkjopza4rsldwucrnd3a": {
+                        "display_name": "keyName",
+                        "lifecycle_state": "ENABLED",
+                        "protection_mode": "HSM",
+                        "algorithm": "AES"
+                    },
+                    "ocid1.key.oc1.iad.dvsn5p7qaabwc.abuwcljtyw7fa5cxyyoo5g7wdg4hthrrfpwxbxh7xl4bu5lpdgj54qop2csq": {
+                        "display_name": "thisIsTest",
+                        "lifecycle_state": "ENABLED",
+                        "protection_mode": "HSM",
+                        "algorithm": "AES"
+                    },
+                    "last_cache_update": "1692487043.272804"
                 }
             }
         }
@@ -599,7 +770,7 @@ $ goat configs show ocitools
         "metadata": {
             "name": "latest",
             "created_by": "stacksc",
-            "created_at": "1691710203.898848"
+            "created_at": "1692487046.984028"
         }
     }
 }

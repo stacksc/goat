@@ -169,7 +169,7 @@ def cache_all_hack(aws_profile_name, aws_region_name):
                 pass
             if not CACHED:
                 Log.info(f'caching {MODULE} data...')
-                run_command(f'goat aws -r {region_name} -p {aws_profile_name} {MODULE} show')
+                run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} show')
             elif CACHED:
                 for REGION in CACHED:
                     if aws_region_name == REGION:

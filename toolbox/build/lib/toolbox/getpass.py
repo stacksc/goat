@@ -1,9 +1,7 @@
 import sys, os, tty, signal, readline
 from prompt_toolkit import prompt
-from prompt_toolkit import PromptSession
-from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.filters import Condition
 from prompt_toolkit.key_binding import KeyBindings
-from prompt_toolkit.key_binding.bindings.basic import load_basic_bindings
 
 def getIDPCredentials():
     try:
@@ -30,7 +28,7 @@ def getCreds():
     if JIRA_USER and JIRA_PASS:
         return JIRA_USER, JIRA_PASS
     hidden = [True]  # Nonlocal
-    bindings = KeyBindingManager.for_prompt()
+    bindings = KeyBindings()
 
     signal.signal(signal.SIGTSTP, signal.SIG_IGN)
     stdin = sys.__stdin__.fileno()
@@ -71,7 +69,7 @@ def get_secure_string(var_name, prompt_msg="Enter password: "):
     if SECURE_STRING:
         return SECURE_STRING
     HIDDEN = [True]
-    BINDINGS = KeyBindingManager.for_prompt()
+    BINDINGS = KeyBindings()
     signal.signal(signal.SIGTSTP, signal.SIG_IGN)
     STDIN = sys.__stdin__.fileno()
     STREAM = sys.__stderr__.fileno()
@@ -90,7 +88,7 @@ def get_secure_string(var_name, prompt_msg="Enter password: "):
 def password_prompt():
 
     hidden = [True]  # Nonlocal
-    bindings = KeyBindingManager.for_prompt()
+    bindings = KeyBindings()
 
     signal.signal(signal.SIGTSTP, signal.SIG_IGN)
     stdin = sys.__stdin__.fileno()
@@ -117,7 +115,7 @@ def password_prompt():
 def getOtherCreds(title='default'):
 
     hidden = [True]  # Nonlocal
-    bindings = KeyBindingManager.for_prompt()
+    bindings = KeyBindings()
 
     signal.signal(signal.SIGTSTP, signal.SIG_IGN)
     stdin = sys.__stdin__.fileno()
@@ -148,7 +146,7 @@ def getOtherCreds(title='default'):
 def getFullUrl(title='default'):
 
     hidden = [True]  # Nonlocal
-    bindings = KeyBindingManager.for_prompt()
+    bindings = KeyBindings()
 
     signal.signal(signal.SIGTSTP, signal.SIG_IGN)
     stdin = sys.__stdin__.fileno()
@@ -183,7 +181,7 @@ def remove_lead_and_trail_slash(s):
 def getOtherToken(title='default'):
 
     hidden = [True]  # Nonlocal
-    bindings = KeyBindingManager.for_prompt()
+    bindings = KeyBindings()
 
     signal.signal(signal.SIGTSTP, signal.SIG_IGN)
     stdin = sys.__stdin__.fileno()
@@ -213,7 +211,7 @@ def getIDPCreds():
     if IDP_USER and IDP_PASS:
         return IDP_USER, IDP_PASS
     hidden = [True]  # Nonlocal
-    bindings = KeyBindingManager.for_prompt()
+    bindings = KeyBindings()
 
     signal.signal(signal.SIGTSTP, signal.SIG_IGN)
     stdin = sys.__stdin__.fileno()

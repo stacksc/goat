@@ -118,7 +118,7 @@ GOAT:			2023.8.17.1901
    ```sh
    cd ~/prod/goat && ./bulk.sh --action rebuild --target all
    ```
-5. Install oci-cli using the latest version:
+5. Install oci-cli using the latest version:<br>
    a. Mac
       ```sh
       brew install oci-cli

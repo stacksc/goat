@@ -123,7 +123,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'vault':
@@ -146,7 +146,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'compartment':
@@ -169,7 +169,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'secrets':
@@ -192,7 +192,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} vault {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'keys':
@@ -215,7 +215,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} vault {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'regions':
@@ -238,7 +238,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'compute':
@@ -261,7 +261,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
         elif MODULE == 'dbs':
@@ -284,7 +284,7 @@ def cache_all_hack(profile_name, region):
                         break
                 if FOUND is False:
                     Log.info(f'caching {MODULE} data...')
-                    run_command(f'goat aws -r {aws_region_name} -p {aws_profile_name} {MODULE} refresh')
+                    run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
 

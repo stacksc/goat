@@ -5,6 +5,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
+      <a href="#hlo">HLO</a>
       <a href="#about-the-project">About The Project</a>
     </li>
     <li>
@@ -23,6 +24,16 @@
     <li><a href="#user-manuals">User Manuals</a></li>
   </ol>
 </details>
+<!-- HLO -->
+## HLO
+
+The following project is in major development and under construction due to limited resources.<br>
+Please open any issues and feel free to update bugs / submit a MR.<br>
+With that said, let the fun begin. :o)
+
+This project is focused on communication with many API's, such as Slack, JIRA, and Jenkins, as well as the major public cloud providers => GCP, OCI, AWS, Azure.
+It aims at making life easier w/ credential & configuration management, with 1 interface to all APIs.<br>
+Upon switching profiles or regions it will refresh cache based on the age of that cache; it uses the same methods for all modules using Python, Click , Prompt toolkit, Fernet and other modules.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project

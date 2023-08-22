@@ -32,7 +32,7 @@ The following project is in major development and under construction due to limi
 Please open any issues and feel free to update bugs / submit a MR.<br>
 With that said, let the fun begin. :o)
 
-This project is focused on communication with many API's, such as Slack, JIRA, and Jenkins, as well as the major public cloud providers => GCP, OCI, AWS, Azure.
+This project is focused on communication with many API's, such as Slack, JIRA, and Jenkins, as well as the major public cloud providers => GCP, OCI, AWS, Azure.<br>
 It aims at making life easier w/ credential & configuration management, with 1 interface to all APIs.<br>
 Upon switching profiles or regions it will refresh cache based on the age of that cache; it uses the same methods for all modules using Python, Click , Prompt toolkit, Fernet and other modules.
 

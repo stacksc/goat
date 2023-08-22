@@ -28,14 +28,13 @@
 <!-- HLO -->
 ## HLO
 
-The following project is in major development and under construction due to limited resources.<br>
-Please open any issues and feel free to update bugs / submit a MR.<br>
-With that said, let the fun begin. :o)
+The presented project is currently undergoing significant development and construction efforts, which are constrained by limited resources. We kindly encourage you to initiate any issues you come across and to contribute by addressing bugs or submitting merge requests.
 
-This project is focused on communication with many API's, such as Slack, JIRA, and Jenkins, as well as the major public cloud providers => GCP, OCI, AWS, Azure.<br>
-It aims at making life easier w/ credential & configuration management, with 1 interface to all APIs.<br>
+With that enthusiastic note, let the journey of exploration commence! 😊
 
-Upon switching profiles or regions it will refresh cache based on the age of that cache; it uses the same methods for all modules.
+This initiative revolves around establishing seamless communication with a diverse array of APIs, including prominent platforms such as Slack, JIRA, and Jenkins. It doesn't stop there – the project extends its reach to encompass major public cloud providers such as GCP, OCI, AWS, and Azure. The primary goal is to simplify the intricacies of life by streamlining credential and configuration management. Imagine a single interface serving as the gateway to all these APIs.
+
+One of the standout features of this endeavor is its ability to efficiently handle the refreshing of cache. This occurs automatically upon profile or region changes, with the cache being updated based on its age. The elegance lies in the uniform application of these cache management methods across all modules, ensuring a consistent experience throughout the project.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project

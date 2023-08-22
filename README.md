@@ -5,8 +5,8 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#hlo">HLO</a>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#hlo">HLO</a></li>
+      <li><a href="#about-the-project">About The Project</a>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -24,6 +24,7 @@
     <li><a href="#user-manuals">User Manuals</a></li>
   </ol>
 </details>
+
 <!-- HLO -->
 ## HLO
 

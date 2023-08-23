@@ -87,7 +87,7 @@ def show_as_table(source_data, name=None):
     if DATA != []:
         Log.info(f"{name}\n{tabulate(DATA, headers='keys', tablefmt='rst')}\n")
 
-def get_DBSclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
+def get_DBSclient(profile_name, region='us-ashburn-1', auto_refresh=False, cache_only=False):
     CLIENT = DBSclient(profile_name, region, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(profile_name)

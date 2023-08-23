@@ -169,7 +169,7 @@ def show_as_table(source_data):
     except:
         return None
 
-def get_IAMclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
+def get_IAMclient(profile_name, region='us-ashburn-1', auto_refresh=False, cache_only=False):
     CLIENT = IAMclient(profile_name, region, cache_only)
     return CLIENT
 

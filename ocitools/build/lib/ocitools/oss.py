@@ -362,7 +362,7 @@ def _show(target, oci_region, profile_name, bucket=None):
     except:
         return False
 
-def get_OSSclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
+def get_OSSclient(profile_name, region='us-ashburn-1', auto_refresh=False, cache_only=False):
     CLIENT = OSSclient(profile_name, region, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(profile_name)

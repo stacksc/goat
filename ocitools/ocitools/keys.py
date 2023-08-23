@@ -213,9 +213,6 @@ def _show(ctx, profile_name, key):
             DATA = {}
             Log.info(f"describing {OCID}:")
             for I in RESPONSE:
-                #if 'content' in I:
-                #    SECRET = RESPONSE[I]
-                #    continue
                 print(RESPONSE[I])
         else:
             KEYS = get_KEYclient(profile_name, auto_refresh=False, cache_only=True)
@@ -241,13 +238,13 @@ def show_as_table(source_data):
     except:
         return None
 
-def get_KEYclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
+def get_KEYclient(profile_name, region='us-ashburn-1', auto_refresh=False, cache_only=False):
     CLIENT = KEYclient(profile_name, region, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(profile_name)
     return CLIENT
 
-def get_VAULTclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
+def get_VAULTclient(profile_name, region='us-ashburn-1', auto_refresh=False, cache_only=False):
     CLIENT = VAULTclient(profile_name, region, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(profile_name)

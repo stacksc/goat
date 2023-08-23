@@ -241,7 +241,7 @@ def show_as_table(source_data, decrypt):
     except:
         return None
 
-def get_SECRETclient(profile_name, region='us-ashburn-1', auto_refresh=True, cache_only=False):
+def get_SECRETclient(profile_name, region='us-ashburn-1', auto_refresh=False, cache_only=False):
     CLIENT = SECRETclient(profile_name, region, cache_only)
     if auto_refresh:
         CLIENT.auto_refresh(profile_name)

@@ -1,4 +1,5 @@
 oci
+oci-cli
 click
 toolbox
 configstore

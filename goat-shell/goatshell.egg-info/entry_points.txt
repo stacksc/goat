@@ -1,0 +1,2 @@
+[console_scripts]
+goatshell = goatshell.main:cli

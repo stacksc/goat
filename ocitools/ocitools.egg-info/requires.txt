@@ -1,6 +1,6 @@
 oci
 oci-cli
-click
+click>=8.0.4
 toolbox
 configstore
 tqdm

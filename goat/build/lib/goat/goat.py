@@ -9,6 +9,7 @@ from awstools.awstools import CLI as aws
 from ocitools.ocitools import CLI as oci
 from jenkinstools.jenkinstools import cli as jenkins
 from toolbox.misc import set_terminal_width, detect_environment, search_man_pages, debug, draw_title
+from goatshell.goatshell import Goatshell
 from .cmd_slack import slack
 
 if os.getenv('USER') == 'root':
@@ -20,12 +21,16 @@ MESSAGE = 'goat => GCP, OCI, & AWS TK'
 @click.group(help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()}, invoke_without_command=True)
 @click.option('-v', '--version', help="print version of goat and all its submodules", default=False, is_flag=True)
 @click.option('-m', '--manuals', help="print all defined manuals matching pattern(s)", type=str, multiple=True, required=False)
+@click.option('-s', '--shell', help="launch the GOAT Shell for improved cloud interaction", default=False, is_flag=True, required=False)
 @click.pass_context
-def cli(ctx, version, manuals):
+def cli(ctx, version, manuals, shell):
     ctx.ensure_object(dict)
     if version:
         goat_version()
         sys.exit(0)
+    if shell:
+        goat_shell = Goatshell()
+        goat_shell.run_cli()
     if manuals:
         name = search_man_pages(manuals)
         os.system(f"man {name}")

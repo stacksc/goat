@@ -1,6 +1,7 @@
 import sys, os, tty, signal, readline
 from prompt_toolkit import prompt
 from prompt_toolkit.filters import Condition
+from prompt_toolkit.keys import Keys
 from prompt_toolkit.key_binding import KeyBindings
 
 def getIDPCredentials():

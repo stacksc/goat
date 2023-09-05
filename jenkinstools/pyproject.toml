@@ -13,7 +13,7 @@ dependencies = [
   "toolbox",
   "configstore",
   "python-jenkins",
-  "click"
+  "click >= 8.0.4"
 ]
 dynamic = ["version", "readme"]
 

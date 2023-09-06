@@ -12,15 +12,22 @@ import click
 
 from goatshell.style import styles_dict
 from goatshell.completer import GoatCompleter
+from goatshell.parser import Parser
 
 logger = logging.getLogger(__name__)
 registry = KeyBindings()
-completer = GoatCompleter()
+oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
+parser = Parser(oci_json_path) # Create a Parser instance
+completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
 
 def add_prefix_if_missing(user_input, prefix="oci"):
     shell_commands = ["clear", "exit"]
+    if not user_input.strip():
+        return user_input
+
     if user_input.split()[0] not in shell_commands and not user_input.startswith(prefix):
-        return f"{prefix} {user_input}"
+        user_input = f"{prefix} {user_input}"
+
     return user_input
 
 class Goatshell(object):
@@ -30,7 +37,7 @@ class Goatshell(object):
         SHORT_CUTS_TEXT = "oci [Tab][Tab] - autocompletion"
         return f'{SHORT_CUTS_TEXT}   [F10] Quit'
 
-    def __init__(self, refresh_resources=True):
+    def __init__(self, completer, parser, refresh_resources=True):
         self.style = Style.from_dict(styles_dict)
         shell_dir = os.path.expanduser("~/goat/shell/")
         self.history = InMemoryHistory()
@@ -38,6 +45,7 @@ class Goatshell(object):
             os.makedirs(shell_dir)
         self.session = PromptSession(history=self.history, auto_suggest=AutoSuggestFromHistory(),
                                      completer=completer, complete_while_typing=True)
+        self.parser = parser
 
     @registry.add_binding('f10')
     def _(event):
@@ -74,7 +82,9 @@ class Goatshell(object):
                 p = subprocess.Popen(user_input, shell=True)
                 p.communicate()
 
-if __name__ == "__main__":
-    app = Goatshell()
+if __name__ == '__main__':
+    oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
+    parser = Parser(oci_json_path) # Create a Parser instance
+    completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
+    app = Goatshell(completer=completer, parser=parser)  # Pass both completer and parser instances to Goatshell
     app.run_cli()
-

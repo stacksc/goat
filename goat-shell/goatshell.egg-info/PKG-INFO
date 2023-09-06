@@ -1,10 +1,10 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2023.9.5.1036
+Version: 2023.9.6.53
 Summary: goatshell - goat shell interface to common cloud providers.
 Home-page: https://github.com/stacksc/goat
 Author: centerupt@gmail.com
-Author-email: Chris Stacks <centerupt@gmail.com>
+Author-email: Christopher Stacks <centerupt@gmail.com>
 License: Apache License 2.0
 Keywords: autocomplete,shell
 Classifier: Programming Language :: Python :: 3

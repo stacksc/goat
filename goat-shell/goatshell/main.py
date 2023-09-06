@@ -3,14 +3,17 @@
 
 from __future__ import print_function, absolute_import, unicode_literals
 from goatshell.goatshell import Goatshell
+from goatshell.completer import GoatCompleter
+import os
 
-import logging
-logger = logging.getLogger(__name__)
+from goatshell.parser import Parser  # Import the Parser class from the appropriate location
+from goatshell.completer import GoatCompleter  # Import the GoatCompleter class from the appropriate location
 
 def cli():
-    goat_shell = Goatshell()
-    logger.debug("session start")
+    parser = Parser('./data/oci.json')  # Create an instance of the Parser class
+    completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
+    goat_shell = Goatshell(completer=completer, parser=parser)  # Pass the completer instance to Goatshell
     goat_shell.run_cli()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     cli()

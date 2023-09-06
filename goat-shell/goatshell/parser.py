@@ -44,24 +44,22 @@ class Parser(object):
                     child = CommandTree(node=subcmd)
                     child = self.build(child, childSchema)
                     root.children.append(child)
+            # Add options and arguments to the current node (root)
+            try:
+                for name, desc in schema.get("options", {}).items():
+                    root.localFlags.append(Option(name, desc["help"]))
+            except:
+                pass
+            try:
+                for arg in schema.get("args", []):
+                    node = CommandTree(node=arg)
+                    root.children.append(node)
+            except:
+                pass
+            root.help = schema.get("help")
+            return root
         except:
             pass
-        # {args: {}, options: {}, help: ""}
-        root.help = schema.get("help")
-        try:
-            for name, desc in schema.get("options").items():
-                if root.node == "oci":  # register global flags
-                    self.globalFlags.append(Option(name, desc["help"]))
-                root.localFlags.append(Option(name, desc["help"]))
-        except:
-            pass
-        try:
-            for arg in schema.get("args"):
-                node = CommandTree(node=arg)
-                root.children.append(node)
-        except:
-            pass
-        return root
 
     def print_tree(self, root, indent=0):
         indentter = '{:>{width}}'.format(root.node, width=indent)
@@ -90,33 +88,38 @@ class Parser(object):
         if not unparsed:
             logger.debug("no tokens left unparsed. returning %s, %s", parsed, suggestions)
             return parsed, unparsed, suggestions
-
         token = unparsed.pop().strip()
         logger.debug("begin parsing at %s w/ tokens: %s", root.node, unparsed)
+
         if root.node == token:
             logger.debug("root node: %s matches next token:%s", root.node, token)
             parsed.append(token)
+
             if self.peekForOption(unparsed):  # check for localFlags and globalFlags
                 logger.debug("option(s) upcoming %s", unparsed)
                 parsed_opts, unparsed, suggestions = self.evalOptions(root, list(), unparsed[:])
                 if parsed_opts:
                     logger.debug("parsed option(s): %s", parsed_opts)
                     parsed.extend(parsed_opts)
+
             if unparsed and not self.peekForOption(unparsed):  # unparsed bits without options
                 logger.debug("begin subtree %s parsing", root.node)
                 for child in root.children:
-                    parsed_subtree, unparsed, suggestions = self.treewalk(child, list(), unparsed[:])
+                    parsed_subtree, unparsed, child_suggestions = self.treewalk(child, list(), unparsed[:])
                     if parsed_subtree:  # subtree returned further parsed tokens
                         parsed.extend(parsed_subtree)
                         logger.debug("subtree at: %s has matches. %s, %s", child.node, parsed, unparsed)
+                        suggestions.update(child_suggestions)
                         break
                 else:
                     logger.debug("no matches in subtree: %s. returning children as suggestions", root.node)
                     for child in root.children:
                         suggestions[child.node] = child.help
         else:
-            logger.debug("no token or option match")
+            logger.debug("no token or option match. Current node: %s, Token: %s", root.node, token)
             unparsed.append(token)
+
+        logger.debug("current state - parsed: %s, unparsed: %s, suggestions: %s", parsed, unparsed, suggestions)
         return parsed, unparsed, suggestions
 
     def peekForOption(self, unparsed):
@@ -152,6 +155,7 @@ class Parser(object):
         return parsed, unparsed, suggestions
 
 if __name__ == '__main__':
-    parser = Parser('./data/oci.json')
+    oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
+    parser = Parser(oci_json_path)
     p, _, s = parser.treewalk(parser.ast, parsed=list(), unparsed=['--', 'oci'])
     print(p, s)

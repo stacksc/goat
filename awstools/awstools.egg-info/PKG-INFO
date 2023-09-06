@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: awstools
-Version: 2023.9.6.52
+Version: 2023.9.6.56
 Summary: AWStools - CLI client for AWS GovCloud
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

@@ -10,6 +10,8 @@ from ocitools.ocitools import CLI as oci
 from jenkinstools.jenkinstools import cli as jenkins
 from toolbox.misc import set_terminal_width, detect_environment, search_man_pages, debug, draw_title
 from goatshell.goatshell import Goatshell
+from goatshell.parser import Parser
+from goatshell.completer import GoatCompleter
 from .cmd_slack import slack
 
 if os.getenv('USER') == 'root':
@@ -29,8 +31,11 @@ def cli(ctx, version, manuals, shell):
         goat_version()
         sys.exit(0)
     if shell:
-        goat_shell = Goatshell()
-        goat_shell.run_cli()
+        oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
+        parser = Parser(oci_json_path) # Create a Parser instance
+        completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
+        app = Goatshell(completer=completer, parser=parser)  # Pass both completer and parser instances to Goatshell
+        app.run_cli()
     if manuals:
         name = search_man_pages(manuals)
         os.system(f"man {name}")

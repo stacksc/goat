@@ -130,30 +130,35 @@ class Parser(object):
     def evalOptions(self, root, parsed, unparsed):
         logger.debug("parsing options at tree: %s with p:%s, u:%s", root.node, parsed, unparsed)
         suggestions = dict()
-        token = unparsed.pop().strip()
-
-        parts = token.partition('=')
-        if parts[-1] != '':  # parsing for --option=value type input
-            token = parts[0]
-
-        allFlags = root.localFlags + self.globalFlags
-        for flag in allFlags:
-            if flag.name == token:
-                logger.debug("matched token: %s with flag: %s", token, flag.name)
-                parsed.append(token)
-                if self.peekForOption(unparsed):  # recursively look for further options
-                    parsed, unparsed, suggestions = self.evalOptions(root, parsed, unparsed[:])
-                break
-        else:
-            logger.debug("no flags match, returning allFlags suggestions")
+    
+        while unparsed:
+            token = unparsed.pop().strip()
+    
+            parts = token.partition('=')
+            if parts[-1] != '':  # parsing for --option=value type input
+                token = parts[0]
+    
+            allFlags = root.localFlags + self.globalFlags
+            found = False
+    
             for flag in allFlags:
-                suggestions[flag.name] = flag.helptext
-
-        if suggestions:  # incomplete parse, replace token
-            logger.debug("incomplete option: %s provided. returning suggestions", token)
-            unparsed.append(token)
+                if flag.name == token:
+                    logger.debug("matched token: %s with flag: %s", token, flag.name)
+                    parsed.append(token)
+                    found = True
+                    break
+    
+            if not found:
+                logger.debug("no flags match for token: %s", token)
+                unparsed.append(token)
+                break
+    
+        for flag in allFlags:
+            suggestions[flag.name] = flag.helptext
+    
+        logger.debug("options parsed: %s, remaining unparsed: %s", parsed, unparsed)
         return parsed, unparsed, suggestions
-
+    
 if __name__ == '__main__':
     oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
     parser = Parser(oci_json_path)

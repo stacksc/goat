@@ -10,7 +10,8 @@ from goatshell.parser import Parser  # Import the Parser class from the appropri
 from goatshell.completer import GoatCompleter  # Import the GoatCompleter class from the appropriate location
 
 def cli():
-    parser = Parser('./data/oci.json')  # Create an instance of the Parser class
+    oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
+    parser = Parser(oci_json_path)  # Create an instance of the Parser class
     completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
     goat_shell = Goatshell(completer=completer, parser=parser)  # Pass the completer instance to Goatshell
     goat_shell.run_cli()

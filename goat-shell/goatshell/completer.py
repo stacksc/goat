@@ -37,43 +37,43 @@ class GoatCompleter(Completer):
     def get_completions(self, document, complete_event, smart_completion=True):
         try:
             tokens = shlex.split(document.text_before_cursor.strip())
-            if tokens:
-                if len(tokens) == 1 and tokens[0] == "oci":
-                    if document.text_before_cursor.endswith("oci"):
-                        # Add a space after "oci"
-                        yield Completion("oci ", -document.cursor_position_col, display="oci ", display_meta="")
-                    else:
-                        # Auto-populate "oci" when the user hits Tab
-                        yield Completion("oci", -document.cursor_position_col, display="oci", display_meta="")
-    
-                    subcommands = self.parser.ast.children
-                    for subcmd in subcommands:
-                        yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
-                else:
-                    parsed, unparsed, suggestions = self.parser.parse_tokens(tokens)
-                    if suggestions is None:
-                        logger.error("suggestions are None")
-                        return
-                    # Check if there are unparsed tokens to suggest completions for
-                    if unparsed:
-                        last_token = unparsed[-1]
-                        if last_token.startswith("--"):
-                            # Check if the document already ends with "--"
-                            if not document.text_before_cursor.endswith("--"):
-                                option_prefix = last_token  # Keep the '--' prefix
-                                for key in fuzzyfinder(option_prefix, suggestions.keys()):
-                                    # Provide completions without adding an extra '--'
-                                    yield Completion(key, start_position=-len(option_prefix), display=key, display_meta=suggestions.get(key, ""))
-                        else:
-                            for key in fuzzyfinder(last_token, suggestions.keys()):
-                                yield Completion(key, start_position=-len(last_token), display=key, display_meta=suggestions.get(key, ""))
-            else:
+            if not tokens:
                 # Provide an initial suggestion of "oci " when the user hits TAB without typing anything
                 if document.text_before_cursor.endswith("oci "):
                     yield Completion("oci ", -document.cursor_position_col, display="oci ", display_meta="")
                 else:
                     # Auto-populate "oci" when the user starts typing "oci" and hits Tab
                     yield Completion("oci", -document.cursor_position_col, display="oci", display_meta="")
+                return
+    
+            parsed, unparsed, suggestions = self.parser.parse_tokens(tokens)
+    
+            if suggestions is None:
+                logger.error("suggestions are None")
+                return
+    
+            # Check if there are unparsed tokens to suggest completions for
+            if unparsed:
+                last_token = unparsed[-1]
+                if last_token.startswith("--"):
+                    # Check if the document already ends with "--"
+                    if not document.text_before_cursor.endswith("--"):
+                        option_prefix = last_token  # Keep the '--' prefix
+                        for key in suggestions:
+                            # Provide completions without adding an extra '--'
+                            if key.startswith(option_prefix):
+                                yield Completion(key, start_position=-len(option_prefix), display=key, display_meta=suggestions.get(key, ""))
+                else:
+                    for key in suggestions:
+                        if key.startswith(last_token):
+                            yield Completion(key, start_position=-len(last_token), display=key, display_meta=suggestions.get(key, ""))
+            else:
+                # No unparsed tokens, suggest subcommands if applicable
+                if len(tokens) == 1 and tokens[0] == "oci":
+                    subcommands = self.parser.ast.children
+                    for subcmd in subcommands:
+                        yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
+    
         except Exception as ex:
             logger.error(f"Exception in get_completions: {ex}")
     

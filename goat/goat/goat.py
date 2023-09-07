@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from prompt_toolkit.application import Application
 import click, os, sys, gnureadline, operator
 from pathlib import Path
 from toolbox.logger import Log
@@ -32,10 +33,11 @@ def cli(ctx, version, manuals, shell):
         sys.exit(0)
     if shell:
         oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
-        parser = Parser(oci_json_path) # Create a Parser instance
+        parser = Parser(oci_json_path)  # Create a Parser instance
         completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
-        app = Goatshell(completer=completer, parser=parser)  # Pass both completer and parser instances to Goatshell
-        app.run_cli()
+        app = Application()
+        goatshell = Goatshell(app, completer, parser)
+        goatshell.run_cli()
     if manuals:
         name = search_man_pages(manuals)
         os.system(f"man {name}")

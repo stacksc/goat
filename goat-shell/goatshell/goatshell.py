@@ -26,13 +26,13 @@ class CustomKeyBindings(KeyBindings):
     def __init__(self, app):
         super().__init__()
 
-        @self.add(Keys.F8)
-        def handle_f8(event):
-            app.toggle_prompt_prefix()
-
         @self.add(Keys.F9)
         def handle_f9(event):
             app.toggle_prompt_prefix()
+
+        @self.add(Keys.F10)
+        def handle_f10(event):
+            sys.exit()
 
 # Define the main Goatshell class
 class Goatshell(object):
@@ -63,7 +63,7 @@ class Goatshell(object):
 
     def create_toolbar(self):
         return HTML(
-            'OCI [Tab][Tab] - autocompletion   <b>F8</b> Toggle OCI   <b>F9</b> Toggle AWS   <b>F10</b> Quit'
+            'OCI [Tab][Tab] - autocompletion   <b>F9</b> Toggle OCI|AWS    <b>F10</b> Quit'
         )
 
     def run_cli(self):

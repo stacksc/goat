@@ -1,72 +1,85 @@
-from prompt_toolkit import PromptSession
+from prompt_toolkit import Application, PromptSession
 from prompt_toolkit.history import InMemoryHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
-from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.keys import Keys
+
 import os
 import sys
 import subprocess
-import logging
 import re
 import click
-
+import logging
+from ocitools.iam import get_latest_profile
+from toolbox import misc
+from ocitools.oci_config import OCIconfig
 from goatshell.style import styles_dict
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 
 logger = logging.getLogger(__name__)
-registry = KeyBindings()
-oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
-parser = Parser(oci_json_path) # Create a Parser instance
-completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
 
-def add_prefix_if_missing(user_input, prefix="oci"):
-    shell_commands = ["clear", "exit"]
-    if not user_input.strip():
-        return user_input
+# Define key bindings class
+class CustomKeyBindings(KeyBindings):
+    def __init__(self, app):
+        super().__init__()
 
-    if user_input.split()[0] not in shell_commands and not user_input.startswith(prefix):
-        user_input = f"{prefix} {user_input}"
+        @self.add(Keys.F8)
+        def handle_f8(event):
+            app.toggle_prompt_prefix()
 
-    return user_input
+        @self.add(Keys.F9)
+        def handle_f9(event):
+            app.toggle_prompt_prefix()
 
+# Define the main Goatshell class
 class Goatshell(object):
-
-    @staticmethod
-    def bottom_toolbar():
-        SHORT_CUTS_TEXT = "oci [Tab][Tab] - autocompletion"
-        return f'{SHORT_CUTS_TEXT}   [F10] Quit'
-
-    def __init__(self, completer, parser, refresh_resources=True):
+    def __init__(self, app, completer, parser):
         self.style = Style.from_dict(styles_dict)
+        self.prefix = "oci"  # Initial prefix
+        self.app = app
+        self.completer = completer
+
+        self.key_bindings = CustomKeyBindings(self)
+
         shell_dir = os.path.expanduser("~/goat/shell/")
         self.history = InMemoryHistory()
         if not os.path.exists(shell_dir):
             os.makedirs(shell_dir)
         self.session = PromptSession(history=self.history, auto_suggest=AutoSuggestFromHistory(),
-                                     completer=completer, complete_while_typing=True)
+                                     completer=self.completer, complete_while_typing=True,
+                                     enable_history_search=True, vi_mode=True,
+                                     key_bindings=self.key_bindings)
+
         self.parser = parser
 
-    @registry.add_binding('f10')
-    def _(event):
-        sys.exit()
+    def toggle_prompt_prefix(self):
+        if self.prefix == 'oci':
+            self.prefix = 'aws'
+        else:
+            self.prefix = 'oci'
+
+    def create_toolbar(self):
+        return HTML(
+            'OCI [Tab][Tab] - autocompletion   <b>F8</b> Toggle OCI   <b>F9</b> Toggle AWS   <b>F10</b> Quit'
+        )
 
     def run_cli(self):
         logger.info("running goat event loop")
         while True:
             try:
-                user_input = self.session.prompt('goat> ',
+                user_input = self.session.prompt(f'{self.prefix}> ',
                                                  style=self.style,
                                                  enable_history_search=True,
                                                  vi_mode=True,
-                                                 key_bindings=registry,
                                                  complete_while_typing=True,
-                                                 bottom_toolbar=self.bottom_toolbar,
-                                                 completer=completer)
+                                                 bottom_toolbar=self.create_toolbar())
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
 
-            user_input = add_prefix_if_missing(user_input)
+            user_input = self.add_prefix_if_missing(user_input, self.prefix)
             user_input = re.sub(r'[-]{3,}', '--', user_input)
             if user_input == "clear":
                 click.clear()
@@ -77,14 +90,28 @@ class Goatshell(object):
                 user_input = user_input[1:]
 
             if user_input:
+                if '--profile' not in user_input:
+                    user_input = user_input + ' --profile ' + get_latest_profile()
                 if '-o' in user_input and 'json' in user_input:
                     user_input += ' | pygmentize -l json'
                 p = subprocess.Popen(user_input, shell=True)
                 p.communicate()
 
+    def add_prefix_if_missing(self, user_input, prefix="oci"):
+        shell_commands = ["clear", "exit"]
+        if not user_input.strip():
+            return user_input
+
+        if user_input.split()[0] not in shell_commands and not user_input.startswith(prefix):
+            user_input = f"{prefix} {user_input}"
+
+        return user_input
+
 if __name__ == '__main__':
     oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
-    parser = Parser(oci_json_path) # Create a Parser instance
+    parser = Parser(oci_json_path)  # Create a Parser instance
     completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
-    app = Goatshell(completer=completer, parser=parser)  # Pass both completer and parser instances to Goatshell
-    app.run_cli()
+    app = Application()
+    goatshell = Goatshell(app, completer, parser)
+    goatshell.run_cli()
+

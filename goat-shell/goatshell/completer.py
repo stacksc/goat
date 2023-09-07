@@ -45,13 +45,13 @@ class GoatCompleter(Completer):
                     # Auto-populate "oci" when the user starts typing "oci" and hits Tab
                     yield Completion("oci", -document.cursor_position_col, display="oci", display_meta="")
                 return
-    
+
             parsed, unparsed, suggestions = self.parser.parse_tokens(tokens)
-    
+
             if suggestions is None:
                 logger.error("suggestions are None")
                 return
-    
+
             # Check if there are unparsed tokens to suggest completions for
             if unparsed:
                 last_token = unparsed[-1]
@@ -59,21 +59,20 @@ class GoatCompleter(Completer):
                     # Check if the document already ends with "--"
                     if not document.text_before_cursor.endswith("--"):
                         option_prefix = last_token  # Keep the '--' prefix
-                        for key in suggestions:
-                            # Provide completions without adding an extra '--'
-                            if key.startswith(option_prefix):
-                                yield Completion(key, start_position=-len(option_prefix), display=key, display_meta=suggestions.get(key, ""))
+                        completions = fuzzyfinder(option_prefix, suggestions.keys())
+                        for key in completions:
+                            yield Completion(key, start_position=-len(option_prefix), display=key, display_meta=suggestions.get(key, ""))
                 else:
-                    for key in suggestions:
-                        if key.startswith(last_token):
-                            yield Completion(key, start_position=-len(last_token), display=key, display_meta=suggestions.get(key, ""))
+                    completions = fuzzyfinder(last_token, suggestions.keys())
+                    for key in completions:
+                        yield Completion(key, start_position=-len(last_token), display=key, display_meta=suggestions.get(key, ""))
             else:
                 # No unparsed tokens, suggest subcommands if applicable
                 if len(tokens) == 1 and tokens[0] == "oci":
                     subcommands = self.parser.ast.children
                     for subcmd in subcommands:
                         yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
-    
+
         except Exception as ex:
             logger.error(f"Exception in get_completions: {ex}")
     

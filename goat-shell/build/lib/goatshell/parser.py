@@ -37,6 +37,9 @@ class Parser(object):
         except Exception as ex:
             logger.error(f"Exception while initializing Parser: {ex}")
 
+    def get_top_level_commands(self):
+        return [node.node for node in self.ast.children]
+
     def build(self, root, schema):
         try:
             if schema.get("subcommands") and schema["subcommands"]:

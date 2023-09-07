@@ -6,6 +6,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
+import time
 import os
 import sys
 import subprocess
@@ -18,6 +19,7 @@ from ocitools.oci_config import OCIconfig
 from goatshell.style import styles_dict
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
+from goatshell.ui import getLayout
 
 logger = logging.getLogger(__name__)
 
@@ -37,10 +39,12 @@ class CustomKeyBindings(KeyBindings):
 # Define the main Goatshell class
 class Goatshell(object):
     def __init__(self, app, completer, parser):
+        getLayout()
         self.style = Style.from_dict(styles_dict)
         self.prefix = "oci"  # Initial prefix
         self.app = app
         self.completer = completer
+        self.c = 0
 
         self.key_bindings = CustomKeyBindings(self)
 
@@ -114,4 +118,3 @@ if __name__ == '__main__':
     app = Application()
     goatshell = Goatshell(app, completer, parser)
     goatshell.run_cli()
-

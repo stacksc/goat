@@ -10,6 +10,7 @@ goatshell/logger.py
 goatshell/main.py
 goatshell/parser.py
 goatshell/style.py
+goatshell/ui.py
 goatshell.egg-info/PKG-INFO
 goatshell.egg-info/SOURCES.txt
 goatshell.egg-info/dependency_links.txt

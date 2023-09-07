@@ -837,8 +837,8 @@ Commands:
 <br>
 <img src="./images/download_1.png" alt="OCI Downloads" width="1200"/>
 
-#### OCI CLI interactive mode
-<img src="./images/oci-interactive.png" alt="OCICLI interactive" width="1200"/>
+#### OCI & AWS Shell Interface ####
+<img width="910" alt="image" src="https://github.com/stacksc/goat/assets/116677370/92a90575-b44c-44e9-8c34-ad5eb63562d0">
 <br>
 
 #### Native Notifications

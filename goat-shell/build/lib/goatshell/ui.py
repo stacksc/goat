@@ -39,7 +39,7 @@ func_title = HTML("""<b>Hotkeys</b>""")
 misc_title = HTML("""<b>Misc</b>""")
 input = """\
 
-[F9]  Toggle Cloud Provider
+[F9]  Toggle Cloud Provider => [ENTER]
 [F10] Exit
 
 """

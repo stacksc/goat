@@ -13,13 +13,21 @@ from goatshell.parser import Parser  # Import the Parser class from the appropri
 from goatshell.completer import GoatCompleter  # Import the GoatCompleter class from the appropriate location
 
 def cli():
+    # Default to the 'oci' service
+    service = 'oci'
 
-    oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
-    parser = Parser(oci_json_path)  # Create a Parser instance
-    completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
+    # Construct the path to the JSON file based on the selected service
+    json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{service}.json')
+
+    # Create a Parser instance
+    parser = Parser(json_path, service)
+    completer = GoatCompleter(parser)
+
+    # Initialize and run Goatshell
     app = Application()
     goatshell = Goatshell(app, completer, parser)
     goatshell.run_cli()
 
 if __name__ == '__main__':
     cli()
+

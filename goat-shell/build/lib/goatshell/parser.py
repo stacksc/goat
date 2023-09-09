@@ -21,21 +21,37 @@ class CommandTree(object):
         return "Node: %s, Help: %s\n Flags: %s\n Children: %s" % (self.node, self.help, self.localFlags, self.children)
 
 class Parser(object):
-    def __init__(self, apiFile):
+    def __init__(self, apiFile, root_name):
         try:
             self.json_api = apiFile
             self.schema = dict()
             self.globalFlags = list()
+            self.root_name = root_name
             with open(self.json_api) as api:
                 self.schema = json.load(api)
-            self.ast = CommandTree("oci")
-            oci_schema = self.schema.get("oci")
-            if oci_schema is None:
-                logger.error("oci is not in the schema")
+            self.ast = CommandTree(root_name)  # Set to dynamic root name
+            root_schema = self.schema.get(root_name)
+            if root_schema is None:
+                logger.error(f"{root_name} is not in the schema")
             else:
-                self.ast = self.build(self.ast, oci_schema)
+                self.ast = self.build(self.ast, root_schema)
         except Exception as ex:
             logger.error(f"Exception while initializing Parser: {ex}")
+
+    def set_api_file(self, apiFile):
+        try:
+            self.json_api = apiFile
+            logger.info(f"Setting API file to {self.json_api}")
+            with open(self.json_api) as api:
+                self.schema = json.load(api)
+            # We assume the top-level key in each JSON is the name of the API, like "oci" or "aws"
+            api_schema = self.schema.get(self.json_api.split('/')[-1].split('.')[0])
+            if api_schema is None:
+                logger.error(f"{self.json_api.split('/')[-1].split('.')[0]} is not in the schema")
+            else:
+                self.ast = self.build(self.ast, api_schema)
+        except Exception as ex:
+            logger.error(f"Exception while setting API file: {ex}")
 
     def get_top_level_commands(self):
         return [node.node for node in self.ast.children]

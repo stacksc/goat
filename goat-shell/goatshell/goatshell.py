@@ -13,40 +13,44 @@ import subprocess
 import re
 import click
 import logging
-from ocitools.iam import get_latest_profile
-from toolbox import misc
-from ocitools.oci_config import OCIconfig
-from goatshell.style import styles_dict
-from goatshell.completer import GoatCompleter
-from goatshell.parser import Parser
-from goatshell.ui import getLayout
+from ocitools.iam import get_latest_profile  
+from toolbox import misc  
+from ocitools.oci_config import OCIconfig  
+from goatshell.style import styles_dict 
+from goatshell.completer import GoatCompleter 
+from goatshell.parser import Parser  
+from goatshell.ui import getLayout  
 
 logger = logging.getLogger(__name__)
+current_service = 'oci'  # You can set it to 'aws' if you prefer AWS mode initially
+os.environ['AWS_PAGER'] = ''
 
 # Define key bindings class
 class CustomKeyBindings(KeyBindings):
     def __init__(self, app):
         super().__init__()
 
-        @self.add(Keys.F9)
-        def handle_f9(event):
-            app.toggle_prompt_prefix()
-
         @self.add(Keys.F10)
         def handle_f10(event):
             sys.exit()
+
+        @self.add(Keys.F9)  # Use F9 key for toggling
+        def handle_f9(event):
+            global current_service
+            current_service = 'aws' if current_service == 'oci' else 'oci'
+            app.set_parser_and_completer(current_service)
 
 # Define the main Goatshell class
 class Goatshell(object):
     def __init__(self, app, completer, parser):
         getLayout()
         self.style = Style.from_dict(styles_dict)
-        self.prefix = "oci"  # Initial prefix
         self.app = app
         self.completer = completer
-        self.c = 0
+        self.prefix = 'oci'
 
         self.key_bindings = CustomKeyBindings(self)
+        self.key_bindings.add(Keys.F9)(self.toggle_service)
 
         shell_dir = os.path.expanduser("~/goat/shell/")
         self.history = InMemoryHistory()
@@ -57,24 +61,44 @@ class Goatshell(object):
                                      enable_history_search=True, vi_mode=True,
                                      key_bindings=self.key_bindings)
 
-        self.parser = parser
+        root_name, json_path = self.get_service_info()
+        self.parser = Parser(json_path, root_name)
 
-    def toggle_prompt_prefix(self):
-        if self.prefix == 'oci':
-            self.prefix = 'aws'
+    def toggle_service(self, event):
+        global current_service  # Declare current_service as a global variable
+        if current_service == 'oci':
+            current_service = 'aws'
         else:
-            self.prefix = 'oci'
+            current_service = 'oci'
+
+        self.prefix = current_service
+        self.set_parser_and_completer(current_service)
+
+    def get_service_info(self):
+        use_aws = True  # or False
+        if use_aws:
+            return 'aws', 'data/aws.json'
+        else:
+            return 'oci', 'data/oci.json'
 
     def create_toolbar(self):
         return HTML(
-            'OCI [Tab][Tab] - autocompletion   <b>F9</b> Toggle OCI|AWS    <b>F10</b> Quit'
+            'Use [Tab][Tab] for autocompletion <b>F9</b> Toggle Provider <b>F10</b> Quit'
         )
 
+    def set_parser_and_completer(self, api_type):
+        self.prefix = api_type.lower()  # Set prefix
+        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{api_type}.json')
+        self.parser = Parser(json_path, api_type)  # Reset parser
+        self.completer = GoatCompleter(self.parser)  # Reset completer
+        self.session.completer = self.completer  # Reset session completer
+
     def run_cli(self):
+        global current_service
         logger.info("running goat event loop")
         while True:
             try:
-                user_input = self.session.prompt(f'{self.prefix}> ',
+                user_input = self.session.prompt(f'{current_service}> ',
                                                  style=self.style,
                                                  enable_history_search=True,
                                                  vi_mode=True,
@@ -83,7 +107,12 @@ class Goatshell(object):
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
 
-            user_input = self.add_prefix_if_missing(user_input, self.prefix)
+            api_type = user_input.split(' ')[0]
+
+            if api_type.lower() != self.prefix:  # If a different prefix is detected
+                if api_type.lower() in ['oci', 'aws']:
+                    self.set_parser_and_completer(api_type.lower())
+
             user_input = re.sub(r'[-]{3,}', '--', user_input)
             if user_input == "clear":
                 click.clear()
@@ -101,20 +130,19 @@ class Goatshell(object):
                 p = subprocess.Popen(user_input, shell=True)
                 p.communicate()
 
-    def add_prefix_if_missing(self, user_input, prefix="oci"):
-        shell_commands = ["clear", "exit"]
-        if not user_input.strip():
-            return user_input
-
-        if user_input.split()[0] not in shell_commands and not user_input.startswith(prefix):
-            user_input = f"{prefix} {user_input}"
-
-        return user_input
-
 if __name__ == '__main__':
-    oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
-    parser = Parser(oci_json_path)  # Create a Parser instance
-    completer = GoatCompleter(parser)  # Create a GoatCompleter instance with the parser
+    service = 'oci'
+
+    # Construct the path to the JSON file based on the selected service
+    json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{service}.json')
+
+    # Create a Parser instance
+    parser = Parser(json_path, service)
+
+    # Create a GoatCompleter instance with the parser
+    completer = GoatCompleter(parser)
+
+    # Initialize and run Goatshell
     app = Application()
     goatshell = Goatshell(app, completer, parser)
     goatshell.run_cli()

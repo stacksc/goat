@@ -135,12 +135,18 @@ class Goatshell(object):
 
             if user_input:
                 # append this first if needed - primary tenant ocid
-                if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
-                    from configstore.configstore import Config
-                    CONFIGSTORE = Config('ocitools')
-                    OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
-                    user_input += f' {OCID}'
-                if '--profile' not in user_input and api_type.lower() != 'gcloud':
+                if api_type.lower() == 'oci':
+                    if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
+                        from configstore.configstore import Config
+                        CONFIGSTORE = Config('ocitools')
+                        OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
+                        user_input += f' {OCID}'
+                    if '--user-id' in user_input and 'ocid' not in user_input:
+                        from configstore.configstore import Config
+                        CONFIGSTORE = Config('ocitools')
+                        OCID = CONFIGSTORE.get_metadata('user', get_latest_profile())
+                        user_input += f' {OCID}'
+                if api_type.lower() != 'gcloud' and '--profile' not in user_input:
                     user_input = user_input + ' --profile ' + get_latest_profile()
                 if '-o' in user_input and 'json' in user_input:
                     user_input += ' | pygmentize -l json'

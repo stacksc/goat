@@ -124,7 +124,7 @@ class Goatshell(object):
 
             if user_input:
                 # append this first if needed - primary tenant ocid
-                if '--compartment-id' in user_input and 'ocid' not in user_input:
+                if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
                     from configstore.configstore import Config
                     CONFIGSTORE = Config('ocitools')
                     OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())

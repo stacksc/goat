@@ -11,3 +11,7 @@ goatslacktools
 goatjenkinstools
 goattoolbox
 goaat
+azure-cli
+oci-cli
+awscli
+gcloud

@@ -28,13 +28,9 @@
 <!-- HLO -->
 ## HLO
 
-The presented project is currently undergoing significant development and construction efforts, which are constrained by limited resources. We kindly encourage you to initiate any issues you come across and to contribute by addressing bugs or submitting merge requests.
-
-With that enthusiastic note, let the journey of exploration commence! 😊
+The presented project is currently undergoing significant development and construction efforts.
 
 This initiative revolves around establishing seamless communication with a diverse array of APIs, including prominent platforms such as Slack, JIRA, and Jenkins. It doesn't stop there – the project extends its reach to encompass major public cloud providers such as GCP, OCI, AWS, and Azure. The primary goal is to simplify the intricacies of life by streamlining credential and configuration management. Imagine a single interface serving as the gateway to all these APIs.
-
-One of the standout features of this endeavor is its ability to efficiently handle the refreshing of cache. This occurs automatically upon profile or region changes, with the cache being updated based on its age. The elegance lies in the uniform application of these cache management methods across all modules, ensuring a consistent experience throughout the project.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -63,8 +59,6 @@ $ find ~/goat -type f -name "*.key" -o -name "*.cfg"
 ./.gitools.cfg
 ./.gitools.key
 ./.jenkinstools.key
-./.refresh.key
-./.refresh.cfg
 ```
 
 <!-- CURRENT USAGE -->
@@ -114,6 +108,8 @@ GOAT:			2023.8.17.1901
 ### Prerequisites
 ### Installation
 
+#### Manual Installation
+
 1. Create a virtual environment. We will call it `prod`:
    ```sh
    python3 -m venv ~/prod
@@ -139,6 +135,13 @@ GOAT:			2023.8.17.1901
       ```sh
       bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
       ```
+
+#### OR with PIP
+
+1. Install the following packages from pypi:
+   ```
+   pip install goatshell goaat
+   ```
    
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

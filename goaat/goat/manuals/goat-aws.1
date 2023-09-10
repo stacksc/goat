@@ -1,0 +1,47 @@
+.TH "GOAT AWS" "1" "2023-08-06" "1.0.0" "goat aws Manual"
+.SH NAME
+goat\-aws \- AWS CLI Client[40GCurrent Profile:...
+.SH SYNOPSIS
+.B goat aws
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+AWS CLI Client[40GCurrent Profile: [0;32m[4mDEFAULT[0m
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-w,\fP \-\-whoami
+display the latest assumed profile for the CLI client
+.TP
+\fB\-p,\fP \-\-profile TEXT
+profile name to use when working with awstools
+.SH COMMANDS
+.PP
+\fBiam\fP
+  manage and switch between AWS profiles in...
+  See \fBgoat aws-iam(1)\fP for full documentation on the \fBiam\fP command.
+.PP
+\fBs3\fP
+  s3 functions to sync buckets and filesystems
+  See \fBgoat aws-s3(1)\fP for full documentation on the \fBs3\fP command.
+.PP
+\fBec2\fP
+  ec2 to manage the instances and related...
+  See \fBgoat aws-ec2(1)\fP for full documentation on the \fBec2\fP command.
+.PP
+\fBrds\fP
+  rds to manage the DB instances and related...
+  See \fBgoat aws-rds(1)\fP for full documentation on the \fBrds\fP command.
+.PP
+\fBcli\fP
+  run any awscli (aws) command while...
+  See \fBgoat aws-cli(1)\fP for full documentation on the \fBcli\fP command.
+.PP
+\fBshow\fP
+  display configuration data for awstools...
+  See \fBgoat aws-show(1)\fP for full documentation on the \fBshow\fP command.
+.PP
+\fBtest\fP
+  awstools unittesting
+  See \fBgoat aws-test(1)\fP for full documentation on the \fBtest\fP command.

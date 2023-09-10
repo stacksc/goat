@@ -1,0 +1,5 @@
+oci
+oci-cli
+click>=8.0.4
+tqdm
+requests_ntlm

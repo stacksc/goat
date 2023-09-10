@@ -28,7 +28,7 @@ setup(
     author='centerupt@gmail.com',
     url='https://github.com/stacksc/goat',
     packages=find_packages(),
-    package_data={'goatshell': ['data/oci.json']},
+    package_data={'goatshell': ['data/oci.json', 'data/aws.json']},
     zip_safe=False,
     install_requires=requires,
     entry_points={

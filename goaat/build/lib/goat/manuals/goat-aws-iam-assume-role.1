@@ -1,0 +1,18 @@
+.TH "GOAT AWS IAM ASSUME-ROLE" "1" "2023-08-06" "1.0.0" "goat aws iam assume-role Manual"
+.SH NAME
+goat\-aws\-iam\-assume-role \- login using existing IAM creds or add new...
+.SH SYNOPSIS
+.B goat aws iam assume-role
+[OPTIONS] [AWS_PROFILE_NAME]...
+.SH DESCRIPTION
+login using existing IAM creds or add new creds to config
+.SH OPTIONS
+.TP
+\fB\-r,\fP \-\-role TEXT
+name of the role to assume; i.e. PowerUser
+.TP
+\fB\-c,\fP \-\-creds TEXT
+aws credential file to source for the IAM credentials
+.TP
+\fB\-a,\fP \-\-account TEXT
+aws account number to register new IAM credentials

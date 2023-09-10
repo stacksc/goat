@@ -1,3 +1,0 @@
-slack_sdk
-argparse
-argcomplete

@@ -1,6 +1,0 @@
-toolbox
-configstore
-click>=8.0.4
-jira
-tabulate
-prompt_toolkit

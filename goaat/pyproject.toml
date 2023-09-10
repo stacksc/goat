@@ -1,0 +1,49 @@
+[project]
+name = "goaat"
+authors = [
+  { name="Christopher Stacks", email="centerupt@gmail.com" }
+]
+description = "goat => GCP, OCI, & AWS tools : GOAT Team"
+requires-python = ">=3.7"
+dynamic = ["version", "readme"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "click >= 8.0.4",
+  "importlib_metadata",
+  "click-man",
+  "prompt_toolkit >= 3",
+  "goatocitools",
+  "goatawstools",
+  "goatjiratools",
+  "goatslacktools",
+  "goatjenkinstools",
+  "goatshell",
+  "gnureadline",
+  "goattoolbox",
+  "goatconfigstore"
+]
+
+[build-system]
+requires = [
+  "setuptools >= 61.0.0",
+  "goattoolbox",
+  "goatconfigstore",
+  "gnureadline"
+]
+
+[project.scripts]
+goat = "goat.goat:cli"
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {attr = "goat.__version__"}
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.package-data]
+"*" = ["*.1"]

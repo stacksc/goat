@@ -1,0 +1,51 @@
+.TH "GOAT JIRA PROJECT SEARCH" "1" "2023-08-06" "1.0.0" "goat jira project search Manual"
+.SH NAME
+goat\-jira\-project\-search \- show a summary of projects matching the...
+.SH SYNOPSIS
+.B goat jira project search
+[OPTIONS] [PROJECTS]...
+.SH DESCRIPTION
+show a summary of projects matching the specified filter
+.SH OPTIONS
+.TP
+\fB\-a,\fP \-\-assignee TEXT
+i.e. jdoe
+.TP
+\fB\-g,\fP \-\-group TEXT
+i.e. devops
+.TP
+\fB\-r,\fP \-\-reporter TEXT
+i.e. smithj
+.TP
+\fB\-s,\fP \-\-status TEXT
+i.e. closed
+.TP
+\fB\-\-summary\fP TEXT
+text to search for in the summary field
+.TP
+\fB\-\-description\fP TEXT
+text to search for in the description field
+.TP
+\fB\-l,\fP \-\-limit INTEGER
+max amount of issues to show
+.TP
+\fB\-o,\fP \-\-orderby TEXT
+choose which field to use for sorting
+.TP
+\fB\-A,\fP \-\-ascending
+show issues in ascending order
+.TP
+\fB\-D,\fP \-\-descending
+show issues in descending order
+.TP
+\fB\-c,\fP \-\-csv TEXT
+name of the csv file to save the results to
+.TP
+\fB\-J,\fP \-\-json
+output results in JSON format
+.TP
+\fB\-w,\fP \-\-wizard
+output results in wizard format for transitioning
+.TP
+\fB\-t,\fP \-\-tui
+use the native TUI to launch tickets in the browser

@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: goatocitools
+Version: 2023.9.9.2250
+Summary: OCItools - CLI client for OCI
+Author-email: Chris Stacks <centerupt@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: oci
+Requires-Dist: oci-cli
+Requires-Dist: click>=8.0.4
+Requires-Dist: tqdm
+Requires-Dist: requests_ntlm

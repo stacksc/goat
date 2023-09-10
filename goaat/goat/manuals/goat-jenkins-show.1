@@ -1,0 +1,48 @@
+.TH "GOAT JENKINS SHOW" "1" "2023-08-06" "1.0.0" "goat jenkins show Manual"
+.SH NAME
+goat\-jenkins\-show \- retrieve information from Jenkins
+.SH SYNOPSIS
+.B goat jenkins show
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+retrieve information from Jenkins
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-m,\fP \-\-menu
+launch a menu driven interface for common Jenkins user actions
+.SH COMMANDS
+.PP
+\fBconfig\fP
+  retrieve the entire content of...
+  See \fBgoat jenkins show-config(1)\fP for full documentation on the \fBconfig\fP command.
+.PP
+\fBaccess-token\fP
+  API token for accessing the Jenins...
+  See \fBgoat jenkins show-access-token(1)\fP for full documentation on the \fBaccess-token\fP command.
+.PP
+\fBaccess-token-age\fP
+  how long the current access token will...
+  See \fBgoat jenkins show-access-token-age(1)\fP for full documentation on the \fBaccess-token-age\fP command.
+.PP
+\fBcrumb-token\fP
+  API crumb for accessing the Jenins...
+  See \fBgoat jenkins show-crumb-token(1)\fP for full documentation on the \fBcrumb-token\fP command.
+.PP
+\fBcrumb-token-age\fP
+  how long the current crumb token will...
+  See \fBgoat jenkins show-crumb-token-age(1)\fP for full documentation on the \fBcrumb-token-age\fP command.
+.PP
+\fBcredentials\fP
+  display system credentials available for jobs
+  See \fBgoat jenkins show-credentials(1)\fP for full documentation on the \fBcredentials\fP command.
+.PP
+\fBuser\fP
+  display information about Jenkins users
+  See \fBgoat jenkins show-user(1)\fP for full documentation on the \fBuser\fP command.
+.PP
+\fBjobs\fP
+  display information about Jenkins job names
+  See \fBgoat jenkins show-jobs(1)\fP for full documentation on the \fBjobs\fP command.

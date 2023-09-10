@@ -1,0 +1,25 @@
+.TH "GOAT AWS EC2" "1" "2023-08-06" "1.0.0" "goat aws ec2 Manual"
+.SH NAME
+goat\-aws\-ec2 \- ec2 to manage the instances and related...
+.SH SYNOPSIS
+.B goat aws ec2
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+ec2 to manage the instances and related configuration
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform EC2 actions
+.SH COMMANDS
+.PP
+\fBrefresh\fP
+  manually refresh ec2 cached data
+  See \fBgoat aws ec2-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBshow\fP
+  show the data stored in ec2 cache...
+  See \fBgoat aws ec2-show(1)\fP for full documentation on the \fBshow\fP command.
+.PP
+\fBdelete\fP
+  Delete EC2 objects such as instances, EBS...
+  See \fBgoat aws ec2-delete(1)\fP for full documentation on the \fBdelete\fP command.

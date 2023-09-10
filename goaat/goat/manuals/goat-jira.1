@@ -1,0 +1,36 @@
+.TH "GOAT JIRA" "1" "2023-08-06" "1.0.0" "goat jira Manual"
+.SH NAME
+goat\-jira \- JIRA CLI Client[40GCurrent Profile:...
+.SH SYNOPSIS
+.B goat jira
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+JIRA CLI Client[40GCurrent Profile: [0;32m[4mdefault[0m
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-p,\fP \-\-profile TEXT
+profile name to use when working with the jiraclient  [default: default]
+.SH COMMANDS
+.PP
+\fBissue\fP
+  manage JIRA issues
+  See \fBgoat jira-issue(1)\fP for full documentation on the \fBissue\fP command.
+.PP
+\fBauth\fP
+  setup or change authentication settings...
+  See \fBgoat jira-auth(1)\fP for full documentation on the \fBauth\fP command.
+.PP
+\fBconfig\fP
+  manage configuration details for the Jira...
+  See \fBgoat jira-config(1)\fP for full documentation on the \fBconfig\fP command.
+.PP
+\fBproject\fP
+  manage JIRA projects
+  See \fBgoat jira-project(1)\fP for full documentation on the \fBproject\fP command.
+.PP
+\fBsearch\fP
+  search for issues in Jira
+  See \fBgoat jira-search(1)\fP for full documentation on the \fBsearch\fP command.

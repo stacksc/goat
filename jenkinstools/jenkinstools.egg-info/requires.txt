@@ -1,4 +1,0 @@
-toolbox
-configstore
-python-jenkins
-click>=8.0.4

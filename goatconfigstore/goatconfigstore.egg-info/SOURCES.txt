@@ -1,0 +1,10 @@
+pyproject.toml
+configstore/__init__.py
+configstore/configstore.py
+configstore/configstore_ctrl.py
+goatconfigstore.egg-info/PKG-INFO
+goatconfigstore.egg-info/SOURCES.txt
+goatconfigstore.egg-info/dependency_links.txt
+goatconfigstore.egg-info/entry_points.txt
+goatconfigstore.egg-info/requires.txt
+goatconfigstore.egg-info/top_level.txt

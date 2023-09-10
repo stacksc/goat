@@ -1,0 +1,7 @@
+oci
+oci-cli
+click>=8.0.4
+toolbox
+configstore
+tqdm
+requests_ntlm

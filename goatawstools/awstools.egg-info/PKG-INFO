@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: awstools
+Version: 2023.9.9.1705
+Summary: AWStools - CLI client for AWS GovCloud
+Author-email: Chris Stacks <centerupt@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: boto3
+Requires-Dist: botocore>=1.31.00
+Requires-Dist: click>=8.0.4
+Requires-Dist: toolbox
+Requires-Dist: configstore
+Requires-Dist: requests_ntlm

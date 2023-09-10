@@ -1,4 +1,0 @@
-click>=8.0.4
-importlib_metadata
-click-man
-prompt_toolkit>=3

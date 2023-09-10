@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: goaat
+Version: 2023.9.9.2259
+Summary: goat => GCP, OCI, & AWS tools : GOAT Team
+Author-email: Christopher Stacks <centerupt@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.0.4
+Requires-Dist: importlib_metadata
+Requires-Dist: click-man
+Requires-Dist: prompt_toolkit>=3
+Requires-Dist: goatocitools
+Requires-Dist: goatawstools
+Requires-Dist: goatjiratools
+Requires-Dist: goatslacktools
+Requires-Dist: goatjenkinstools
+Requires-Dist: goatshell
+Requires-Dist: gnureadline
+Requires-Dist: goattoolbox
+Requires-Dist: goatconfigstore

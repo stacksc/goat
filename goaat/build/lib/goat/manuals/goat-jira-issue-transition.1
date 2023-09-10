@@ -1,0 +1,33 @@
+.TH "GOAT JIRA ISSUE TRANSITION" "1" "2023-08-06" "1.0.0" "goat jira issue transition Manual"
+.SH NAME
+goat\-jira\-issue\-transition \- transition a given issue
+.SH SYNOPSIS
+.B goat jira issue transition
+[OPTIONS] ISSUE_KEY
+.SH DESCRIPTION
+transition a given issue
+.SH OPTIONS
+.TP
+\fB\-w,\fP \-\-wizard
+launch a wizard to guide you through transitioning an issue
+.TP
+\fB\-s,\fP \-\-showavailable
+display the available transitions for a given issue
+.TP
+\fB\-i,\fP \-\-id TEXT
+the ID of the state to transition to
+.TP
+\fB\-n,\fP \-\-name TEXT
+name of the state to transition to
+.TP
+\fB\-f,\fP \-\-field_name TEXT
+name(s) of the field(s) to update during transition
+.TP
+\fB\-t,\fP \-\-field_type TEXT
+value of the field(s) to update during transition
+.TP
+\fB\-v,\fP \-\-field_value TEXT
+type of field(s) to update during transition
+.TP
+\fB\-P,\fP \-\-payload TEXT
+dict/json to be used as transition payload (field update)

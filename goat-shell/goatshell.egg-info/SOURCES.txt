@@ -18,4 +18,5 @@ goatshell.egg-info/entry_points.txt
 goatshell.egg-info/not-zip-safe
 goatshell.egg-info/requires.txt
 goatshell.egg-info/top_level.txt
+goatshell/data/aws.json
 goatshell/data/oci.json

@@ -19,7 +19,8 @@ dependencies = [
     "goatslacktools",
     "goatjenkinstools",
     "goattoolbox",
-    "goatconfigstore"
+    "goatconfigstore",
+    "goaat"
 ]
 
 classifiers = [

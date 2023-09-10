@@ -20,7 +20,11 @@ dependencies = [
     "goatjenkinstools",
     "goattoolbox",
     "goatconfigstore",
-    "goaat"
+    "goaat",
+    "azure-cli",
+    "oci-cli",
+    "awscli",
+    "gcloud"
 ]
 
 classifiers = [

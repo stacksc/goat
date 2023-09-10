@@ -35,26 +35,25 @@ class GoatCompleter(Completer):
 
     def get_completions(self, document, complete_event, smart_completion=True):
         tokens = shlex.split(document.text_before_cursor.strip())
-    
+
         if not tokens:
-            if self.current_json == "oci":
-                yield Completion("oci", display="oci", display_meta="Oracle Cloud Infrastructure")
-            elif self.current_json == "aws":
-                yield Completion("aws", display="aws", display_meta="Amazon Web Services")
+            yield Completion("oci", display="oci", display_meta="Oracle Cloud Infrastructure")
+            yield Completion("aws", display="aws", display_meta="Amazon Web Services")
+            yield Completion("gcloud", display="gcloud", display_meta="Google Cloud Platform")
             return
-    
+
         first_token = tokens[0]
-    
-        if first_token in ["oci", "aws"] and self.current_json != first_token:
+
+        if first_token in ["oci", "aws", "gcloud"] and self.current_json != first_token:
             self.load_json(first_token)
             self.current_json = first_token
-    
-        if len(tokens) == 1 and first_token in ["oci", "aws"]:
+
+        if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud"]:
             subcommands = self.parser.ast.children
             for subcmd in subcommands:
                 yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
             return
-    
+
         parsed, unparsed, suggestions = self.parser.parse_tokens(tokens)
 
         if suggestions is None:
@@ -82,6 +81,10 @@ class GoatCompleter(Completer):
                 subcommands = self.parser.ast.children
                 for subcmd in subcommands:
                     yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
+            elif len(tokens) == 1 and tokens[0] == "gcloud":
+                subcommands = self.parser.ast.children
+                for subcmd in subcommands:
+                    yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
 
     # The rest of your existing methods remain the same
 
@@ -90,4 +93,3 @@ async def get_completions_async(self, document, complete_event):
     completions = await asyncio.to_thread(self.get_completions, document, complete_event)
     for completion in completions:
         yield completion
-

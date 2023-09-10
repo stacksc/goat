@@ -22,7 +22,7 @@ from goatshell.parser import Parser
 from goatshell.ui import getLayout  
 
 logger = logging.getLogger(__name__)
-current_service = 'oci'  # You can set it to 'aws' if you prefer AWS mode initially
+current_service = 'aws'  # You can set it to 'aws' if you prefer AWS mode initially
 os.environ['AWS_PAGER'] = ''
 
 # Define key bindings class
@@ -37,7 +37,12 @@ class CustomKeyBindings(KeyBindings):
         @self.add(Keys.F9)  # Use F9 key for toggling
         def handle_f9(event):
             global current_service
-            current_service = 'aws' if current_service == 'oci' else 'oci'
+            if current_service == 'aws':
+                current_service = 'oci'
+            elif current_service == 'oci':
+                current_service = 'gcloud'
+            else:
+                current_service = 'aws'
             app.set_parser_and_completer(current_service)
 
 # Define the main Goatshell class
@@ -66,21 +71,27 @@ class Goatshell(object):
 
     def toggle_service(self, event):
         global current_service  # Declare current_service as a global variable
-        if current_service == 'oci':
-            current_service = 'aws'
-        else:
+        if current_service == 'aws':
             current_service = 'oci'
+        elif current_service == 'oci':
+            current_service = 'gcloud'
+        else:
+            current_service = 'aws'
 
         self.prefix = current_service
         self.set_parser_and_completer(current_service)
 
     def get_service_info(self):
-        use_aws = True  # or False
-        if use_aws:
+        global current_service  # Declare current_service as a global variable
+        if current_service == 'aws':
             return 'aws', 'data/aws.json'
-        else:
+        elif current_service == 'oci':
             return 'oci', 'data/oci.json'
-
+        elif current_service == 'gcloud':
+            return 'gcloud', 'data/gcloud.json'
+        else:
+            return 'aws', 'data/aws.json'  # Default to 'aws' if current_service is not recognized
+    
     def create_toolbar(self):
         return HTML(
             'Use [Tab][Tab] for autocompletion <b>F9</b> Toggle Provider <b>F10</b> Quit'
@@ -110,7 +121,7 @@ class Goatshell(object):
             api_type = user_input.split(' ')[0]
 
             if api_type.lower() != self.prefix:  # If a different prefix is detected
-                if api_type.lower() in ['oci', 'aws']:
+                if api_type.lower() in ['oci', 'aws', 'gcloud']:
                     self.set_parser_and_completer(api_type.lower())
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)
@@ -129,7 +140,7 @@ class Goatshell(object):
                     CONFIGSTORE = Config('ocitools')
                     OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
                     user_input += f' {OCID}'
-                if '--profile' not in user_input:
+                if '--profile' not in user_input and api_type.lower() != 'gcloud':
                     user_input = user_input + ' --profile ' + get_latest_profile()
                 if '-o' in user_input and 'json' in user_input:
                     user_input += ' | pygmentize -l json'
@@ -137,7 +148,7 @@ class Goatshell(object):
                 p.communicate()
 
 if __name__ == '__main__':
-    service = 'oci'
+    service = 'aws'
 
     # Construct the path to the JSON file based on the selected service
     json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{service}.json')

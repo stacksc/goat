@@ -178,8 +178,8 @@ class Parser(object):
         logger.debug("options parsed: %s, remaining unparsed: %s", parsed, unparsed)
         return parsed, unparsed, suggestions
     
-if __name__ == '__main__':
-    oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
-    parser = Parser(oci_json_path)
-    p, _, s = parser.treewalk(parser.ast, parsed=list(), unparsed=['--', 'oci'])
-    print(p, s)
+#if __name__ == '__main__':
+#    oci_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/oci.json')
+#    parser = Parser(oci_json_path)
+#    p, _, s = parser.treewalk(parser.ast, parsed=list(), unparsed=['--', 'oci', 'aws', 'gcloud'])
+#    print(p, s)

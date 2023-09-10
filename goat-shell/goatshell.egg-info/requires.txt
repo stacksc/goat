@@ -3,8 +3,11 @@ Pygments<3.0.0,>=2.1.3
 fuzzyfinder>=1.0.0
 click>=8.0.4
 goatconfigstore
+gnureadline
 goatocitools
 goatawstools
 goatjiratools
 goatslacktools
 goatjenkinstools
+goattoolbox
+goaat

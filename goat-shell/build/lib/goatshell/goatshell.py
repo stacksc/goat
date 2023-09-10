@@ -123,6 +123,12 @@ class Goatshell(object):
                 user_input = user_input[1:]
 
             if user_input:
+                # append this first if needed - primary tenant ocid
+                if '--compartment-id' in user_input and 'ocid' not in user_input:
+                    from configstore.configstore import Config
+                    CONFIGSTORE = Config('ocitools')
+                    OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
+                    user_input += f' {OCID}'
                 if '--profile' not in user_input:
                     user_input = user_input + ' --profile ' + get_latest_profile()
                 if '-o' in user_input and 'json' in user_input:

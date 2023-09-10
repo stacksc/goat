@@ -45,14 +45,14 @@ def cli(ctx, version, manuals, shell):
 def goat_version():
     from importlib_metadata import version
     RES = draw_title()
-    print('GOAT:\t\t\t' + version('goat'))
-    print('- awstools:\t\t' + version('awstools'))
-    print('- configstore:\t\t' + version('configstore'))
-    print('- jenkinstools:\t\t' + version('jenkinstools'))
-    print('- jiratools:\t\t' + version('jiratools'))
-    print('- ocitools:\t\t' + version('ocitools'))
-    print('- slacktools:\t\t' + version('slacktools'))
-    print('- toolbox:\t\t' + version('toolbox'))
+    print('GOAT:\t\t\t' + version('goaat'))
+    print('- awstools:\t\t' + version('goatawstools'))
+    print('- configstore:\t\t' + version('goatconfigstore'))
+    print('- jenkinstools:\t\t' + version('goatjenkinstools'))
+    print('- jiratools:\t\t' + version('goatjiratools'))
+    print('- ocitools:\t\t' + version('goatocitools'))
+    print('- slacktools:\t\t' + version('goatslacktools'))
+    print('- toolbox:\t\t' + version('goattoolbox'))
     print(RES)
     sys.exit(0)
 

@@ -1,3 +1,4 @@
+README.md
 pyproject.toml
 goaat.egg-info/PKG-INFO
 goaat.egg-info/SOURCES.txt

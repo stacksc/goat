@@ -5,7 +5,8 @@ authors = [
 ]
 description = "goat => GCP, OCI, & AWS tools : GOAT Team"
 requires-python = ">=3.7"
-dynamic = ["version", "readme"]
+dynamic = ["version"]
+readme = "README.md"
 
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -39,7 +40,6 @@ requires = [
 goat = "goat.goat:cli"
 
 [tool.setuptools.dynamic]
-readme = {file = ["README.md"], content-type = "text/markdown"}
 version = {attr = "goat.__version__"}
 
 [tool.setuptools.packages]

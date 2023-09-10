@@ -22,7 +22,7 @@ from goatshell.parser import Parser
 from goatshell.ui import getLayout  
 
 logger = logging.getLogger(__name__)
-current_service = 'aws'  # You can set it to 'aws' if you prefer AWS mode initially
+current_service = 'oci'  # You can set it to 'aws' if you prefer AWS mode initially
 os.environ['AWS_PAGER'] = ''
 
 # Define key bindings class
@@ -153,19 +153,3 @@ class Goatshell(object):
                 p = subprocess.Popen(user_input, shell=True)
                 p.communicate()
 
-if __name__ == '__main__':
-    service = 'aws'
-
-    # Construct the path to the JSON file based on the selected service
-    json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{service}.json')
-
-    # Create a Parser instance
-    parser = Parser(json_path, service)
-
-    # Create a GoatCompleter instance with the parser
-    completer = GoatCompleter(parser)
-
-    # Initialize and run Goatshell
-    app = Application()
-    goatshell = Goatshell(app, completer, parser)
-    goatshell.run_cli()

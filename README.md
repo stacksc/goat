@@ -840,8 +840,8 @@ Commands:
 <br>
 <img src="./images/download_1.png" alt="OCI Downloads" width="1200"/>
 
-#### OCI & AWS Shell Interface ####
-<img width="1696" alt="image" src="https://github.com/stacksc/goat/assets/116677370/a41658fc-13d3-4742-881d-b6187e987e75">
+#### OCI / GCLOUD / AWS Shell Interface ####
+<img width="2555" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1dbf12c3-2d1f-4508-82a6-bd1ca794a1d8">
 <br>
 
 #### Native Notifications

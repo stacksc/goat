@@ -13,5 +13,5 @@ goattoolbox
 goaat
 azure-cli
 oci-cli
-awscli
+aws2
 gcloud

@@ -49,6 +49,8 @@ class CustomKeyBindings(KeyBindings):
                 current_service = 'oci'
             elif current_service == 'oci':
                 current_service = 'gcloud'
+            elif current_service == 'gcloud':
+                current_service = 'az'
             else:
                 current_service = 'aws'
             app.set_parser_and_completer(current_service)
@@ -85,6 +87,8 @@ class Goatshell(object):
             current_service = 'oci'
         elif current_service == 'oci':
             current_service = 'gcloud'
+        elif current_service == 'gcloud':
+            current_service = 'az'
         else:
             current_service = 'aws'
 
@@ -99,6 +103,8 @@ class Goatshell(object):
             return 'oci', 'data/oci.json'
         elif current_service == 'gcloud':
             return 'gcloud', 'data/gcloud.json'
+        elif current_service == 'az':
+            return 'az', 'data/az.json'
         else:
             return 'aws', 'data/aws.json'  # Default to 'aws' if current_service is not recognized
     
@@ -134,7 +140,7 @@ class Goatshell(object):
             api_type = user_input.split(' ')[0]
 
             if api_type.lower() != self.prefix:  # If a different prefix is detected
-                if api_type.lower() in ['oci', 'aws', 'gcloud']:
+                if api_type.lower() in ['oci', 'aws', 'gcloud', 'az']:
                     self.set_parser_and_completer(api_type.lower())
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)
@@ -164,7 +170,7 @@ class Goatshell(object):
                             CONFIGSTORE = Config('ocitools')
                             OCID = CONFIGSTORE.get_metadata('user', get_latest_profile())
                             user_input += f' {OCID}'
-                    if api_type.lower() != 'gcloud' and '--profile' not in user_input:
+                    if api_type.lower() not in ['gcloud','az'] and '--profile' not in user_input:
                         user_input = user_input + ' --profile ' + get_latest_profile()
                     if '-o' in user_input and 'json' in user_input:
                         user_input += ' | pygmentize -l json'

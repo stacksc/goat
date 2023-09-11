@@ -39,6 +39,7 @@ func_title = HTML("""<b>Hotkeys</b>""")
 misc_title = HTML("""<b>Misc</b>""")
 input = """\
 
+[F8]  Display Help & Layout
 [F9]  Toggle Cloud Provider => [ENTER]
 [F10] Exit
 
@@ -46,6 +47,8 @@ input = """\
 misc_input = """\
  exit      : exit shell
  clear     : clear screen
+ help      : display usage
+ !<cmd>    : run OS command
 """
 
 def getLayout():
@@ -65,3 +68,6 @@ def getLayout():
         ])
     ]))
     print()
+
+if __name__ == '__main__':
+    getLayout()

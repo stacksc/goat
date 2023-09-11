@@ -1,3 +1,4 @@
+from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit import Application, PromptSession
 from prompt_toolkit.history import InMemoryHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
@@ -29,10 +30,17 @@ os.environ['AWS_PAGER'] = ''
 class CustomKeyBindings(KeyBindings):
     def __init__(self, app):
         super().__init__()
+        self.app = app  # Store the Application reference
 
         @self.add(Keys.F10)
         def handle_f10(event):
             sys.exit()
+
+        @self.add(Keys.F8)
+        def handle_f8(event):
+            getLayout()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
 
         @self.add(Keys.F9)  # Use F9 key for toggling
         def handle_f9(event):
@@ -44,7 +52,8 @@ class CustomKeyBindings(KeyBindings):
             else:
                 current_service = 'aws'
             app.set_parser_and_completer(current_service)
-
+            app.current_input = None  # Reset current input and retrigger prompt
+        
 # Define the main Goatshell class
 class Goatshell(object):
     def __init__(self, app, completer, parser):
@@ -53,8 +62,9 @@ class Goatshell(object):
         self.app = app
         self.completer = completer
         self.prefix = 'oci'
+        self.current_input = None
 
-        self.key_bindings = CustomKeyBindings(self)
+        self.key_bindings = CustomKeyBindings(self.app)
         self.key_bindings.add(Keys.F9)(self.toggle_service)
 
         shell_dir = os.path.expanduser("~/goat/shell/")
@@ -94,7 +104,7 @@ class Goatshell(object):
     
     def create_toolbar(self):
         return HTML(
-            'Use [Tab][Tab] for autocompletion <b>F9</b> Toggle Provider <b>F10</b> Quit'
+            '<b>F8</b> Usage <b>F9 [ENTER]</b> Toggle Provider <b>F10</b> Quit'
         )
 
     def set_parser_and_completer(self, api_type):
@@ -118,6 +128,9 @@ class Goatshell(object):
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
 
+            if user_input == 're-prompt':
+                user_input = ''
+                continue
             api_type = user_input.split(' ')[0]
 
             if api_type.lower() != self.prefix:  # If a different prefix is detected
@@ -129,27 +142,30 @@ class Goatshell(object):
                 click.clear()
             elif user_input == "exit":
                 sys.exit()
+            elif user_input == "help":
+                getLayout()
+                continue
 
             if user_input.startswith("!"):
                 user_input = user_input[1:]
-
-            if user_input:
-                # append this first if needed - primary tenant ocid
-                if api_type.lower() == 'oci':
-                    if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
-                        from configstore.configstore import Config
-                        CONFIGSTORE = Config('ocitools')
-                        OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
-                        user_input += f' {OCID}'
-                    if '--user-id' in user_input and 'ocid' not in user_input:
-                        from configstore.configstore import Config
-                        CONFIGSTORE = Config('ocitools')
-                        OCID = CONFIGSTORE.get_metadata('user', get_latest_profile())
-                        user_input += f' {OCID}'
-                if api_type.lower() != 'gcloud' and '--profile' not in user_input:
-                    user_input = user_input + ' --profile ' + get_latest_profile()
-                if '-o' in user_input and 'json' in user_input:
-                    user_input += ' | pygmentize -l json'
-                p = subprocess.Popen(user_input, shell=True)
-                p.communicate()
+            else:
+                if user_input:
+                    # append this first if needed - primary tenant ocid
+                    if api_type.lower() == 'oci':
+                        if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
+                            from configstore.configstore import Config
+                            CONFIGSTORE = Config('ocitools')
+                            OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
+                            user_input += f' {OCID}'
+                        if '--user-id' in user_input and 'ocid' not in user_input:
+                            from configstore.configstore import Config
+                            CONFIGSTORE = Config('ocitools')
+                            OCID = CONFIGSTORE.get_metadata('user', get_latest_profile())
+                            user_input += f' {OCID}'
+                    if api_type.lower() != 'gcloud' and '--profile' not in user_input:
+                        user_input = user_input + ' --profile ' + get_latest_profile()
+                    if '-o' in user_input and 'json' in user_input:
+                        user_input += ' | pygmentize -l json'
+            p = subprocess.Popen(user_input, shell=True)
+            p.communicate()
 

@@ -138,11 +138,13 @@ class Goatshell(object):
                     self.set_parser_and_completer(api_type.lower())
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)
-            if user_input == "clear":
+            if user_input == "clear" or user_input == 'c':
+                user_input = 'clear'
                 click.clear()
-            elif user_input == "exit":
+            elif user_input == "exit" or user_input == 'e':
+                user_input = 'exit'
                 sys.exit()
-            elif user_input == "help":
+            elif user_input == "help" or user_input == 'h':
                 getLayout()
                 continue
 

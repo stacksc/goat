@@ -45,9 +45,9 @@ input = """\
 
 """
 misc_input = """\
- exit      : exit shell
- clear     : clear screen
- help      : display usage
+ e|exit    : exit shell
+ c|clear   : clear screen
+ h|help    : display usage
  !<cmd>    : run OS command
 """
 

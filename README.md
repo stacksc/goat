@@ -1,4 +1,3 @@
-<video src='https://github.com/stacksc/goat/images/goatshell.mp4' width=180/>
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->

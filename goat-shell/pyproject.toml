@@ -5,6 +5,8 @@ authors = [
 ]
 description = "goatshell - goat shell interface to common cloud providers."
 requires-python = ">=3.7"
+dynamic = ["version"]
+readme = "README.md"
 
 dependencies = [
     'prompt-toolkit >= 3.0.0',
@@ -32,8 +34,6 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 
-dynamic = ["version", "readme"]
-
 [build-system]
 requires = [
   "setuptools >= 61.0.0",
@@ -42,7 +42,6 @@ requires = [
 ]
 
 [tool.setuptools.dynamic]
-readme = {file = ["README.md"], content-type = "text/markdown"}
 version = {attr = "goatshell.__version__"}
 
 [project.scripts]

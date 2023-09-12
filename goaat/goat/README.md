@@ -1,4 +1,5 @@
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
+<video width="600" height="300" src="https://github.com/stacksc/goat/assets/116677370/2d306e98-defe-4c9f-8c2d-0368fbd297f0"></video>
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>

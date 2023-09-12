@@ -1,38 +1,6 @@
-Metadata-Version: 2.1
-Name: goatshell
-Version: 2023.9.11.2006
-Summary: goatshell - goat shell interface to common cloud providers.
-Home-page: https://github.com/stacksc/goat
-Author: centerupt@gmail.com
-Author-email: Christopher Stacks <centerupt@gmail.com>
-License: Apache License 2.0
-Keywords: autocomplete,shell
-Classifier: Programming Language :: Python :: 3
-Classifier: Operating System :: OS Independent
-Requires-Python: >=3.7
-Description-Content-Type: text/markdown
-License-File: LICENSE
-Requires-Dist: prompt-toolkit>=3.0.0
-Requires-Dist: Pygments<3.0.0,>=2.1.3
-Requires-Dist: fuzzyfinder>=1.0.0
-Requires-Dist: click>=8.0.4
-Requires-Dist: goatconfigstore
-Requires-Dist: gnureadline
-Requires-Dist: goatocitools
-Requires-Dist: goatawstools
-Requires-Dist: goatjiratools
-Requires-Dist: goatslacktools
-Requires-Dist: goatjenkinstools
-Requires-Dist: goattoolbox
-Requires-Dist: goatconfigstore
-Requires-Dist: goaat
-Requires-Dist: azure-cli
-Requires-Dist: oci-cli
-Requires-Dist: aws2
-Requires-Dist: gcloud
-
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-<video width="600" height="300" src="https://github.com/stacksc/goat/assets/116677370/2d306e98-defe-4c9f-8c2d-0368fbd297f0"></video>
+<video width="600" height="300" src="https://github.com/stacksc/goat/assets/116677370/2d306e98-defe-4c9f-8c2d-0368fbd297f0">
+
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>

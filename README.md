@@ -1,3 +1,4 @@
+![image](https://github.com/stacksc/goat/assets/116677370/40a63f67-f51d-4ce3-b335-8814ee675dc5)
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->

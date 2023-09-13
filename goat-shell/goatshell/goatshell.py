@@ -96,8 +96,13 @@ class Goatshell(object):
         else:
             current_service = 'aws'
 
+        # re-prompt hack
         self.prefix = current_service
         self.set_parser_and_completer(current_service)
+        os.system('clear')
+        getLayout()
+        self.app.invalidate()
+        event.app.exit(result='re-prompt')  # signal to reprompt.
 
     def get_service_info(self):
         global current_service  # Declare current_service as a global variable
@@ -116,7 +121,7 @@ class Goatshell(object):
     
     def create_toolbar(self):
         return HTML(
-            '<b>F8</b> Usage <b>F9 [ENTER]</b> Toggle Provider <b>F10</b> Quit'
+            '<b>F8</b> Usage <b>F9</b> Toggle Provider <b>F10</b> Quit'
         )
 
     def set_parser_and_completer(self, api_type):
@@ -167,15 +172,23 @@ class Goatshell(object):
                     # append this first if needed - primary tenant ocid
                     if api_type.lower() == 'oci':
                         if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
-                            from configstore.configstore import Config
-                            CONFIGSTORE = Config('ocitools')
-                            OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
-                            user_input += f' {OCID}'
+                            # Try to use local configstore to get the tenancy
+                            try:
+                                from configstore.configstore import Config
+                                CONFIGSTORE = Config('ocitools')
+                                OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
+                                user_input += f' {OCID}'
+                            except:
+                                pass
                         if '--user-id' in user_input and 'ocid' not in user_input:
-                            from configstore.configstore import Config
-                            CONFIGSTORE = Config('ocitools')
-                            OCID = CONFIGSTORE.get_metadata('user', get_latest_profile())
-                            user_input += f' {OCID}'
+                            # Try to use local configstore to get the user
+                            try:
+                                from configstore.configstore import Config
+                                CONFIGSTORE = Config('ocitools')
+                                OCID = CONFIGSTORE.get_metadata('user', get_latest_profile())
+                                user_input += f' {OCID}'
+                            except:
+                                pass
                     if api_type.lower() not in ['gcloud','az','goat'] and '--profile' not in user_input:
                         user_input = user_input + ' --profile ' + get_latest_profile()
                     if '-o' in user_input and 'json' in user_input:

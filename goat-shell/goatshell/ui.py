@@ -40,7 +40,7 @@ misc_title = HTML("""<b>Misc</b>""")
 input = """\
 
 [F8]  Display Help & Layout
-[F9]  Toggle Cloud Provider => [ENTER]
+[F9]  Toggle Cloud Provider
 [F10] Exit
 
 """

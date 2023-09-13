@@ -15,7 +15,7 @@ import re
 import click
 import logging
 from ocitools.iam import get_latest_profile  
-from toolbox import misc  
+from . import misc as misc
 from ocitools.oci_config import OCIconfig  
 from goatshell.style import styles_dict 
 from goatshell.completer import GoatCompleter 
@@ -28,13 +28,21 @@ os.environ['AWS_PAGER'] = ''
 
 # Define key bindings class
 class CustomKeyBindings(KeyBindings):
-    def __init__(self, app):
+    def __init__(self, app, goatshell_instance):
         super().__init__()
         self.app = app  # Store the Application reference
+        self.goatshell_instance = goatshell_instance
 
-        @self.add(Keys.F10)
+        @self.add(Keys.F12)
         def handle_f10(event):
             sys.exit()
+
+        @self.add(Keys.F10)
+        def handle_f12(event):
+            self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
+            getLayout()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
 
         @self.add(Keys.F8)
         def handle_f8(event):
@@ -67,8 +75,12 @@ class Goatshell(object):
         self.completer = completer
         self.prefix = 'oci'
         self.current_input = None
-
-        self.key_bindings = CustomKeyBindings(self.app)
+        self.aws_profiles = misc.read_aws_profiles()
+        self.oci_profiles = misc.read_oci_profiles()
+        self.aws_index = 0
+        self.oci_index = 0
+        self.profile = self.get_profile(self.prefix)
+        self.key_bindings = CustomKeyBindings(self.app, self)
         self.key_bindings.add(Keys.F9)(self.toggle_service)
 
         shell_dir = os.path.expanduser("~/goat/shell/")
@@ -82,6 +94,23 @@ class Goatshell(object):
 
         root_name, json_path = self.get_service_info()
         self.parser = Parser(json_path, root_name)
+   
+    def get_profile(self, mode):
+        if mode == 'aws':
+            if self.aws_profiles:
+                self.aws_index = (self.aws_index + 1) % len(self.aws_profiles)
+                self.profile = self.aws_profiles[self.aws_index]
+            else:
+                self.profile = 'DEFAULT'
+        elif mode == 'oci':
+            if self.oci_profiles:
+                self.oci_index = (self.oci_index + 1) % len(self.oci_profiles)
+                self.profile = self.oci_profiles[self.oci_index]
+            else:
+                self.profile = 'DEFAULT'
+        else:
+            self.profile = 'DEFAULT'
+        return self.profile
 
     def toggle_service(self, event):
         global current_service  # Declare current_service as a global variable
@@ -120,8 +149,10 @@ class Goatshell(object):
             return 'aws', 'data/aws.json'  # Default to 'aws' if current_service is not recognized
     
     def create_toolbar(self):
+        self.upper_profile = self.profile.upper()
+        self.upper_prefix = self.prefix.upper()
         return HTML(
-            '<b>F8</b> Usage <b>F9</b> Toggle Provider <b>F10</b> Quit'
+            f'<b>F8</b> Usage <b>F9</b> Toggle Provider: {self.upper_prefix} <b>F10</b> Toggle Profile: {self.upper_profile} <b>F12</b> Quit'
         )
 
     def set_parser_and_completer(self, api_type):
@@ -176,7 +207,7 @@ class Goatshell(object):
                             try:
                                 from configstore.configstore import Config
                                 CONFIGSTORE = Config('ocitools')
-                                OCID = CONFIGSTORE.get_metadata('tenancy', get_latest_profile())
+                                OCID = CONFIGSTORE.get_metadata('tenancy', self.profile)
                                 user_input += f' {OCID}'
                             except:
                                 pass
@@ -185,12 +216,12 @@ class Goatshell(object):
                             try:
                                 from configstore.configstore import Config
                                 CONFIGSTORE = Config('ocitools')
-                                OCID = CONFIGSTORE.get_metadata('user', get_latest_profile())
+                                OCID = CONFIGSTORE.get_metadata('user', self.profile)
                                 user_input += f' {OCID}'
                             except:
                                 pass
                     if api_type.lower() not in ['gcloud','az','goat'] and '--profile' not in user_input:
-                        user_input = user_input + ' --profile ' + get_latest_profile()
+                        user_input = user_input + ' --profile ' + self.profile
                     if '-o' in user_input and 'json' in user_input:
                         user_input += ' | pygmentize -l json'
             p = subprocess.Popen(user_input, shell=True)

@@ -1,6 +1,6 @@
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-<video width="600" height="600" src="https://github.com/stacksc/goat/assets/116677370/e3adea97-fdb6-43cc-bf73-37c006160530"></video>
-  
+<video width="900" src="https://github.com/stacksc/goat/assets/116677370/c8b4e692-69ad-489e-865f-30bb79eb44b1"></video>
+
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>

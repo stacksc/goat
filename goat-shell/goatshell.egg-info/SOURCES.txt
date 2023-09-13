@@ -8,6 +8,7 @@ goatshell/completer.py
 goatshell/goatshell.py
 goatshell/logger.py
 goatshell/main.py
+goatshell/misc.py
 goatshell/parser.py
 goatshell/style.py
 goatshell/ui.py

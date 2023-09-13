@@ -41,7 +41,8 @@ input = """\
 
 [F8]  Display Help & Layout
 [F9]  Toggle Cloud Provider
-[F10] Exit
+[F10] Toggle Cloud Profiles
+[F12] Exit
 
 """
 misc_input = """\

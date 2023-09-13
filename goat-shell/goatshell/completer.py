@@ -75,26 +75,8 @@ class GoatCompleter(Completer):
                for key in completions:
                    yield Completion(key, start_position=-len(last_token), display=key, display_meta=suggestions.get(key, ""))
         else:
-            if len(tokens) == 1 and tokens[0] == "oci":
-                subcommands = self.parser.ast.children
-                for subcmd in subcommands:
-                    yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
-            elif len(tokens) == 1 and tokens[0] == "aws":
-                subcommands = self.parser.ast.children
-                for subcmd in subcommands:
-                    yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
-            elif len(tokens) == 1 and tokens[0] == "gcloud":
-                subcommands = self.parser.ast.children
-                for subcmd in subcommands:
-                    yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
-            elif len(tokens) == 1 and tokens[0] == "az":
-                subcommands = self.parser.ast.children
-                for subcmd in subcommands:
-                    yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
-            elif len(tokens) == 1 and tokens[0] == "goat":
-                subcommands = self.parser.ast.children
-                for subcmd in subcommands:
-                    yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
+            for key in suggestions.keys():
+                yield Completion(key, display=key, display_meta=suggestions.get(key, ""))
 
 async def get_completions_async(self, document, complete_event):
     logger.debug("Entering get_completions")

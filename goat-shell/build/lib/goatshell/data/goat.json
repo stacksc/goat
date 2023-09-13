@@ -1,0 +1,2125 @@
+{
+  "goat": {
+    "command": "goat",
+    "args": [],
+    "options": {
+      "-v": {
+        "name": "-v",
+        "help": "--version       print version of goat and all its submodules"
+      },
+      "-m": {
+        "name": "-m",
+        "help": "--manuals TEXT  print all defined manuals matching pattern(s)"
+      },
+      "-s": {
+        "name": "-s",
+        "help": "--shell         launch the GOAT Shell for improved cloud interaction"
+      },
+      "-h": {
+        "name": "-h",
+        "help": "--help          Show this message and exit."
+      }
+    },
+    "subcommands": {
+      "aws": {
+        "command": "aws",
+        "args": [],
+        "options": {
+          "-p": {
+            "name": "-p",
+            "help": "--profile TEXT  profile name to use when working with awstools"
+          },
+          "-r": {
+            "name": "-r",
+            "help": "--region TEXT   region name to use when working with awstools"
+          },
+          "-c": {
+            "name": "-c",
+            "help": "--cache         refresh all cache for region and tenant  [default:"
+          },
+          "-h": {
+            "name": "-h",
+            "help": "--help          Show this message and exit."
+          }
+        },
+        "subcommands": {
+          "cli": {
+            "command": "cli",
+            "args": [],
+            "options": {
+              "-r": {
+                "name": "-r",
+                "help": "--region TEXT  AWS region to authenticate against"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help         Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "run any awscli (aws) command while leveraging awstools profile..."
+          },
+          "ec2": {
+            "command": "ec2",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform EC2 actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "delete": {
+                "command": "delete",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {
+                  "orphaned_ebs": {
+                    "command": "orphaned_ebs",
+                    "args": [],
+                    "options": {
+                      "-v": {
+                        "name": "-v",
+                        "help": "--volume    flag to delete orphaned EBS volumes"
+                      },
+                      "-s": {
+                        "name": "-s",
+                        "help": "--snapshot  flag to delete orphaned EBS snapshots"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help      Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "delete orphaned EBS volumes or snapshots"
+                  }
+                },
+                "help": "Delete EC2 objects such as instances, EBS volumes or snapshots"
+              },
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh ec2 cached data"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in ec2 cache (instacnes, IPs, regions)"
+              }
+            },
+            "help": "ec2 to manage the instances and related configuration"
+          },
+          "iam": {
+            "command": "iam",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "authenticate": {
+                "command": "authenticate",
+                "args": [],
+                "options": {
+                  "-r": {
+                    "name": "-r",
+                    "help": "--region TEXT  aws region to connect to"
+                  },
+                  "-o": {
+                    "name": "-o",
+                    "help": "--output TEXT  output type for awscli"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help         Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "login using existing IAM creds or add new creds to config"
+              }
+            },
+            "help": "manage and switch between AWS profiles in GC and SIM regions"
+          },
+          "rds": {
+            "command": "rds",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform EC2 actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh ec2 cached data"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in rds cache"
+              }
+            },
+            "help": "rds to manage the DB instances and related configuration"
+          },
+          "s3": {
+            "command": "s3",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform S3 actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "create": {
+                "command": "create",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "create a new bucket"
+              },
+              "delete": {
+                "command": "delete",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "delete a specified bucket"
+              },
+              "download": {
+                "command": "download",
+                "args": [],
+                "options": {
+                  "--destination": {
+                    "name": "--destination",
+                    "help": "TEXT  provide a local destination for download  [default:"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help          Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "download from s3 to local storage"
+              },
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh s3 cached data"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in s3 cache"
+              },
+              "upload": {
+                "command": "upload",
+                "args": [],
+                "options": {
+                  "--source": {
+                    "name": "--source",
+                    "help": "TEXT  provide a local source for upload  [required]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help     Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "upload from local storage to s3 bucket"
+              }
+            },
+            "help": "s3 functions to sync buckets and filesystems"
+          },
+          "show": {
+            "command": "show",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "display configuration data for awstools and awscli"
+          }
+        },
+        "help": "AWS CLI ClientCurrent Profile: CENTERUPT..."
+      },
+      "configs": {
+        "command": "configs",
+        "args": [],
+        "options": {
+          "-p": {
+            "name": "-p",
+            "help": "--profile TEXT  name of the profile to use"
+          },
+          "-h": {
+            "name": "-h",
+            "help": "--help          Show this message and exit."
+          }
+        },
+        "subcommands": {
+          "add": {
+            "command": "add",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "profile": {
+                "command": "profile",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "add a profile to a configstore"
+              },
+              "property": {
+                "command": "property",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "add a record to a profile stored in a configstore"
+              }
+            },
+            "help": "add data to a configstore"
+          },
+          "delete": {
+            "command": "delete",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "profile": {
+                "command": "profile",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "delete an entire profile stored in a configstore"
+              },
+              "property": {
+                "command": "property",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "delete a record stored in a configstore"
+              }
+            },
+            "help": "delete data saved in a configstore"
+          },
+          "show": {
+            "command": "show",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "show records stored in a configstore; you can use profile and..."
+          }
+        },
+        "help": "Config ClientCurrent Profile: N/A"
+      },
+      "jenkins": {
+        "command": "jenkins",
+        "args": [],
+        "options": {
+          "-p": {
+            "name": "-p",
+            "help": "--profile TEXT  user profile for Jenkins operations"
+          },
+          "-h": {
+            "name": "-h",
+            "help": "--help          Show this message and exit."
+          }
+        },
+        "subcommands": {
+          "auth": {
+            "command": "auth",
+            "args": [],
+            "options": {
+              "-d": {
+                "name": "-d",
+                "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help           Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "setup": {
+                "command": "setup",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "setup your API access to jenkins"
+              },
+              "update-profile": {
+                "command": "update-profile",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "update the default profile"
+              }
+            },
+            "help": "perform authentication operations against Jenkins"
+          },
+          "show": {
+            "command": "show",
+            "args": [],
+            "options": {
+              "-d": {
+                "name": "-d",
+                "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+              },
+              "-m": {
+                "name": "-m",
+                "help": "--menu           launch a menu driven interface for common Jenkins user"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help           Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "access-token": {
+                "command": "access-token",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "API token for accessing the Jenins functionality"
+              },
+              "access-token-age": {
+                "command": "access-token-age",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "how long the current access token will remain active"
+              },
+              "config": {
+                "command": "config",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "retrieve the entire content of jenkinstool's..."
+              },
+              "credentials": {
+                "command": "credentials",
+                "args": [],
+                "options": {
+                  "-d": {
+                    "name": "-d",
+                    "help": "--help  display description of credentials in the output"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help         Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "display system credentials available for jobs"
+              },
+              "crumb-token": {
+                "command": "crumb-token",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "API crumb for accessing the Jenins functionality"
+              },
+              "crumb-token-age": {
+                "command": "crumb-token-age",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "how long the current crumb token will remain active"
+              },
+              "jobs": {
+                "command": "jobs",
+                "args": [],
+                "options": {
+                  "-p": {
+                    "name": "-p",
+                    "help": "--pattern TEXT  pattern to search on due to the number of job names"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help          Show this message and exit."
+                  }
+                },
+                "subcommands": {
+                  "config": {
+                    "command": "config",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show XML configuration of a specific job from jenkins"
+                  },
+                  "console": {
+                    "command": "console",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show console output of a specific job build number from..."
+                  },
+                  "details": {
+                    "command": "details",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show details of a specific job from jenkins"
+                  },
+                  "info": {
+                    "command": "info",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show details for a specific build and job name in jenkins"
+                  },
+                  "last": {
+                    "command": "last",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show the last build information for a specific job in..."
+                  },
+                  "last-failed": {
+                    "command": "last-failed",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "get the last failed build of a specific job from jenkins"
+                  },
+                  "last-success": {
+                    "command": "last-success",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "get the last successful build of a specific job from jenkins"
+                  },
+                  "names": {
+                    "command": "names",
+                    "args": [],
+                    "options": {
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show all job names from jenkins"
+                  },
+                  "urls": {
+                    "command": "urls",
+                    "args": [],
+                    "options": {
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show last 100 build urls for a specific job in jenkins"
+                  }
+                },
+                "help": "display information about Jenkins job names"
+              },
+              "user": {
+                "command": "user",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {
+                  "details": {
+                    "command": "details",
+                    "args": [],
+                    "options": {
+                      "-r": {
+                        "name": "-r",
+                        "help": "--raw   display raw json; don't reduce output"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "display user details for a selected user from Jenkins"
+                  },
+                  "who": {
+                    "command": "who",
+                    "args": [],
+                    "options": {
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "display list of users from Jenkins"
+                  },
+                  "whoami": {
+                    "command": "whoami",
+                    "args": [],
+                    "options": {
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "simple LDAP verification against Jenkins"
+                  }
+                },
+                "help": "display information about Jenkins users"
+              }
+            },
+            "help": "retrieve information from Jenkins"
+          }
+        },
+        "help": "Jenkins ClientCurrent Profile:..."
+      },
+      "jira": {
+        "command": "jira",
+        "args": [],
+        "options": {
+          "-p": {
+            "name": "-p",
+            "help": "--profile TEXT  profile name to use when working with the jiraclient"
+          },
+          "-h": {
+            "name": "-h",
+            "help": "--help          Show this message and exit."
+          }
+        },
+        "subcommands": {
+          "auth": {
+            "command": "auth",
+            "args": [],
+            "options": {
+              "-u": {
+                "name": "-u",
+                "help": "--url TEXT           address of the jira server  [required]"
+              },
+              "-m": {
+                "name": "-m",
+                "help": "--mode [token|pass]  choose authentication mode"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help               Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "setup or change authentication settings for JIRA"
+          },
+          "config": {
+            "command": "config",
+            "args": [],
+            "options": {
+              "-d": {
+                "name": "-d",
+                "help": "--default  mark this profile as the default profile to use for JIRA"
+              },
+              "-s": {
+                "name": "-s",
+                "help": "--show     show the entire config for the JIRA server on this profile"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help     Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "manage configuration details for the Jira server on this profile"
+          },
+          "issue": {
+            "command": "issue",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "assign": {
+                "command": "assign",
+                "args": [],
+                "options": {
+                  "-a": {
+                    "name": "-a",
+                    "help": "--assignee TEXT  assignee name, i.e. stacksc"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help           Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "change assignee of a given JIRA issue(s)"
+              },
+              "attach": {
+                "command": "attach",
+                "args": [],
+                "options": {
+                  "-a": {
+                    "name": "-a",
+                    "help": "--attach PATH  name of file to attach"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help         Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "attach a file to a given JIRA issue(s)"
+              },
+              "change-plan": {
+                "command": "change-plan",
+                "args": [],
+                "options": {
+                  "-r": {
+                    "name": "-r",
+                    "help": "--regex TEXT  pattern to lookup"
+                  },
+                  "-u": {
+                    "name": "-u",
+                    "help": "--url         extract jenkins build URL"
+                  },
+                  "-c": {
+                    "name": "-c",
+                    "help": "--cred        extract helm credentials for the build"
+                  },
+                  "-v": {
+                    "name": "-v",
+                    "help": "--verify      verify the extracted helm credentials for the build by"
+                  },
+                  "-p": {
+                    "name": "-p",
+                    "help": "--post        extract the runway post-deploy URL from the change-plan"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help        Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "dump entire change implementation plan of a given issue"
+              },
+              "comment": {
+                "command": "comment",
+                "args": [],
+                "options": {
+                  "-c": {
+                    "name": "-c",
+                    "help": "--comment TEXT  body of the comment to post  [required]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help          Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "post a comment to a given JIRA issue(s)"
+              },
+              "comments": {
+                "command": "comments",
+                "args": [],
+                "options": {
+                  "-r": {
+                    "name": "-r",
+                    "help": "--regex TEXT  pattern to lookup"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help        Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "look for specific data in the comments of a given issue"
+              },
+              "create": {
+                "command": "create",
+                "args": [],
+                "options": {
+                  "-s": {
+                    "name": "-s",
+                    "help": "--summary TEXT      title of the ticket  [required]"
+                  },
+                  "-d": {
+                    "name": "-d",
+                    "help": "--help TEXT  body of the ticket"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help              Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "creates a new JIRA issue in a given project"
+              },
+              "extract": {
+                "command": "extract",
+                "args": [],
+                "options": {
+                  "-k": {
+                    "name": "-k",
+                    "help": "--key TEXT  data key to lookup  [required]"
+                  },
+                  "-e": {
+                    "name": "-e",
+                    "help": "--exact     only grab exact matches  [default: False]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help      Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "look for specific data in the description of a given issue"
+              },
+              "review": {
+                "command": "review",
+                "args": [],
+                "options": {
+                  "-v": {
+                    "name": "-v",
+                    "help": "--value [Yes|No]  value to be used  [required]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help            Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "change the VMC Ops Review to Yes or No for a JIRA issue"
+              },
+              "search": {
+                "command": "search",
+                "args": [],
+                "options": {
+                  "-J": {
+                    "name": "-J",
+                    "help": "--json           output results in JSON format  [default: False]"
+                  },
+                  "-w": {
+                    "name": "-w",
+                    "help": "--wizard         output results in wizard format for transitioning"
+                  },
+                  "-t": {
+                    "name": "-t",
+                    "help": "--tui            use the native TUI to launch tickets in the browser"
+                  },
+                  "-l": {
+                    "name": "-l",
+                    "help": "--limit INTEGER  max amount of issues to show"
+                  },
+                  "-o": {
+                    "name": "-o",
+                    "help": "--orderby TEXT   choose which field to use for sorting"
+                  },
+                  "-A": {
+                    "name": "-A",
+                    "help": "--ascending      show issues in ascending order  [default: False]"
+                  },
+                  "-D": {
+                    "name": "-D",
+                    "help": "--descending     show issues in descending order  [default: False]"
+                  },
+                  "-c": {
+                    "name": "-c",
+                    "help": "--csv TEXT       name of the csv file to save the results to"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help           Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show a summary of specified issue or issues"
+              },
+              "transition": {
+                "command": "transition",
+                "args": [],
+                "options": {
+                  "-w": {
+                    "name": "-w",
+                    "help": "--wizard            launch a wizard to guide you through transitioning"
+                  },
+                  "-s": {
+                    "name": "-s",
+                    "help": "--showavailable     display the available transitions for a given issue"
+                  },
+                  "-i": {
+                    "name": "-i",
+                    "help": "--id TEXT           the ID of the state to transition to"
+                  },
+                  "-n": {
+                    "name": "-n",
+                    "help": "--name TEXT         name of the state to transition to"
+                  },
+                  "-f": {
+                    "name": "-f",
+                    "help": "--field_name TEXT   name(s) of the field(s) to update during transition"
+                  },
+                  "-t": {
+                    "name": "-t",
+                    "help": "--field_type TEXT   value of the field(s) to update during transition"
+                  },
+                  "-v": {
+                    "name": "-v",
+                    "help": "--field_value TEXT  type of field(s) to update during transition"
+                  },
+                  "-P": {
+                    "name": "-P",
+                    "help": "--payload TEXT      dict/json to be used as transition payload (field"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help              Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "transition a given issue"
+              },
+              "update": {
+                "command": "update",
+                "args": [],
+                "options": {
+                  "-f": {
+                    "name": "-f",
+                    "help": "--field TEXT  name of the field to update i.e. reporter  [required]"
+                  },
+                  "-v": {
+                    "name": "-v",
+                    "help": "--value TEXT  new value for the field i.e. jsmith  [required]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help        Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "update a field in a given JIRA issue"
+              }
+            },
+            "help": "manage JIRA issues"
+          },
+          "project": {
+            "command": "project",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "search": {
+                "command": "search",
+                "args": [],
+                "options": {
+                  "-a": {
+                    "name": "-a",
+                    "help": "--assignee TEXT  i.e. jdoe"
+                  },
+                  "-g": {
+                    "name": "-g",
+                    "help": "--group TEXT     i.e. devops"
+                  },
+                  "-r": {
+                    "name": "-r",
+                    "help": "--reporter TEXT  i.e. smithj"
+                  },
+                  "-s": {
+                    "name": "-s",
+                    "help": "--status TEXT    i.e. closed"
+                  },
+                  "--summary": {
+                    "name": "--summary",
+                    "help": "TEXT       text to search for in the summary field"
+                  },
+                  "--help": {
+                    "name": "--help",
+                    "help": "TEXT   text to search for in the help field"
+                  },
+                  "-l": {
+                    "name": "-l",
+                    "help": "--limit INTEGER  max amount of issues to show"
+                  },
+                  "-o": {
+                    "name": "-o",
+                    "help": "--orderby TEXT   choose which field to use for sorting"
+                  },
+                  "-A": {
+                    "name": "-A",
+                    "help": "--ascending      show issues in ascending order  [default: False]"
+                  },
+                  "-D": {
+                    "name": "-D",
+                    "help": "--descending     show issues in descending order  [default: False]"
+                  },
+                  "-c": {
+                    "name": "-c",
+                    "help": "--csv TEXT       name of the csv file to save the results to"
+                  },
+                  "-J": {
+                    "name": "-J",
+                    "help": "--json           output results in JSON format  [default: False]"
+                  },
+                  "-w": {
+                    "name": "-w",
+                    "help": "--wizard         output results in wizard format for transitioning"
+                  },
+                  "-t": {
+                    "name": "-t",
+                    "help": "--tui            use the native TUI to launch tickets in the browser"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help           Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show a summary of projects matching the specified filter"
+              }
+            },
+            "help": "manage JIRA projects"
+          },
+          "search": {
+            "command": "search",
+            "args": [],
+            "options": {
+              "-k": {
+                "name": "-k",
+                "help": "--key TEXT       i.e. PUBSECSRE-123"
+              },
+              "-p": {
+                "name": "-p",
+                "help": "--project TEXT   i.e. PUBSECSRE"
+              },
+              "-a": {
+                "name": "-a",
+                "help": "--assignee TEXT  i.e. jdoe"
+              },
+              "-g": {
+                "name": "-g",
+                "help": "--group TEXT     i.e. devops"
+              },
+              "-r": {
+                "name": "-r",
+                "help": "--reporter TEXT  i.e. smithj"
+              },
+              "-s": {
+                "name": "-s",
+                "help": "--status TEXT    i.e. closed"
+              },
+              "--summary": {
+                "name": "--summary",
+                "help": "TEXT       text to search for in the summary field"
+              },
+              "--help": {
+                "name": "--help",
+                "help": "TEXT   text to search for in the help field"
+              },
+              "-j": {
+                "name": "-j",
+                "help": "--jql TEXT       ignore other filters and use explicit jql query"
+              },
+              "-J": {
+                "name": "-J",
+                "help": "--json           output results in JSON format  [default: False]"
+              },
+              "-w": {
+                "name": "-w",
+                "help": "--wizard         output results in wizard format for transitioning"
+              },
+              "-t": {
+                "name": "-t",
+                "help": "--tui            use the native TUI to launch tickets in the browser"
+              },
+              "-l": {
+                "name": "-l",
+                "help": "--limit INTEGER  max amount of issues to show"
+              },
+              "-o": {
+                "name": "-o",
+                "help": "--orderby TEXT   choose which field to use for sorting"
+              },
+              "-A": {
+                "name": "-A",
+                "help": "--ascending      show issues in ascending order  [default: False]"
+              },
+              "-D": {
+                "name": "-D",
+                "help": "--descending     show issues in descending order  [default: False]"
+              },
+              "-c": {
+                "name": "-c",
+                "help": "--csv TEXT       name of the csv file to save the results to"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help           Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "search for issues in Jira"
+          }
+        },
+        "help": "JIRA CLI ClientCurrent Profile: DEFAULT"
+      },
+      "oci": {
+        "command": "oci",
+        "args": [],
+        "options": {
+          "-p": {
+            "name": "-p",
+            "help": "--profile TEXT  profile name to use when working with ocitools"
+          },
+          "-r": {
+            "name": "-r",
+            "help": "--region TEXT   region name to use when working with ocitools"
+          },
+          "-c": {
+            "name": "-c",
+            "help": "--cache         refresh all cache for region and tenant  [default:"
+          },
+          "-h": {
+            "name": "-h",
+            "help": "--help          Show this message and exit."
+          }
+        },
+        "subcommands": {
+          "cli": {
+            "command": "cli",
+            "args": [],
+            "options": {
+              "-r": {
+                "name": "-r",
+                "help": "--region TEXT  OCI region to authenticate against"
+              },
+              "-i": {
+                "name": "-i",
+                "help": "--interactive  spawn the interactive shell"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "run any ocicli (oci) command while leveraging ocitools..."
+          },
+          "compartment": {
+            "command": "compartment",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform compartment actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "create": {
+                "command": "create",
+                "args": [],
+                "options": {
+                  "-d": {
+                    "name": "-d",
+                    "help": "--help TEXT  provide a short description for the new compartment"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help              Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "create OCI compartment for region and tenant"
+              },
+              "delete": {
+                "command": "delete",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "menu-guided solution to delete OCI compartment's for region..."
+              },
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh comparments stored in cache"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in cached compartments"
+              }
+            },
+            "help": "module to manage compartments for tenant"
+          },
+          "compute": {
+            "command": "compute",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform compute actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh compute cached data"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in compute cache (instacnes, IPs, regions)"
+              }
+            },
+            "help": "compute to manage the instances and related configuration"
+          },
+          "dbs": {
+            "command": "dbs",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform DBS actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {},
+                "subcommands": {},
+                "help": "manually refresh dbs cached data"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {},
+                "subcommands": {},
+                "help": "show the data stored in dbs cache"
+              }
+            },
+            "help": "dbs module to manage the DBS instances and related..."
+          },
+          "iam": {
+            "command": "iam",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "authenticate": {
+                "command": "authenticate",
+                "args": [],
+                "options": {
+                  "-r": {
+                    "name": "-r",
+                    "help": "--region TEXT       oci region to connect to"
+                  },
+                  "-t": {
+                    "name": "-t",
+                    "help": "--tenant TEXT       tenant ocid to connect to"
+                  },
+                  "-u": {
+                    "name": "-u",
+                    "help": "--user TEXT         user ocid to connect with"
+                  },
+                  "-k": {
+                    "name": "-k",
+                    "help": "--keyfile TEXT      user oci API private key file to connect with"
+                  },
+                  "-f": {
+                    "name": "-f",
+                    "help": "--fingerprint TEXT  fingerprint of oci private key to connect with"
+                  },
+                  "-p": {
+                    "name": "-p",
+                    "help": "--profile TEXT      oci profile to connect with"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help              Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "login using existing IAM creds or add new creds to config"
+              }
+            },
+            "help": "manage and switch between OCI profiles for all realms"
+          },
+          "oss": {
+            "command": "oss",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform OCI OSS actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "create": {
+                "command": "create",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "create a new bucket"
+              },
+              "delete": {
+                "command": "delete",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "delete a specified bucket"
+              },
+              "download": {
+                "command": "download",
+                "args": [],
+                "options": {
+                  "--destination": {
+                    "name": "--destination",
+                    "help": "TEXT  provide a local destination for download  [default:"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help          Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "download from OSS to local storage"
+              },
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh OSS cached data"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in OSS cache"
+              },
+              "upload": {
+                "command": "upload",
+                "args": [],
+                "options": {
+                  "--source": {
+                    "name": "--source",
+                    "help": "TEXT  provide a local source for upload  [required]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help     Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "upload from local storage to OSS bucket"
+              }
+            },
+            "help": "object storage functions to sync buckets and filesystems"
+          },
+          "regions": {
+            "command": "regions",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform region actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh regions cached data"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in cached regions"
+              }
+            },
+            "help": "module to manage region subscriptions"
+          },
+          "show": {
+            "command": "show",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "display configuration data for ocitools and ocicli"
+          },
+          "vault": {
+            "command": "vault",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--menu  use the menu to perform vault actions  [default: False]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "create": {
+                "command": "create",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "create OCI vault for region and tenant"
+              },
+              "delete": {
+                "command": "delete",
+                "args": [],
+                "options": {
+                  "-a": {
+                    "name": "-a",
+                    "help": "--all   delete all vaults found  [default: False]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "menu-guided solution to delete OCI vault's for region and tenant"
+              },
+              "keys": {
+                "command": "keys",
+                "args": [],
+                "options": {
+                  "-m": {
+                    "name": "-m",
+                    "help": "--menu  use the menu to perform key actions  [default: False]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {
+                  "create": {
+                    "command": "create",
+                    "args": [],
+                    "options": {
+                      "-n": {
+                        "name": "-n",
+                        "help": "--name TEXT         secret name  [required]"
+                      },
+                      "-d": {
+                        "name": "-d",
+                        "help": "--help TEXT  short description for the secret; default uses the"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help              Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "create OCI keys for region and tenant"
+                  },
+                  "delete": {
+                    "command": "delete",
+                    "args": [],
+                    "options": {
+                      "-a": {
+                        "name": "-a",
+                        "help": "--all   delete all keys found  [default: False]"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "menu-guided solution to delete OCI keys for region and tenant"
+                  },
+                  "refresh": {
+                    "command": "refresh",
+                    "args": [],
+                    "options": {
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "manually refresh keys stored in cache"
+                  },
+                  "show": {
+                    "command": "show",
+                    "args": [],
+                    "options": {
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show the keys stored in cache"
+                  }
+                },
+                "help": "module to manage vault keys"
+              },
+              "refresh": {
+                "command": "refresh",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "manually refresh vaults stored in cache"
+              },
+              "secrets": {
+                "command": "secrets",
+                "args": [],
+                "options": {
+                  "-m": {
+                    "name": "-m",
+                    "help": "--menu  use the menu to perform secret actions  [default: False]"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {
+                  "create": {
+                    "command": "create",
+                    "args": [],
+                    "options": {
+                      "-n": {
+                        "name": "-n",
+                        "help": "--name TEXT         secret name  [required]"
+                      },
+                      "-d": {
+                        "name": "-d",
+                        "help": "--help TEXT  short description for the secret; default uses the"
+                      },
+                      "-c": {
+                        "name": "-c",
+                        "help": "--content TEXT      secret content; default creates a random 16"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help              Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "create OCI secrets for region and tenant"
+                  },
+                  "delete": {
+                    "command": "delete",
+                    "args": [],
+                    "options": {
+                      "-a": {
+                        "name": "-a",
+                        "help": "--all   delete all secrets found  [default: False]"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "menu-guided solution to delete OCI secrets for region and tenant"
+                  },
+                  "refresh": {
+                    "command": "refresh",
+                    "args": [],
+                    "options": {
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "manually refresh secrets stored in cache"
+                  },
+                  "show": {
+                    "command": "show",
+                    "args": [],
+                    "options": {
+                      "-d": {
+                        "name": "-d",
+                        "help": "--decrypt  decrypt secret content of type base64  [default: False]"
+                      },
+                      "-h": {
+                        "name": "-h",
+                        "help": "--help     Show this message and exit."
+                      }
+                    },
+                    "subcommands": {},
+                    "help": "show the secrets stored in cache"
+                  }
+                },
+                "help": "module to manage secrets"
+              },
+              "show": {
+                "command": "show",
+                "args": [],
+                "options": {
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help  Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "show the data stored in cached vault"
+              }
+            },
+            "help": "module to manage vaults"
+          }
+        },
+        "help": "OCI CLI ClientCurrent Profile: CENTERUPT..."
+      },
+      "slack": {
+        "command": "slack",
+        "args": [],
+        "options": {
+          "-p": {
+            "name": "-p",
+            "help": "--profile TEXT  User profile to use for connecting to Slack"
+          },
+          "-h": {
+            "name": "-h",
+            "help": "--help          Show this message and exit."
+          }
+        },
+        "subcommands": {
+          "channel": {
+            "command": "channel",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {
+              "adduser": {
+                "command": "adduser",
+                "args": [],
+                "options": {
+                  "-i": {
+                    "name": "-i",
+                    "help": "--id TEXT    target channel"
+                  },
+                  "-u": {
+                    "name": "-u",
+                    "help": "--user TEXT  user id to invite to the channel"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help       Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "add (invite) new user to the channel"
+              },
+              "archive": {
+                "command": "archive",
+                "args": [],
+                "options": {
+                  "-i": {
+                    "name": "-i",
+                    "help": "--id TEXT  target channel"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help     Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "set channel status to \"archived\""
+              },
+              "create": {
+                "command": "create",
+                "args": [],
+                "options": {
+                  "-n": {
+                    "name": "-n",
+                    "help": "--name TEXT        name for the new channel"
+                  },
+                  "-p": {
+                    "name": "-p",
+                    "help": "--private BOOLEAN  should the new channel be private"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help             Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "create a new slack channel"
+              },
+              "deluser": {
+                "command": "deluser",
+                "args": [],
+                "options": {
+                  "-i": {
+                    "name": "-i",
+                    "help": "--id TEXT    target channel"
+                  },
+                  "-u": {
+                    "name": "-u",
+                    "help": "--user TEXT  user id to kick from the channel"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help       Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "delete (kick) a user from the channel"
+              },
+              "topic": {
+                "command": "topic",
+                "args": [],
+                "options": {
+                  "-i": {
+                    "name": "-i",
+                    "help": "--id TEXT     target channel"
+                  },
+                  "-t": {
+                    "name": "-t",
+                    "help": "--topic TEXT  what to put in the topic channel"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help        Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "set the topic message for the channel"
+              },
+              "unarchive": {
+                "command": "unarchive",
+                "args": [],
+                "options": {
+                  "-i": {
+                    "name": "-i",
+                    "help": "--id TEXT  target channel"
+                  },
+                  "-h": {
+                    "name": "-h",
+                    "help": "--help     Show this message and exit."
+                  }
+                },
+                "subcommands": {},
+                "help": "remove \"archived\" status from channel"
+              }
+            },
+            "help": "manage Slack channels; create, archive, invite users etc"
+          },
+          "config": {
+            "command": "config",
+            "args": [],
+            "options": {
+              "-h": {
+                "name": "-h",
+                "help": "--help  Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "retrieve the entire content of slacktools's configstore"
+          },
+          "post": {
+            "command": "post",
+            "args": [],
+            "options": {
+              "-m": {
+                "name": "-m",
+                "help": "--message TEXT  Text to include in the message  [required]"
+              },
+              "-r": {
+                "name": "-r",
+                "help": "--reply TEXT    TS of the message to reply to"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help          Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "post a meessage to a given channel(s)"
+          },
+          "react": {
+            "command": "react",
+            "args": [],
+            "options": {
+              "-t": {
+                "name": "-t",
+                "help": "--timestamp TEXT  timestamp of the target message  [required]"
+              },
+              "-e": {
+                "name": "-e",
+                "help": "--emoji TEXT      emoji name to react with  [required]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help            Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "post a reaction to a given message in specific channel"
+          },
+          "unpost": {
+            "command": "unpost",
+            "args": [],
+            "options": {
+              "-t": {
+                "name": "-t",
+                "help": "--timestamp TEXT  Text to include in the message  [required]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help            Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "delete a meessage in a given channel"
+          },
+          "unreact": {
+            "command": "unreact",
+            "args": [],
+            "options": {
+              "-t": {
+                "name": "-t",
+                "help": "--timestamp TEXT  timestamp of the target message  [required]"
+              },
+              "-e": {
+                "name": "-e",
+                "help": "--emoji TEXT      emoji name to react with  [required]"
+              },
+              "-h": {
+                "name": "-h",
+                "help": "--help            Show this message and exit."
+              }
+            },
+            "subcommands": {},
+            "help": "remove a reaction to a given message in a specific channel"
+          }
+        },
+        "help": "Slack CLI ClientCurrent Profile: DEFAULT"
+      }
+    }
+  }
+}

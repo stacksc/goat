@@ -21,4 +21,5 @@ goatshell.egg-info/top_level.txt
 goatshell/data/aws.json
 goatshell/data/az.json
 goatshell/data/gcloud.json
+goatshell/data/goat.json
 goatshell/data/oci.json

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# the purpose of this script is to pull the azure commands, subcommands, options and build JSON information
-
 import subprocess
 import re
 import json
@@ -14,7 +12,7 @@ def get_top_level_commands():
 
     # Initialize current_section
     current_section = None
-    ignore_words = {'and', 'as', 'default', 'for', 'in', 'is', 'it', 'of', 'to', 'with'}
+    ignore_words = {'and', 'as', 'default', 'for', 'in', 'is', 'it', 'of', 'to', 'with', 'if', 'the'}
 
     # Parse the top-level commands from the help output
     for line in az_help_output.split("\n"):
@@ -40,6 +38,12 @@ def clean_output(output):
 
 # Function to run 'az' command and fetch its help info
 def run_az_help(command):
+    ignore_words = ['and', 'as', 'default', 'for', 'in', 'is', 'it', 'of', 'to', 'with', 'if', 'the', 'be', 'end', 'all']
+    last = command.split(" ")[-1:]
+    pattern = ','.join(last)
+    if pattern in ignore_words:
+        print(f"INFO: skipping running az {command} -h")
+        return ""
     try:
         print(f"Running: az {command} -h")
         output = subprocess.check_output(['az'] + command.split() + ['-h'], stderr=subprocess.STDOUT, text=True)
@@ -48,10 +52,11 @@ def run_az_help(command):
         print(f"Error running az {command} -h")
         return ""
 
-# Function to parse the 'az' help output and extract subcommands
+# Function to parse the 'az' help output and extract subcommands and options
 def parse_az_help(output):
     parsed_data = {"args": [], "options": {}, "subcommands": {}}
     current_section = None
+    option_description = ""
 
     for line in output.split("\n"):
         line = line.strip()
@@ -73,8 +78,15 @@ def parse_az_help(output):
                     parsed_data["subcommands"][subcommand] = {"command": subcommand, "args": [], "options": {}, "subcommands": {}}
         elif current_section == "arguments":
             if line.startswith("--"):
-                option = line.split()[0]
-                parsed_data["options"][option] = {"name": option, "help": ""}
+                option_parts = line.split(":", 1)
+                if len(option_parts) == 2:
+                    option, option_description = option_parts
+                    option = option.split()[0].strip()  # Extract only the first word
+                    option_description = option_description.strip()
+                    parsed_data["options"][option] = {"name": option, "help": option_description}
+                else:
+                    option_description = ""
+
     return parsed_data
 
 # Recursive function to traverse the command tree
@@ -98,6 +110,7 @@ def recursive_parse(command, parent_data, stop_condition=None):
     if '--cmd' in parsed_data["options"]:
         return
 
+    # Recursively process subcommands
     for subcommand in parsed_data["subcommands"].keys():
         new_command = f"{command} {subcommand}".strip()
         recursive_parse(new_command, current_data, stop_condition)

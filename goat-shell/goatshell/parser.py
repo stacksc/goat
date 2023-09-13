@@ -142,7 +142,7 @@ class Parser(object):
         return parsed, unparsed, suggestions
 
     def peekForOption(self, unparsed):
-        if unparsed and unparsed[-1].startswith("--"):
+        if unparsed and (unparsed[-1].startswith("--") or unparsed[-1].startswith("-")):
             return True
         return False
 

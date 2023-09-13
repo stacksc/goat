@@ -3,20 +3,20 @@
     "command": "goat",
     "args": [],
     "options": {
-      "-v,": {
-        "name": "-v,",
+      "-v": {
+        "name": "-v",
         "help": "--version       print version of goat and all its submodules"
       },
-      "-m,": {
-        "name": "-m,",
+      "-m": {
+        "name": "-m",
         "help": "--manuals TEXT  print all defined manuals matching pattern(s)"
       },
-      "-s,": {
-        "name": "-s,",
+      "-s": {
+        "name": "-s",
         "help": "--shell         launch the GOAT Shell for improved cloud interaction"
       },
-      "-h,": {
-        "name": "-h,",
+      "-h": {
+        "name": "-h",
         "help": "--help          Show this message and exit."
       }
     },
@@ -25,20 +25,20 @@
         "command": "aws",
         "args": [],
         "options": {
-          "-p,": {
-            "name": "-p,",
+          "-p": {
+            "name": "-p",
             "help": "--profile TEXT  profile name to use when working with awstools"
           },
-          "-r,": {
-            "name": "-r,",
+          "-r": {
+            "name": "-r",
             "help": "--region TEXT   region name to use when working with awstools"
           },
-          "-c,": {
-            "name": "-c,",
+          "-c": {
+            "name": "-c",
             "help": "--cache         refresh all cache for region and tenant  [default:"
           },
-          "-h,": {
-            "name": "-h,",
+          "-h": {
+            "name": "-h",
             "help": "--help          Show this message and exit."
           }
         },
@@ -47,12 +47,12 @@
             "command": "cli",
             "args": [],
             "options": {
-              "-r,": {
-                "name": "-r,",
+              "-r": {
+                "name": "-r",
                 "help": "--region TEXT  AWS region to authenticate against"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help         Show this message and exit."
               }
             },
@@ -63,12 +63,12 @@
             "command": "ec2",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform EC2 actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -77,8 +77,8 @@
                 "command": "delete",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -87,16 +87,16 @@
                     "command": "orphaned_ebs",
                     "args": [],
                     "options": {
-                      "-v,": {
-                        "name": "-v,",
+                      "-v": {
+                        "name": "-v",
                         "help": "--volume    flag to delete orphaned EBS volumes"
                       },
-                      "-s,": {
-                        "name": "-s,",
+                      "-s": {
+                        "name": "-s",
                         "help": "--snapshot  flag to delete orphaned EBS snapshots"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help      Show this message and exit."
                       }
                     },
@@ -110,8 +110,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -122,8 +122,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -137,8 +137,8 @@
             "command": "iam",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -147,16 +147,16 @@
                 "command": "authenticate",
                 "args": [],
                 "options": {
-                  "-r,": {
-                    "name": "-r,",
+                  "-r": {
+                    "name": "-r",
                     "help": "--region TEXT  aws region to connect to"
                   },
-                  "-o,": {
-                    "name": "-o,",
+                  "-o": {
+                    "name": "-o",
                     "help": "--output TEXT  output type for awscli"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help         Show this message and exit."
                   }
                 },
@@ -170,12 +170,12 @@
             "command": "rds",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform EC2 actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -184,8 +184,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -196,8 +196,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -211,12 +211,12 @@
             "command": "s3",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform S3 actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -225,8 +225,8 @@
                 "command": "create",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -237,8 +237,8 @@
                 "command": "delete",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -253,8 +253,8 @@
                     "name": "--destination",
                     "help": "TEXT  provide a local destination for download  [default:"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help          Show this message and exit."
                   }
                 },
@@ -265,8 +265,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -277,8 +277,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -293,8 +293,8 @@
                     "name": "--source",
                     "help": "TEXT  provide a local source for upload  [required]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help     Show this message and exit."
                   }
                 },
@@ -308,8 +308,8 @@
             "command": "show",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -323,12 +323,12 @@
         "command": "configs",
         "args": [],
         "options": {
-          "-p,": {
-            "name": "-p,",
+          "-p": {
+            "name": "-p",
             "help": "--profile TEXT  name of the profile to use"
           },
-          "-h,": {
-            "name": "-h,",
+          "-h": {
+            "name": "-h",
             "help": "--help          Show this message and exit."
           }
         },
@@ -337,8 +337,8 @@
             "command": "add",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -347,8 +347,8 @@
                 "command": "profile",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -359,8 +359,8 @@
                 "command": "property",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -374,8 +374,8 @@
             "command": "delete",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -384,8 +384,8 @@
                 "command": "profile",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -396,8 +396,8 @@
                 "command": "property",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -411,8 +411,8 @@
             "command": "show",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -426,12 +426,12 @@
         "command": "jenkins",
         "args": [],
         "options": {
-          "-p,": {
-            "name": "-p,",
+          "-p": {
+            "name": "-p",
             "help": "--profile TEXT  user profile for Jenkins operations"
           },
-          "-h,": {
-            "name": "-h,",
+          "-h": {
+            "name": "-h",
             "help": "--help          Show this message and exit."
           }
         },
@@ -440,12 +440,12 @@
             "command": "auth",
             "args": [],
             "options": {
-              "-d,": {
-                "name": "-d,",
+              "-d": {
+                "name": "-d",
                 "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help           Show this message and exit."
               }
             },
@@ -454,8 +454,8 @@
                 "command": "setup",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -466,8 +466,8 @@
                 "command": "update-profile",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -481,16 +481,16 @@
             "command": "show",
             "args": [],
             "options": {
-              "-d,": {
-                "name": "-d,",
+              "-d": {
+                "name": "-d",
                 "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
               },
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu           launch a menu driven interface for common Jenkins user"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help           Show this message and exit."
               }
             },
@@ -499,8 +499,8 @@
                 "command": "access-token",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -511,8 +511,8 @@
                 "command": "access-token-age",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -523,8 +523,8 @@
                 "command": "config",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -535,12 +535,12 @@
                 "command": "credentials",
                 "args": [],
                 "options": {
-                  "-d,": {
-                    "name": "-d,",
+                  "-d": {
+                    "name": "-d",
                     "help": "--help  display description of credentials in the output"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help         Show this message and exit."
                   }
                 },
@@ -551,8 +551,8 @@
                 "command": "crumb-token",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -563,8 +563,8 @@
                 "command": "crumb-token-age",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -575,12 +575,12 @@
                 "command": "jobs",
                 "args": [],
                 "options": {
-                  "-p,": {
-                    "name": "-p,",
+                  "-p": {
+                    "name": "-p",
                     "help": "--pattern TEXT  pattern to search on due to the number of job names"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help          Show this message and exit."
                   }
                 },
@@ -589,12 +589,12 @@
                     "command": "config",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -605,12 +605,12 @@
                     "command": "console",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -621,12 +621,12 @@
                     "command": "details",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -637,12 +637,12 @@
                     "command": "info",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -653,12 +653,12 @@
                     "command": "last",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -669,12 +669,12 @@
                     "command": "last-failed",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -685,12 +685,12 @@
                     "command": "last-success",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -701,8 +701,8 @@
                     "command": "names",
                     "args": [],
                     "options": {
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -713,8 +713,8 @@
                     "command": "urls",
                     "args": [],
                     "options": {
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -728,8 +728,8 @@
                 "command": "user",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -738,12 +738,12 @@
                     "command": "details",
                     "args": [],
                     "options": {
-                      "-r,": {
-                        "name": "-r,",
+                      "-r": {
+                        "name": "-r",
                         "help": "--raw   display raw json; don't reduce output"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -754,8 +754,8 @@
                     "command": "who",
                     "args": [],
                     "options": {
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -766,8 +766,8 @@
                     "command": "whoami",
                     "args": [],
                     "options": {
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -787,12 +787,12 @@
         "command": "jira",
         "args": [],
         "options": {
-          "-p,": {
-            "name": "-p,",
+          "-p": {
+            "name": "-p",
             "help": "--profile TEXT  profile name to use when working with the jiraclient"
           },
-          "-h,": {
-            "name": "-h,",
+          "-h": {
+            "name": "-h",
             "help": "--help          Show this message and exit."
           }
         },
@@ -801,16 +801,16 @@
             "command": "auth",
             "args": [],
             "options": {
-              "-u,": {
-                "name": "-u,",
+              "-u": {
+                "name": "-u",
                 "help": "--url TEXT           address of the jira server  [required]"
               },
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--mode [token|pass]  choose authentication mode"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help               Show this message and exit."
               }
             },
@@ -821,16 +821,16 @@
             "command": "config",
             "args": [],
             "options": {
-              "-d,": {
-                "name": "-d,",
+              "-d": {
+                "name": "-d",
                 "help": "--default  mark this profile as the default profile to use for JIRA"
               },
-              "-s,": {
-                "name": "-s,",
+              "-s": {
+                "name": "-s",
                 "help": "--show     show the entire config for the JIRA server on this profile"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help     Show this message and exit."
               }
             },
@@ -841,8 +841,8 @@
             "command": "issue",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -851,12 +851,12 @@
                 "command": "assign",
                 "args": [],
                 "options": {
-                  "-a,": {
-                    "name": "-a,",
+                  "-a": {
+                    "name": "-a",
                     "help": "--assignee TEXT  assignee name, i.e. stacksc"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help           Show this message and exit."
                   }
                 },
@@ -867,12 +867,12 @@
                 "command": "attach",
                 "args": [],
                 "options": {
-                  "-a,": {
-                    "name": "-a,",
+                  "-a": {
+                    "name": "-a",
                     "help": "--attach PATH  name of file to attach"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help         Show this message and exit."
                   }
                 },
@@ -883,28 +883,28 @@
                 "command": "change-plan",
                 "args": [],
                 "options": {
-                  "-r,": {
-                    "name": "-r,",
+                  "-r": {
+                    "name": "-r",
                     "help": "--regex TEXT  pattern to lookup"
                   },
-                  "-u,": {
-                    "name": "-u,",
+                  "-u": {
+                    "name": "-u",
                     "help": "--url         extract jenkins build URL"
                   },
-                  "-c,": {
-                    "name": "-c,",
+                  "-c": {
+                    "name": "-c",
                     "help": "--cred        extract helm credentials for the build"
                   },
-                  "-v,": {
-                    "name": "-v,",
+                  "-v": {
+                    "name": "-v",
                     "help": "--verify      verify the extracted helm credentials for the build by"
                   },
-                  "-p,": {
-                    "name": "-p,",
+                  "-p": {
+                    "name": "-p",
                     "help": "--post        extract the runway post-deploy URL from the change-plan"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help        Show this message and exit."
                   }
                 },
@@ -915,12 +915,12 @@
                 "command": "comment",
                 "args": [],
                 "options": {
-                  "-c,": {
-                    "name": "-c,",
+                  "-c": {
+                    "name": "-c",
                     "help": "--comment TEXT  body of the comment to post  [required]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help          Show this message and exit."
                   }
                 },
@@ -931,12 +931,12 @@
                 "command": "comments",
                 "args": [],
                 "options": {
-                  "-r,": {
-                    "name": "-r,",
+                  "-r": {
+                    "name": "-r",
                     "help": "--regex TEXT  pattern to lookup"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help        Show this message and exit."
                   }
                 },
@@ -947,16 +947,16 @@
                 "command": "create",
                 "args": [],
                 "options": {
-                  "-s,": {
-                    "name": "-s,",
+                  "-s": {
+                    "name": "-s",
                     "help": "--summary TEXT      title of the ticket  [required]"
                   },
-                  "-d,": {
-                    "name": "-d,",
+                  "-d": {
+                    "name": "-d",
                     "help": "--help TEXT  body of the ticket"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help              Show this message and exit."
                   }
                 },
@@ -967,16 +967,16 @@
                 "command": "extract",
                 "args": [],
                 "options": {
-                  "-k,": {
-                    "name": "-k,",
+                  "-k": {
+                    "name": "-k",
                     "help": "--key TEXT  data key to lookup  [required]"
                   },
-                  "-e,": {
-                    "name": "-e,",
+                  "-e": {
+                    "name": "-e",
                     "help": "--exact     only grab exact matches  [default: False]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help      Show this message and exit."
                   }
                 },
@@ -987,12 +987,12 @@
                 "command": "review",
                 "args": [],
                 "options": {
-                  "-v,": {
-                    "name": "-v,",
+                  "-v": {
+                    "name": "-v",
                     "help": "--value [Yes|No]  value to be used  [required]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help            Show this message and exit."
                   }
                 },
@@ -1003,40 +1003,40 @@
                 "command": "search",
                 "args": [],
                 "options": {
-                  "-J,": {
-                    "name": "-J,",
+                  "-J": {
+                    "name": "-J",
                     "help": "--json           output results in JSON format  [default: False]"
                   },
-                  "-w,": {
-                    "name": "-w,",
+                  "-w": {
+                    "name": "-w",
                     "help": "--wizard         output results in wizard format for transitioning"
                   },
-                  "-t,": {
-                    "name": "-t,",
+                  "-t": {
+                    "name": "-t",
                     "help": "--tui            use the native TUI to launch tickets in the browser"
                   },
-                  "-l,": {
-                    "name": "-l,",
+                  "-l": {
+                    "name": "-l",
                     "help": "--limit INTEGER  max amount of issues to show"
                   },
-                  "-o,": {
-                    "name": "-o,",
+                  "-o": {
+                    "name": "-o",
                     "help": "--orderby TEXT   choose which field to use for sorting"
                   },
-                  "-A,": {
-                    "name": "-A,",
+                  "-A": {
+                    "name": "-A",
                     "help": "--ascending      show issues in ascending order  [default: False]"
                   },
-                  "-D,": {
-                    "name": "-D,",
+                  "-D": {
+                    "name": "-D",
                     "help": "--descending     show issues in descending order  [default: False]"
                   },
-                  "-c,": {
-                    "name": "-c,",
+                  "-c": {
+                    "name": "-c",
                     "help": "--csv TEXT       name of the csv file to save the results to"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help           Show this message and exit."
                   }
                 },
@@ -1047,40 +1047,40 @@
                 "command": "transition",
                 "args": [],
                 "options": {
-                  "-w,": {
-                    "name": "-w,",
+                  "-w": {
+                    "name": "-w",
                     "help": "--wizard            launch a wizard to guide you through transitioning"
                   },
-                  "-s,": {
-                    "name": "-s,",
+                  "-s": {
+                    "name": "-s",
                     "help": "--showavailable     display the available transitions for a given issue"
                   },
-                  "-i,": {
-                    "name": "-i,",
+                  "-i": {
+                    "name": "-i",
                     "help": "--id TEXT           the ID of the state to transition to"
                   },
-                  "-n,": {
-                    "name": "-n,",
+                  "-n": {
+                    "name": "-n",
                     "help": "--name TEXT         name of the state to transition to"
                   },
-                  "-f,": {
-                    "name": "-f,",
+                  "-f": {
+                    "name": "-f",
                     "help": "--field_name TEXT   name(s) of the field(s) to update during transition"
                   },
-                  "-t,": {
-                    "name": "-t,",
+                  "-t": {
+                    "name": "-t",
                     "help": "--field_type TEXT   value of the field(s) to update during transition"
                   },
-                  "-v,": {
-                    "name": "-v,",
+                  "-v": {
+                    "name": "-v",
                     "help": "--field_value TEXT  type of field(s) to update during transition"
                   },
-                  "-P,": {
-                    "name": "-P,",
+                  "-P": {
+                    "name": "-P",
                     "help": "--payload TEXT      dict/json to be used as transition payload (field"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help              Show this message and exit."
                   }
                 },
@@ -1091,16 +1091,16 @@
                 "command": "update",
                 "args": [],
                 "options": {
-                  "-f,": {
-                    "name": "-f,",
+                  "-f": {
+                    "name": "-f",
                     "help": "--field TEXT  name of the field to update i.e. reporter  [required]"
                   },
-                  "-v,": {
-                    "name": "-v,",
+                  "-v": {
+                    "name": "-v",
                     "help": "--value TEXT  new value for the field i.e. jsmith  [required]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help        Show this message and exit."
                   }
                 },
@@ -1114,8 +1114,8 @@
             "command": "project",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1124,20 +1124,20 @@
                 "command": "search",
                 "args": [],
                 "options": {
-                  "-a,": {
-                    "name": "-a,",
+                  "-a": {
+                    "name": "-a",
                     "help": "--assignee TEXT  i.e. jdoe"
                   },
-                  "-g,": {
-                    "name": "-g,",
+                  "-g": {
+                    "name": "-g",
                     "help": "--group TEXT     i.e. devops"
                   },
-                  "-r,": {
-                    "name": "-r,",
+                  "-r": {
+                    "name": "-r",
                     "help": "--reporter TEXT  i.e. smithj"
                   },
-                  "-s,": {
-                    "name": "-s,",
+                  "-s": {
+                    "name": "-s",
                     "help": "--status TEXT    i.e. closed"
                   },
                   "--summary": {
@@ -1148,40 +1148,40 @@
                     "name": "--help",
                     "help": "TEXT   text to search for in the help field"
                   },
-                  "-l,": {
-                    "name": "-l,",
+                  "-l": {
+                    "name": "-l",
                     "help": "--limit INTEGER  max amount of issues to show"
                   },
-                  "-o,": {
-                    "name": "-o,",
+                  "-o": {
+                    "name": "-o",
                     "help": "--orderby TEXT   choose which field to use for sorting"
                   },
-                  "-A,": {
-                    "name": "-A,",
+                  "-A": {
+                    "name": "-A",
                     "help": "--ascending      show issues in ascending order  [default: False]"
                   },
-                  "-D,": {
-                    "name": "-D,",
+                  "-D": {
+                    "name": "-D",
                     "help": "--descending     show issues in descending order  [default: False]"
                   },
-                  "-c,": {
-                    "name": "-c,",
+                  "-c": {
+                    "name": "-c",
                     "help": "--csv TEXT       name of the csv file to save the results to"
                   },
-                  "-J,": {
-                    "name": "-J,",
+                  "-J": {
+                    "name": "-J",
                     "help": "--json           output results in JSON format  [default: False]"
                   },
-                  "-w,": {
-                    "name": "-w,",
+                  "-w": {
+                    "name": "-w",
                     "help": "--wizard         output results in wizard format for transitioning"
                   },
-                  "-t,": {
-                    "name": "-t,",
+                  "-t": {
+                    "name": "-t",
                     "help": "--tui            use the native TUI to launch tickets in the browser"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help           Show this message and exit."
                   }
                 },
@@ -1195,28 +1195,28 @@
             "command": "search",
             "args": [],
             "options": {
-              "-k,": {
-                "name": "-k,",
+              "-k": {
+                "name": "-k",
                 "help": "--key TEXT       i.e. PUBSECSRE-123"
               },
-              "-p,": {
-                "name": "-p,",
+              "-p": {
+                "name": "-p",
                 "help": "--project TEXT   i.e. PUBSECSRE"
               },
-              "-a,": {
-                "name": "-a,",
+              "-a": {
+                "name": "-a",
                 "help": "--assignee TEXT  i.e. jdoe"
               },
-              "-g,": {
-                "name": "-g,",
+              "-g": {
+                "name": "-g",
                 "help": "--group TEXT     i.e. devops"
               },
-              "-r,": {
-                "name": "-r,",
+              "-r": {
+                "name": "-r",
                 "help": "--reporter TEXT  i.e. smithj"
               },
-              "-s,": {
-                "name": "-s,",
+              "-s": {
+                "name": "-s",
                 "help": "--status TEXT    i.e. closed"
               },
               "--summary": {
@@ -1227,44 +1227,44 @@
                 "name": "--help",
                 "help": "TEXT   text to search for in the help field"
               },
-              "-j,": {
-                "name": "-j,",
+              "-j": {
+                "name": "-j",
                 "help": "--jql TEXT       ignore other filters and use explicit jql query"
               },
-              "-J,": {
-                "name": "-J,",
+              "-J": {
+                "name": "-J",
                 "help": "--json           output results in JSON format  [default: False]"
               },
-              "-w,": {
-                "name": "-w,",
+              "-w": {
+                "name": "-w",
                 "help": "--wizard         output results in wizard format for transitioning"
               },
-              "-t,": {
-                "name": "-t,",
+              "-t": {
+                "name": "-t",
                 "help": "--tui            use the native TUI to launch tickets in the browser"
               },
-              "-l,": {
-                "name": "-l,",
+              "-l": {
+                "name": "-l",
                 "help": "--limit INTEGER  max amount of issues to show"
               },
-              "-o,": {
-                "name": "-o,",
+              "-o": {
+                "name": "-o",
                 "help": "--orderby TEXT   choose which field to use for sorting"
               },
-              "-A,": {
-                "name": "-A,",
+              "-A": {
+                "name": "-A",
                 "help": "--ascending      show issues in ascending order  [default: False]"
               },
-              "-D,": {
-                "name": "-D,",
+              "-D": {
+                "name": "-D",
                 "help": "--descending     show issues in descending order  [default: False]"
               },
-              "-c,": {
-                "name": "-c,",
+              "-c": {
+                "name": "-c",
                 "help": "--csv TEXT       name of the csv file to save the results to"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help           Show this message and exit."
               }
             },
@@ -1278,20 +1278,20 @@
         "command": "oci",
         "args": [],
         "options": {
-          "-p,": {
-            "name": "-p,",
+          "-p": {
+            "name": "-p",
             "help": "--profile TEXT  profile name to use when working with ocitools"
           },
-          "-r,": {
-            "name": "-r,",
+          "-r": {
+            "name": "-r",
             "help": "--region TEXT   region name to use when working with ocitools"
           },
-          "-c,": {
-            "name": "-c,",
+          "-c": {
+            "name": "-c",
             "help": "--cache         refresh all cache for region and tenant  [default:"
           },
-          "-h,": {
-            "name": "-h,",
+          "-h": {
+            "name": "-h",
             "help": "--help          Show this message and exit."
           }
         },
@@ -1300,12 +1300,12 @@
             "command": "cli",
             "args": [],
             "options": {
-              "-r,": {
-                "name": "-r,",
+              "-r": {
+                "name": "-r",
                 "help": "--region TEXT  OCI region to authenticate against"
               },
-              "-i,": {
-                "name": "-i,",
+              "-i": {
+                "name": "-i",
                 "help": "--interactive  spawn the interactive shell"
               },
               "-h": {
@@ -1320,12 +1320,12 @@
             "command": "compartment",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform compartment actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1334,12 +1334,12 @@
                 "command": "create",
                 "args": [],
                 "options": {
-                  "-d,": {
-                    "name": "-d,",
+                  "-d": {
+                    "name": "-d",
                     "help": "--help TEXT  provide a short description for the new compartment"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help              Show this message and exit."
                   }
                 },
@@ -1350,8 +1350,8 @@
                 "command": "delete",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1362,8 +1362,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1374,8 +1374,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1389,12 +1389,12 @@
             "command": "compute",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform compute actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1403,8 +1403,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1415,8 +1415,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1430,12 +1430,12 @@
             "command": "dbs",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform DBS actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1461,8 +1461,8 @@
             "command": "iam",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1471,32 +1471,32 @@
                 "command": "authenticate",
                 "args": [],
                 "options": {
-                  "-r,": {
-                    "name": "-r,",
+                  "-r": {
+                    "name": "-r",
                     "help": "--region TEXT       oci region to connect to"
                   },
-                  "-t,": {
-                    "name": "-t,",
+                  "-t": {
+                    "name": "-t",
                     "help": "--tenant TEXT       tenant ocid to connect to"
                   },
-                  "-u,": {
-                    "name": "-u,",
+                  "-u": {
+                    "name": "-u",
                     "help": "--user TEXT         user ocid to connect with"
                   },
-                  "-k,": {
-                    "name": "-k,",
+                  "-k": {
+                    "name": "-k",
                     "help": "--keyfile TEXT      user oci API private key file to connect with"
                   },
-                  "-f,": {
-                    "name": "-f,",
+                  "-f": {
+                    "name": "-f",
                     "help": "--fingerprint TEXT  fingerprint of oci private key to connect with"
                   },
-                  "-p,": {
-                    "name": "-p,",
+                  "-p": {
+                    "name": "-p",
                     "help": "--profile TEXT      oci profile to connect with"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help              Show this message and exit."
                   }
                 },
@@ -1510,12 +1510,12 @@
             "command": "oss",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform OCI OSS actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1524,8 +1524,8 @@
                 "command": "create",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1536,8 +1536,8 @@
                 "command": "delete",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1552,8 +1552,8 @@
                     "name": "--destination",
                     "help": "TEXT  provide a local destination for download  [default:"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help          Show this message and exit."
                   }
                 },
@@ -1564,8 +1564,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1576,8 +1576,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1592,8 +1592,8 @@
                     "name": "--source",
                     "help": "TEXT  provide a local source for upload  [required]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help     Show this message and exit."
                   }
                 },
@@ -1607,12 +1607,12 @@
             "command": "regions",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform region actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1621,8 +1621,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1633,8 +1633,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1648,8 +1648,8 @@
             "command": "show",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1660,12 +1660,12 @@
             "command": "vault",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--menu  use the menu to perform vault actions  [default: False]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1674,8 +1674,8 @@
                 "command": "create",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1686,12 +1686,12 @@
                 "command": "delete",
                 "args": [],
                 "options": {
-                  "-a,": {
-                    "name": "-a,",
+                  "-a": {
+                    "name": "-a",
                     "help": "--all   delete all vaults found  [default: False]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1702,12 +1702,12 @@
                 "command": "keys",
                 "args": [],
                 "options": {
-                  "-m,": {
-                    "name": "-m,",
+                  "-m": {
+                    "name": "-m",
                     "help": "--menu  use the menu to perform key actions  [default: False]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1716,16 +1716,16 @@
                     "command": "create",
                     "args": [],
                     "options": {
-                      "-n,": {
-                        "name": "-n,",
+                      "-n": {
+                        "name": "-n",
                         "help": "--name TEXT         secret name  [required]"
                       },
-                      "-d,": {
-                        "name": "-d,",
+                      "-d": {
+                        "name": "-d",
                         "help": "--help TEXT  short description for the secret; default uses the"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help              Show this message and exit."
                       }
                     },
@@ -1736,12 +1736,12 @@
                     "command": "delete",
                     "args": [],
                     "options": {
-                      "-a,": {
-                        "name": "-a,",
+                      "-a": {
+                        "name": "-a",
                         "help": "--all   delete all keys found  [default: False]"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -1752,8 +1752,8 @@
                     "command": "refresh",
                     "args": [],
                     "options": {
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -1764,8 +1764,8 @@
                     "command": "show",
                     "args": [],
                     "options": {
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -1779,8 +1779,8 @@
                 "command": "refresh",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1791,12 +1791,12 @@
                 "command": "secrets",
                 "args": [],
                 "options": {
-                  "-m,": {
-                    "name": "-m,",
+                  "-m": {
+                    "name": "-m",
                     "help": "--menu  use the menu to perform secret actions  [default: False]"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1805,20 +1805,20 @@
                     "command": "create",
                     "args": [],
                     "options": {
-                      "-n,": {
-                        "name": "-n,",
+                      "-n": {
+                        "name": "-n",
                         "help": "--name TEXT         secret name  [required]"
                       },
-                      "-d,": {
-                        "name": "-d,",
+                      "-d": {
+                        "name": "-d",
                         "help": "--help TEXT  short description for the secret; default uses the"
                       },
-                      "-c,": {
-                        "name": "-c,",
+                      "-c": {
+                        "name": "-c",
                         "help": "--content TEXT      secret content; default creates a random 16"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help              Show this message and exit."
                       }
                     },
@@ -1829,12 +1829,12 @@
                     "command": "delete",
                     "args": [],
                     "options": {
-                      "-a,": {
-                        "name": "-a,",
+                      "-a": {
+                        "name": "-a",
                         "help": "--all   delete all secrets found  [default: False]"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -1845,8 +1845,8 @@
                     "command": "refresh",
                     "args": [],
                     "options": {
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help  Show this message and exit."
                       }
                     },
@@ -1857,12 +1857,12 @@
                     "command": "show",
                     "args": [],
                     "options": {
-                      "-d,": {
-                        "name": "-d,",
+                      "-d": {
+                        "name": "-d",
                         "help": "--decrypt  decrypt secret content of type base64  [default: False]"
                       },
-                      "-h,": {
-                        "name": "-h,",
+                      "-h": {
+                        "name": "-h",
                         "help": "--help     Show this message and exit."
                       }
                     },
@@ -1876,8 +1876,8 @@
                 "command": "show",
                 "args": [],
                 "options": {
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help  Show this message and exit."
                   }
                 },
@@ -1894,12 +1894,12 @@
         "command": "slack",
         "args": [],
         "options": {
-          "-p,": {
-            "name": "-p,",
+          "-p": {
+            "name": "-p",
             "help": "--profile TEXT  User profile to use for connecting to Slack"
           },
-          "-h,": {
-            "name": "-h,",
+          "-h": {
+            "name": "-h",
             "help": "--help          Show this message and exit."
           }
         },
@@ -1908,8 +1908,8 @@
             "command": "channel",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -1918,16 +1918,16 @@
                 "command": "adduser",
                 "args": [],
                 "options": {
-                  "-i,": {
-                    "name": "-i,",
+                  "-i": {
+                    "name": "-i",
                     "help": "--id TEXT    target channel"
                   },
-                  "-u,": {
-                    "name": "-u,",
+                  "-u": {
+                    "name": "-u",
                     "help": "--user TEXT  user id to invite to the channel"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help       Show this message and exit."
                   }
                 },
@@ -1938,12 +1938,12 @@
                 "command": "archive",
                 "args": [],
                 "options": {
-                  "-i,": {
-                    "name": "-i,",
+                  "-i": {
+                    "name": "-i",
                     "help": "--id TEXT  target channel"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help     Show this message and exit."
                   }
                 },
@@ -1954,16 +1954,16 @@
                 "command": "create",
                 "args": [],
                 "options": {
-                  "-n,": {
-                    "name": "-n,",
+                  "-n": {
+                    "name": "-n",
                     "help": "--name TEXT        name for the new channel"
                   },
-                  "-p,": {
-                    "name": "-p,",
+                  "-p": {
+                    "name": "-p",
                     "help": "--private BOOLEAN  should the new channel be private"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help             Show this message and exit."
                   }
                 },
@@ -1974,16 +1974,16 @@
                 "command": "deluser",
                 "args": [],
                 "options": {
-                  "-i,": {
-                    "name": "-i,",
+                  "-i": {
+                    "name": "-i",
                     "help": "--id TEXT    target channel"
                   },
-                  "-u,": {
-                    "name": "-u,",
+                  "-u": {
+                    "name": "-u",
                     "help": "--user TEXT  user id to kick from the channel"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help       Show this message and exit."
                   }
                 },
@@ -1994,16 +1994,16 @@
                 "command": "topic",
                 "args": [],
                 "options": {
-                  "-i,": {
-                    "name": "-i,",
+                  "-i": {
+                    "name": "-i",
                     "help": "--id TEXT     target channel"
                   },
-                  "-t,": {
-                    "name": "-t,",
+                  "-t": {
+                    "name": "-t",
                     "help": "--topic TEXT  what to put in the topic channel"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help        Show this message and exit."
                   }
                 },
@@ -2014,12 +2014,12 @@
                 "command": "unarchive",
                 "args": [],
                 "options": {
-                  "-i,": {
-                    "name": "-i,",
+                  "-i": {
+                    "name": "-i",
                     "help": "--id TEXT  target channel"
                   },
-                  "-h,": {
-                    "name": "-h,",
+                  "-h": {
+                    "name": "-h",
                     "help": "--help     Show this message and exit."
                   }
                 },
@@ -2033,8 +2033,8 @@
             "command": "config",
             "args": [],
             "options": {
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help  Show this message and exit."
               }
             },
@@ -2045,16 +2045,16 @@
             "command": "post",
             "args": [],
             "options": {
-              "-m,": {
-                "name": "-m,",
+              "-m": {
+                "name": "-m",
                 "help": "--message TEXT  Text to include in the message  [required]"
               },
-              "-r,": {
-                "name": "-r,",
+              "-r": {
+                "name": "-r",
                 "help": "--reply TEXT    TS of the message to reply to"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help          Show this message and exit."
               }
             },
@@ -2065,16 +2065,16 @@
             "command": "react",
             "args": [],
             "options": {
-              "-t,": {
-                "name": "-t,",
+              "-t": {
+                "name": "-t",
                 "help": "--timestamp TEXT  timestamp of the target message  [required]"
               },
-              "-e,": {
-                "name": "-e,",
+              "-e": {
+                "name": "-e",
                 "help": "--emoji TEXT      emoji name to react with  [required]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help            Show this message and exit."
               }
             },
@@ -2085,12 +2085,12 @@
             "command": "unpost",
             "args": [],
             "options": {
-              "-t,": {
-                "name": "-t,",
+              "-t": {
+                "name": "-t",
                 "help": "--timestamp TEXT  Text to include in the message  [required]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help            Show this message and exit."
               }
             },
@@ -2101,16 +2101,16 @@
             "command": "unreact",
             "args": [],
             "options": {
-              "-t,": {
-                "name": "-t,",
+              "-t": {
+                "name": "-t",
                 "help": "--timestamp TEXT  timestamp of the target message  [required]"
               },
-              "-e,": {
-                "name": "-e,",
+              "-e": {
+                "name": "-e",
                 "help": "--emoji TEXT      emoji name to react with  [required]"
               },
-              "-h,": {
-                "name": "-h,",
+              "-h": {
+                "name": "-h",
                 "help": "--help            Show this message and exit."
               }
             },

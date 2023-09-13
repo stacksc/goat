@@ -41,15 +41,16 @@ class GoatCompleter(Completer):
             yield Completion("aws", display="aws", display_meta="Amazon Web Services")
             yield Completion("gcloud", display="gcloud", display_meta="Google Cloud Platform")
             yield Completion("az", display="az", display_meta="Microsoft Azure Cloud Platform")
+            yield Completion("goat", display="goat", display_meta="Local Goat Application")
             return
 
         first_token = tokens[0]
 
-        if first_token in ["oci", "aws", "gcloud", "az"] and self.current_json != first_token:
+        if first_token in ["oci", "aws", "gcloud", "az", "goat"] and self.current_json != first_token:
             self.load_json(first_token)
             self.current_json = first_token
 
-        if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az"]:
+        if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az", "goat"]:
             subcommands = self.parser.ast.children
             for subcmd in subcommands:
                 yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
@@ -63,8 +64,8 @@ class GoatCompleter(Completer):
 
         if unparsed:
             last_token = unparsed[-1]
-            if last_token.startswith("--"):
-                if not document.text_before_cursor.endswith("--"):
+            if last_token.startswith("--") or last_token.startswith('-'):
+                if not document.text_before_cursor.endswith("--") or not document.text_before_cursor.endswith('-'):
                     option_prefix = last_token
                     completions = fuzzyfinder(option_prefix, suggestions.keys())
                     for key in completions:
@@ -90,8 +91,10 @@ class GoatCompleter(Completer):
                 subcommands = self.parser.ast.children
                 for subcmd in subcommands:
                     yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
-
-    # The rest of your existing methods remain the same
+            elif len(tokens) == 1 and tokens[0] == "goat":
+                subcommands = self.parser.ast.children
+                for subcmd in subcommands:
+                    yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
 
 async def get_completions_async(self, document, complete_event):
     logger.debug("Entering get_completions")

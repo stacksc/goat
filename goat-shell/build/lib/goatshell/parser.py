@@ -91,7 +91,18 @@ class Parser(object):
             return list(), tokens, {"oci": self.ast.help}
         else:
             tokens.reverse()
-        parsed, unparsed, suggestions = self.treewalk(self.ast, parsed=list(), unparsed=tokens)
+    
+        parsed, unparsed, _ = self.treewalk(self.ast, parsed=list(), unparsed=tokens)
+    
+        # Use parsed tokens to find current node in command tree
+        current_node = self.get_node_from_tokens(parsed)
+    
+        # Populate suggestions based on the children of the current node
+        suggestions = {child.node: child.help for child in current_node.children}
+    
+        # Also add options available at the current node to suggestions
+        suggestions.update({flag.name: flag.helptext for flag in current_node.localFlags})
+    
         if not suggestions and unparsed:
             logger.debug("unparsed tokens remain, possible value encountered")
             unparsed.pop()
@@ -101,7 +112,18 @@ class Parser(object):
             return self.treewalk(self.ast, parsed=list(), unparsed=unparsed)
         else:
             return parsed, unparsed, suggestions
-
+    
+    def get_node_from_tokens(self, parsed_tokens):
+        current_node = self.ast
+        for token in parsed_tokens:
+            if token.startswith("--"):  # Skip options
+                continue
+            for child in current_node.children:
+                if child.node == token:
+                    current_node = child
+                    break
+        return current_node
+    
     def treewalk(self, root, parsed, unparsed):
         suggestions = dict()
         if not unparsed:

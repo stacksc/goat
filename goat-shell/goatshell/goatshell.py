@@ -14,9 +14,7 @@ import subprocess
 import re
 import click
 import logging
-from ocitools.iam import get_latest_profile  
 from . import misc as misc
-from ocitools.oci_config import OCIconfig  
 from goatshell.style import styles_dict 
 from goatshell.completer import GoatCompleter 
 from goatshell.parser import Parser  
@@ -95,6 +93,16 @@ class Goatshell(object):
         root_name, json_path = self.get_service_info()
         self.parser = Parser(json_path, root_name)
    
+    def get_account_or_tenancy(self, profile):
+        if self.prefix == 'oci':
+            # label as account for variable consistency and get the ocid
+            account = misc.get_oci_tenant(profile_name=profile).id
+        elif self.prefix == 'aws':
+            account = misc.get_aws_account(profile_name=profile)
+        else:
+            return 'UNKNOWN'
+        return account
+
     def get_profile(self, mode):
         if mode == 'aws':
             if self.aws_profiles:
@@ -200,23 +208,16 @@ class Goatshell(object):
                 user_input = user_input[1:]
             else:
                 if user_input:
-                    # append this first if needed - primary tenant ocid
                     if api_type.lower() == 'oci':
                         if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
-                            # Try to use local configstore to get the tenancy
                             try:
-                                from configstore.configstore import Config
-                                CONFIGSTORE = Config('ocitools')
-                                OCID = CONFIGSTORE.get_metadata('tenancy', self.profile)
+                                OCID = self.get_account_or_tenancy(self.profile)
                                 user_input += f' {OCID}'
                             except:
                                 pass
                         if '--user-id' in user_input and 'ocid' not in user_input:
-                            # Try to use local configstore to get the user
                             try:
-                                from configstore.configstore import Config
-                                CONFIGSTORE = Config('ocitools')
-                                OCID = CONFIGSTORE.get_metadata('user', self.profile)
+                                OCID = misc.get_oci_user(self.profile)
                                 user_input += f' {OCID}'
                             except:
                                 pass

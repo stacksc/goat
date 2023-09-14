@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2023.9.13.1849
+Version: 2023.9.13.2043
 Summary: goatshell - goat shell interface to common cloud providers.
 Home-page: https://github.com/stacksc/goat
 Author: centerupt@gmail.com
@@ -28,6 +28,7 @@ Requires-Dist: goatconfigstore
 Requires-Dist: goaat
 Requires-Dist: azure-cli
 Requires-Dist: oci-cli
+Requires-Dist: oci
 Requires-Dist: aws2
 Requires-Dist: gcloud
 

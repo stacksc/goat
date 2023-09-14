@@ -25,6 +25,7 @@ dependencies = [
     "goaat",
     "azure-cli",
     "oci-cli",
+    "oci",
     "aws2",
     "gcloud"
 ]

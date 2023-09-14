@@ -13,7 +13,8 @@ dependencies = [
   "boto3",
   "botocore >= 1.31.00",
   "click >= 8.0.4",
-  "requests_ntlm"
+  "requests_ntlm",
+  "aws2"
 ]
 dynamic = ["version", "readme"]
 

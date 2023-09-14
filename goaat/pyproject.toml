@@ -25,7 +25,7 @@ dependencies = [
   "goatshell",
   "gnureadline",
   "goattoolbox",
-  "goatconfigstore"
+  "goatconfigstore",
 ]
 
 [build-system]

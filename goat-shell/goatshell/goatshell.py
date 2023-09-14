@@ -91,7 +91,11 @@ class Goatshell(object):
                                      key_bindings=self.key_bindings)
 
         root_name, json_path = self.get_service_info()
-        self.parser = Parser(json_path, root_name)
+        try:
+            self.parser = Parser(json_path, root_name)
+        except Exception as e:
+            logger.info(f"Exception caught: {e}")
+            logger.info(f"json_path = {json_path}, root_name = {root_name}")
    
     def get_account_or_tenancy(self, profile):
         if self.prefix == 'oci':

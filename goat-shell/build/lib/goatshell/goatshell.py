@@ -91,7 +91,11 @@ class Goatshell(object):
                                      key_bindings=self.key_bindings)
 
         root_name, json_path = self.get_service_info()
-        self.parser = Parser(json_path, root_name)
+        try:
+            self.parser = Parser(json_path, root_name)
+        except Exception as e:
+            logger.info(f"Exception caught: {e}")
+            logger.info(f"json_path = {json_path}, root_name = {root_name}")
    
     def get_account_or_tenancy(self, profile):
         if self.prefix == 'oci':
@@ -142,19 +146,20 @@ class Goatshell(object):
         event.app.exit(result='re-prompt')  # signal to reprompt.
 
     def get_service_info(self):
+        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{self.prefix}.json')
         global current_service  # Declare current_service as a global variable
         if current_service == 'aws':
-            return 'aws', 'data/aws.json'
+            return 'aws', json_path
         elif current_service == 'oci':
-            return 'oci', 'data/oci.json'
+            return 'oci', json_path
         elif current_service == 'gcloud':
-            return 'gcloud', 'data/gcloud.json'
+            return 'gcloud', json_path
         elif current_service == 'az':
-            return 'az', 'data/az.json'
+            return 'az', json_path
         elif current_service == 'goat':
-            return 'az', 'data/goat.json'
+            return 'az', json_path
         else:
-            return 'aws', 'data/aws.json'  # Default to 'aws' if current_service is not recognized
+            return 'aws', json_path
     
     def create_toolbar(self):
         self.upper_profile = self.profile.upper()

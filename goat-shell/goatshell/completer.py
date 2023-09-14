@@ -29,7 +29,7 @@ class GoatCompleter(Completer):
             with open(DATA_PATH) as json_file:
                 self.goat_dict = json.load(json_file)
 
-            self.parser = Parser(DATA_PATH)  # Make sure your Parser is updated accordingly
+            self.parser = Parser(DATA_PATH, provider)
         except Exception as ex:
             logger.error(f"Exception while loading JSON for {provider}: {ex}")
 

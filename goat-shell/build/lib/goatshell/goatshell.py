@@ -2,6 +2,7 @@ from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit import Application, PromptSession
 from prompt_toolkit.history import InMemoryHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.history import FileHistory
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.key_binding import KeyBindings
@@ -63,11 +64,14 @@ class Goatshell(object):
         self.oci_index = 0
         self.profile = self.get_profile(self.prefix)
         self.key_bindings = CustomKeyBindings(self.app, self)
-
         shell_dir = os.path.expanduser("~/goat/shell/")
-        self.history = InMemoryHistory()
         if not os.path.exists(shell_dir):
             os.makedirs(shell_dir)
+        try:
+            self.history = FileHistory(os.path.join(shell_dir, "history"))
+        except:
+            self.history = InMemoryHistory()
+
         self.session = PromptSession(history=self.history, auto_suggest=AutoSuggestFromHistory(),
                                      completer=self.completer, complete_while_typing=True,
                                      enable_history_search=True, vi_mode=True,

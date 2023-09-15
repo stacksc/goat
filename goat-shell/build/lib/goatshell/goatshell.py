@@ -62,6 +62,7 @@ class Goatshell(object):
         self.oci_profiles = misc.read_oci_profiles()
         self.aws_index = 0
         self.oci_index = 0
+        self.profile = 'DEFAULT' # init this variable before we call the get_profile function
         self.profile = self.get_profile(self.prefix)
         self.key_bindings = CustomKeyBindings(self.app, self)
         shell_dir = os.path.expanduser("~/goat/shell/")
@@ -97,12 +98,16 @@ class Goatshell(object):
     def get_profile(self, mode):
         if mode == 'aws':
             if self.aws_profiles:
+                if self.profile in self.aws_profiles:
+                    self.aws_index = self.aws_profiles.index(self.profile)
                 self.aws_index = (self.aws_index + 1) % len(self.aws_profiles)
                 self.profile = self.aws_profiles[self.aws_index]
             else:
                 self.profile = 'DEFAULT'
         elif mode == 'oci':
             if self.oci_profiles:
+                if self.profile in self.oci_profiles:
+                    self.oci_index = self.oci_profiles.index(self.profile)
                 self.oci_index = (self.oci_index + 1) % len(self.oci_profiles)
                 self.profile = self.oci_profiles[self.oci_index]
             else:
@@ -110,27 +115,6 @@ class Goatshell(object):
         else:
             self.profile = 'DEFAULT'
         return self.profile
-
-    def toggle_service(self, event):
-        global current_service  # Declare current_service as a global variable
-        if current_service == 'aws':
-            current_service = 'oci'
-        elif current_service == 'oci':
-            current_service = 'gcloud'
-        elif current_service == 'gcloud':
-            current_service = 'az'
-        elif current_service == 'az':
-            current_service = 'goat'
-        else:
-            current_service = 'aws'
-
-        # re-prompt hack
-        self.prefix = current_service
-        self.set_parser_and_completer(current_service)
-        os.system('clear')
-        getLayout()
-        self.app.invalidate()
-        event.app.exit(result='re-prompt')  # signal to reprompt.
 
     def get_service_info(self):
         json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{self.prefix}.json')
@@ -152,7 +136,7 @@ class Goatshell(object):
         self.upper_profile = self.profile.upper()
         self.upper_prefix = self.prefix.upper()
         return HTML(
-            f'Current Cloud: <u>{self.upper_prefix}</u>  <b>F8</b> Usage <b>F10</b> Toggle Profile: {self.upper_profile} <b>F12</b> Quit'
+            f'Current Cloud: <u>{self.upper_prefix}</u>  <b>F8</b> Usage <b>F10</b> Toggle Profile: <u>{self.upper_profile}</u> <b>F12</b> Quit'
         )
 
     def set_parser_and_completer(self, api_type):

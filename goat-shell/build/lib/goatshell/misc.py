@@ -15,6 +15,7 @@ def get_aws_user(profile_name='default'):
         session = boto3.Session(profile_name=profile_name)
         client = session.client('iam')
         user = client.get_user()
+        return user['User']['UserName']
     except:
         pass
     return user

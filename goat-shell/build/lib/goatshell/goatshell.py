@@ -48,22 +48,6 @@ class CustomKeyBindings(KeyBindings):
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
-        @self.add(Keys.F9)  # Use F9 key for toggling
-        def handle_f9(event):
-            global current_service
-            if current_service == 'aws':
-                current_service = 'oci'
-            elif current_service == 'oci':
-                current_service = 'gcloud'
-            elif current_service == 'gcloud':
-                current_service = 'az'
-            elif current_service == 'az':
-                current_service = 'goat'
-            else:
-                current_service = 'aws'
-            app.set_parser_and_completer(current_service)
-            app.current_input = None  # Reset current input and retrigger prompt
-        
 # Define the main Goatshell class
 class Goatshell(object):
     def __init__(self, app, completer, parser):
@@ -79,7 +63,6 @@ class Goatshell(object):
         self.oci_index = 0
         self.profile = self.get_profile(self.prefix)
         self.key_bindings = CustomKeyBindings(self.app, self)
-        self.key_bindings.add(Keys.F9)(self.toggle_service)
 
         shell_dir = os.path.expanduser("~/goat/shell/")
         self.history = InMemoryHistory()
@@ -165,7 +148,7 @@ class Goatshell(object):
         self.upper_profile = self.profile.upper()
         self.upper_prefix = self.prefix.upper()
         return HTML(
-            f'<b>F8</b> Usage <b>F9</b> Toggle Provider: {self.upper_prefix} <b>F10</b> Toggle Profile: {self.upper_profile} <b>F12</b> Quit'
+            f'Current Cloud: <u>{self.upper_prefix}</u>  <b>F8</b> Usage <b>F10</b> Toggle Profile: {self.upper_profile} <b>F12</b> Quit'
         )
 
     def set_parser_and_completer(self, api_type):
@@ -180,7 +163,7 @@ class Goatshell(object):
         logger.info("running goat event loop")
         while True:
             try:
-                user_input = self.session.prompt(f'{current_service}> ',
+                user_input = self.session.prompt(f'goat> ',
                                                  style=self.style,
                                                  enable_history_search=True,
                                                  vi_mode=True,
@@ -213,6 +196,7 @@ class Goatshell(object):
                 user_input = user_input[1:]
             else:
                 if user_input:
+                    last_token = user_input.split(' ')[-1]
                     if api_type.lower() == 'oci':
                         if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
                             try:
@@ -224,6 +208,13 @@ class Goatshell(object):
                             try:
                                 OCID = misc.get_oci_user(self.profile)
                                 user_input += f' {OCID}'
+                            except:
+                                pass
+                    if api_type.lower() == 'aws':
+                        if last_token == '--user-name':
+                            try:
+                                USER = misc.get_aws_user(self.profile)
+                                user_input += f' {USER}'
                             except:
                                 pass
                     if api_type.lower() not in ['gcloud','az','goat'] and '--profile' not in user_input:

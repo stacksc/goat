@@ -55,8 +55,10 @@ def get_api_list_for_service(service):
                 if len(parts) >= 3:
                     option_name, option_type, option_req = parts[:3]
                     options[option_name] = {
+                        "name": option_name,
                         "type": option_type,
-                        "required": option_req == "Required"
+                        "required": option_req == "Required",
+                        "help": ""
                     }
         api_with_options[api] = options
 

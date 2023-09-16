@@ -185,7 +185,11 @@ class Goatshell(object):
             else:
                 if user_input:
                     last_token = user_input.split(' ')[-1]
-                    if api_type.lower() == 'oci':
+                    first_token = user_input.split(' ')[0]
+                    if first_token.lower() == 'oci':
+                        if self.profile not in self.oci_profiles:
+                            # need to verify our current profile exists
+                            self.profile = self.get_profile(first_token.lower())
                         if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
                             try:
                                 OCID = self.get_account_or_tenancy(self.profile)
@@ -198,14 +202,17 @@ class Goatshell(object):
                                 user_input += f' {OCID}'
                             except:
                                 pass
-                    if api_type.lower() == 'aws':
+                    if first_token.lower() == 'aws':
+                        if self.profile not in self.aws_profiles:
+                            # need to verify our current profile exists
+                            self.profile = self.get_profile(first_token.lower())
                         if last_token == '--user-name':
                             try:
                                 USER = misc.get_aws_user(self.profile)
                                 user_input += f' {USER}'
                             except:
                                 pass
-                    if api_type.lower() not in ['gcloud','az','goat'] and '--profile' not in user_input:
+                    if first_token.lower() not in ['gcloud','az','goat'] and '--profile' not in user_input:
                         user_input = user_input + ' --profile ' + self.profile
                     if '-o' in user_input and 'json' in user_input:
                         user_input += ' | pygmentize -l json'

@@ -39,9 +39,3 @@ traverse_and_add_help(data2)
 with open('az_updated.json', 'w') as updated_file:
     json.dump(data2, updated_file, indent=4)
 
-print("Descriptions:")
-print(descriptions)
-
-print("\nData2 after updating:")
-print(data2)
-

@@ -13,6 +13,7 @@ from toolbox.misc import debug
 from .iam import get_latest_profile, get_latest_region
 from .iam_nongc import update_latest_profile, force_cache, cache_all_hack
 from .aws_config import AWSconfig
+from .extract import extract
 
 MESSAGE="AWS CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile().upper() + misc.RESET + " Region: " + misc.GREEN + misc.UNDERLINE + get_latest_region(get_latest_profile()).upper() + misc.RESET
 
@@ -45,6 +46,7 @@ CLI.add_command(ec2)
 CLI.add_command(rds)
 CLI.add_command(cli)
 CLI.add_command(show)
+CLI.add_command(extract)
 
 if __name__ == "__main__":
     cli(ctx)

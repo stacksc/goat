@@ -1,8 +1,8 @@
-import click, os, json
+import click, os, json, re
 from toolbox.logger import Log
 from toolbox.misc import set_terminal_width
 from .iam import get_latest_profile
-import .extract_commands
+from . import extract_commands
 
 @click.group('extract', invoke_without_command=True, help='extract the command tree for AWS CLI', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
 @click.pass_context
@@ -33,19 +33,19 @@ def commands(ctx):
     }
 
     for service in services:
-        aws_service_output = get_aws_help_output(service)
+        aws_service_output = extract_commands.get_aws_help_output(service)
         if aws_service_output:
-            commands, options = extract_elements_for_service(aws_service_output)
-            description = extract_description(aws_service_output)
+            commands, options = extract_commands.extract_elements_for_service(aws_service_output)
+            description = extract_commands.extract_description(aws_service_output)
             aws_data["aws"]["subcommands"].update({service: {"commands": commands, "description": description}})
-            save_to_json(aws_data, 'aws_command_data.json')
+            extract_commands.save_to_json(aws_data, 'aws_command_data.json')
 
             # Fetch options for each command
             for command, command_info in commands.items():
-                aws_command_output = get_aws_help_output(service, command)
-                _, command_options = extract_elements_for_service(aws_command_output)
-                command_description = extract_description(aws_command_output)
+                aws_command_output = extract_commands.get_aws_help_output(service, command)
+                _, command_options = extract_commands.extract_elements_for_service(aws_command_output)
+                command_description = extract_commands.extract_description(aws_command_output)
                 command_info["options"] = command_options
                 command_info["description"] = command_description
-                save_to_json(aws_data, 'aws_command_data.json')
+                extract_commands.save_to_json(aws_data, 'aws_command_data.json')
 

@@ -25,7 +25,7 @@ def process_json(input_data, output_data):
             }
 
             if "description" in data:
-                subcommand_data["description"] = data["description"]
+                subcommand_data["help"] = data["description"]
 
             process_json(data, subcommand_data)
 

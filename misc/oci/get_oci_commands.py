@@ -43,7 +43,7 @@ def get_oci_commands(argv):
             return longest_param + (' ' + type if type else '')
 
     oci_dir = os.path.expanduser('~/.oci')
-    oci_commands_file = os.path.expanduser('~/.oci/oci_commands.txt')
+    oci_commands_file = os.path.expanduser('oci_commands.txt')
 
     if len(sys.argv) == 2:
         sp = subprocess.run(['oci', '--help'], stdout=subprocess.PIPE,
@@ -71,7 +71,6 @@ def get_oci_commands(argv):
         for p in processes:
             p.wait()
         print('\033[2K\rDone.')
-        #exit(0)
         return
 
     sp = subprocess.run(['oci'] + sys.argv[2:] + ['--help'],
@@ -87,7 +86,6 @@ def get_oci_commands(argv):
                     subprocess.run([sys.argv[0], 'oci_commands'] + sys.argv[2:] + [cmd])
             print('\033[2K\r', end='')
             exit(0)
-            #return
 
         m = re.search(r'Usage: (.*?) \[.*]', out, re.S)
         if m:
@@ -196,6 +194,77 @@ def parse_subcommands(lines):
 
     return commands, global_options
 
+def clean_output(text):
+    # Remove backspace characters
+    while '\x08' in text:
+        idx = text.index('\x08')
+        text = text[:idx-1] + text[idx+1:]
+    return text
+
+def get_description_from_help_text(help_text):
+    lines = help_text.split('\n')
+    capture = False
+    description = []
+
+    for line in lines:
+        if 'DESCRIPTION' in line:
+            capture = True
+            continue  # Skip the line with 'DESCRIPTION' itself
+        if 'USAGE' in line:
+            capture = False  # Stop capturing at 'USAGE'
+
+        if capture:
+            description.append(line.strip())
+
+    return ' '.join(description).strip()
+
+
+def update_command_descriptions(command_tree, prefix_command=[]):
+    if "subcommands" in command_tree:
+        for subcommand, data in command_tree["subcommands"].items():
+            full_command_list = prefix_command + [subcommand]
+            full_command_str = " ".join(full_command_list)
+
+            # Skip the command if it matches the parent command to avoid duplication
+            if full_command_list[-1] == full_command_list[-2] if len(full_command_list) > 1 else False:
+                continue
+
+            # Print the command that will be executed
+            print(f"EXECUTING {full_command_str} --help")
+
+            try:
+                output = subprocess.check_output(f"{full_command_str} --help", shell=True, text=True, stderr=subprocess.STDOUT)
+                output = clean_output(output)
+            except subprocess.CalledProcessError as e:
+                print(f"An error occurred while running '{full_command_str} --help': {e}")
+                continue
+
+            description = get_description_from_help_text(output)
+            if description:
+                data["description"] = description
+            else:
+                print(f"Could not find description for {full_command_str}. Raw output:")
+
+            update_command_descriptions(data, full_command_list)
+
+    def clean_subcommands(subcommands):
+        keys_to_remove = []
+        for key, value in subcommands.items():
+            if 'subcommands' in value:
+                nested_subcommands = value['subcommands']
+                if key in nested_subcommands:
+                    # Found a redundant subcommand entry; schedule it for removal.
+                    keys_to_remove.append((nested_subcommands, key))
+                    # Copy the values from the redundant entry to the parent.
+                    for inner_key, inner_value in nested_subcommands[key].items():
+                        if inner_key not in value:
+                            value[inner_key] = inner_value
+                # Recurse further to clean other subcommands
+                clean_subcommands(nested_subcommands)
+        # Actually remove the keys
+        for dictionary, key in keys_to_remove:
+            del dictionary[key]
+
 if __name__ == "__main__":
 
     global_options_dict = {}
@@ -225,6 +294,11 @@ if __name__ == "__main__":
     
     # Save the output to a JSON file
     output_file = 'oci.json'
-    with open(output_file, 'w') as json_file:
-        json.dump(command_tree, json_file, indent=2)
-    print(f"INFO: JSON saved to the following file: {output_file}")
+
+    # Update descriptions
+    update_command_descriptions(command_tree["oci"], ["oci"])
+    # clean up
+    clean_subcommands(command_tree['oci']['subcommands'])
+    # Save the updated JSON
+    with open("oci.json", "w") as f:
+        json.dump(command_tree, f, indent=4)

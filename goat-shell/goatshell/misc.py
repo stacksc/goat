@@ -1,5 +1,6 @@
 import configparser
 import os
+import shutil
 
 def get_aws_account(profile_name='default'):
     import boto3
@@ -62,3 +63,7 @@ def read_cloud_profiles():
         "AWS": aws_profiles,
         "OCI": oci_profiles
     }
+    import subprocess
+
+def is_command_available(command):
+    return shutil.which(command) is not None

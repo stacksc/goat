@@ -188,6 +188,12 @@ class Goatshell(object):
                 if user_input:
                     last_token = user_input.split(' ')[-1]
                     first_token = user_input.split(' ')[0]
+                    # check for aliyun and make sure its in our path
+                    if first_token.lower() == 'aliyun':
+                        if not misc.is_command_available(first_token.lower()):
+                            print(f"INFO: {first_token.lower()} not in path for execution")
+                            user_input = ''
+
                     if first_token.lower() == 'oci':
                         if self.profile not in self.oci_profiles:
                             # need to verify our current profile exists

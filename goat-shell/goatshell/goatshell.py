@@ -128,7 +128,9 @@ class Goatshell(object):
         elif current_service == 'az':
             return 'az', json_path
         elif current_service == 'goat':
-            return 'az', json_path
+            return 'goat', json_path
+        elif current_service == 'aliyun':
+            return 'aliyun', json_path
         else:
             return 'aws', json_path
     
@@ -166,7 +168,7 @@ class Goatshell(object):
             api_type = user_input.split(' ')[0]
 
             if api_type.lower() != self.prefix:  # If a different prefix is detected
-                if api_type.lower() in ['oci', 'aws', 'gcloud', 'az', 'goat']:
+                if api_type.lower() in ['oci', 'aws', 'gcloud', 'az', 'goat', 'aliyun']:
                     self.set_parser_and_completer(api_type.lower())
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)
@@ -212,7 +214,7 @@ class Goatshell(object):
                                 user_input += f' {USER}'
                             except:
                                 pass
-                    if first_token.lower() not in ['gcloud','az','goat'] and '--profile' not in user_input:
+                    if first_token.lower() not in ['gcloud','az','goat','aliyun'] and '--profile' not in user_input:
                         user_input = user_input + ' --profile ' + self.profile
                     if '-o' in user_input and 'json' in user_input:
                         user_input += ' | pygmentize -l json'

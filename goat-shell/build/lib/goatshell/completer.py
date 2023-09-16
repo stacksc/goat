@@ -37,20 +37,21 @@ class GoatCompleter(Completer):
         tokens = shlex.split(document.text_before_cursor.strip())
 
         if not tokens:
-            yield Completion("oci", display="oci", display_meta="Oracle Cloud Infrastructure")
+            yield Completion("aliyun", display="aliyun", display_meta="Alibaba Cloud Command Line Interface")
             yield Completion("aws", display="aws", display_meta="Amazon Web Services")
-            yield Completion("gcloud", display="gcloud", display_meta="Google Cloud Platform")
             yield Completion("az", display="az", display_meta="Microsoft Azure Cloud Platform")
+            yield Completion("gcloud", display="gcloud", display_meta="Google Cloud Platform")
             yield Completion("goat", display="goat", display_meta="Local Goat Application")
+            yield Completion("oci", display="oci", display_meta="Oracle Cloud Infrastructure")
             return
 
         first_token = tokens[0]
 
-        if first_token in ["oci", "aws", "gcloud", "az", "goat"] and self.current_json != first_token:
+        if first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun"] and self.current_json != first_token:
             self.load_json(first_token)
             self.current_json = first_token
 
-        if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az", "goat"]:
+        if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun"]:
             subcommands = self.parser.ast.children
             for subcmd in subcommands:
                 yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)

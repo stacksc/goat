@@ -131,6 +131,8 @@ class Goatshell(object):
             return 'goat', json_path
         elif current_service == 'aliyun':
             return 'aliyun', json_path
+        elif current_service == 'ibmcloud':
+            return 'ibmcloud', json_path
         else:
             return 'aws', json_path
     
@@ -168,7 +170,7 @@ class Goatshell(object):
             api_type = user_input.split(' ')[0]
 
             if api_type.lower() != self.prefix:  # If a different prefix is detected
-                if api_type.lower() in ['oci', 'aws', 'gcloud', 'az', 'goat', 'aliyun']:
+                if api_type.lower() in ['oci', 'aws', 'gcloud', 'az', 'goat', 'aliyun', 'ibmcloud']:
                     self.set_parser_and_completer(api_type.lower())
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)

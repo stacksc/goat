@@ -37,12 +37,15 @@ This initiative revolves around establishing seamless communication with a diver
 ## About The Project
 
 GOAAT ("goat") - a front-end application for Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, Azure, IBM, Alibaba). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br>
+<br>
+GOAAT and GOATSHELL can work together or independently. When launching <b>goatshell</b>, you can interact with any major cloud provider and <u>not</u> depend on goat credential management. GOAT is useful when setting up APIs such as JIRA, SLACK, Jenkins, etc. GOATSHELL is primarily useful as a cloud wrapper.<br>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### Prerequisites
 ### Installation
+1. Stable release is available on PyPi
+2. A manual installation is provided with a shell script to build all modules
 
 #### <b>Manual Installation</b>
 
@@ -62,7 +65,7 @@ GOAAT ("goat") - a front-end application for Python modules to communicate with 
    ```sh
    cd ~/prod/goat && ./bulk.sh --action rebuild --target all
    ```
-#### <b>OR with PIP</b>
+#### <b>PIP INSTALLATION</b>
 
 1. Install the following packages from pypi:
    ```

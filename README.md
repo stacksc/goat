@@ -29,14 +29,47 @@
 <!-- HLO -->
 ## HLO
 
-The presented project is currently undergoing significant development and construction efforts.
+The presented project is currently undergoing significant development efforts.
 
-This initiative revolves around establishing seamless communication with a diverse array of APIs, including prominent platforms such as Slack, JIRA, and Jenkins. It doesn't stop there – the project extends its reach to encompass major public cloud providers such as GCP, OCI, AWS, and Azure. The primary goal is to simplify the intricacies of life by streamlining credential and configuration management. Imagine a single interface serving as the gateway to all these APIs.
+This initiative revolves around establishing seamless communication with a diverse array of APIs, including prominent platforms such as Slack, JIRA, and Jenkins. It doesn't stop there – the project extends its reach to encompass major public cloud providers such as GCP, OCI, AWS, and Azure. The primary goal is to simplify by streamlining credential and configuration management.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-GOAT ("goat") - a front-end application for Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, & Azure). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br>
+GOAAT ("goat") - a front-end application for Python modules to communicate with most Public Cloud Platforms (GCP, OCI, AWS, Azure, IBM, Alibaba). Source code of this app can also be used as an example of how to write code using our internal modules and how to integrate multiple modules together in a single app/package.<br>
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
+### Installation
+
+#### <b>Manual Installation</b>
+
+1. Create a virtual environment. We will call it `prod`:
+   ```sh
+   python3 -m venv ~/prod
+   ```
+2. Activate virtual environment:
+   ```sh
+   cd ~/prod && source bin/activate
+   ```
+3. Clone the repo:
+   ```sh
+   git clone git@github.com:stacksc/goat.git
+   ```
+4. Install all required packages with 1 script from the main repository: 
+   ```sh
+   cd ~/prod/goat && ./bulk.sh --action rebuild --target all
+   ```
+#### <b>OR with PIP</b>
+
+1. Install the following packages from pypi:
+   ```
+   pip install goatshell goaat
+   ```
+   
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CACHE DATA -->
 ## cache data
@@ -100,57 +133,6 @@ GOAT:			2023.8.17.1901
         "  |      |
            |""""""|
 ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-### Prerequisites
-### Installation
-
-#### Manual Installation
-
-1. Create a virtual environment. We will call it `prod`:
-   ```sh
-   python3 -m venv ~/prod
-   ```
-2. Activate virtual environment:
-   ```sh
-   cd ~/prod && source bin/activate
-   ```
-3. Clone the repo:
-   ```sh
-   git clone git@github.com:stacksc/goat.git
-   ```
-4. Install all required packages with 1 script from the main repository: 
-   ```sh
-   cd ~/prod/goat && ./bulk.sh --action rebuild --target all
-   ```
-5. Install oci-cli using the latest version:<br>
-   a. Mac
-      ```sh
-      brew install oci-cli
-      ```
-   b. Linux
-      ```sh
-      bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
-      ```
-
-#### OR with PIP
-
-1. Install the following packages from pypi:
-   ```
-   pip install goatshell goaat
-   ```
-   
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] TBD - roadmap not yet available or determined.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACTS -->

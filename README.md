@@ -814,6 +814,8 @@ Commands:
 ```
 
 #### OCI / GCLOUD / AWS Shell Interface ####
-<img width="2555" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1dbf12c3-2d1f-4508-82a6-bd1ca794a1d8">
+
+<img width="1804" alt="image" src="https://github.com/stacksc/goat/assets/116677370/a389470d-c010-41f9-8292-b82cd5ba3774">
+
 <br>
 

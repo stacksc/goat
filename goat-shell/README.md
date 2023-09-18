@@ -50,16 +50,11 @@ The following cloud providers are currently supported:
 <img width="1008" alt="image" src="https://github.com/stacksc/goat/assets/116677370/e2dfca65-a741-43e4-a2d7-19fac3f7f54a">
 
 ### toolbar
-The toolbar will refresh after hitting the ENTER key or with specific hotkeys. If you run an aws command, you will be in AWS mode and have the ability to toggle profiles.
+The toolbar will refresh after hitting the ENTER key or with specific hotkeys.
 <br><br>
-If the cloud prefix changes, the toolbar will update to that cloud provider. The profiles change based upon the cloud prefix.
-<br>
-   1. oci iam user list <enter>
-   2. the command runs, processes and you are now in OCI mode.
-   3. aws account regions list, rinse and repeat [cycle through whatever cloud provider is needed for the moment]
-<br>
-
-And the toolbar is updated appropriately to AWS mode:
+The toolbar is updated appropriately based on what command you ran. Once you run a command, the toolbar is refreshed with your <u>current</u> cloud.
+<br><br>
+The profile is updated <u>dynamically</u> based on your <u>current</u> cloud and you have the ability to toggle profiles for any cloud.
 
 ```
 goat>

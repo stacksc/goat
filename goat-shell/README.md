@@ -1,5 +1,8 @@
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-<video width="600" height="300" src="https://github.com/stacksc/goat/assets/116677370/2d306e98-defe-4c9f-8c2d-0368fbd297f0"></video>
+<video width="600" height="300" src="https://github.com/stacksc/goat/assets/116677370/58e27064-3e4a-4e90-a8ba-229b1ae6258c"></video>
+
+<h1>GOATSHELL</h1>
+<h2>7 Clouds & 1 Shell</h2>
 
 ## Getting Started
 
@@ -34,7 +37,7 @@
       bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
       ```
 
-#### OR with PIP
+#### PIP installation (easier)
 
 1. Install the following packages from pypi:
    ```
@@ -46,6 +49,32 @@
 ## Contacts
 Christopher Stacks - <centerupt@gmail.com>
 
-#### OCI / GCLOUD / AWS / AZ Shell Interface ####
-<img width="2555" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1dbf12c3-2d1f-4508-82a6-bd1ca794a1d8">
+## Mechanics
+The project is built with dependecies such as aws2, oci-cli, az-cli, and gcloud. <br>However, other cloud providers are configured to work but not packaged with the project such as ibmcloud and Alibaba cloud.
+<br><br>
+If the command isn't available, such as ibmcloud or aliyun, suggestions will not be provided. Otherwise syntax completion works as normal.
+<br><br>
+The following cloud providers are currently supported:
+<br>
+<img width="1008" alt="image" src="https://github.com/stacksc/goat/assets/116677370/e2dfca65-a741-43e4-a2d7-19fac3f7f54a">
+
+### toolbar
+The toolbar will refresh after hitting the ENTER key or with specific hotkeys. If you run an aws command, you will be in AWS mode and have the ability to toggle profiles.
+<br><br>
+If the cloud prefix changes, the toolbar will update to that cloud provider. The profiles change based upon the cloud prefix.
+<br>
+   1. oci iam user list <enter>
+   2. the command runs, processes and you are now in OCI mode.
+   3. aws account regions list, rinse and repeat [cycle through whatever cloud provider is needed for the moment]
+<br>
+
+And the toolbar is updated appropriately to AWS mode:
+
+```
+goat>
+Current Cloud: AWS  F8 Usage F10 Toggle Profile: CENTERUPT F12 Quit
+```
+
+### toggle
+The only toggle currently supported is profile switching. Everything else is dynamic based on first token.
 <br>

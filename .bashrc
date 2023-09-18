@@ -5,11 +5,6 @@ if [ -f /etc/bashrc ]; then
   source /etc/bashrc
 fi
 
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
-then
-  export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
-fi
-
 export GREEN="\\033[1;32m"
 export WHITE="\\033[1;97m"
 export RED="\\033[1;31m"

@@ -70,21 +70,21 @@ RUN --mount=type=secret,id=my_env source /run/secrets/my_env && touch /home/$USE
      echo 'pinentry-program /usr/bin/pinentry-curses' > /home/$USER/.gnupg/gpg-agent.conf &&\
      gpg-agent --daemon --options /home/$USER/.gnupg/gpg-agent.conf # buildkit
 
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "/usr/bin/python3 -m pip install in_place concoursepy click-man bs4 importlib_resources gnureadline termcolor slack_sdk jira argcomplete build prompt_toolkit --upgrade"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.email ${USER}@localhost.com"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.name ${USER}"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git && git clone https://github.com/stacksc/goat.git"
-RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "cd /home/${USER}/git/goat && bash ./bulk.sh --action rebuild --target all"
-
 RUN cp /var/tmp/load_prompt.sh /home/${USER}/
 RUN cp /var/tmp/.bashrc /home/${USER}/
+RUN cp /var/tmp/.bash_profile /home/${USER}/
 RUN chown ${USER}:${USER} /home/${USER}/.bashrc
+RUN chown ${USER}:${USER} /home/${USER}/.bash_profile
 RUN chown ${USER}:${USER} /home/${USER}/load_prompt.sh
 RUN chmod 777 /usr/share/man/man1
+
+RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.email ${USER}@localhost.com"
+RUN --mount=type=secret,id=my_env source /run/secrets/my_env && sudo su - $USER -c "git config --global user.name ${USER}"
 
 USER "$USER"
 RUN python3.9 -m pip install --upgrade pip # buildkit
 RUN sudo activate-global-python-argcomplete # buildkit
+RUN pip install goatshell
 
 # now install man pages for goat
 RUN sudo chmod 755 /usr/share/man/man1

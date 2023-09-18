@@ -126,95 +126,15 @@ printf "${COLOR_OFF}"
 printf "INFO: preparing to build our docker container\n"
 printf "      using multiple tools, scripts and utilities to make the magic happen. Enjoy!\n"
 echo
-printf "INFO: AWS ACCESS KEY ID & SECRET KEY can be retrieved from: https://console.aws.amazon.com => Security Credentials"
-printf "INFO: generate new keys if they are inactive, lost, etc...\n"
-echo
 
-function ask() {
-  qcnt=$(expr $qcnt + 1)
-  [[ -z ${USER} ]] && USER="$(whoami)"; export USER
-  [[ -z ${GITDIR} ]] && GITDIR="/home/${USER}/git"; export GITDIR
+[[ -z ${USER} ]] && USER="$(whoami)"; export USER
+[[ -z ${GITDIR} ]] && GITDIR="/home/${USER}/git"; export GITDIR
 
-  if [[ -z ${REGION} ]];
-  then
-    read -ep "[${qcnt}] Enter default home region [us-east-1]: " REGION; export REGION
-  fi
-  [[ -z ${REGION} ]] && REGION="us-east-1" && export REGION
-
-  if [[ -z ${AWS_ACCESS_KEY_ID} ]];
-  then
-    qcnt=$(expr $qcnt + 1)
-    read -ep "[${qcnt}] Enter AWS_ACCESS_KEY_ID: " AWS_ACCESS_KEY_ID; export AWS_ACCESS_KEY_ID
-  fi
-  [[ -z ${AWS_ACCESS_KEY_ID} ]] && echo "INFO: please provide an access key id" && exit 1;
-
-  if [[ -z ${AWS_SECRET_ACCESS_KEY} ]];
-  then
-    qcnt=$(expr $qcnt + 1)
-    read -ep "[${qcnt}] Enter AWS_SECRET_ACCESS_KEY: " AWS_SECRET_ACCESS_KEY; export AWS_SECRET_ACCESS_KEY
-  fi
-  [[ -z ${AWS_SECRET_ACCESS_KEY} ]] && echo "INFO: please provide the aws secret access key" && exit 1;
-
-  if [[ -z ${SLACK_BOT_TOKEN} ]];
-  then
-    qcnt=$(expr $qcnt + 1)
-    read -ep "[${qcnt}] Enter SLACK_BOT_TOKEN: " SLACK_BOT_TOKEN; export SLACK_BOT_TOKEN
-  fi
-  [[ -z ${SLACK_BOT_TOKEN} ]] && echo "INFO: please provide the slack bot token for GOAT to use for communication:" && exit 1
-  qcnt=$(expr $qcnt + 1)
-  SSH_PUB_KEY="$(cat ${HOME}/.ssh/id_rsa.pub)"
-  SSH_PRV_KEY="$(cat ${HOME}/.ssh/id_rsa)"
-}
-
-function displayDetails() {
-
-  echo
-  echo "==================================================================================="
-  printf "INFO: verify the following information is accurate:\n"
-  echo "==================================================================================="
-  echo
-
-  printf "INFO: GUID User ID:                  ${USER}\n"
-  printf "INFO: AWS_ACCESS_KEY_ID:             ${AWS_ACCESS_KEY_ID}\n"
-  printf "INFO: AWS_SECRET_ACCESS_KEY:         ${AWS_SECRET_ACCESS_KEY}\n"
-  printf "INFO: SLACK_BOT_TOKEN:               ${SLACK_BOT_TOKEN}\n"
-  printf "INFO: GIT:                           ${GITDIR}\n"
-  printf "INFO: REGION:                        ${REGION}\n"
-  echo
-}
-
-if [[ -f "${ENV}" ]] && [[ ! -z "${ENV}" ]];
-then
-  qcnt=0
-  read -ep "[${qcnt}] would you like to use ${ENV} for docker preparation? [y/n] " ANS
-  case $ANS in
-          y|Y) # ok we will not ask for input
-               if [[ -z ${SSO_PASS} ]];
-               then
-                 get_sso;
-                 qcnt=$(expr $qcnt + 1)
-               fi
-               source ${ENV} >/dev/null 2>&1
-               ;;
-          n|N) # ok we will ask for input
-               ask;
-               ;;
-            *) # ok we will ask for input
-               ask;
-               ;;
-  esac
-else
-  ask;
-fi
-
-displayDetails;
+SSH_PUB_KEY="$(cat ${HOME}/.ssh/id_rsa.pub)"
+SSH_PRV_KEY="$(cat ${HOME}/.ssh/id_rsa)"
 
 cat << EOF > $MYDIR/.env
-REGION="${REGION}"
 GITDIR="${GITDIR}"
-AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
-AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
-SLACK_BOT_TOKEN="${SLACK_BOT_TOKEN}"
 USER="${USER}"
 SSH_PUB_KEY="${SSH_PUB_KEY}"
 SSH_PRV_KEY="${SSH_PRV_KEY}"

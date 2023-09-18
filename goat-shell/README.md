@@ -27,17 +27,8 @@
    ```sh
    cd ~/prod/goat && ./bulk.sh --action rebuild --target all
    ```
-5. Install oci-cli using the latest version:<br>
-   a. Mac
-      ```sh
-      brew install oci-cli
-      ```
-   b. Linux
-      ```sh
-      bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
-      ```
 
-#### PIP installation (easier)
+#### PIP installation (stable)
 
 1. Install the following packages from pypi:
    ```

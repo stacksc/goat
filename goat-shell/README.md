@@ -67,8 +67,6 @@ Current Cloud: AWS  F8 Usage F10 Toggle Profile: CENTERUPT F12 Quit
 The only toggle currently supported is profile switching. Everything else is dynamic based on first token.
 <br>
 
-### CLI providers
-
 <!DOCTYPE html>
 <html>
 <body>

@@ -4,12 +4,9 @@
 <h1>GOATSHELL</h1>
 <h2>7 Clouds & 1 Shell</h2>
 
-## Getting Started
+## Installation
 
-### Prerequisites
-### Installation
-
-#### Manual Installation
+### Manual Installation
 
 1. Create a virtual environment. We will call it `prod`:
    ```sh
@@ -28,7 +25,7 @@
    cd ~/prod/goat && ./bulk.sh --action rebuild --target all
    ```
 
-#### PIP installation (stable)
+### PIP installation (stable)
 
 1. Install the following packages from pypi:
    ```
@@ -41,15 +38,17 @@
 Christopher Stacks - <centerupt@gmail.com>
 
 ## Mechanics
-The project is built with dependecies such as aws2, oci-cli, az-cli, and gcloud. <br>However, other cloud providers are configured to work but not packaged with the project such as ibmcloud and Alibaba cloud.
+The project is built with dependecies such as aws2, oci-cli, az-cli. <br>However, other cloud providers are configured to work but <u>NOT</u> packaged with the project such as ibmcloud, gcloud, and Alibaba cloud.
 <br><br>
-If the command isn't available, such as ibmcloud or aliyun, suggestions will not be provided. Otherwise syntax completion works as normal.
+Each time the first token is passed (i.e. cloud provider) a function will verify if the command is avialable.
+<br>
+This keeps the command line clean with the cloud providers you only work with.
 <br><br>
 The following cloud providers are currently supported:
 <br>
 <img width="1008" alt="image" src="https://github.com/stacksc/goat/assets/116677370/e2dfca65-a741-43e4-a2d7-19fac3f7f54a">
 
-### toolbar
+## Toolbar
 The toolbar will refresh after hitting the ENTER key or with specific hotkeys.
 <br><br>
 The toolbar is updated appropriately based on what command you ran. Once you run a command, the toolbar is refreshed with your <u>current</u> cloud.
@@ -61,6 +60,70 @@ goat>
 Current Cloud: AWS  F8 Usage F10 Toggle Profile: CENTERUPT F12 Quit
 ```
 
-### toggle
+## Toggle
 The only toggle currently supported is profile switching. Everything else is dynamic based on first token.
 <br>
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Cloud CLI Options</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Additional Info</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>OCI-CLI</td>
+            <td>Default / Supported</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>AWS</td>
+            <td>Default / Supported</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>AZ</td>
+            <td>Default / Supported</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>GCLOUD</td>
+            <td>Supported / Manual Installation</td>
+            <td><a href="https://cloud.google.com/sdk/docs/install">Installation Guide</a></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>ALIYUN</td>
+            <td>Supported / Manual Installation</td>
+            <td><a href="https://www.alibabacloud.com/help/en/alibaba-cloud-cli/latest/install">Installation Guide</a></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>IBMCLOUD</td>
+            <td>Supported / Manual Installation</td>
+            <td><a href="https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli">Installation Guide</a></td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+
+Once the relative CLI is installed, the goatshell application will recognize that it is available & syntax completion will be provided.<br>
+The project is packaged with cloud provider JSON files which get refreshed automatically per major release with dynamic CLI scrapers.<br><br>
+As the first token is passed (i.e. cloud provider) it directs the goatshell application to the correct JSON file.
+

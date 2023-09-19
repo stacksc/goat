@@ -1,24 +1,23 @@
+
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-<video width="900" src="https://github.com/stacksc/goat/assets/116677370/35108598-2700-458e-a2b9-9b4157580de7"></video>
+
+https://github.com/stacksc/goat/assets/116677370/237e4448-2884-4b8f-9601-fe1b47b506e1
 
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summar"y>Table of Contents</summary>
+  <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#hlo">HLO</a></li>
-      <li><a href="#about-the-project">About The Project</a>
-    </li>
+    <li><a href="#hlo">HLO</a></li>
+    <li><a href="#about-the-project">About The Project</a>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contacts">Contacts</a></li>
+    <li><a href="#goatshell">GoatShell</a></li>
     <li><a href="#cache-data">Cache</a></li>
     <li><a href="#current-usage">Usage</a></li>
     <li><a href="#versions">Versions</a></li>
@@ -78,6 +77,10 @@ GOAAT and GOATSHELL can work together or independently. When launching <b>goatsh
    ```
    
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GOATSHELL -->
+## GOATSHELL
+For more details, check out the [manual](./goat-shell/README.md)
 
 <!-- CACHE DATA -->
 ## cache data
@@ -141,7 +144,6 @@ GOAT:			2023.8.17.1901
         "  |      |
            |""""""|
 ```
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACTS -->
 ## Contacts

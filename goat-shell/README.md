@@ -4,12 +4,9 @@
 <h1>GOATSHELL</h1>
 <h2>7 Clouds & 1 Shell</h2>
 
-## Getting Started
+## Installation
 
-### Prerequisites
-### Installation
-
-#### Manual Installation
+### Manual Installation
 
 1. Create a virtual environment. We will call it `prod`:
    ```sh
@@ -28,7 +25,7 @@
    cd ~/prod/goat && ./bulk.sh --action rebuild --target all
    ```
 
-#### PIP installation (stable)
+### PIP installation (stable)
 
 1. Install the following packages from pypi:
    ```
@@ -51,7 +48,7 @@ The following cloud providers are currently supported:
 <br>
 <img width="1008" alt="image" src="https://github.com/stacksc/goat/assets/116677370/e2dfca65-a741-43e4-a2d7-19fac3f7f54a">
 
-### toolbar
+## Toolbar
 The toolbar will refresh after hitting the ENTER key or with specific hotkeys.
 <br><br>
 The toolbar is updated appropriately based on what command you ran. Once you run a command, the toolbar is refreshed with your <u>current</u> cloud.
@@ -63,7 +60,7 @@ goat>
 Current Cloud: AWS  F8 Usage F10 Toggle Profile: CENTERUPT F12 Quit
 ```
 
-### toggle
+## Toggle
 The only toggle currently supported is profile switching. Everything else is dynamic based on first token.
 <br>
 

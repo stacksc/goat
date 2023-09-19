@@ -169,7 +169,7 @@ class Goatshell(object):
                 continue
             api_type = user_input.split(' ')[0]
 
-            if api_type.lower() != self.prefix:  # If a different prefix is detected
+            if api_type.lower() != self.prefix:
                 if api_type.lower() in ['oci', 'aws', 'gcloud', 'az', 'goat', 'aliyun', 'ibmcloud']:
                     self.set_parser_and_completer(api_type.lower())
 
@@ -188,40 +188,39 @@ class Goatshell(object):
                 user_input = user_input[1:]
             else:
                 if user_input:
-                    last_token = user_input.split(' ')[-1]
-                    first_token = user_input.split(' ')[0]
-                    # check for aliyun and make sure its in our path
-                    if first_token.lower() == 'aliyun':
-                        if not misc.is_command_available(first_token.lower()):
-                            print(f"INFO: {first_token.lower()} not in path for execution")
-                            user_input = ''
+                    tokens = user_input.split(' ')
+                    last_token = tokens[-1]
+                    first_token = tokens[0]
+                    last_but_one_token = tokens[-2] if len(tokens) > 1 else None
 
+                    # improved resource completion is coming
                     if first_token.lower() == 'oci':
                         if self.profile not in self.oci_profiles:
-                            # need to verify our current profile exists
                             self.profile = self.get_profile(first_token.lower())
-                        if '--compartment-id' in user_input or '--tenancy-id' in user_input and 'ocid' not in user_input:
-                            try:
-                                OCID = self.get_account_or_tenancy(self.profile)
-                                user_input += f' {OCID}'
-                            except:
-                                pass
-                        if '--user-id' in user_input and 'ocid' not in user_input:
-                            try:
-                                OCID = misc.get_oci_user(self.profile)
-                                user_input += f' {OCID}'
-                            except:
-                                pass
+                        if last_but_one_token in ['--compartment-id', '--tenancy-id']:
+                            if not last_token.startswith('ocid'):
+                                try:
+                                    OCID = self.get_account_or_tenancy(self.profile)
+                                    user_input += f' {OCID}'
+                                except:
+                                    pass
+                        if last_but_one_token in ['--user-id']:
+                            if not last_token.startswith('ocid'):
+                                try:
+                                    OCID = misc.get_oci_user(self.profile)
+                                    user_input += f' {OCID}'
+                                except:
+                                    pass
                     if first_token.lower() == 'aws':
                         if self.profile not in self.aws_profiles:
-                            # need to verify our current profile exists
                             self.profile = self.get_profile(first_token.lower())
-                        if last_token == '--user-name':
-                            try:
-                                USER = misc.get_aws_user(self.profile)
-                                user_input += f' {USER}'
-                            except:
-                                pass
+                        if last_but_one_token in ['--user-name']:
+                            if not last_token:
+                                try:
+                                    USER = misc.get_aws_user(self.profile)
+                                    user_input += f' {USER}'
+                                except:
+                                    pass
                     if first_token.lower() not in ['gcloud','az','goat','aliyun'] and '--profile' not in user_input:
                         user_input = user_input + ' --profile ' + self.profile
                     if '-o' in user_input and 'json' in user_input:

@@ -16,7 +16,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contacts">Contacts</a></li>
     <li><a href="#goatshell">GoatShell</a></li>
     <li><a href="#cache-data">Cache</a></li>

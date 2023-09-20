@@ -9,7 +9,7 @@ CONFIG = Config('ocitools')
 LATEST = CONFIG.get_profile('latest')
 
 if LATEST is None:
-    LATEST = 'default'
+    LATEST = 'DEFAULT'
 else:
     LATEST = LATEST['config']['name']
 

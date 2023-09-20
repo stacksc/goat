@@ -11,11 +11,11 @@ class OCIconfig():
         self.OCI_CONFIG_FILE = self.verify_path(f"{oci_dir}{oci_config}")
 
     def add_oci_profile(self, tenancy, user, region, fingerprint, key_file, profile_name):
-        self.update_oci_config('config', profile_name, 'region', region)
-        self.update_oci_config('config', profile_name, 'tenancy', tenancy)
-        self.update_oci_config('config', profile_name, 'user', user)
-        self.update_oci_config('config', profile_name, 'fingerprint', fingerprint)
-        self.update_oci_config('config', profile_name, 'key_file', key_file)
+        self.update_oci_config('config', profile_name, 'region', str(region))
+        self.update_oci_config('config', profile_name, 'tenancy', str(tenancy))
+        self.update_oci_config('config', profile_name, 'user', str(user))
+        self.update_oci_config('config', profile_name, 'fingerprint', str(fingerprint))
+        self.update_oci_config('config', profile_name, 'key_file', str(key_file))
 
     def update_oci_config(self, config_type, profile_name, property_name, property_value):
         CONFIG, CONFIG_FILE = self.choose_configparser(config_type)
@@ -23,7 +23,8 @@ class OCIconfig():
             CONFIG.add_section(profile_name)
         except:
             pass # this means the section already exists
-        CONFIG.set(profile_name, property_name, property_value)
+        if property_value is not None:  # Only set non-None values
+            CONFIG.set(profile_name, property_name, str(property_value))
         with open(CONFIG_FILE, 'w') as CONFIG_FILE_STREAM:
             CONFIG.write(CONFIG_FILE_STREAM) 
 

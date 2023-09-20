@@ -18,12 +18,18 @@ class VAULTclient():
         self.OCI_PROFILE = profile_name
         self.OCI_REGION = region
         self.CACHE_ONLY = cache_only
-        self.OCID = CONFIGSTORE.get_metadata('tenancy', profile_name)
+
+        # get these from oci.config based on profile name and validate the config
+        self.config = oci.config.from_file("~/.oci/config", profile_name)
+        self.OCID = self.tenant = self.config.get("tenancy")
+        self.user = self.config.get("user")
+        self.fingerprint = self.config.get("fingerprint")
+        self.keyfile = self.config.get("key_file")
         self.CONFIG_FROM_FILE = {
-                'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
-                'user': CONFIGSTORE.get_metadata('user', profile_name),
-                'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
-                'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
+                'tenancy': self.tenant,
+                'user': self.user,
+                'fingerprint': self.fingerprint,
+                'key_file': self.keyfile,
                 'region': self.OCI_REGION
         }
         try:
@@ -44,7 +50,7 @@ class VAULTclient():
         self.COMPOSITE = oci.key_management.KmsVaultClientCompositeOperations(self.KMS_VAULT)
         return self.CLIENT, self.TENANTNAME, self.VAULT, self.SECRETS, self.KMS_VAULT, self.COMPOSITE
 
-    def get_vaults_cache(self, profile_name='default'):
+    def get_vaults_cache(self, profile_name='DEFAULT'):
         VAULTS_CACHE = {}
         if profile_name not in self.CONFIGSTORE.PROFILES:
             self.CONFIGSTORE.create_profile(profile_name)
@@ -138,7 +144,7 @@ class VAULTclient():
         VAULTS = self.KMS_VAULT.list_vaults(compartment_id=comp_id, sort_by='DISPLAYNAME', sort_order='ASC').data
         return VAULTS
 
-    def auto_refresh(self, profile_name='default'):
+    def auto_refresh(self, profile_name='DEFAULT'):
         TIME_NOW = datetime.datetime.now().timestamp()
         try:
             VAULT_TS = self.CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_vaults']['last_cache_update']

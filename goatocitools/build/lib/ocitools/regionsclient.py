@@ -20,18 +20,35 @@ class REGIONSclient():
         self.OCI_PROFILE = profile_name
         self.OCI_REGION = region
         self.CACHE_ONLY = cache_only
-        self.OCID = CONFIGSTORE.get_metadata('tenancy', profile_name)
+
+        # get these from oci.config based on profile name and validate the config
+        self.config = oci.config.from_file("~/.oci/config", profile_name)
+        self.OCID = self.tenant = self.config.get("tenancy")
+        self.user = self.config.get("user")
+        self.fingerprint = self.config.get("fingerprint")
+        self.keyfile = self.config.get("key_file")
+        self.CONFIG_FROM_FILE = {
+                'tenancy': self.tenant,
+                'user': self.user,
+                'fingerprint': self.fingerprint,
+                'key_file': self.keyfile,
+                'region': self.OCI_REGION
+        }
+        try:
+            oci.config.validate_config(self.CONFIG_FROM_FILE)
+        except:
+            Log.critical('unable to setup a proper oci configuration file')
+
         if not self.CACHE_ONLY:
             self.get_connections()
 
     def get_connections(self):
         oci.regions.enable_instance_metadata_service()
-        #Log.info(f"connecting to OCI as {self.OCI_PROFILE} via {self.OCI_REGION}...")
         self.CLIENT = oci.identity.IdentityClient(self.CONFIG_FROM_FILE)
         self.TENANTNAME = self.CLIENT.get_tenancy(tenancy_id=self.OCID).data.name
         return self.CLIENT, self.TENANTNAME
 
-    def get_region_cache(self, profile_name='default'):
+    def get_region_cache(self, profile_name='DEFAULT'):
         REGION_CACHE = {}
         if profile_name not in self.CONFIGSTORE.PROFILES:
             self.CONFIGSTORE.create_profile(profile_name)

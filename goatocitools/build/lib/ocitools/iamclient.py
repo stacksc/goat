@@ -18,12 +18,18 @@ class IAMclient():
         self.OCI_PROFILE = profile_name
         self.OCI_REGION = region
         self.CACHE_ONLY = cache_only
-        self.OCID = CONFIGSTORE.get_metadata('tenancy', profile_name)
+
+        # get these from oci.config based on profile name and validate the config
+        self.config = oci.config.from_file("~/.oci/config", profile_name)
+        self.OCID = self.tenant = self.config.get("tenancy")
+        self.user = self.config.get("user")
+        self.fingerprint = self.config.get("fingerprint")
+        self.keyfile = self.config.get("key_file")
         self.CONFIG_FROM_FILE = {
-                'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
-                'user': CONFIGSTORE.get_metadata('user', profile_name),
-                'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
-                'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
+                'tenancy': self.tenant,
+                'user': self.user,
+                'fingerprint': self.fingerprint,
+                'key_file': self.keyfile,
                 'region': self.OCI_REGION
         }
         try:
@@ -72,7 +78,7 @@ class IAMclient():
             self.get_compartments_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 
-    def get_compartments_cache(self, profile_name='default'):
+    def get_compartments_cache(self, profile_name='DEFAULT'):
         CACHE = {}
         if profile_name not in self.CONFIGSTORE.PROFILES:
             self.CONFIGSTORE.create_profile(profile_name)

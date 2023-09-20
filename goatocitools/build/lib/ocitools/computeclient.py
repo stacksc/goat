@@ -16,21 +16,28 @@ class MyComputeClient():
         self.CONFIGSTORE = Config('ocitools')
         self.CONFIG = OCIconfig()
         self.OCI_REGION = region
+        self.CACHE_UPDATE_INTERVAL = 60*60*24*7 # update cache every week
+        self.OCI_PROFILE = profile_name
+        self.CACHE_ONLY = cache_only
+        # get these from oci.config based on profile name and validate the config
+        self.config = oci.config.from_file("~/.oci/config", profile_name)
+        self.OCID = self.tenant = self.config.get("tenancy")
+        self.user = self.config.get("user")
+        self.fingerprint = self.config.get("fingerprint")
+        self.keyfile = self.config.get("key_file")
         self.CONFIG_FROM_FILE = {
-                'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
-                'user': CONFIGSTORE.get_metadata('user', profile_name),
-                'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
-                'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
+                'tenancy': self.tenant,
+                'user': self.user,
+                'fingerprint': self.fingerprint,
+                'key_file': self.keyfile,
                 'region': self.OCI_REGION
         }
+
         try:
             oci.config.validate_config(self.CONFIG_FROM_FILE)
         except:
             Log.critical('unable to setup a proper oci configuration file')
-        self.CACHE_UPDATE_INTERVAL = 60*60*24*7 # update cache every week
-        self.OCI_PROFILE = profile_name
-        self.CACHE_ONLY = cache_only
-        self.OCID = CONFIGSTORE.get_metadata('tenancy', profile_name)
+
         if not self.CACHE_ONLY:
             self.get_connections()
 
@@ -41,7 +48,7 @@ class MyComputeClient():
         self.NETWORK = oci.core.VirtualNetworkClient(self.CONFIG_FROM_FILE)
         return self.CLIENT, self.COMPUTE, self.NETWORK, self.TENANTNAME
 
-    def auto_refresh(self, profile_name='default'):
+    def auto_refresh(self, profile_name='DEFAULT'):
         TIME_NOW = datetime.datetime.now().timestamp()
         try:
             INSTANCES_TS = self.CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_instances']['last_cache_update']
@@ -51,7 +58,7 @@ class MyComputeClient():
             self.cache_instances(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 
-    def refresh(self, profile_name='default'):
+    def refresh(self, profile_name='DEFAULT'):
         self.cache_instances(profile_name)
 
     def DisplayInstances(self, instances, compartmentName, instancetype, region_name):
@@ -118,7 +125,7 @@ class MyComputeClient():
             COMPUTE_CACHE['last_cache_update'] = TIMESTAMP
         return COMPUTE_CACHE
 
-    def cache_instances(self, profile_name='default'):
+    def cache_instances(self, profile_name='DEFAULT'):
         if profile_name not in self.CONFIGSTORE.PROFILES:
             self.CONFIGSTORE.create_profile(profile_name)
         TIMESTAMP = str(datetime.datetime.now().timestamp())

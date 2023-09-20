@@ -26,12 +26,18 @@ class OSSclient():
         self.OCI_PROFILE = profile_name
         self.OCI_REGION = region
         self.CACHE_ONLY = cache_only
-        self.OCID = CONFIGSTORE.get_metadata('tenancy', profile_name)
+
+        # get these from oci.config based on profile name and validate the config
+        self.config = oci.config.from_file("~/.oci/config", profile_name)
+        self.OCID = self.tenant = self.config.get("tenancy")
+        self.user = self.config.get("user")
+        self.fingerprint = self.config.get("fingerprint")
+        self.keyfile = self.config.get("key_file")
         self.CONFIG_FROM_FILE = {
-                'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
-                'user': CONFIGSTORE.get_metadata('user', profile_name),
-                'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
-                'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
+                'tenancy': self.tenant,
+                'user': self.user,
+                'fingerprint': self.fingerprint,
+                'key_file': self.keyfile,
                 'region': self.OCI_REGION
         }
         try:
@@ -61,7 +67,7 @@ class OSSclient():
         except OSError as exc:  # Python >2.5
             pass
 
-    def auto_refresh(self, profile_name='default'):
+    def auto_refresh(self, profile_name='DEFAULT'):
         TIME_NOW = datetime.datetime.now().timestamp()
         try:    
             BUCKETS_TS = self.CONFIGSTORE.PROFILES[profile_name]['metadata']['cached_buckets']['last_cache_update']
@@ -71,7 +77,7 @@ class OSSclient():
             self.cache_buckets(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 
-    def refresh(self, profile_name='default'):
+    def refresh(self, profile_name='DEFAULT'):
         self.cache_buckets(profile_name)
 
     def oss_to_local(self, bucket_name, local_folder, filename, namespace):
@@ -194,7 +200,7 @@ class OSSclient():
             ITEMS.append(NAME.name)
         return ITEMS
 
-    def cache_buckets(self, profile_name='default'):
+    def cache_buckets(self, profile_name='DEFAULT'):
         osfields = ('namespaceName','bucketName','compartmentName','compartmentOcid')
         TIMESTAMP = str(datetime.datetime.now().timestamp())
         if profile_name not in self.CONFIGSTORE.PROFILES:

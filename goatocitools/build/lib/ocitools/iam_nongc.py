@@ -1,5 +1,6 @@
 import click, string, random, subprocess, oci, os
 from .oci_config import OCIconfig
+from oci.config import from_file
 from toolbox.logger import Log
 from os import environ, chmod, stat
 from configstore.configstore import Config
@@ -14,13 +15,14 @@ STORE = Config('ocitools')
 @click.option('-u', '--user', 'user', help='user ocid to connect with', required=False, default=None)
 @click.option('-k', '--keyfile', 'keyfile', help='user oci API private key file to connect with', required=False, default="~/.oci/oci_api_key.pem")
 @click.option('-f', '--fingerprint', 'fingerprint', help='fingerprint of oci private key to connect with', required=False, default=None)
-@click.option('-p', '--profile', 'profile', help='oci profile to connect with', required=False, default='default')
+@click.option('-p', '--profile', 'profile', help='oci profile to connect with', required=False, default='DEFAULT')
 @click.pass_context
 def authenticate(ctx, region, tenant, user, keyfile, fingerprint, profile):
     if profile is None:
         profile_name = ctx.obj['PROFILE']
     else:
-        profile_name = profile
+        profile_name = str(profile)
+        ctx.obj['PROFILE'] = profile_name
     RESULT = _authenticate(tenant, user, fingerprint, keyfile, profile_name, region)
     if RESULT is None:
         MSG = 'setup failed. please verify supplied credentials and try again. settings were not saved'
@@ -55,16 +57,20 @@ def authenticate(ctx, region, tenant, user, keyfile, fingerprint, profile):
 
 # worker function to make the method portable
 def _authenticate(tenant, user, fingerprint, keyfile, profile_name, region='us-ashburn-1'):
-    SESSION = None
-    try:
-        SESSION = oci.config.from_file("~/.oci/config", profile_name)
-    except:
-        pass
-    if SESSION is not None:
-        CONFIG.add_oci_profile(tenant, user, region, fingerprint, keyfile, profile_name)
-    else:
-        CONFIG.add_oci_profile(tenant, user, region, fingerprint, keyfile, profile_name)
-    # try again
+    # Check if parameters were provided
+    if tenant is None or user is None or fingerprint is None or keyfile is None:
+        try:
+            # Attempt to read from OCI config file
+            config = from_file("~/.oci/config", profile_name)
+            tenant = config.get("tenancy")
+            user = config.get("user")
+            fingerprint = config.get("fingerprint")
+            keyfile = config.get("key_file")
+        except Exception as e:
+            print(f"Error reading OCI config file: {e}")
+            return None
+
+    CONFIG.add_oci_profile(tenant, user, region, fingerprint, keyfile, profile_name)
     try:
         SESSION = oci.config.from_file("~/.oci/config", profile_name)
     except:

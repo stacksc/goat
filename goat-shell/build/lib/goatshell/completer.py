@@ -1,16 +1,14 @@
-from __future__ import absolute_import, unicode_literals, print_function
-from subprocess import check_output
 from prompt_toolkit.completion import Completer, Completion
 from fuzzyfinder import fuzzyfinder
-import logging
 import shlex
 import json
 import os
-import os.path
 import asyncio
 from . import misc
 
 from goatshell.parser import Parser  # Replace this with your actual Parser import
+
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +46,7 @@ class GoatCompleter(Completer):
 
     def get_completions(self, document, complete_event, smart_completion=True):
         tokens = shlex.split(document.text_before_cursor.strip())
-
+    
         if not tokens:
             # Check if a command is available before suggesting it
             available_commands = ["aliyun", "aws", "az", "gcloud", "goat", "oci", "ibmcloud"]
@@ -56,28 +54,36 @@ class GoatCompleter(Completer):
                 if misc.is_command_available(command):
                     yield Completion(command, display=command, display_meta=self.command_descriptions.get(command, ""))
             return
-
+    
         first_token = tokens[0]
-
+    
         if first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud"] and self.current_json != first_token:
             self.load_json(first_token)
             self.current_json = first_token
-
+    
         if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud"]:
             subcommands = self.parser.ast.children
             for subcmd in subcommands:
                 yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
             return
-
+    
         parsed, unparsed, suggestions = self.parser.parse_tokens(tokens)
-
+    
         if suggestions is None:
             logger.error("suggestions are None")
             return
-
+    
         if unparsed:
             last_token = unparsed[-1]
-            if last_token.startswith("--") or last_token.startswith('-'):
+    
+            # Check if the last token is a global option with a value
+            if last_token.startswith("--") and "=" in last_token:
+                global_option, option_value = last_token.split("=")
+    
+                # Handle the global option and value here, e.g., navigate to the root of the tree
+                # Your code to handle the global option and value goes here
+    
+            elif last_token.startswith("--") or last_token.startswith('-'):
                 if not document.text_before_cursor.endswith("--") or not document.text_before_cursor.endswith('-'):
                     option_prefix = last_token
                     completions = fuzzyfinder(option_prefix, suggestions.keys())

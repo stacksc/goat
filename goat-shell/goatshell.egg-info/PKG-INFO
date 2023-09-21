@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2023.9.21.1459
+Version: 2023.9.21.1529
 Summary: goatshell - goat shell interface to common cloud providers.
 Home-page: https://github.com/stacksc/goat
 Author: centerupt@gmail.com
@@ -79,7 +79,7 @@ Requires-Dist: aws2
 │[F9]  Toggle VI mode                                      ││ c|clear   : clear screen                                 │
 │[F10] Toggle Profile                                      ││ h|help    : display usage                                │
 │[F12] Exit Interface                                      ││ !<cmd>    : run OS command                               │
-│[TAB] Fuzzy completion                                    │└──────────────────────────────────────────────────────────┘
+│[TAB] Fuzzy Complete                                      │└──────────────────────────────────────────────────────────┘
 └──────────────────────────────────────────────────────────┘
 goat>
 ```

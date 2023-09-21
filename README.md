@@ -75,6 +75,11 @@ GOAAT and GOATSHELL can work together or independently. When launching <b>goatsh
    ```
    pip install goatshell goaat
    ```
+2. There will be a lot of testing and package distribution, so check back from time to time for more info.
+3. Pass the following switch to re-fetch everything.
+   ```
+   pip install goatshell goaat --force-reinstall
+   ```
    
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

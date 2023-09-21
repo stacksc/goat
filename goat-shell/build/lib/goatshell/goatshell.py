@@ -91,22 +91,10 @@ class CustomKeyBindings(KeyBindings):
         self.app = app  # Store the Application reference
         self.goatshell_instance = goatshell_instance
 
-        @self.add(Keys.F12)
-        def handle_f10(event):
-            print("")
-            sys.exit()
-
         @self.add(Keys.F10)
-        def handle_f12(event):
+        def handle_f10(event):
             self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
             getLayout()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
-        @self.add(Keys.F8)
-        def handle_f8(event):
-            getLayout()
-            printInstructions()
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
@@ -212,12 +200,25 @@ class Goatshell(object):
         else:
             return 'aws', json_path
 
+    def display_environment(self):
+        details = {}
+        if self.prefix == 'oci':
+            user = misc.get_oci_user(self.profile)
+            tenant = misc.get_oci_tenant(self.profile)
+        elif self.prefix == 'aws':
+            user = misc.get_aws_user(self.profile)
+            tenant = misc.get_aws_account(self.profile)
+        if user and tenant:
+            details["user"] = user.strip()
+            details["tenant"] = tenant
+        return details
+
     def create_toolbar(self):
         self.upper_profile = self.profile.upper()
         self.upper_prefix = self.prefix.upper()
         vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
 
-        return HTML(f'Current Cloud: <u>{self.upper_prefix}</u>   <b>F8</b> Usage   <b>F9 VIM {vi_mode_text}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>   <b>F12</b> Quit')
+        return HTML(f'Current Cloud: <u>{self.upper_prefix}</u>   <b>F9 VIM {vi_mode_text}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>')
 
     def set_parser_and_completer(self, api_type):
         self.prefix = api_type.lower()  # Set prefix
@@ -227,6 +228,29 @@ class Goatshell(object):
         self.session.completer = self.completer  # Reset session completer
 
     def process_user_input(self, user_input):
+        user_input = user_input.strip()
+      
+        # Handle the history command
+        if user_input == "history":
+            history_file = os.path.expanduser("~/goat/shell/history")
+            if os.path.exists(history_file):
+                with open(history_file, "r") as f:
+                    # Enumerate over the file lines and print them with line numbers
+                    for index, line in enumerate(f, 1):
+                        print(f"{index}  {line.strip()}")
+                return ""  # or return None, so nothing further is executed for this command
+            else:
+                print("History file not found.")
+                return ""
+        elif user_input == "cloud":
+            details = self.display_environment()
+            details_str = f"Cloud Provider: {self.prefix.upper()}\n"
+            for key, value in details.items():
+                details_str += f"{key.upper()}: {value}\n"
+            print()
+            print(details_str)
+            return ""
+            
         if user_input.startswith("!"):
             user_input = user_input[1:]
         else:
@@ -297,7 +321,7 @@ class Goatshell(object):
 
     def generate_prompt(self):
         context = self.get_current_context()
-        return HTML(f'<b><u>[{context["cloud_provider"]}:{context["profile"]}]></u></b> ')
+        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]> ')
 
     def run_cli(self):
         global current_service

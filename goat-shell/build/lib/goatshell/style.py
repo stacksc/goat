@@ -17,6 +17,5 @@ styles = {
     'bottom-toolbar.search': 'noinherit bold',
     'bottom-toolbar.search.text': 'noinherit bold',
     'bottom-toolbar.system': 'noinherit bold',
-    'bottom-toolbar.arg': 'noinherit bold',
-    'prompt': 'fg:#0000ff'
+    'bottom-toolbar.arg': 'noinherit bold'
 }

@@ -1,0 +1,33 @@
+.TH "GOAT SLACK CHANNEL" "1" "2023-09-21" "2023.9.20.2226" "goat slack channel Manual"
+.SH NAME
+goat\-slack\-channel \- manage Slack channels; create, archive,...
+.SH SYNOPSIS
+.B goat slack channel
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+manage Slack channels; create, archive, invite users etc
+.SH COMMANDS
+.PP
+\fBcreate\fP
+  create a new slack channel
+  See \fBgoat slack channel-create(1)\fP for full documentation on the \fBcreate\fP command.
+.PP
+\fBadduser\fP
+  add (invite) new user to the channel
+  See \fBgoat slack channel-adduser(1)\fP for full documentation on the \fBadduser\fP command.
+.PP
+\fBdeluser\fP
+  delete (kick) a user from the channel
+  See \fBgoat slack channel-deluser(1)\fP for full documentation on the \fBdeluser\fP command.
+.PP
+\fBarchive\fP
+  set channel status to "archived"
+  See \fBgoat slack channel-archive(1)\fP for full documentation on the \fBarchive\fP command.
+.PP
+\fBunarchive\fP
+  remove "archived" status from channel
+  See \fBgoat slack channel-unarchive(1)\fP for full documentation on the \fBunarchive\fP command.
+.PP
+\fBtopic\fP
+  set the topic message for the channel
+  See \fBgoat slack channel-topic(1)\fP for full documentation on the \fBtopic\fP command.

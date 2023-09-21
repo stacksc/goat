@@ -1,0 +1,29 @@
+.TH "GOAT OCI COMPARTMENT" "1" "2023-09-21" "2023.9.20.2226" "goat oci compartment Manual"
+.SH NAME
+goat\-oci\-compartment \- module to manage compartments for tenant
+.SH SYNOPSIS
+.B goat oci compartment
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+module to manage compartments for tenant
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform compartment actions  [default: False]
+.SH COMMANDS
+.PP
+\fBrefresh\fP
+  manually refresh comparments stored in cache
+  See \fBgoat oci compartment-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBcreate\fP
+  create OCI compartment for region and tenant
+  See \fBgoat oci compartment-create(1)\fP for full documentation on the \fBcreate\fP command.
+.PP
+\fBdelete\fP
+  menu-guided solution to delete OCI...
+  See \fBgoat oci compartment-delete(1)\fP for full documentation on the \fBdelete\fP command.
+.PP
+\fBshow\fP
+  show the data stored in cached compartments
+  See \fBgoat oci compartment-show(1)\fP for full documentation on the \fBshow\fP command.

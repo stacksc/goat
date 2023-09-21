@@ -1,0 +1,21 @@
+.TH "GOAT OCI REGIONS" "1" "2023-09-21" "2023.9.20.2226" "goat oci regions Manual"
+.SH NAME
+goat\-oci\-regions \- module to manage region subscriptions
+.SH SYNOPSIS
+.B goat oci regions
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+module to manage region subscriptions
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform region actions  [default: False]
+.SH COMMANDS
+.PP
+\fBrefresh\fP
+  manually refresh regions cached data
+  See \fBgoat oci regions-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBshow\fP
+  show the data stored in cached regions
+  See \fBgoat oci regions-show(1)\fP for full documentation on the \fBshow\fP command.

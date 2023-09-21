@@ -1,0 +1,51 @@
+.TH "GOAT OCI" "1" "2023-09-21" "2023.9.20.2226" "goat oci Manual"
+.SH NAME
+goat\-oci \- OCI CLI Client[35GCurrent Profile:...
+.SH SYNOPSIS
+.B goat oci
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+OCI CLI Client[35GCurrent Profile: [0;32m[4mDEFAULT[0m Region: [0;32m[4mUS-ASHBURN-1[0m
+.SH OPTIONS
+.TP
+\fB\-p,\fP \-\-profile TEXT
+profile name to use when working with ocitools
+.TP
+\fB\-r,\fP \-\-region TEXT
+region name to use when working with ocitools
+.TP
+\fB\-c,\fP \-\-cache
+refresh all cache for region and tenant  [default: False]
+.SH COMMANDS
+.PP
+\fBcli\fP
+  run any ocicli (oci) command while...
+  See \fBgoat oci-cli(1)\fP for full documentation on the \fBcli\fP command.
+.PP
+\fBcompute\fP
+  compute to manage the instances and...
+  See \fBgoat oci-compute(1)\fP for full documentation on the \fBcompute\fP command.
+.PP
+\fBcompartment\fP
+  module to manage compartments for tenant
+  See \fBgoat oci-compartment(1)\fP for full documentation on the \fBcompartment\fP command.
+.PP
+\fBdbs\fP
+  dbs module to manage the DBS instances and...
+  See \fBgoat oci-dbs(1)\fP for full documentation on the \fBdbs\fP command.
+.PP
+\fBiam\fP
+  manage and switch between OCI profiles for...
+  See \fBgoat oci-iam(1)\fP for full documentation on the \fBiam\fP command.
+.PP
+\fBoss\fP
+  object storage functions to sync buckets...
+  See \fBgoat oci-oss(1)\fP for full documentation on the \fBoss\fP command.
+.PP
+\fBregions\fP
+  module to manage region subscriptions
+  See \fBgoat oci-regions(1)\fP for full documentation on the \fBregions\fP command.
+.PP
+\fBvault\fP
+  module to manage vaults
+  See \fBgoat oci-vault(1)\fP for full documentation on the \fBvault\fP command.

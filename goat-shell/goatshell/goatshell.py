@@ -1,3 +1,6 @@
+from prompt_toolkit.formatted_text import FormattedText
+from prompt_toolkit.completion import WordCompleter
+
 import os
 import sys
 import subprocess
@@ -15,14 +18,16 @@ from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
 from . import misc as misc
-from goatshell.style import styles_dict
+from goatshell.style import styles
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 from goatshell.ui import getLayout
+from pygments.token import Token
 
 logger = logging.getLogger(__name__)
 
 # Global variables
+global vi_mode_enabled
 current_service = 'oci'       # You can set it to 'aws' if you prefer AWS mode initially
 os.environ['AWS_PAGER'] = ''  # Disable paging in AWS by default
 vi_mode_enabled = False       # Default vi mode to false on start up
@@ -37,8 +42,7 @@ def printInstructions():
     3. Use the arrow keys or Tab to navigate through the suggestions.
     4. Press Enter to accept a suggestion or Esc to cancel.
     5. If an option requires a value, use --option=value instead of --option value.
-
-    INFO: resource completion coming soon!
+    6. The prompt will change dynamically based on cloud provider interaction.
     """
     print(instructions)
 
@@ -64,9 +68,10 @@ def load_vi_mode_setting():
     except (configparser.NoSectionError, configparser.NoOptionError, FileNotFoundError):
         # Handle exceptions or file not found gracefully
         pass
+    return vi_mode_enabled
 
 # Load the VI mode setting when the script starts
-load_vi_mode_setting()
+vi_mode_enabled = load_vi_mode_setting()
 
 # Define a custom PromptSession class
 class DynamicPromptSession(PromptSession):
@@ -115,7 +120,8 @@ class CustomKeyBindings(KeyBindings):
 class Goatshell(object):
     def __init__(self, app, completer, parser):
         getLayout()
-        self.style = Style.from_dict(styles_dict)
+        self.vi_mode_enabled = load_vi_mode_setting()
+        self.style = Style.from_dict(styles)
         self.app = app
         self.completer = completer
         self.prefix = 'oci'
@@ -127,6 +133,7 @@ class Goatshell(object):
         self.profile = 'DEFAULT'  # Init this variable before we call the get_profile function
         self.profile = self.get_profile(self.prefix) # now update the profile
         self.key_bindings = CustomKeyBindings(self.app, self)
+        #self.vi_mode_enabled = False
         shell_dir = os.path.expanduser("~/goat/shell/")
         if not os.path.exists(shell_dir):
             os.makedirs(shell_dir)
@@ -136,7 +143,7 @@ class Goatshell(object):
             self.history = InMemoryHistory()
 
         # Pass the 'vi_mode_enabled' variable when initializing DynamicPromptSession
-        self.session = DynamicPromptSession(vi_mode_enabled=vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
+        self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
                                             completer=self.completer, complete_while_typing=True,
                                             enable_history_search=True, key_bindings=self.key_bindings)
 
@@ -148,10 +155,9 @@ class Goatshell(object):
             logger.info(f"json_path = {json_path}, root_name = {root_name}")
 
     def toggle_vi_mode(self):
-        global vi_mode_enabled
-        vi_mode_enabled = not vi_mode_enabled
+        self.vi_mode_enabled = not self.vi_mode_enabled
         save_vi_mode_setting()
-        self.session = DynamicPromptSession(vi_mode_enabled=vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
+        self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
                                            completer=self.completer, complete_while_typing=True,
                                            enable_history_search=True, key_bindings=self.key_bindings)
 
@@ -209,9 +215,9 @@ class Goatshell(object):
     def create_toolbar(self):
         self.upper_profile = self.profile.upper()
         self.upper_prefix = self.prefix.upper()
-        return HTML(
-            f'Current Cloud: <u>{self.upper_prefix}</u>   <b>F8</b> Usage   <b>F9 VIM {vi_mode_enabled}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>   <b>F12</b> Quit'
-        )
+        vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
+
+        return HTML(f'Current Cloud: <u>{self.upper_prefix}</u>   <b>F8</b> Usage   <b>F9 VIM {vi_mode_text}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>   <b>F12</b> Quit')
 
     def set_parser_and_completer(self, api_type):
         self.prefix = api_type.lower()  # Set prefix
@@ -276,13 +282,25 @@ class Goatshell(object):
 
         return user_input
 
+    def get_current_context(self):
+        return {
+            'cloud_provider': self.prefix,
+            'profile': self.profile
+        }
+
+    def generate_prompt(self):
+        context = self.get_current_context()
+        return f"[{context['cloud_provider']}:{context['profile']}]> "
+
     def run_cli(self):
         global current_service
         logger.info("running goat event loop")
         while True:
+            prompt = self.generate_prompt()
             try:
-                user_input = self.session.prompt(f'goat> ',
+                user_input = self.session.prompt(f'{prompt}',
                                                  style=self.style,
+                                                 completer=self.completer,
                                                  complete_while_typing=True,
                                                  bottom_toolbar=self.create_toolbar())
             except (EOFError, KeyboardInterrupt):

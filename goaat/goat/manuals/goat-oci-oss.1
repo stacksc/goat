@@ -1,0 +1,37 @@
+.TH "GOAT OCI OSS" "1" "2023-09-21" "2023.9.20.2226" "goat oci oss Manual"
+.SH NAME
+goat\-oci\-oss \- object storage functions to sync buckets...
+.SH SYNOPSIS
+.B goat oci oss
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+object storage functions to sync buckets and filesystems
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform OCI OSS actions  [default: False]
+.SH COMMANDS
+.PP
+\fBcreate\fP
+  create a new bucket
+  See \fBgoat oci oss-create(1)\fP for full documentation on the \fBcreate\fP command.
+.PP
+\fBdownload\fP
+  download from OSS to local storage
+  See \fBgoat oci oss-download(1)\fP for full documentation on the \fBdownload\fP command.
+.PP
+\fBupload\fP
+  upload from local storage to OSS bucket
+  See \fBgoat oci oss-upload(1)\fP for full documentation on the \fBupload\fP command.
+.PP
+\fBdelete\fP
+  delete a specified bucket
+  See \fBgoat oci oss-delete(1)\fP for full documentation on the \fBdelete\fP command.
+.PP
+\fBrefresh\fP
+  manually refresh OSS cached data
+  See \fBgoat oci oss-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBshow\fP
+  show the data stored in OSS cache
+  See \fBgoat oci oss-show(1)\fP for full documentation on the \fBshow\fP command.

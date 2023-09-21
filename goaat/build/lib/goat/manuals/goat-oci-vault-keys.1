@@ -1,0 +1,29 @@
+.TH "GOAT OCI VAULT KEYS" "1" "2023-09-21" "2023.9.20.2226" "goat oci vault keys Manual"
+.SH NAME
+goat\-oci\-vault\-keys \- module to manage vault keys
+.SH SYNOPSIS
+.B goat oci vault keys
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+module to manage vault keys
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform key actions  [default: False]
+.SH COMMANDS
+.PP
+\fBrefresh\fP
+  manually refresh keys stored in cache
+  See \fBgoat oci vault keys-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBcreate\fP
+  create OCI keys for region and tenant
+  See \fBgoat oci vault keys-create(1)\fP for full documentation on the \fBcreate\fP command.
+.PP
+\fBdelete\fP
+  menu-guided solution to delete OCI keys...
+  See \fBgoat oci vault keys-delete(1)\fP for full documentation on the \fBdelete\fP command.
+.PP
+\fBshow\fP
+  show the keys stored in cache
+  See \fBgoat oci vault keys-show(1)\fP for full documentation on the \fBshow\fP command.

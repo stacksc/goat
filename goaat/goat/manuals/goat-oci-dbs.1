@@ -1,0 +1,21 @@
+.TH "GOAT OCI DBS" "1" "2023-09-21" "2023.9.20.2226" "goat oci dbs Manual"
+.SH NAME
+goat\-oci\-dbs \- dbs module to manage the DBS instances and...
+.SH SYNOPSIS
+.B goat oci dbs
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+dbs module to manage the DBS instances and related configuration
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform DBS actions  [default: False]
+.SH COMMANDS
+.PP
+\fBrefresh\fP
+  manually refresh dbs cached data
+  See \fBgoat oci dbs-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBshow\fP
+  show the data stored in dbs cache
+  See \fBgoat oci dbs-show(1)\fP for full documentation on the \fBshow\fP command.

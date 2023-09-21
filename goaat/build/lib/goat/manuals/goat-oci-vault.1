@@ -1,0 +1,37 @@
+.TH "GOAT OCI VAULT" "1" "2023-09-21" "2023.9.20.2226" "goat oci vault Manual"
+.SH NAME
+goat\-oci\-vault \- module to manage vaults
+.SH SYNOPSIS
+.B goat oci vault
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+module to manage vaults
+.SH OPTIONS
+.TP
+\fB\-m,\fP \-\-menu
+use the menu to perform vault actions  [default: False]
+.SH COMMANDS
+.PP
+\fBrefresh\fP
+  manually refresh vaults stored in cache
+  See \fBgoat oci vault-refresh(1)\fP for full documentation on the \fBrefresh\fP command.
+.PP
+\fBcreate\fP
+  create OCI vault for region and tenant
+  See \fBgoat oci vault-create(1)\fP for full documentation on the \fBcreate\fP command.
+.PP
+\fBdelete\fP
+  menu-guided solution to delete OCI vault's...
+  See \fBgoat oci vault-delete(1)\fP for full documentation on the \fBdelete\fP command.
+.PP
+\fBshow\fP
+  show the data stored in cached vault
+  See \fBgoat oci vault-show(1)\fP for full documentation on the \fBshow\fP command.
+.PP
+\fBkeys\fP
+  module to manage vault keys
+  See \fBgoat oci vault-keys(1)\fP for full documentation on the \fBkeys\fP command.
+.PP
+\fBsecrets\fP
+  module to manage secrets
+  See \fBgoat oci vault-secrets(1)\fP for full documentation on the \fBsecrets\fP command.

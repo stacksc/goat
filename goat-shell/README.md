@@ -29,9 +29,33 @@
 
 1. Install the following packages from pypi:
    ```
-   pip install goatshell goaat
+   pip install goatshell goaat --force-reinstall
    ```
    
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────| GOAT INTERFACE |───────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                     Purpose: Cloud Wrapper                                                                                                     │
+│                                                                                                         Version: 1.0.0                                                                                                         │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────| Hotkeys |────────────────────────┐┌─────────────────────────| Misc |─────────────────────────┐
+│[F8]  Display Help & Layout                               ││ e|exit    : exit shell                                   │
+│[F9]  Refresh Resources                                   ││ c|clear   : clear screen                                 │
+│[F10] Toggle Cloud Profiles                               ││ h|help    : display usage                                │
+│[F12] Exit                                                ││ !<cmd>    : run OS command                               │
+│[TAB] Fuzzy auto-completion                               │└──────────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────────────┘
+
+    Auto-Completion Instructions:
+    ----------------------------
+    1. To trigger auto-completion, start with TAB or type the beginning of a command or option and press Tab.
+    2. Auto-completion will suggest available commands, options, and arguments based on your input.
+    3. Use the arrow keys or Tab to navigate through the suggestions.
+    4. Press Enter to accept a suggestion or Esc to cancel.
+    5. If an option requires a value, use --option=value instead of --option value.
+
+    INFO: resource completion coming soon!
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contacts

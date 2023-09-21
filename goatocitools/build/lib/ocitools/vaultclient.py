@@ -107,7 +107,6 @@ class VAULTclient():
 
     def refresh(self, type, profile_name):
         if type == 'cached_vaults':
-            Log.info("caching vaults...")
             self.get_vaults_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 

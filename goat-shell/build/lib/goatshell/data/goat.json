@@ -358,87 +358,17 @@
                     }
                 },
                 "subcommands": {
-                    "add": {
-                        "command": "add",
-                        "args": [],
-                        "options": {
-                            "-h": {
-                                "name": "-h",
-                                "help": "--help  Show this message and exit."
-                            }
-                        },
-                        "subcommands": {
-                            "profile": {
-                                "command": "profile",
-                                "args": [],
-                                "options": {
-                                    "-h": {
-                                        "name": "-h",
-                                        "help": "--help  Show this message and exit."
-                                    }
-                                },
-                                "subcommands": {},
-                                "help": "add a profile to a configstore"
-                            },
-                            "property": {
-                                "command": "property",
-                                "args": [],
-                                "options": {
-                                    "-h": {
-                                        "name": "-h",
-                                        "help": "--help  Show this message and exit."
-                                    }
-                                },
-                                "subcommands": {},
-                                "help": "add a record to a profile stored in a configstore"
-                            }
-                        },
-                        "help": "add data to a configstore"
-                    },
-                    "delete": {
-                        "command": "delete",
-                        "args": [],
-                        "options": {
-                            "-h": {
-                                "name": "-h",
-                                "help": "--help  Show this message and exit."
-                            }
-                        },
-                        "subcommands": {
-                            "profile": {
-                                "command": "profile",
-                                "args": [],
-                                "options": {
-                                    "-h": {
-                                        "name": "-h",
-                                        "help": "--help  Show this message and exit."
-                                    }
-                                },
-                                "subcommands": {},
-                                "help": "delete an entire profile stored in a configstore"
-                            },
-                            "property": {
-                                "command": "property",
-                                "args": [],
-                                "options": {
-                                    "-h": {
-                                        "name": "-h",
-                                        "help": "--help  Show this message and exit."
-                                    }
-                                },
-                                "subcommands": {},
-                                "help": "delete a record stored in a configstore"
-                            }
-                        },
-                        "help": "delete data saved in a configstore"
-                    },
                     "show": {
                         "command": "show",
-                        "args": [],
+                        "args": ["awstools", "ocitools", "slacktools", "jenkinstools", "jiratools"],
                         "options": {
+                            "-n": {
+                                "name": "-n",
+                                "help": "--name TEXT  name of the configstore to use  [required]"
+                            },
                             "-h": {
                                 "name": "-h",
-                                "help": "--help  Show this message and exit."
+                                "help": "--help       Show this message and exit."
                             }
                         },
                         "subcommands": {},
@@ -1678,18 +1608,6 @@
                             }
                         },
                         "help": "module to manage region subscriptions"
-                    },
-                    "show": {
-                        "command": "show",
-                        "args": [],
-                        "options": {
-                            "-h": {
-                                "name": "-h",
-                                "help": "--help  Show this message and exit."
-                            }
-                        },
-                        "subcommands": {},
-                        "help": "display configuration data for ocitools and ocicli"
                     },
                     "vault": {
                         "command": "vault",

@@ -122,7 +122,6 @@ class SECRETclient():
 
     def refresh(self, type, profile_name):
         if type == 'cached_secrets':
-            Log.info("caching secrets...")
             self.get_secrets_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 

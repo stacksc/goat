@@ -278,7 +278,6 @@ class DBSclient():
 
     def refresh(self, type, profile_name):
         if type == 'cached_dbs_instances':
-            Log.info("caching DBS instances...")
             self.get_dbs_instances(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 

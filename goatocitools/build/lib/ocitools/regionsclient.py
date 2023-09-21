@@ -86,7 +86,6 @@ class REGIONSclient():
 
     def refresh(self, type, profile_name):
         if type == 'cached_regions':
-            Log.info("caching regions...")
             self.get_region_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 

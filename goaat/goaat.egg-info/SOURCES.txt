@@ -84,4 +84,3 @@ goat/manuals/goat-jira-project.1
 goat/manuals/goat-jira-search.1
 goat/manuals/goat-jira.1
 goat/manuals/goat.1
-goat/presets/old.py

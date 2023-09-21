@@ -74,7 +74,6 @@ class IAMclient():
 
     def refresh(self, type, profile_name):
         if type == 'cached_compartments':
-            Log.info("caching compartments...")
             self.get_compartments_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 

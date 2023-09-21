@@ -9,7 +9,6 @@ from .vault import vault
 from .regions import regions
 from .compute import compute
 from .ocicli_wrapper import cli
-from .ocitools_show import show
 from .oci_config import OCIconfig
 from toolbox import misc
 from toolbox.misc import debug
@@ -48,7 +47,6 @@ CLI.add_command(dbs)
 CLI.add_command(iam)
 CLI.add_command(oss)
 CLI.add_command(regions)
-CLI.add_command(show)
 CLI.add_command(vault)
 
 if __name__ == "__main__":

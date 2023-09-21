@@ -92,13 +92,11 @@ def listToStringWithoutBrackets(list1):
 
 def force_cache(profile_name, region):
     CONFIG = Config('ocitools')
-    Log.info('oci profile caching initialized')
     MODULES = ['oss', 'compute', 'dbs', 'regions', 'vault', 'secrets', 'compartment', 'keys']
     for MODULE in MODULES:
         if MODULE == 'secrets' or MODULE == 'keys':
             os.system(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
         else:
-            Log.info(f'caching {MODULE} data...')
             try:
                 os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             except:
@@ -106,7 +104,6 @@ def force_cache(profile_name, region):
 
 def cache_all_hack(profile_name, region):
     CONFIG = Config('ocitools')
-    Log.info('oci profile caching initialized')
     MODULES = ['oss', 'compute', 'dbs', 'regions', 'vault', 'secrets', 'compartment', 'keys']
     for MODULE in MODULES:
         if MODULE == 'oss':
@@ -117,7 +114,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED: 
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
@@ -128,7 +124,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
@@ -140,7 +135,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED: 
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
@@ -151,7 +145,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
@@ -163,7 +156,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED: 
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
@@ -174,7 +166,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
@@ -186,7 +177,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED: 
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
                 except:
@@ -197,7 +187,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
@@ -209,7 +198,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED: 
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
                 except:
@@ -220,7 +208,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} vault {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
@@ -232,7 +219,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED: 
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
@@ -243,7 +229,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
@@ -255,7 +240,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED:
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
@@ -266,7 +250,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')
@@ -278,7 +261,6 @@ def cache_all_hack(profile_name, region):
             except:
                 pass
             if not CACHED:
-                Log.info(f'caching {MODULE} data...')
                 try:
                     os.system(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
                 except:
@@ -289,7 +271,6 @@ def cache_all_hack(profile_name, region):
                         FOUND = True
                         break
                 if FOUND is False:
-                    Log.info(f'caching {MODULE} data...')
                     run_command(f'goat oci -r {region} -p {profile_name} {MODULE} refresh')
             else:
                 Log.info(f'cache exists for {MODULE} data...')

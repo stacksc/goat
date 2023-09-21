@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatocitools
-Version: 2023.9.20.810
+Version: 2023.9.20.2227
 Summary: OCItools - CLI client for OCI
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

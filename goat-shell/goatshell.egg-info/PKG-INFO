@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2023.9.21.134
+Version: 2023.9.21.313
 Summary: goatshell - goat shell interface to common cloud providers.
 Home-page: https://github.com/stacksc/goat
 Author: centerupt@gmail.com
@@ -65,7 +65,11 @@ Requires-Dist: gcloud
    ```
    pip install goatshell goaat --force-reinstall
    ```
-   
+2. Type the following command to launch goatshell:
+   ```
+   goatshell
+   ```
+
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────────| GOAT INTERFACE |───────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                                                                                     Purpose: Cloud Wrapper                                                                                                     │

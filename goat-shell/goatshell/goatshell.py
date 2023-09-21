@@ -290,7 +290,7 @@ class Goatshell(object):
 
     def generate_prompt(self):
         context = self.get_current_context()
-        return f"[{context['cloud_provider']}:{context['profile']}]> "
+        return HTML(f'<b><u>[{context["cloud_provider"]}:{context["profile"]}]></u></b> ')
 
     def run_cli(self):
         global current_service
@@ -298,7 +298,7 @@ class Goatshell(object):
         while True:
             prompt = self.generate_prompt()
             try:
-                user_input = self.session.prompt(f'{prompt}',
+                user_input = self.session.prompt(prompt,
                                                  style=self.style,
                                                  completer=self.completer,
                                                  complete_while_typing=True,

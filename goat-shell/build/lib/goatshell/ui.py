@@ -32,8 +32,9 @@ buffer1 = Buffer()
 def is_non_zero_file(fpath):
     return os.path.isfile(fpath) and os.path.getsize(fpath) > 0
 
+tip = 'TIP: resource completion coming soon!'
 version = '1.0.0'
-text = "Purpose: Cloud Wrapper\nVersion: %s" %(version)
+text = f"Purpose: Cloud Wrapper\n{tip}"
 title = HTML("""<b>GOAT INTERFACE</b>""")
 func_title = HTML("""<b>Hotkeys</b>""")
 misc_title = HTML("""<b>Misc</b>""")
@@ -43,7 +44,7 @@ input = """\
 [F9]  Toggle VI mode
 [F10] Toggle Profile
 [F12] Exit Interface
-[TAB] Fuzzy completion
+[TAB] Fuzzy Complete
 
 """
 misc_input = """\

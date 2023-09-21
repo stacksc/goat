@@ -6,7 +6,7 @@ from goatshell.goatshell import Goatshell
 from goatshell.completer import GoatCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.application import Application
-from goatshell.style import styles_dict
+from goatshell.style import styles
 import os
 
 from goatshell.parser import Parser  # Import the Parser class from the appropriate location

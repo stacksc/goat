@@ -5,11 +5,18 @@ from pygments.util import ClassNotFound
 from pygments.styles import get_style_by_name
 from prompt_toolkit.styles import Style
 
-styles_dict = {
-        "": "ansicyan",
-        "oci": "#C74634",
-        "bottom-toolbar": "noreverse",
-        "bottom-toolbar.text": "#888888 bg:default noreverse noitalic nounderline noblink",
-        "bottom-toolbar.error": "fg:ansired",
-        "required-parameter": "fg:ansired"
+styles = {
+    'token.app.title': 'bg:#005577 #ffffff',
+    'completion-menu.completions.current': 'bg:#afb3b5 #666d6f',
+    'completion-menu.completion': 'bg:#666d6f #afb3b5',
+    'completion-menu.meta.current': 'bg:#afb3b5 #000000',
+    'completion-menu.meta': 'bg:#afb3b5 #7f7f7f',
+    'bottom-toolbar': 'bg:#ffffff #000000',
+    'bottom-toolbar.off': 'bg:#222222 #696969',
+    'bottom-toolbar.on': 'bg:#000000 #ffffff',
+    'bottom-toolbar.search': 'noinherit bold',
+    'bottom-toolbar.search.text': 'noinherit bold',
+    'bottom-toolbar.system': 'noinherit bold',
+    'bottom-toolbar.arg': 'noinherit bold',
+    'prompt': 'fg:#0000ff'
 }

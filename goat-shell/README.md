@@ -39,16 +39,24 @@
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────────| GOAT INTERFACE |───────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                                                                                     Purpose: Cloud Wrapper                                                                                                     │
-│                                                                                                         Version: 1.0.0                                                                                                         │
+│                                                                                             TIP: resource completion coming soon!                                                                                              │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌───────────────────────| Hotkeys |────────────────────────┐┌─────────────────────────| Misc |─────────────────────────┐
-│[F8]  Display Layout                                      ││ e|exit    : exit shell                                   │
-│[F9]  Toggle VI mode                                      ││ c|clear   : clear screen                                 │
-│[F10] Toggle Profile                                      ││ h|help    : display usage                                │
-│[F12] Exit Interface                                      ││ !<cmd>    : run OS command                               │
-│[TAB] Fuzzy Complete                                      │└──────────────────────────────────────────────────────────┘
-└──────────────────────────────────────────────────────────┘
-goat>
+┌────────| Hotkeys |─────────┐┌─────────────| Advanced |─────────────┐┌────────| Commands |────────┐
+│[F9]  Toggle VI mode        ││history   : shell history             ││e|exit    : exit shell      │
+│[F10] Toggle Profile        ││!<cmd>    : run OS command            ││c|clear   : clear screen    │
+│[TAB] Fuzzy Complete        ││cloud     : view cloud details        ││h|help    : display usage   │
+└────────────────────────────┘└──────────────────────────────────────┘└────────────────────────────┘
+
+    Auto-Completion Instructions:
+    ----------------------------
+    1. To trigger auto-completion, start with TAB or type the beginning of a command or option and press Tab.
+    2. Auto-completion will suggest available commands, options, and arguments based on your input.
+    3. Use the arrow keys or Tab to navigate through the suggestions.
+    4. Press Enter to accept a suggestion or Esc to cancel.
+    5. If an option requires a value, use --option=value instead of --option value.
+    6. The prompt will change dynamically based on cloud provider interaction.
+
+[oci:DEFAULT]>
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

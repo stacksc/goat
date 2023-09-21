@@ -26,8 +26,7 @@ dependencies = [
     "azure-cli",
     "oci-cli",
     "oci",
-    "aws2",
-    "gcloud"
+    "aws2"
 ]
 
 classifiers = [

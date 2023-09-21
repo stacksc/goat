@@ -1,14 +1,3 @@
-from prompt_toolkit.patch_stdout import patch_stdout
-from prompt_toolkit import Application, PromptSession
-from prompt_toolkit.history import InMemoryHistory
-from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
-from prompt_toolkit.history import FileHistory
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import HTML
-from prompt_toolkit.key_binding import KeyBindings
-from prompt_toolkit.keys import Keys
-
-import time
 import os
 import sys
 import subprocess
@@ -16,16 +5,29 @@ import re
 import click
 import logging
 import configparser
+from prompt_toolkit.patch_stdout import patch_stdout
+from prompt_toolkit import Application, PromptSession
+from prompt_toolkit.history import InMemoryHistory, FileHistory
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.keys import Keys
+
 from . import misc as misc
-from goatshell.style import styles_dict 
-from goatshell.completer import GoatCompleter 
-from goatshell.parser import Parser  
-from goatshell.ui import getLayout  
+from goatshell.style import styles_dict
+from goatshell.completer import GoatCompleter
+from goatshell.parser import Parser
+from goatshell.ui import getLayout
 
 logger = logging.getLogger(__name__)
-current_service = 'oci'  # You can set it to 'aws' if you prefer AWS mode initially
-os.environ['AWS_PAGER'] = ''
 
+# Global variables
+current_service = 'oci'       # You can set it to 'aws' if you prefer AWS mode initially
+os.environ['AWS_PAGER'] = ''  # Disable paging in AWS by default
+vi_mode_enabled = False       # Default vi mode to false on start up
+
+# Function to print instructions
 def printInstructions():
     instructions = """
     Auto-Completion Instructions:
@@ -40,42 +42,42 @@ def printInstructions():
     """
     print(instructions)
 
-def get_region_for_oci_profile(profile_name):
-    config_file = os.path.expanduser("~/.oci/config") # Path to the OCI CLI config file
-    if os.path.exists(config_file):
-        config = configparser.ConfigParser()
-        config.read(config_file)
+# Function to save VI mode setting
+def save_vi_mode_setting():
+    global vi_mode_enabled
+    shell_dir = os.path.expanduser("~/goat/shell/")
+    if not os.path.exists(shell_dir):
+        os.makedirs(shell_dir)
+    config = configparser.ConfigParser()
+    config['Settings'] = {'vi_mode_enabled': str(vi_mode_enabled)}
+    with open(shell_dir + 'config.ini', 'w') as configfile:
+        config.write(configfile)
 
-        # Check if the profile exists in the OCI config file
-        if profile_name in config:
-            if "region" in config[profile_name]:
-                region = config[profile_name]["region"]
-                return region
+# Function to load VI mode setting from a configuration file
+def load_vi_mode_setting():
+    global vi_mode_enabled
+    shell_dir = os.path.expanduser("~/goat/shell/")
+    config = configparser.ConfigParser()
+    try:
+        config.read(shell_dir + 'config.ini')
+        vi_mode_enabled = config.getboolean('Settings', 'vi_mode_enabled')
+    except (configparser.NoSectionError, configparser.NoOptionError, FileNotFoundError):
+        # Handle exceptions or file not found gracefully
+        pass
 
-    return None
+# Load the VI mode setting when the script starts
+load_vi_mode_setting()
 
-def get_region_for_aws_profile(profile_name):
-    config_file = os.path.expanduser("~/.aws/config") # Path to the AWS CLI config file
-    if os.path.exists(config_file):
-        config = configparser.ConfigParser()
-        config.read(config_file)
+# Define a custom PromptSession class
+class DynamicPromptSession(PromptSession):
+    def __init__(self, vi_mode_enabled=True, *args, **kwargs):
+        self.vi_mode_enabled = vi_mode_enabled
+        super().__init__(*args, **kwargs)
 
-        # Check if the profile exists in the AWS config file
-        if profile_name in config:
-            if "region" in config[profile_name]:
-                return config[profile_name]["region"]
-
-    # if we get this far try the credentials file
-    config_file = os.path.expanduser("~/.aws/credentials") # Path to the AWS CLI credentials file
-    if os.path.exists(config_file):
-        config = configparser.ConfigParser()
-        config.read(config_file)
-        # Check if the profile exists in the AWS config file
-        if profile_name in config:
-            if "region" in config[profile_name]:
-                return config[profile_name]["region"]
-
-    return None  # Profile or region not found
+    def prompt(self, *args, **kwargs):
+        # Set the 'vi_mode' parameter based on 'vi_mode_enabled'
+        kwargs['vi_mode'] = self.vi_mode_enabled
+        return super().prompt(*args, **kwargs)
 
 # Define key bindings class
 class CustomKeyBindings(KeyBindings):
@@ -96,26 +98,16 @@ class CustomKeyBindings(KeyBindings):
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
-        @self.add(Keys.F9)
-        def handle_f9(event):
-            if self.goatshell_instance.prefix == 'oci':
-                from ocitools.iam_nongc import force_cache
-                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
-                region = get_region_for_oci_profile(self.profile)
-            elif self.goatshell_instance.prefix == 'aws':
-                from awstools.iam_nongc import force_cache
-                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
-                region = get_region_for_aws_profile(self.profile)
-            if region is not None:
-                print()
-                force_cache(self.profile, region)
-                self.app.invalidate()
-                event.app.exit(result='re-prompt')  # Signal to reprompt.
-
         @self.add(Keys.F8)
         def handle_f8(event):
             getLayout()
             printInstructions()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
+        @self.add(Keys.F9)
+        def handle_f9(event):
+            self.goatshell_instance.toggle_vi_mode()
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
@@ -132,8 +124,8 @@ class Goatshell(object):
         self.oci_profiles = misc.read_oci_profiles()
         self.aws_index = 0
         self.oci_index = 0
-        self.profile = 'DEFAULT' # init this variable before we call the get_profile function
-        self.profile = self.get_profile(self.prefix)
+        self.profile = 'DEFAULT'  # Init this variable before we call the get_profile function
+        self.profile = self.get_profile(self.prefix) # now update the profile
         self.key_bindings = CustomKeyBindings(self.app, self)
         shell_dir = os.path.expanduser("~/goat/shell/")
         if not os.path.exists(shell_dir):
@@ -143,10 +135,10 @@ class Goatshell(object):
         except:
             self.history = InMemoryHistory()
 
-        self.session = PromptSession(history=self.history, auto_suggest=AutoSuggestFromHistory(),
-                                     completer=self.completer, complete_while_typing=True,
-                                     enable_history_search=True, vi_mode=True,
-                                     key_bindings=self.key_bindings)
+        # Pass the 'vi_mode_enabled' variable when initializing DynamicPromptSession
+        self.session = DynamicPromptSession(vi_mode_enabled=vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
+                                            completer=self.completer, complete_while_typing=True,
+                                            enable_history_search=True, key_bindings=self.key_bindings)
 
         root_name, json_path = self.get_service_info()
         try:
@@ -154,10 +146,18 @@ class Goatshell(object):
         except Exception as e:
             logger.info(f"Exception caught: {e}")
             logger.info(f"json_path = {json_path}, root_name = {root_name}")
-   
+
+    def toggle_vi_mode(self):
+        global vi_mode_enabled
+        vi_mode_enabled = not vi_mode_enabled
+        save_vi_mode_setting()
+        self.session = DynamicPromptSession(vi_mode_enabled=vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
+                                           completer=self.completer, complete_while_typing=True,
+                                           enable_history_search=True, key_bindings=self.key_bindings)
+
     def get_account_or_tenancy(self, profile):
         if self.prefix == 'oci':
-            # label as account for variable consistency and get the ocid
+            # Label as account for variable consistency and get the OCID
             account = misc.get_oci_tenant(profile_name=profile).id
         elif self.prefix == 'aws':
             account = misc.get_aws_account(profile_name=profile)
@@ -205,12 +205,12 @@ class Goatshell(object):
             return 'ibmcloud', json_path
         else:
             return 'aws', json_path
-    
+
     def create_toolbar(self):
         self.upper_profile = self.profile.upper()
         self.upper_prefix = self.prefix.upper()
         return HTML(
-            f'Current Cloud: <u>{self.upper_prefix}</u>  <b>F8</b> Usage <b>F10</b> Toggle Profile: <u>{self.upper_profile}</u> <b>F12</b> Quit'
+            f'Current Cloud: <u>{self.upper_prefix}</u>   <b>F8</b> Usage   <b>F9 VIM {vi_mode_enabled}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>   <b>F12</b> Quit'
         )
 
     def set_parser_and_completer(self, api_type):
@@ -228,54 +228,54 @@ class Goatshell(object):
             first_token = tokens[0]
             last_token = tokens[-1]
             last_but_one_token = tokens[-2] if len(tokens) > 1 else None
-    
+
             if first_token.lower() == 'oci':
                 user_input = self.process_oci_input(user_input, first_token, last_token, last_but_one_token)
-    
+
             elif first_token.lower() == 'aws':
                 user_input = self.process_aws_input(user_input, first_token, last_token, last_but_one_token)
-    
+
             elif first_token.lower() in ['aws', 'oci'] and '--profile' not in user_input:
                 user_input = user_input + ' --profile ' + self.profile
-    
+
             if '-o' in user_input and 'json' in user_input:
                 user_input += ' | pygmentize -l json'
 
         return user_input
-    
+
     def process_oci_input(self, user_input, first_token, last_token, last_but_one_token):
         if self.profile not in self.oci_profiles:
             self.profile = self.get_profile(first_token.lower())
-    
+
         if last_but_one_token in ['--compartment-id', '--tenancy-id'] and not last_token.startswith('ocid'):
             try:
                 OCID = self.get_account_or_tenancy(self.profile)
                 user_input += f' {OCID}'
             except:
                 pass
-    
+
         if last_but_one_token == '--user-id' and not last_token.startswith('ocid'):
             try:
                 OCID = misc.get_oci_user(self.profile)
                 user_input += f' {OCID}'
             except:
                 pass
-    
+
         return user_input
-    
+
     def process_aws_input(self, user_input, first_token, last_token, last_but_one_token):
         if self.profile not in self.aws_profiles:
             self.profile = self.get_profile(first_token.lower())
-    
+
         if last_but_one_token == '--user-name' and not last_token:
             try:
                 USER = misc.get_aws_user(self.profile)
                 user_input += f' {USER}'
             except:
                 pass
-    
+
         return user_input
-    
+
     def run_cli(self):
         global current_service
         logger.info("running goat event loop")
@@ -283,8 +283,6 @@ class Goatshell(object):
             try:
                 user_input = self.session.prompt(f'goat> ',
                                                  style=self.style,
-                                                 enable_history_search=True,
-                                                 vi_mode=True,
                                                  complete_while_typing=True,
                                                  bottom_toolbar=self.create_toolbar())
             except (EOFError, KeyboardInterrupt):

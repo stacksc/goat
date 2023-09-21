@@ -39,11 +39,11 @@ func_title = HTML("""<b>Hotkeys</b>""")
 misc_title = HTML("""<b>Misc</b>""")
 input = """\
 
-[F8]  Display Help & Layout
-[F9]  Refresh Resources
-[F10] Toggle Cloud Profiles
-[F12] Exit
-[TAB] Fuzzy auto-completion
+[F8]  Display Layout
+[F9]  Toggle VI mode
+[F10] Toggle Profile
+[F12] Exit Interface
+[TAB] Fuzzy completion
 
 """
 misc_input = """\

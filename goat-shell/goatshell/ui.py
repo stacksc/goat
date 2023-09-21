@@ -68,7 +68,6 @@ def getLayout():
             ], padding=1, padding_char=' ', align=HorizontalAlign.CENTER)
         ])
     ]))
-    print()
 
 if __name__ == '__main__':
     getLayout()

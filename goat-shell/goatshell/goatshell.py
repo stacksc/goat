@@ -25,6 +25,18 @@ logger = logging.getLogger(__name__)
 current_service = 'oci'  # You can set it to 'aws' if you prefer AWS mode initially
 os.environ['AWS_PAGER'] = ''
 
+def printInstructions():
+    instructions = """
+    Auto-Completion Instructions:
+    ----------------------------
+    1. To trigger auto-completion, start with TAB or type the beginning of a command or option and press Tab.
+    2. Auto-completion will suggest available commands, options, and arguments based on your input.
+    3. Use the arrow keys or Tab to navigate through the suggestions.
+    4. Press Enter to accept a suggestion or Esc to cancel.
+    5. If an option requires a value, use --option=value instead of --option value.
+    """
+    print(instructions)
+
 # Define key bindings class
 class CustomKeyBindings(KeyBindings):
     def __init__(self, app, goatshell_instance):
@@ -34,6 +46,7 @@ class CustomKeyBindings(KeyBindings):
 
         @self.add(Keys.F12)
         def handle_f10(event):
+            print("")
             sys.exit()
 
         @self.add(Keys.F10)
@@ -46,6 +59,7 @@ class CustomKeyBindings(KeyBindings):
         @self.add(Keys.F8)
         def handle_f8(event):
             getLayout()
+            printInstructions()
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
@@ -150,6 +164,62 @@ class Goatshell(object):
         self.completer = GoatCompleter(self.parser)  # Reset completer
         self.session.completer = self.completer  # Reset session completer
 
+    def process_user_input(self, user_input):
+        if user_input.startswith("!"):
+            user_input = user_input[1:]
+        else:
+            tokens = user_input.split(' ')
+            first_token = tokens[0]
+            last_token = tokens[-1]
+            last_but_one_token = tokens[-2] if len(tokens) > 1 else None
+    
+            if first_token.lower() == 'oci':
+                user_input = self.process_oci_input(user_input, first_token, last_token, last_but_one_token)
+    
+            elif first_token.lower() == 'aws':
+                user_input = self.process_aws_input(user_input, first_token, last_token, last_but_one_token)
+    
+            elif first_token.lower() not in ['gcloud', 'az', 'goat', 'aliyun'] and '--profile' not in user_input:
+                user_input = user_input + ' --profile ' + self.profile
+    
+            if '-o' in user_input and 'json' in user_input:
+                user_input += ' | pygmentize -l json'
+
+        return user_input
+    
+    def process_oci_input(self, user_input, first_token, last_token, last_but_one_token):
+        if self.profile not in self.oci_profiles:
+            self.profile = self.get_profile(first_token.lower())
+    
+        if last_but_one_token in ['--compartment-id', '--tenancy-id'] and not last_token.startswith('ocid'):
+            try:
+                OCID = self.get_account_or_tenancy(self.profile)
+                user_input += f' {OCID}'
+            except:
+                pass
+    
+        if last_but_one_token == '--user-id' and not last_token.startswith('ocid'):
+            try:
+                OCID = misc.get_oci_user(self.profile)
+                user_input += f' {OCID}'
+            except:
+                pass
+    
+        return user_input
+    
+    def process_aws_input(self, user_input, first_token, last_token, last_but_one_token):
+        if self.profile not in self.aws_profiles:
+            self.profile = self.get_profile(first_token.lower())
+    
+        if last_but_one_token == '--user-name' and not last_token:
+            try:
+                USER = misc.get_aws_user(self.profile)
+                user_input += f' {USER}'
+            except:
+                pass
+    
+        return user_input
+    
     def run_cli(self):
         global current_service
         logger.info("running goat event loop")
@@ -182,49 +252,10 @@ class Goatshell(object):
                 sys.exit()
             elif user_input == "help" or user_input == 'h':
                 getLayout()
+                printInstructions()
                 continue
 
-            if user_input.startswith("!"):
-                user_input = user_input[1:]
-            else:
-                if user_input:
-                    tokens = user_input.split(' ')
-                    last_token = tokens[-1]
-                    first_token = tokens[0]
-                    last_but_one_token = tokens[-2] if len(tokens) > 1 else None
-
-                    # improved resource completion is coming
-                    if first_token.lower() == 'oci':
-                        if self.profile not in self.oci_profiles:
-                            self.profile = self.get_profile(first_token.lower())
-                        if last_but_one_token in ['--compartment-id', '--tenancy-id']:
-                            if not last_token.startswith('ocid'):
-                                try:
-                                    OCID = self.get_account_or_tenancy(self.profile)
-                                    user_input += f' {OCID}'
-                                except:
-                                    pass
-                        if last_but_one_token in ['--user-id']:
-                            if not last_token.startswith('ocid'):
-                                try:
-                                    OCID = misc.get_oci_user(self.profile)
-                                    user_input += f' {OCID}'
-                                except:
-                                    pass
-                    if first_token.lower() == 'aws':
-                        if self.profile not in self.aws_profiles:
-                            self.profile = self.get_profile(first_token.lower())
-                        if last_but_one_token in ['--user-name']:
-                            if not last_token:
-                                try:
-                                    USER = misc.get_aws_user(self.profile)
-                                    user_input += f' {USER}'
-                                except:
-                                    pass
-                    if first_token.lower() not in ['gcloud','az','goat','aliyun'] and '--profile' not in user_input:
-                        user_input = user_input + ' --profile ' + self.profile
-                    if '-o' in user_input and 'json' in user_input:
-                        user_input += ' | pygmentize -l json'
+            user_input = self.process_user_input(user_input)
             p = subprocess.Popen(user_input, shell=True)
             p.communicate()
 

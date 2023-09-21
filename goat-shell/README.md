@@ -46,7 +46,7 @@
 │[F9]  Toggle VI mode                                      ││ c|clear   : clear screen                                 │
 │[F10] Toggle Profile                                      ││ h|help    : display usage                                │
 │[F12] Exit Interface                                      ││ !<cmd>    : run OS command                               │
-│[TAB] Fuzzy completion                                    │└──────────────────────────────────────────────────────────┘
+│[TAB] Fuzzy Complete                                      │└──────────────────────────────────────────────────────────┘
 └──────────────────────────────────────────────────────────┘
 goat>
 ```

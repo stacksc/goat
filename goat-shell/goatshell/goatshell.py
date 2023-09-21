@@ -15,6 +15,7 @@ import subprocess
 import re
 import click
 import logging
+import configparser
 from . import misc as misc
 from goatshell.style import styles_dict 
 from goatshell.completer import GoatCompleter 
@@ -34,8 +35,47 @@ def printInstructions():
     3. Use the arrow keys or Tab to navigate through the suggestions.
     4. Press Enter to accept a suggestion or Esc to cancel.
     5. If an option requires a value, use --option=value instead of --option value.
+
+    INFO: resource completion coming soon!
     """
     print(instructions)
+
+def get_region_for_oci_profile(profile_name):
+    config_file = os.path.expanduser("~/.oci/config") # Path to the OCI CLI config file
+    if os.path.exists(config_file):
+        config = configparser.ConfigParser()
+        config.read(config_file)
+
+        # Check if the profile exists in the OCI config file
+        if profile_name in config:
+            if "region" in config[profile_name]:
+                region = config[profile_name]["region"]
+                return region
+
+    return None
+
+def get_region_for_aws_profile(profile_name):
+    config_file = os.path.expanduser("~/.aws/config") # Path to the AWS CLI config file
+    if os.path.exists(config_file):
+        config = configparser.ConfigParser()
+        config.read(config_file)
+
+        # Check if the profile exists in the AWS config file
+        if profile_name in config:
+            if "region" in config[profile_name]:
+                return config[profile_name]["region"]
+
+    # if we get this far try the credentials file
+    config_file = os.path.expanduser("~/.aws/credentials") # Path to the AWS CLI credentials file
+    if os.path.exists(config_file):
+        config = configparser.ConfigParser()
+        config.read(config_file)
+        # Check if the profile exists in the AWS config file
+        if profile_name in config:
+            if "region" in config[profile_name]:
+                return config[profile_name]["region"]
+
+    return None  # Profile or region not found
 
 # Define key bindings class
 class CustomKeyBindings(KeyBindings):
@@ -55,6 +95,22 @@ class CustomKeyBindings(KeyBindings):
             getLayout()
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
+
+        @self.add(Keys.F9)
+        def handle_f9(event):
+            if self.goatshell_instance.prefix == 'oci':
+                from ocitools.iam_nongc import force_cache
+                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
+                region = get_region_for_oci_profile(self.profile)
+            elif self.goatshell_instance.prefix == 'aws':
+                from awstools.iam_nongc import force_cache
+                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
+                region = get_region_for_aws_profile(self.profile)
+            if region is not None:
+                print()
+                force_cache(self.profile, region)
+                self.app.invalidate()
+                event.app.exit(result='re-prompt')  # Signal to reprompt.
 
         @self.add(Keys.F8)
         def handle_f8(event):
@@ -179,7 +235,7 @@ class Goatshell(object):
             elif first_token.lower() == 'aws':
                 user_input = self.process_aws_input(user_input, first_token, last_token, last_but_one_token)
     
-            elif first_token.lower() not in ['gcloud', 'az', 'goat', 'aliyun'] and '--profile' not in user_input:
+            elif first_token.lower() in ['aws', 'oci'] and '--profile' not in user_input:
                 user_input = user_input + ' --profile ' + self.profile
     
             if '-o' in user_input and 'json' in user_input:

@@ -135,7 +135,6 @@ class KEYclient():
 
     def refresh(self, type, profile_name):
         if type == 'cached_keys':
-            Log.info("caching keys...")
             self.get_keys_cache(profile_name)
         self.CONFIGSTORE = Config('ocitools')
 

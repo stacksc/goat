@@ -40,6 +40,7 @@ misc_title = HTML("""<b>Misc</b>""")
 input = """\
 
 [F8]  Display Help & Layout
+[F9]  Refresh Resources
 [F10] Toggle Cloud Profiles
 [F12] Exit
 [TAB] Fuzzy auto-completion

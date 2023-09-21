@@ -70,7 +70,7 @@ This keeps the command line clean with the cloud providers you only work with.
 <br><br>
 The following cloud providers are currently supported:
 <br>
-<img width="1008" alt="image" src="https://github.com/stacksc/goat/assets/116677370/e2dfca65-a741-43e4-a2d7-19fac3f7f54a">
+<img width="777" alt="image" src="https://github.com/stacksc/goat/assets/116677370/faea14fd-0aba-42ec-93d2-9325614cffcd">
 
 ## Toolbar
 The toolbar will refresh after hitting the ENTER key or with specific hotkeys.

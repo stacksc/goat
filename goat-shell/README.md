@@ -31,7 +31,11 @@
    ```
    pip install goatshell goaat --force-reinstall
    ```
-   
+2. Type the following command to launch goatshell:
+   ```
+   goatshell
+   ```
+
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────────| GOAT INTERFACE |───────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                                                                                     Purpose: Cloud Wrapper                                                                                                     │

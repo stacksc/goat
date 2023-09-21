@@ -130,10 +130,10 @@ class Goatshell(object):
         self.oci_profiles = misc.read_oci_profiles()
         self.aws_index = 0
         self.oci_index = 0
+        self.cloud_providers = ['aws','oci','ibmcloud','gcloud','goat','az','aliyun']
         self.profile = 'DEFAULT'  # Init this variable before we call the get_profile function
         self.profile = self.get_profile(self.prefix) # now update the profile
         self.key_bindings = CustomKeyBindings(self.app, self)
-        #self.vi_mode_enabled = False
         shell_dir = os.path.expanduser("~/goat/shell/")
         if not os.path.exists(shell_dir):
             os.makedirs(shell_dir)
@@ -235,18 +235,25 @@ class Goatshell(object):
             last_token = tokens[-1]
             last_but_one_token = tokens[-2] if len(tokens) > 1 else None
 
-            if first_token.lower() == 'oci':
+            # Process known commands
+            if first_token == 'oci':
                 user_input = self.process_oci_input(user_input, first_token, last_token, last_but_one_token)
-
-            elif first_token.lower() == 'aws':
+            elif first_token == 'aws':
                 user_input = self.process_aws_input(user_input, first_token, last_token, last_but_one_token)
 
-            elif first_token.lower() in ['aws', 'oci'] and '--profile' not in user_input:
+            # Common processing for aws and oci
+            if first_token in ['aws', 'oci'] and '--profile' not in user_input:
+                user_input = user_input + ' --profile ' + self.profile
+
                 user_input = user_input + ' --profile ' + self.profile
 
             if '-o' in user_input and 'json' in user_input:
                 user_input += ' | pygmentize -l json'
 
+            if first_token.lower() not in self.cloud_providers:
+                if first_token.lower() not in ['help','h','c','clear','e','exit']:
+                    print("INFO: please select a cloud provider as the first command, or precede OS commands with an !")
+                    user_input = '' 
         return user_input
 
     def process_oci_input(self, user_input, first_token, last_token, last_but_one_token):
@@ -312,7 +319,7 @@ class Goatshell(object):
             api_type = user_input.split(' ')[0]
 
             if api_type.lower() != self.prefix:
-                if api_type.lower() in ['oci', 'aws', 'gcloud', 'az', 'goat', 'aliyun', 'ibmcloud']:
+                if api_type.lower() in self.cloud_providers:
                     self.set_parser_and_completer(api_type.lower())
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)

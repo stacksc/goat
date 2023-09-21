@@ -1,4 +1,4 @@
-.TH "GOAT JIRA ISSUE SEARCH" "1" "2023-08-06" "1.0.0" "goat jira issue search Manual"
+.TH "GOAT JIRA ISSUE SEARCH" "1" "2023-09-21" "2023.9.20.2226" "goat jira issue search Manual"
 .SH NAME
 goat\-jira\-issue\-search \- show a summary of specified issue or issues
 .SH SYNOPSIS
@@ -9,13 +9,13 @@ show a summary of specified issue or issues
 .SH OPTIONS
 .TP
 \fB\-J,\fP \-\-json
-output results in JSON format
+output results in JSON format  [default: False]
 .TP
 \fB\-w,\fP \-\-wizard
-output results in wizard format for transitioning
+output results in wizard format for transitioning  [default: False]
 .TP
 \fB\-t,\fP \-\-tui
-use the native TUI to launch tickets in the browser
+use the native TUI to launch tickets in the browser  [default: False]
 .TP
 \fB\-l,\fP \-\-limit INTEGER
 max amount of issues to show
@@ -24,10 +24,10 @@ max amount of issues to show
 choose which field to use for sorting
 .TP
 \fB\-A,\fP \-\-ascending
-show issues in ascending order
+show issues in ascending order  [default: False]
 .TP
 \fB\-D,\fP \-\-descending
-show issues in descending order
+show issues in descending order  [default: False]
 .TP
 \fB\-c,\fP \-\-csv TEXT
 name of the csv file to save the results to

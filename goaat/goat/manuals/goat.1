@@ -1,35 +1,43 @@
-.TH "GOAT" "1" "2023-08-06" "1.0.0" "goat Manual"
+.TH "GOAT" "1" "2023-09-21" "2023.9.20.2226" "goat Manual"
 .SH NAME
-goat \- goat => GCP, OCI, & AWS tools : GOAT Team
+goat \- goat => GCP, OCI, & AWS TK
 .SH SYNOPSIS
 .B goat
 [OPTIONS] COMMAND [ARGS]...
 .SH DESCRIPTION
-goat => GCP, OCI, & AWS tools : GOAT Team
+goat => GCP, OCI, & AWS TK
 .SH OPTIONS
-.TP
-\fB\-d,\fP \-\-debug [0|1|2]
-0 = no output, 1 = default, 2 = debug on
 .TP
 \fB\-v,\fP \-\-version
 print version of goat and all its submodules
 .TP
 \fB\-m,\fP \-\-manuals TEXT
 print all defined manuals matching pattern(s)
+.TP
+\fB\-s,\fP \-\-shell
+launch the GOAT Shell for improved cloud interaction
 .SH COMMANDS
 .PP
 \fBconfigs\fP
-  Config Client[40GCurrent Profile:...
+  Config Client[35GCurrent Profile:...
   See \fBgoat-configs(1)\fP for full documentation on the \fBconfigs\fP command.
 .PP
 \fBjira\fP
-  JIRA CLI Client[40GCurrent Profile:...
+  JIRA CLI Client[35GCurrent Profile:...
   See \fBgoat-jira(1)\fP for full documentation on the \fBjira\fP command.
 .PP
 \fBaws\fP
-  AWS CLI Client[40GCurrent Profile:...
+  AWS CLI Client[35GCurrent Profile:...
   See \fBgoat-aws(1)\fP for full documentation on the \fBaws\fP command.
 .PP
+\fBoci\fP
+  OCI CLI Client[35GCurrent Profile:...
+  See \fBgoat-oci(1)\fP for full documentation on the \fBoci\fP command.
+.PP
 \fBjenkins\fP
-  Jenkins Client[40GCurrent Profile:...
+  Jenkins Client[35GCurrent Profile:...
   See \fBgoat-jenkins(1)\fP for full documentation on the \fBjenkins\fP command.
+.PP
+\fBslack\fP
+  Slack CLI Client[35GCurrent Profile:...
+  See \fBgoat-slack(1)\fP for full documentation on the \fBslack\fP command.

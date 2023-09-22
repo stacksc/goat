@@ -25,6 +25,7 @@ from goatshell.ui import getLayout
 from pygments.token import Token
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.WARNING)
 
 # Global variables
 global vi_mode_enabled
@@ -104,6 +105,12 @@ class CustomKeyBindings(KeyBindings):
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
+        @self.add(Keys.F8)
+        def handle_f8(event):
+            goatshell_instance.switch_to_next_provider()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
 # Define the main Goatshell class
 class Goatshell(object):
     def __init__(self, app, completer, parser):
@@ -119,6 +126,7 @@ class Goatshell(object):
         self.aws_index = 0
         self.oci_index = 0
         self.cloud_providers = ['aws','oci','ibmcloud','gcloud','goat','az','aliyun']
+        self.current_provider_index = 0
         self.profile = 'DEFAULT'  # Init this variable before we call the get_profile function
         self.profile = self.get_profile(self.prefix) # now update the profile
         self.key_bindings = CustomKeyBindings(self.app, self)
@@ -141,6 +149,26 @@ class Goatshell(object):
         except Exception as e:
             logger.info(f"Exception caught: {e}")
             logger.info(f"json_path = {json_path}, root_name = {root_name}")
+
+    def switch_to_next_provider(self):
+        global current_service
+        current_idx = self.cloud_providers.index(current_service)
+    
+        for _ in range(len(self.cloud_providers)):  # At most, loop through all providers once
+            next_idx = (current_idx + 1) % len(self.cloud_providers)
+            next_service = self.cloud_providers[next_idx]
+    
+            if misc.is_command_available(next_service):
+                current_service = next_service
+                self.prefix = next_service  # Update the instance attribute
+                self.set_parser_and_completer(next_service)
+                break
+    
+            current_idx = next_idx
+        else:  # This block runs if the loop completed without finding an available command
+            # Handle the case where none of the commands are available.
+            # This can be an error message, fallback, etc.
+            print(f"None of the providers are available.")
 
     def toggle_vi_mode(self):
         self.vi_mode_enabled = not self.vi_mode_enabled
@@ -202,6 +230,7 @@ class Goatshell(object):
 
     def display_environment(self):
         details = {}
+        user = tenant = None
         if self.prefix == 'oci':
             user = misc.get_oci_user(self.profile)
             tenant = misc.get_oci_tenant(self.profile)
@@ -218,7 +247,7 @@ class Goatshell(object):
         self.upper_prefix = self.prefix.upper()
         vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
 
-        return HTML(f'Current Cloud: <u>{self.upper_prefix}</u>   <b>F9 VIM {vi_mode_text}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>')
+        return HTML(f'<b>F8</b> Cloud: <u>{self.upper_prefix}</u>   <b>F9 VIM {vi_mode_text}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>')
 
     def set_parser_and_completer(self, api_type):
         self.prefix = api_type.lower()  # Set prefix
@@ -325,7 +354,6 @@ class Goatshell(object):
 
     def run_cli(self):
         global current_service
-        logger.info("running goat event loop")
         while True:
             prompt = self.generate_prompt()
             try:

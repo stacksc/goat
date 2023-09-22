@@ -1,5 +1,9 @@
 import json
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.WARNING)
 
 class Option:
     def __init__(self, name, helptext):

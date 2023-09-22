@@ -275,14 +275,14 @@ class Goatshell(object):
             print()
             print(details_str)
             return ""
-            
+
         if user_input.startswith("!"):
             return user_input[1:]
 
-        if self.prefix not in [self.prefix, 'oci']:
+        if self.prefix not in ['aws', 'oci']:
             return self.handle_non_provider_input(user_input)
 
-        return self.handle_non_provider_input(user_input)
+        return self.handle_provider_input(user_input)
 
     def handle_non_provider_input(self, user_input):
         tokens = user_input.split(' ')
@@ -294,18 +294,30 @@ class Goatshell(object):
 
         return user_input
 
+    def handle_provider_input(self, user_input):
+        tokens = user_input.split(' ')
+        first_token = tokens[0]
+        last_token = tokens[-1]
+        last_but_one_token = tokens[-2] if len(tokens) > 1 else None
+
+        if self.prefix == 'aws':
+            return self.process_aws_input(user_input, first_token, last_token, last_but_one_token)
+        elif self.prefix == 'oci':
+            return self.process_oci_input(user_input, first_token, last_token, last_but_one_token)
+        return user_input
+
     def process_oci_input(self, user_input, first_token, last_token, last_but_one_token):
         if self.profile not in self.oci_profiles:
             self.profile = self.get_profile(first_token.lower())
 
-        if last_but_one_token in ['--compartment-id', '--tenancy-id'] and not last_token.startswith('ocid'):
+        if last_token in ['--compartment-id', '--tenancy-id'] and not last_token.startswith('ocid'):
             try:
                 OCID = self.get_account_or_tenancy(self.profile)
                 user_input += f' {OCID}'
             except:
                 pass
 
-        if last_but_one_token == '--user-id' and not last_token.startswith('ocid'):
+        if last_token == '--user-id' and not last_token.startswith('ocid'):
             try:
                 OCID = misc.get_oci_user(self.profile)
                 user_input += f' {OCID}'

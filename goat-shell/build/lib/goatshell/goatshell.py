@@ -1,5 +1,6 @@
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.formatted_text import to_formatted_text, HTML
 
 import os
 import sys
@@ -7,13 +8,13 @@ import subprocess
 import re
 import click
 import logging
+import shutil
 import configparser
 from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit import Application, PromptSession
 from prompt_toolkit.history import InMemoryHistory, FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
@@ -113,6 +114,8 @@ class CustomKeyBindings(KeyBindings):
 
 # Define the main Goatshell class
 class Goatshell(object):
+    CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun']
+
     def __init__(self, app, completer, parser):
         getLayout()
         self.vi_mode_enabled = load_vi_mode_setting()
@@ -120,16 +123,21 @@ class Goatshell(object):
         self.app = app
         self.completer = completer
         self.prefix = 'oci'
-        self.current_input = None
         self.aws_profiles = misc.read_aws_profiles()
         self.oci_profiles = misc.read_oci_profiles()
+        self.profile = self.init_profile()
+        self.key_bindings = CustomKeyBindings(self.app, self)
+        self.init_history()
+        self.session = self.init_session()
+        self.update_parser_and_completer(current_service)
+
+    def init_profile(self):
         self.aws_index = 0
         self.oci_index = 0
-        self.cloud_providers = ['aws','oci','ibmcloud','gcloud','goat','az','aliyun']
-        self.current_provider_index = 0
-        self.profile = 'DEFAULT'  # Init this variable before we call the get_profile function
-        self.profile = self.get_profile(self.prefix) # now update the profile
-        self.key_bindings = CustomKeyBindings(self.app, self)
+        profile = 'DEFAULT'  # Initial value before getting profile
+        return self.get_profile(self.prefix)  # update the profile
+
+    def init_history(self):
         shell_dir = os.path.expanduser("~/goat/shell/")
         if not os.path.exists(shell_dir):
             os.makedirs(shell_dir)
@@ -138,25 +146,25 @@ class Goatshell(object):
         except:
             self.history = InMemoryHistory()
 
-        # Pass the 'vi_mode_enabled' variable when initializing DynamicPromptSession
-        self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
-                                            completer=self.completer, complete_while_typing=True,
-                                            enable_history_search=True, key_bindings=self.key_bindings)
+    def init_session(self):
+        return DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, style=self.style, history=self.history,
+                                   auto_suggest=AutoSuggestFromHistory(), completer=self.completer,
+                                   complete_while_typing=True, enable_history_search=True, key_bindings=self.key_bindings)
 
-        root_name, json_path = self.get_service_info()
-        try:
-            self.parser = Parser(json_path, root_name)
-        except Exception as e:
-            logger.info(f"Exception caught: {e}")
-            logger.info(f"json_path = {json_path}, root_name = {root_name}")
+    def update_parser_and_completer(self, api_type):
+        self.prefix = api_type.lower()  # Set prefix
+        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{api_type}.json')
+        self.parser = Parser(json_path, api_type)  # Reset parser
+        self.completer = GoatCompleter(self.parser)  # Reset completer
+        self.session.completer = self.completer  # Reset session completer
 
     def switch_to_next_provider(self):
         global current_service
-        current_idx = self.cloud_providers.index(current_service)
+        current_idx = self.CLOUD_PROVIDERS.index(current_service)
     
-        for _ in range(len(self.cloud_providers)):  # At most, loop through all providers once
-            next_idx = (current_idx + 1) % len(self.cloud_providers)
-            next_service = self.cloud_providers[next_idx]
+        for _ in range(len(self.CLOUD_PROVIDERS)):  # At most, loop through all providers once
+            next_idx = (current_idx + 1) % len(self.CLOUD_PROVIDERS)
+            next_service = self.CLOUD_PROVIDERS[next_idx]
     
             if misc.is_command_available(next_service):
                 current_service = next_service
@@ -173,7 +181,7 @@ class Goatshell(object):
     def toggle_vi_mode(self):
         self.vi_mode_enabled = not self.vi_mode_enabled
         save_vi_mode_setting()
-        self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, history=self.history, auto_suggest=AutoSuggestFromHistory(),
+        self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, style=self.style, history=self.history, auto_suggest=AutoSuggestFromHistory(),
                                            completer=self.completer, complete_while_typing=True,
                                            enable_history_search=True, key_bindings=self.key_bindings)
 
@@ -208,26 +216,6 @@ class Goatshell(object):
             self.profile = 'DEFAULT'
         return self.profile
 
-    def get_service_info(self):
-        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{self.prefix}.json')
-        global current_service  # Declare current_service as a global variable
-        if current_service == 'aws':
-            return 'aws', json_path
-        elif current_service == 'oci':
-            return 'oci', json_path
-        elif current_service == 'gcloud':
-            return 'gcloud', json_path
-        elif current_service == 'az':
-            return 'az', json_path
-        elif current_service == 'goat':
-            return 'goat', json_path
-        elif current_service == 'aliyun':
-            return 'aliyun', json_path
-        elif current_service == 'ibmcloud':
-            return 'ibmcloud', json_path
-        else:
-            return 'aws', json_path
-
     def display_environment(self):
         details = {}
         user = tenant = None
@@ -242,12 +230,20 @@ class Goatshell(object):
             details["tenant"] = tenant
         return details
 
-    def create_toolbar(self):
+    def create_toolbar(self, last_executed_command, status_text=""):
         self.upper_profile = self.profile.upper()
         self.upper_prefix = self.prefix.upper()
         vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
 
-        return HTML(f'<b>F8</b> Cloud: <u>{self.upper_prefix}</u>   <b>F9 VIM {vi_mode_text}</b>   <b>F10</b> Profile: <u>{self.upper_profile}</u>')
+        toolbar_html = f'<b>F8</b> Cloud: <u>{self.upper_prefix}</u>   <b>F9</b> VIM {vi_mode_text}   <b>F10</b> Profile: <u>{self.upper_profile}</u>'
+        if status_text == "failure":
+            toolbar_html += f' | Last Executed: {status_text} => {last_executed_command}'
+        else:
+            toolbar_html += f' | Last Executed: {last_executed_command}'
+
+        toolbar_content = to_formatted_text(HTML(toolbar_html))
+
+        return toolbar_content
 
     def set_parser_and_completer(self, api_type):
         self.prefix = api_type.lower()  # Set prefix
@@ -281,32 +277,21 @@ class Goatshell(object):
             return ""
             
         if user_input.startswith("!"):
-            user_input = user_input[1:]
-        else:
-            tokens = user_input.split(' ')
-            first_token = tokens[0]
-            last_token = tokens[-1]
-            last_but_one_token = tokens[-2] if len(tokens) > 1 else None
+            return user_input[1:]
 
-            # Process known commands
-            if first_token == 'oci':
-                user_input = self.process_oci_input(user_input, first_token, last_token, last_but_one_token)
-            elif first_token == 'aws':
-                user_input = self.process_aws_input(user_input, first_token, last_token, last_but_one_token)
+        if self.prefix not in [self.prefix, 'oci']:
+            return self.handle_non_provider_input(user_input)
 
-            # Common processing for aws and oci
-            if first_token in ['aws', 'oci'] and '--profile' not in user_input:
-                user_input = user_input + ' --profile ' + self.profile
+        return self.handle_non_provider_input(user_input)
 
-                user_input = user_input + ' --profile ' + self.profile
+    def handle_non_provider_input(self, user_input):
+        tokens = user_input.split(' ')
+        first_token = tokens[0].lower()
 
-            if '-o' in user_input and 'json' in user_input:
-                user_input += ' | pygmentize -l json'
+        if first_token not in Goatshell.CLOUD_PROVIDERS and first_token not in ['help', 'h', 'c', 'clear', 'e', 'exit']:
+            print("INFO: please select a cloud provider as the first command, or precede OS commands with an !")
+            return ''
 
-            if first_token.lower() not in self.cloud_providers:
-                if first_token.lower() not in ['help','h','c','clear','e','exit']:
-                    print("INFO: please select a cloud provider as the first command, or precede OS commands with an !")
-                    user_input = '' 
         return user_input
 
     def process_oci_input(self, user_input, first_token, last_token, last_but_one_token):
@@ -352,8 +337,20 @@ class Goatshell(object):
         context = self.get_current_context()
         return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]> ')
 
+    def execute_command(self, cmd):
+        p = subprocess.Popen(cmd, shell=True)
+        p.communicate()
+    
+        # If the return code is 0, it means success. Otherwise, it's a failure.
+        if p.returncode != 0:
+            return "failure"
+        else:
+            return ""
+
     def run_cli(self):
         global current_service
+        last_executed_command = ""
+        last_executed_status = ""
         while True:
             prompt = self.generate_prompt()
             try:
@@ -361,17 +358,19 @@ class Goatshell(object):
                                                  style=self.style,
                                                  completer=self.completer,
                                                  complete_while_typing=True,
-                                                 bottom_toolbar=self.create_toolbar())
+                                                 bottom_toolbar=self.create_toolbar(last_executed_command, last_executed_status))
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
-
+            
+            last_executed_command = user_input
             if user_input == 're-prompt':
                 user_input = ''
                 continue
+
             api_type = user_input.split(' ')[0]
 
             if api_type.lower() != self.prefix:
-                if api_type.lower() in self.cloud_providers:
+                if api_type.lower() in self.CLOUD_PROVIDERS:
                     self.set_parser_and_completer(api_type.lower())
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)
@@ -387,6 +386,5 @@ class Goatshell(object):
                 continue
 
             user_input = self.process_user_input(user_input)
-            p = subprocess.Popen(user_input, shell=True)
-            p.communicate()
-
+            last_executed_status = self.execute_command(user_input)
+           

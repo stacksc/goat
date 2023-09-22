@@ -109,6 +109,7 @@ class CustomKeyBindings(KeyBindings):
         @self.add(Keys.F8)
         def handle_f8(event):
             goatshell_instance.switch_to_next_provider()
+            self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
@@ -283,6 +284,14 @@ class Goatshell(object):
             return self.handle_non_provider_input(user_input)
 
         return self.handle_provider_input(user_input)
+
+    def update_profile_for_provider(self, provider):
+        if provider == 'aws':
+            self.aws_profiles = misc.read_aws_profiles()
+            self.profile = self.get_profile('aws')
+        elif provider == 'oci':
+            self.oci_profiles = misc.read_oci_profiles()
+            self.profile = self.get_profile('oci')
 
     def handle_non_provider_input(self, user_input):
         tokens = user_input.split(' ')

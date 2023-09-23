@@ -170,25 +170,25 @@ class Goatshell(object):
         self.completer = GoatCompleter(self.parser)  # Reset completer
         self.session.completer = self.completer  # Reset session completer
     
-        def switch_to_next_provider(self):
-            global current_service
-            current_idx = self.CLOUD_PROVIDERS.index(current_service)
+    def switch_to_next_provider(self):
+        global current_service
+        current_idx = self.CLOUD_PROVIDERS.index(current_service)
         
-            for _ in range(len(self.CLOUD_PROVIDERS)):  # At most, loop through all providers once
-                next_idx = (current_idx + 1) % len(self.CLOUD_PROVIDERS)
-                next_service = self.CLOUD_PROVIDERS[next_idx]
+        for _ in range(len(self.CLOUD_PROVIDERS)):  # At most, loop through all providers once
+            next_idx = (current_idx + 1) % len(self.CLOUD_PROVIDERS)
+            next_service = self.CLOUD_PROVIDERS[next_idx]
         
-                if misc.is_command_available(next_service):
-                    current_service = next_service
-                    self.prefix = next_service  # Update the instance attribute
-                    self.set_parser_and_completer(next_service)
-                    break
+            if misc.is_command_available(next_service):
+                current_service = next_service
+                self.prefix = next_service  # Update the instance attribute
+                self.set_parser_and_completer(next_service)
+                break
         
-                current_idx = next_idx
-            else:  # This block runs if the loop completed without finding an available command
-                # Handle the case where none of the commands are available.
-                # This can be an error message, fallback, etc.
-                print(f"None of the providers are available.")
+            current_idx = next_idx
+        else:  # This block runs if the loop completed without finding an available command
+            # Handle the case where none of the commands are available.
+            # This can be an error message, fallback, etc.
+            print(f"None of the providers are available.")
     
     def toggle_vi_mode(self):
         self.vi_mode_enabled = not self.vi_mode_enabled

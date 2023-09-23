@@ -3,6 +3,7 @@ import sys, os, shutil, getpass, glob, gnupg, json, gnureadline, re, operator, b
 from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from pathlib import Path
+
 try:
     import importlib_resources as resources
 except:
@@ -169,3 +170,60 @@ def pushd(dirname):
 def popd():
     global pushstack
     os.chdir(pushstack.pop())
+
+def get_save_path(filename="aws.json"):
+    user_home = Path.home()
+    goat_shell_data_path = user_home / "goat" / "shell" / "data"
+    goat_shell_data_path.mkdir(parents=True, exist_ok=True) # create directory if doesn't exist
+    return goat_shell_data_path / filename
+
+def attempt_load_custom_json(provider):
+    """
+    Attempt to load user's custom JSON from home directory.
+
+    Args:
+    - provider (str): The cloud provider's name.
+
+    Returns:
+    - bool: True if successful, False otherwise.
+    """
+    # Get the user's custom JSON path
+    user_home = Path.home()
+    user_json_path = user_home / "goat" / "shell" / "data" / f"{provider}.json"
+
+    # If user's custom JSON does not exist, return False
+    if not user_json_path.exists():
+        return False
+
+    # Try to load the JSON
+    try:
+        with user_json_path.open() as json_file:
+            data = json.load(json_file)
+        # Successfully loaded JSON
+        return True
+    except Exception as ex:
+        logger.warning(f"Exception while attempting to load user's custom JSON for {provider}: {ex}")
+        # Failed to load JSON
+        return False
+
+def is_valid_json(file_path):
+    try:
+        with open(file_path, 'r') as json_file:
+            json.load(json_file)
+        return True
+    except:
+        return False
+
+def get_corrupt_provider_files():
+    user_home = Path.home()
+    data_directory = user_home / "goat" / "shell" / "data"
+    corrupt_files_dict = {}
+
+    for json_file in data_directory.glob('*.json'):
+        if not is_valid_json(json_file):
+            # Extracting the provider name from the file name
+            provider_name = json_file.stem
+            corrupt_files_dict[provider_name] = str(json_file)
+
+    return corrupt_files_dict
+

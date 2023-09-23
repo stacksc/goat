@@ -30,14 +30,8 @@ def transform_data(data):
 
 def cleanup(filename="aws.json"):
     save_path = get_save_path(filename)
-    os.remove(save_path)
-
-# Register cleanup function to run when we terminate normally
-atexit.register(cleanup)
-
-# Register cleanup function to handle the SIGINT (Ctr_C) and SIGTERM signals
-signal.signal(signal.SIGINT, lambda signum, frame: sys.exit(1))
-signal.signal(signal.SIGTERM, lambda signum, frame: sys.exit(1))
+    if os.path.isfile(save_path):
+        os.remove(save_path)
 
 @click.group('extract', invoke_without_command=True, help='extract the command tree for AWS CLI', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
 @click.pass_context
@@ -47,6 +41,13 @@ def extract(ctx):
 @extract.command(help='manually refresh the AWS CLI command tree', context_settings={'help_option_names':['-h','--help']})
 @click.pass_context
 def commands(ctx):
+    # Register cleanup function to run when we terminate normally
+    atexit.register(cleanup)
+
+    # Register cleanup function to handle the SIGINT (Ctr_C) and SIGTERM signals
+    signal.signal(signal.SIGINT, lambda signum, frame: sys.exit(1))
+    signal.signal(signal.SIGTERM, lambda signum, frame: sys.exit(1))
+
     if not prompt_user_to_continue():
         print("INFO: exiting the script now...")
         exit()
@@ -128,8 +129,4 @@ def prompt_user_to_continue():
     else:
         print("INFO: invalid choice. Please enter 'yes' or 'no'.")
         return prompt_user_to_continue()  # Recursively ask until a valid choice is made.
-
-# Actual logic
-if prompt_user_to_continue():
-    load_transform_and_save()
 

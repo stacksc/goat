@@ -36,7 +36,7 @@ class GoatCompleter(Completer):
 
     def load_json(self, provider):
         # Get the JSON path using the modularized function
-        user_json_path = Path(get_save_path(provider))
+        user_json_path = Path(get_save_path(provider)).with_suffix('.json')
     
         # If user's custom JSON does not exist, use the default one
         if not user_json_path.exists():

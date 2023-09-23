@@ -61,13 +61,13 @@ class Parser:
                     root.children.append(child)
     
             for name, desc in schema.get("options", {}).items():
-                root.local_flags.append(Option(name, desc["help"]))
+                root.local_flags.append(Option(name, desc.get("help") or desc.get("description")))
     
             for arg in schema.get("args", []):
                 node = CommandTree(node=arg)
                 root.children.append(node)
     
-            root.help = schema.get("help")
+            root.help = schema.get("help") or schema.get("description")
             return root
         except:
             pass

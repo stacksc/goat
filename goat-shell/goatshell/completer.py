@@ -4,7 +4,9 @@ import shlex
 import json
 import os
 import asyncio
+from pathlib import Path
 from . import misc
+from toolbox.misc import get_save_path, attempt_load_custom_json
 
 from goatshell.parser import Parser  # Replace this with your actual Parser import
 
@@ -33,17 +35,23 @@ class GoatCompleter(Completer):
         }
 
     def load_json(self, provider):
-        DATA_DIR = os.path.dirname(os.path.realpath(__file__))
-        DATA_PATH = os.path.join(DATA_DIR, f'data/{provider}.json')
+        # Get the JSON path using the modularized function
+        user_json_path = Path(get_save_path(provider))
+    
+        # If user's custom JSON does not exist, use the default one
+        if not user_json_path.exists():
+            if not attempt_load_custom_json(provider):
+                # If failed to load user's custom JSON, use the system default
+                user_json_path = Path(os.path.dirname(os.path.realpath(__file__))) / "data" / f"{provider}.json"
 
         try:
-            with open(DATA_PATH) as json_file:
+            with user_json_path.open() as json_file:
                 self.goat_dict = json.load(json_file)
-
-            self.parser = Parser(DATA_PATH, provider)
+    
+            self.parser = Parser(str(user_json_path), provider)
         except Exception as ex:
             logger.error(f"Exception while loading JSON for {provider}: {ex}")
-
+    
     def get_completions(self, document, complete_event, smart_completion=True):
         tokens = shlex.split(document.text_before_cursor.strip())
     

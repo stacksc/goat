@@ -1,6 +1,7 @@
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import to_formatted_text, HTML
+from pathlib import Path
 
 import os
 import sys
@@ -117,8 +118,9 @@ class CustomKeyBindings(KeyBindings):
 class Goatshell(object):
     CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun']
 
-    def __init__(self, app, completer, parser):
+    def __init__(self, app, completer, parser, toolbar_message=None):
         getLayout()
+        self.toolbar_message = toolbar_message
         self.vi_mode_enabled = load_vi_mode_setting()
         self.style = Style.from_dict(styles)
         self.app = app
@@ -130,7 +132,8 @@ class Goatshell(object):
         self.key_bindings = CustomKeyBindings(self.app, self)
         self.init_history()
         self.session = self.init_session()
-        self.update_parser_and_completer(current_service)
+        self.set_parser_and_completer(current_service)
+        self.initial_warning_displayed = False
 
     def init_profile(self):
         self.aws_index = 0
@@ -152,33 +155,41 @@ class Goatshell(object):
                                    auto_suggest=AutoSuggestFromHistory(), completer=self.completer,
                                    complete_while_typing=True, enable_history_search=True, key_bindings=self.key_bindings)
 
-    def update_parser_and_completer(self, api_type):
+    def set_parser_and_completer(self, api_type):
         self.prefix = api_type.lower()  # Set prefix
-        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{api_type}.json')
-        self.parser = Parser(json_path, api_type)  # Reset parser
+    
+        # First, check the user's home directory
+        user_home = Path.home()
+        user_json_path = user_home / "goat" / "shell" / "data" / f"{api_type}.json"
+    
+        # If user's custom JSON does not exist, use the default one
+        if not user_json_path.exists():
+            user_json_path = Path(os.path.dirname(os.path.abspath(__file__))) / "data" / f"{api_type}.json"
+    
+        self.parser = Parser(str(user_json_path), api_type)  # Reset parser
         self.completer = GoatCompleter(self.parser)  # Reset completer
         self.session.completer = self.completer  # Reset session completer
-
-    def switch_to_next_provider(self):
-        global current_service
-        current_idx = self.CLOUD_PROVIDERS.index(current_service)
     
-        for _ in range(len(self.CLOUD_PROVIDERS)):  # At most, loop through all providers once
-            next_idx = (current_idx + 1) % len(self.CLOUD_PROVIDERS)
-            next_service = self.CLOUD_PROVIDERS[next_idx]
+        def switch_to_next_provider(self):
+            global current_service
+            current_idx = self.CLOUD_PROVIDERS.index(current_service)
+        
+            for _ in range(len(self.CLOUD_PROVIDERS)):  # At most, loop through all providers once
+                next_idx = (current_idx + 1) % len(self.CLOUD_PROVIDERS)
+                next_service = self.CLOUD_PROVIDERS[next_idx]
+        
+                if misc.is_command_available(next_service):
+                    current_service = next_service
+                    self.prefix = next_service  # Update the instance attribute
+                    self.set_parser_and_completer(next_service)
+                    break
+        
+                current_idx = next_idx
+            else:  # This block runs if the loop completed without finding an available command
+                # Handle the case where none of the commands are available.
+                # This can be an error message, fallback, etc.
+                print(f"None of the providers are available.")
     
-            if misc.is_command_available(next_service):
-                current_service = next_service
-                self.prefix = next_service  # Update the instance attribute
-                self.set_parser_and_completer(next_service)
-                break
-    
-            current_idx = next_idx
-        else:  # This block runs if the loop completed without finding an available command
-            # Handle the case where none of the commands are available.
-            # This can be an error message, fallback, etc.
-            print(f"None of the providers are available.")
-
     def toggle_vi_mode(self):
         self.vi_mode_enabled = not self.vi_mode_enabled
         save_vi_mode_setting()
@@ -231,27 +242,25 @@ class Goatshell(object):
             details["tenant"] = tenant
         return details
 
-    def create_toolbar(self, last_executed_command, status_text=""):
+    def create_toolbar(self, last_executed_command, status_text="", warning_message=None):
         self.upper_profile = self.profile.upper()
         self.upper_prefix = self.prefix.upper()
         vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
 
         toolbar_html = f'<b>F8</b> Cloud: <u>{self.upper_prefix}</u>   <b>F9</b> VIM {vi_mode_text}   <b>F10</b> Profile: <u>{self.upper_profile}</u>'
-        if status_text == "failure":
-            toolbar_html += f' | Last Executed: {status_text} => {last_executed_command}'
-        else:
-            toolbar_html += f' | Last Executed: {last_executed_command}'
+
+        if warning_message:
+            toolbar_html = f'<b><u>WARNING:</u></b> {warning_message}'
+        
+        if last_executed_command: 
+            if status_text == "failure":
+                toolbar_html += f' | Last Executed: {status_text} => {last_executed_command}'
+            else:
+                toolbar_html += f' | Last Executed: {last_executed_command}'
 
         toolbar_content = to_formatted_text(HTML(toolbar_html))
 
         return toolbar_content
-
-    def set_parser_and_completer(self, api_type):
-        self.prefix = api_type.lower()  # Set prefix
-        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{api_type}.json')
-        self.parser = Parser(json_path, api_type)  # Reset parser
-        self.completer = GoatCompleter(self.parser)  # Reset completer
-        self.session.completer = self.completer  # Reset session completer
 
     def process_user_input(self, user_input):
         user_input = user_input.strip()
@@ -375,11 +384,17 @@ class Goatshell(object):
         while True:
             prompt = self.generate_prompt()
             try:
+                if not hasattr(self, 'initial_warning_displayed') or not self.initial_warning_displayed:
+                    toolbar_to_use = self.toolbar_content
+                    self.initial_warning_displayed = True
+                else:
+                    toolbar_to_use = self.create_toolbar(last_executed_command, last_executed_status)
+
                 user_input = self.session.prompt(prompt,
                                                  style=self.style,
                                                  completer=self.completer,
                                                  complete_while_typing=True,
-                                                 bottom_toolbar=self.create_toolbar(last_executed_command, last_executed_status))
+                                                 bottom_toolbar=toolbar_to_use)
             except (EOFError, KeyboardInterrupt):
                 sys.exit()
             

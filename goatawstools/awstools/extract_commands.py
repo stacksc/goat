@@ -1,10 +1,13 @@
+import sys, os
 import re
 import subprocess
 import json
+from toolbox import misc
 
-def save_to_json(data, filename):
+def save_to_json(data, filename="aws.json"):
+    save_path = misc.get_save_path(filename)
     with open(filename, 'w') as f:
-        json.dump(data, f, indent=4)
+        json.dump(data, f, indent=2)
 
 def clean_output(text):
     while '\x08' in text:
@@ -63,8 +66,8 @@ def get_aws_help_output(service="", command=""):
         else:
             print(f"EXECUTING: aws help")
             aws_help_output = subprocess.check_output(["aws", "help"], text=True, stderr=subprocess.STDOUT)
-        return clean_output(aws_help_output)
+        return (0, clean_output(aws_help_output))  # 0 indicates success
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while fetching AWS CLI help: {str(e)}")
-        return ""
+        return (-1, None)  # -1 indicates an error, and no output
 

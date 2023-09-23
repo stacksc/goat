@@ -25,6 +25,7 @@ from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 from goatshell.ui import getLayout
 from pygments.token import Token
+from .toolbar import create_toolbar
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.WARNING)
@@ -242,6 +243,34 @@ class Goatshell(object):
             details["user"] = user.strip()
             details["tenant"] = tenant
         return details
+    
+    '''
+    def create_toolbar(self, last_executed_command, status_text="", warning_message=None):
+        self.upper_profile = self.profile.upper()
+        self.upper_prefix = self.prefix.upper()
+        vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
+    
+        toolbar_parts = [
+            ('class:bottom-toolbar', f'F8 Cloud: {self.upper_prefix}   F9 VIM {vi_mode_text}   F10 Profile: {self.upper_profile}')
+        ]
+    
+        if warning_message:
+            styles['bottom-toolbar'] = 'bg:#ff0000 #000000'
+            toolbar_parts.append(('class:bottom-toolbar', f' WARNING: {warning_message}'))
+        else:
+            styles['bottom-toolbar'] = 'bg:#ffffff #000000'
+    
+        if last_executed_command:
+            if status_text == "failure":
+                toolbar_parts.append(('class:bottom-toolbar', f' | Last Executed: {status_text} => '))
+                toolbar_parts.append(('class:failure-text', f'{last_executed_command}'))
+            else:
+                toolbar_parts.append(('class:bottom-toolbar', ' | Last Executed: '))
+                toolbar_parts.append(('class:success-text', f'{last_executed_command}'))
+    
+        self.style = Style.from_dict(styles)
+    
+        return FormattedText(toolbar_parts)
 
     def create_toolbar(self, last_executed_command, status_text="", warning_message=None):
         self.upper_profile = self.profile.upper()
@@ -262,13 +291,14 @@ class Goatshell(object):
                 toolbar_html += f' | Last Executed: {status_text} => {last_executed_command}'
             else:
                 styles['bottom-toolbar'] = 'bg:#ffffff #000000'
-                toolbar_html += f' | Last Executed: {last_executed_command}'
+                toolbar_html += f' | Last Executed: <success-text>{last_executed_command}</success-text>'
 
         self.style = Style.from_dict(styles)
 
         toolbar_content = to_formatted_text(HTML(toolbar_html))
 
         return toolbar_content
+    '''
 
     def process_user_input(self, user_input):
         user_input = user_input.strip()
@@ -396,7 +426,13 @@ class Goatshell(object):
                     toolbar_to_use = self.toolbar_content
                     self.initial_warning_displayed = True
                 else:
-                    toolbar_to_use = self.create_toolbar(last_executed_command, last_executed_status)
+                    toolbar_to_use = create_toolbar(
+                        profile=self.profile,
+                        prefix=self.prefix,
+                        vi_mode_enabled=self.vi_mode_enabled,
+                        last_executed_command=last_executed_command,
+                        status_text=last_executed_status
+                    )
 
                 user_input = self.session.prompt(prompt,
                                                  style=self.style,

@@ -111,6 +111,7 @@ class CustomKeyBindings(KeyBindings):
         def handle_f8(event):
             goatshell_instance.switch_to_next_provider()
             self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
+            getLayout()
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 

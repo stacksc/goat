@@ -12,6 +12,7 @@ import os
 
 from goatshell.parser import Parser  # Import the Parser class from the appropriate location
 from goatshell.completer import GoatCompleter  # Import the GoatCompleter class from the appropriate location
+from .toolbar import create_toolbar
 
 def startup_check():
     corrupt_providers = get_corrupt_provider_files()
@@ -46,12 +47,14 @@ def cli():
     # setup our initial variables
     last_command = status_text = ""
 
-    # create the custom toolbar with a warning if we have health issues
-    if warning_message:
-        toolbar_content = goatshell.create_toolbar(last_command, status_text, warning_message)
-    else:
-        toolbar_content = goatshell.create_toolbar(last_command, status_text)  # Use default toolbar if no warning
-
+    toolbar_content = create_toolbar(
+        profile=goatshell.profile,
+        prefix=goatshell.prefix,
+        vi_mode_enabled=goatshell.vi_mode_enabled,
+        last_executed_command=last_command,
+        status_text=status_text,
+        warning_message=warning_message if warning_message else None
+    )
     goatshell.toolbar_content = toolbar_content
     
     # run the cli

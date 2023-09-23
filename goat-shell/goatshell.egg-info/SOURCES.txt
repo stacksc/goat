@@ -11,6 +11,7 @@ goatshell/main.py
 goatshell/misc.py
 goatshell/parser.py
 goatshell/style.py
+goatshell/toolbar.py
 goatshell/ui.py
 goatshell.egg-info/PKG-INFO
 goatshell.egg-info/SOURCES.txt

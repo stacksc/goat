@@ -251,13 +251,20 @@ class Goatshell(object):
         toolbar_html = f'<b>F8</b> Cloud: <u>{self.upper_prefix}</u>   <b>F9</b> VIM {vi_mode_text}   <b>F10</b> Profile: <u>{self.upper_profile}</u>'
 
         if warning_message:
+            styles['bottom-toolbar'] = 'bg:#ff0000 #000000'
             toolbar_html = f'<b><u>WARNING:</u></b> {warning_message}'
-        
+        else:
+            styles['bottom-toolbar'] = 'bg:#ffffff #000000'
+
         if last_executed_command: 
             if status_text == "failure":
+                styles['bottom-toolbar'] = 'bg:#222222 #ff0000'
                 toolbar_html += f' | Last Executed: {status_text} => {last_executed_command}'
             else:
+                styles['bottom-toolbar'] = 'bg:#ffffff #000000'
                 toolbar_html += f' | Last Executed: {last_executed_command}'
+
+        self.style = Style.from_dict(styles)
 
         toolbar_content = to_formatted_text(HTML(toolbar_html))
 

@@ -40,8 +40,10 @@ func_title = HTML("""<b>Hotkeys</b>""")
 misc_title = HTML("""<b>Commands</b>""")
 advanced_title = HTML("""<b>Advanced</b>""")
 input = """\
-[F9]  Toggle VI mode
-[F10] Toggle Profile
+[F8]  Toggle Provider
+[F9]  Toggle Profile
+[F10] Toggle VIM
+[F12] Toggle Safety Mode
 [TAB] Fuzzy Complete
 """
 
@@ -49,12 +51,8 @@ misc_input = """\
 e|exit    : exit shell
 c|clear   : clear screen
 h|help    : display usage
-"""
-
-advanced_input = """\
 history   : shell history
-!<cmd>    : run OS command
-cloud     : view cloud details
+cloud     : cloud details
 """
 
 def getLayout():
@@ -65,9 +63,8 @@ def getLayout():
         Frame(
             Window(FormattedTextControl(text), height=2, align=WindowAlign.CENTER), title=(title)),
         VSplit([
-            Frame(body=Label(text=input.strip()), width=30, title=(func_title)),
-            Frame(body=HSplit([Label(text=advanced_input.strip())], padding=1, padding_char=' '), width=40, title=(advanced_title)),
-            Frame(body=Label(text=misc_input.rstrip()), width=30, title=(misc_title))
+            Frame(body=Label(text=input.strip()), width=50, title=(func_title)),
+            Frame(body=Label(text=misc_input.rstrip()), width=50, title=(misc_title))
         ])
     ]))
 

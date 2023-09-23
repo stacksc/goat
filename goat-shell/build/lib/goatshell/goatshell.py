@@ -31,10 +31,11 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.WARNING)
 
 # Global variables
-global vi_mode_enabled
+global vi_mode_enabled, safety_mode_enabled
 current_service = 'oci'       # You can set it to 'aws' if you prefer AWS mode initially
 os.environ['AWS_PAGER'] = ''  # Disable paging in AWS by default
 vi_mode_enabled = False       # Default vi mode to false on start up
+safety_mode_enabled = False   # Default safety mode to false on start up
 
 # Function to print instructions
 def printInstructions():
@@ -50,32 +51,48 @@ def printInstructions():
     """
     print(instructions)
 
-# Function to save VI mode setting
-def save_vi_mode_setting():
-    global vi_mode_enabled
+def save_setting(setting_key, setting_value):
+    """Generic function to save a setting to config.ini."""
     shell_dir = os.path.expanduser("~/goat/shell/")
     if not os.path.exists(shell_dir):
         os.makedirs(shell_dir)
+
+    config_path = os.path.join(shell_dir, 'config.ini')
     config = configparser.ConfigParser()
-    config['Settings'] = {'vi_mode_enabled': str(vi_mode_enabled)}
-    with open(shell_dir + 'config.ini', 'w') as configfile:
+
+    # Load existing settings if they exist
+    if os.path.exists(config_path):
+        config.read(config_path)
+
+    if 'Settings' not in config:
+        config['Settings'] = {}
+
+    config['Settings'][setting_key] = str(setting_value)
+
+    with open(config_path, 'w') as configfile:
         config.write(configfile)
 
-# Function to load VI mode setting from a configuration file
-def load_vi_mode_setting():
-    global vi_mode_enabled
+def load_setting(setting_key, default_value=None):
+    """Generic function to load a setting from config.ini."""
     shell_dir = os.path.expanduser("~/goat/shell/")
+    config_path = os.path.join(shell_dir, 'config.ini')
     config = configparser.ConfigParser()
-    try:
-        config.read(shell_dir + 'config.ini')
-        vi_mode_enabled = config.getboolean('Settings', 'vi_mode_enabled')
-    except (configparser.NoSectionError, configparser.NoOptionError, FileNotFoundError):
-        # Handle exceptions or file not found gracefully
-        pass
-    return vi_mode_enabled
 
-# Load the VI mode setting when the script starts
-vi_mode_enabled = load_vi_mode_setting()
+    if not os.path.exists(config_path):
+        return default_value
+
+    config.read(config_path)
+
+    if 'Settings' in config and setting_key in config['Settings']:
+        value = config['Settings'][setting_key]
+        if value.lower() == 'true':
+            return True
+        elif value.lower() == 'false':
+            return False
+        else:
+            return value
+
+    return default_value
 
 # Define a custom PromptSession class
 class DynamicPromptSession(PromptSession):
@@ -95,19 +112,6 @@ class CustomKeyBindings(KeyBindings):
         self.app = app  # Store the Application reference
         self.goatshell_instance = goatshell_instance
 
-        @self.add(Keys.F10)
-        def handle_f10(event):
-            self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
-            getLayout()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
-        @self.add(Keys.F9)
-        def handle_f9(event):
-            self.goatshell_instance.toggle_vi_mode()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
         @self.add(Keys.F8)
         def handle_f8(event):
             goatshell_instance.switch_to_next_provider()
@@ -116,6 +120,26 @@ class CustomKeyBindings(KeyBindings):
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
+        @self.add(Keys.F9)
+        def handle_f9(event):
+            self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
+            getLayout()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
+        @self.add(Keys.F10)
+        def handle_f10(event):
+            self.goatshell_instance.toggle_vi_mode()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
+        @self.add(Keys.F12)
+        def handle_f12(event):
+            self.goatshell_instance.toggle_safety_mode()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
+
 # Define the main Goatshell class
 class Goatshell(object):
     CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun']
@@ -123,7 +147,8 @@ class Goatshell(object):
     def __init__(self, app, completer, parser, toolbar_message=None):
         getLayout()
         self.toolbar_message = toolbar_message
-        self.vi_mode_enabled = load_vi_mode_setting()
+        self.vi_mode_enabled = self.load_vi_mode_setting()
+        self.safety_mode_enabled = self.load_safety_mode_setting()
         self.style = Style.from_dict(styles)
         self.app = app
         self.completer = completer
@@ -136,6 +161,22 @@ class Goatshell(object):
         self.session = self.init_session()
         self.set_parser_and_completer(current_service)
         self.initial_warning_displayed = False
+
+    def load_vi_mode_setting(self):
+        """Load the VI mode setting."""
+        return load_setting('vi_mode_enabled', default_value=False)
+    
+    def load_safety_mode_setting(self):
+        """Load the SAFETY mode setting."""
+        return load_setting('safety_mode_enabled', default_value=False)
+
+    def save_vi_mode_setting(self):
+        """Save the VI mode setting."""
+        save_setting('vi_mode_enabled', self.vi_mode_enabled)
+    
+    def save_safety_mode_setting(self):
+        """Save the safety mode setting."""
+        save_setting('safety_mode_enabled', self.safety_mode_enabled)
 
     def init_profile(self):
         self.aws_index = 0
@@ -194,10 +235,14 @@ class Goatshell(object):
     
     def toggle_vi_mode(self):
         self.vi_mode_enabled = not self.vi_mode_enabled
-        save_vi_mode_setting()
+        self.save_vi_mode_setting()
         self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, style=self.style, history=self.history, auto_suggest=AutoSuggestFromHistory(),
                                            completer=self.completer, complete_while_typing=True,
                                            enable_history_search=True, key_bindings=self.key_bindings)
+
+    def toggle_safety_mode(self):
+        self.safety_mode_enabled = not self.safety_mode_enabled
+        self.save_safety_mode_setting()
 
     def get_account_or_tenancy(self, profile):
         if self.prefix == 'oci':
@@ -244,64 +289,10 @@ class Goatshell(object):
             details["tenant"] = tenant
         return details
     
-    '''
-    def create_toolbar(self, last_executed_command, status_text="", warning_message=None):
-        self.upper_profile = self.profile.upper()
-        self.upper_prefix = self.prefix.upper()
-        vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
-    
-        toolbar_parts = [
-            ('class:bottom-toolbar', f'F8 Cloud: {self.upper_prefix}   F9 VIM {vi_mode_text}   F10 Profile: {self.upper_profile}')
-        ]
-    
-        if warning_message:
-            styles['bottom-toolbar'] = 'bg:#ff0000 #000000'
-            toolbar_parts.append(('class:bottom-toolbar', f' WARNING: {warning_message}'))
-        else:
-            styles['bottom-toolbar'] = 'bg:#ffffff #000000'
-    
-        if last_executed_command:
-            if status_text == "failure":
-                toolbar_parts.append(('class:bottom-toolbar', f' | Last Executed: {status_text} => '))
-                toolbar_parts.append(('class:failure-text', f'{last_executed_command}'))
-            else:
-                toolbar_parts.append(('class:bottom-toolbar', ' | Last Executed: '))
-                toolbar_parts.append(('class:success-text', f'{last_executed_command}'))
-    
-        self.style = Style.from_dict(styles)
-    
-        return FormattedText(toolbar_parts)
-
-    def create_toolbar(self, last_executed_command, status_text="", warning_message=None):
-        self.upper_profile = self.profile.upper()
-        self.upper_prefix = self.prefix.upper()
-        vi_mode_text = "ON" if self.vi_mode_enabled else "OFF"
-
-        toolbar_html = f'<b>F8</b> Cloud: <u>{self.upper_prefix}</u>   <b>F9</b> VIM {vi_mode_text}   <b>F10</b> Profile: <u>{self.upper_profile}</u>'
-
-        if warning_message:
-            styles['bottom-toolbar'] = 'bg:#ff0000 #000000'
-            toolbar_html = f'<b><u>WARNING:</u></b> {warning_message}'
-        else:
-            styles['bottom-toolbar'] = 'bg:#ffffff #000000'
-
-        if last_executed_command: 
-            if status_text == "failure":
-                styles['bottom-toolbar'] = 'bg:#222222 #ff0000'
-                toolbar_html += f' | Last Executed: {status_text} => {last_executed_command}'
-            else:
-                styles['bottom-toolbar'] = 'bg:#ffffff #000000'
-                toolbar_html += f' | Last Executed: <success-text>{last_executed_command}</success-text>'
-
-        self.style = Style.from_dict(styles)
-
-        toolbar_content = to_formatted_text(HTML(toolbar_html))
-
-        return toolbar_content
-    '''
-
     def process_user_input(self, user_input):
         user_input = user_input.strip()
+        tokens = user_input.split(' ')
+        first_token = tokens[0].lower()
       
         # Handle the history command
         if user_input == "history":
@@ -324,10 +315,7 @@ class Goatshell(object):
             print(details_str)
             return ""
 
-        if user_input.startswith("!"):
-            return user_input[1:]
-
-        if self.prefix not in ['aws', 'oci']:
+        if first_token not in Goatshell.CLOUD_PROVIDERS:
             return self.handle_non_provider_input(user_input)
 
         return self.handle_provider_input(user_input)
@@ -344,11 +332,13 @@ class Goatshell(object):
         tokens = user_input.split(' ')
         first_token = tokens[0].lower()
 
-        if first_token not in Goatshell.CLOUD_PROVIDERS and first_token not in ['help', 'h', 'c', 'clear', 'e', 'exit']:
-            print("INFO: please select a cloud provider as the first command, or precede OS commands with an !")
+        if first_token in Goatshell.CLOUD_PROVIDERS or first_token in ['help', 'h', 'c', 'clear', 'e', 'exit']:
+            return user_input
+        elif self.safety_mode_enabled:  # safe mode
+            print("INFO: OS commands are currently blocked due to safety mode. Please disable safety mode [F12] to execute OS commands.")
             return ''
-
-        return user_input
+        else:
+            return user_input
 
     def handle_provider_input(self, user_input):
         tokens = user_input.split(' ')
@@ -430,6 +420,7 @@ class Goatshell(object):
                         profile=self.profile,
                         prefix=self.prefix,
                         vi_mode_enabled=self.vi_mode_enabled,
+                        safety_mode_enabled=self.safety_mode_enabled,
                         last_executed_command=last_executed_command,
                         status_text=last_executed_status
                     )

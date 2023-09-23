@@ -2,15 +2,17 @@ from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.styles import Style
 from goatshell.style import styles
 
-def create_toolbar(profile, prefix, vi_mode_enabled, last_executed_command=None, status_text="", warning_message=None):
+def create_toolbar(profile, prefix, vi_mode_enabled, safety_mode_enabled, last_executed_command=None, status_text="", warning_message=None):
     upper_profile = profile.upper()
     upper_prefix = prefix.upper()
     vi_mode_text = "ON" if vi_mode_enabled else "OFF"
+    safety_mode_text = "ON" if safety_mode_enabled else "OFF"
+
 
     toolbar_class = 'bottom-toolbar-red' if warning_message else 'bottom-toolbar'
 
     toolbar_parts = [
-        ('class:' + toolbar_class, f'F8 Cloud: {upper_prefix}   F9 VIM {vi_mode_text}   F10 Profile: {upper_profile}')
+            ('class:' + toolbar_class, f'F8 Cloud: {upper_prefix}   F9 Profile: {upper_profile}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
     ]
 
     if warning_message:

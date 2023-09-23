@@ -51,6 +51,7 @@ def cli():
         profile=goatshell.profile,
         prefix=goatshell.prefix,
         vi_mode_enabled=goatshell.vi_mode_enabled,
+        safety_mode_enabled=goatshell.safety_mode_enabled,
         last_executed_command=last_command,
         status_text=status_text,
         warning_message=warning_message if warning_message else None

@@ -11,12 +11,14 @@ def create_toolbar(profile, prefix, vi_mode_enabled, safety_mode_enabled, last_e
 
     toolbar_class = 'bottom-toolbar-red' if warning_message else 'bottom-toolbar'
 
-    toolbar_parts = [
-            ('class:' + toolbar_class, f'F8 Cloud: {upper_prefix}   F9 Profile: {upper_profile}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
-    ]
-
     if warning_message:
-        toolbar_parts.append(('class:' + toolbar_class, f' WARNING: {warning_message}'))
+        toolbar_parts = [ 
+               ('class:' + toolbar_class, f'WARNING: {warning_message}')
+        ]
+    else:
+        toolbar_parts = [
+                ('class:' + toolbar_class, f'F8 Cloud: {upper_prefix}   F9 Profile: {upper_profile}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
+        ]
 
     if last_executed_command:
         if status_text == "failure":

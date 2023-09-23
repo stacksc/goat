@@ -3,6 +3,11 @@
 
 https://github.com/stacksc/goat/assets/116677370/ba34a042-9a40-4d67-a5ed-4b863ffb498b
 
+<h1>Feedback Appreciation</h1>
+In order to make this application as user-friendly as possible, please provide any feedback to help the user expierience and logic.<br>
+Please open an issue, leave comments, or even a thumbs up on the project goes a long way with continued development.
+<br>
+
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>

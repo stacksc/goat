@@ -48,32 +48,45 @@ def commands(ctx):
 
     aws_data["aws"]["options"] = global_options
     for service in services:
-        if service == "help":
+        if not service.islower() or service == "help":
             continue
+    
         aws_service_output = get_aws_help_output(service)
         if not aws_service_output:
             continue
-        if aws_service_output:
-            commands, _ = extract_elements_for_service(aws_service_output)
-            description = clean_description(extract_description(aws_service_output))
-            print(f"Exploring {service}")
-            aws_data["aws"]["subcommands"][service] = {"command": service, "help": description, "options": {}, "subcommands": commands}
-
-            # Fetch options for each command
-            for command, command_info in commands.items():
-                print(f"\tExploring {service} {command}")
-                aws_command_output = get_aws_help_output(service, command)
-                if not aws_command_output:
-                    continue
-                _, command_options = extract_elements_for_service(aws_command_output)
-                command_description = clean_description(extract_description(aws_command_output))
-                aws_data["aws"]["subcommands"][service]["subcommands"][command]["options"] = command_options
-                aws_data["aws"]["subcommands"][service]["subcommands"][command]["help"] = command_description
+        
+        commands, _ = extract_elements_for_service(aws_service_output)
+        description = clean_description(extract_description(aws_service_output))
+        print(f"Exploring {service}")
+        aws_data["aws"]["subcommands"][service] = {
+            "command": service, 
+            "help": description, 
+            "options": {}, 
+            "subcommands": {}
+        }
+    
+        # Fetch options for each command
+        for command, command_info in commands.items():
+            if not command.islower():
+                continue
+            
+            print(f"\tExploring {service} {command}")
+            aws_command_output = get_aws_help_output(service, command)
+            if not aws_command_output:
+                continue
+    
+            _, command_options = extract_elements_for_service(aws_command_output)
+            command_description = clean_description(extract_description(aws_command_output))
+            aws_data["aws"]["subcommands"][service]["subcommands"][command] = {
+                "options": command_options, 
+                "help": command_description
+            }
+    
     save_to_json(aws_data, json_file)
 
 def prompt_user_to_continue():
     """Prompts the user to decide if they want to continue the process."""
-    print("INFO: this process will take approximately 2-3 hours to complete.")
+    print("INFO: this process will take approximately 3-4 hours to complete.")
     choice = input("INFO: do you want to continue? [yes/no]: ").strip().lower()
 
     if choice == "yes":

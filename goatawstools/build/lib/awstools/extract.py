@@ -16,12 +16,10 @@ def extract(ctx):
 def commands(ctx):
 
     json_file = get_save_path("aws.json")
-    # Register cleanup function to run when we terminate normally
-    atexit.register(cleanup)
 
-    # Register cleanup function to handle the SIGINT (Ctr_C) and SIGTERM signals
-    signal.signal(signal.SIGINT, lambda signum, frame: sys.exit(1))
-    signal.signal(signal.SIGTERM, lambda signum, frame: sys.exit(1))
+    # Register cleanup function to handle the SIGINT (Ctrl_C) and SIGTERM signals
+    signal.signal(signal.SIGINT, lambda signum, frame: (cleanup(), sys.exit(1)))
+    signal.signal(signal.SIGTERM, lambda signum, frame: (cleanup(), sys.exit(1)))
 
     if not prompt_user_to_continue():
         print("INFO: exiting the script now...")

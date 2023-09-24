@@ -314,6 +314,15 @@ class Goatshell(object):
             print()
             print(details_str)
             return ""
+        elif user_input.startswith("cd "):
+            path = user_input.split(" ", 1)[1]
+            # expand any "~" to the users home directory
+            path = os.path.expanduser(path)
+            try:
+                os.chdir(path)
+            except Exception as e:
+                print(f"Error: {e}")
+            return ""
 
         if first_token not in Goatshell.CLOUD_PROVIDERS:
             return self.handle_non_provider_input(user_input)
@@ -431,6 +440,7 @@ class Goatshell(object):
                                                  complete_while_typing=True,
                                                  bottom_toolbar=toolbar_to_use)
             except (EOFError, KeyboardInterrupt):
+                print("\nINFO: you pressed CTRL-C! Exiting gracefully...\n")
                 sys.exit()
             
             last_executed_command = user_input

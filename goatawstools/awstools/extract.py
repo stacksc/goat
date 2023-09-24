@@ -58,12 +58,13 @@ def commands(ctx):
         commands, _ = extract_elements_for_service(aws_service_output)
         description = clean_description(extract_description(aws_service_output))
         print(f"Exploring {service}")
-        aws_data["aws"]["subcommands"][service] = {
-            "command": service, 
-            "help": description, 
-            "options": {}, 
-            "subcommands": {}
-        }
+        if commands:
+            aws_data["aws"]["subcommands"][service] = {
+                "command": service, 
+                "help": description, 
+                "options": {}, 
+                "subcommands": {}
+            }
     
         # Fetch options for each command
         for command, command_info in commands.items():
@@ -77,10 +78,12 @@ def commands(ctx):
     
             _, command_options = extract_elements_for_service(aws_command_output)
             command_description = clean_description(extract_description(aws_command_output))
-            aws_data["aws"]["subcommands"][service]["subcommands"][command] = {
-                "options": command_options, 
-                "help": command_description
-            }
+            if command_options:
+                aws_data["aws"]["subcommands"][service]["subcommands"][command] = {
+                    "options": command_options
+                }
+            if command_description:
+                aws_data["aws"]["subcommands"][service]["subcommands"][command]["help"] = command_description
     
     save_to_json(aws_data, json_file)
 

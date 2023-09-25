@@ -296,12 +296,18 @@ class OSSclient():
             return True
 
 def setup_config_file(profile_name, oci_region):
+
+    config = oci.config.from_file("~/.oci/config", profile_name)
+    OCID = tenant = config.get("tenancy")
+    user = config.get("user")
+    fingerprint = config.get("fingerprint")
+    keyfile = config.get("key_file")
     CONFIG_FROM_FILE = {
-        'tenancy': CONFIGSTORE.get_metadata('tenancy', profile_name),
-        'user': CONFIGSTORE.get_metadata('user', profile_name),
-        'fingerprint': CONFIGSTORE.get_metadata('fingerprint', profile_name),
-        'key_file': CONFIGSTORE.get_metadata('key_file', profile_name),
-        'region': oci_region
+            'tenancy': tenant,
+            'user': user,
+            'fingerprint': fingerprint,
+            'key_file': keyfile,
+            'region': oci_region
     }
     try:
         oci.config.validate_config(CONFIG_FROM_FILE)

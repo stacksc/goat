@@ -80,10 +80,9 @@ def commands(ctx):
             command_description = clean_description(extract_description(aws_command_output))
             if command_options:
                 aws_data["aws"]["subcommands"][service]["subcommands"][command] = {
-                    "options": command_options
+                    "options": command_options,
+                    "help": command_description
                 }
-            if command_description:
-                aws_data["aws"]["subcommands"][service]["subcommands"][command]["help"] = command_description
     
     save_to_json(aws_data, json_file)
 
@@ -113,18 +112,83 @@ def clean_output(text):
 
 def extract_global_options(aws_output):
     """Extract global options from the AWS CLI help output."""
-    global_options_pattern = r'GLOBAL PARAMETERS\s*([\s\S]*?)\n\n'
-    option_pattern = r'(--[\w-]+)\s+\((\w+)\)'
+    lines = aws_output.split("\n")
 
-    match = re.search(global_options_pattern, aws_output)
-    if not match:
-        return {}
+    options = {}
+    current_option = None
+    description_lines = []
 
-    global_options_block = match.group(1)
-    options = re.findall(option_pattern, global_options_block)
+    for line in lines:
+        option_match = re.match(r'^\s*(--[\w-]+)\s+\((\w+)\)', line)
+        if option_match:
+            if current_option:  # Save the previous option
+                options[current_option] = {
+                    "name": current_option,
+                    "help": " ".join(description_lines).strip()
+                }
+                description_lines = []
 
-    return {opt[0]: {"name": opt[0], "help": opt[1]} for opt in options}
+            current_option = option_match.group(1)
+        elif current_option:
+            description_lines.append(line.strip())
 
+    # Save the last option, if any
+    if current_option:
+        options[current_option] = {
+            "name": current_option,
+            "help": " ".join(description_lines).strip()
+        }
+
+    return options
+
+def extract_elements_for_service(aws_output):
+    commands_pattern = re.compile(r'^\s*o\s+([\w-]+)', re.MULTILINE)
+    options_pattern = r'(--[\w-]+)\s+\((\w+)\)'
+
+    commands = {}
+    options = {}
+
+    current_service = None
+    current_command = None
+    current_option = None
+    option_description = []
+
+    for line in aws_output.split("\n"):
+        command_match = re.search(commands_pattern, line)
+        if command_match:
+            current_service = command_match.group(1)
+            commands[current_service] = {"command": current_service, "options": {}, "subcommands": {}}
+            current_command = None
+            continue
+
+        subcommand_match = re.search(r'^\s*o\s+([a-zA-Z0-9-]+)', line)
+        if subcommand_match:
+            current_command = subcommand_match.group(1)
+            commands[current_service]["subcommands"][current_command] = {"command": current_command, "options": {}}
+            continue
+
+        option_match = re.search(options_pattern, line)
+        if option_match:
+            # Store the previous option's description, if any
+            if current_option:
+                options[current_option]['help'] = ' '.join(option_description).strip()
+                option_description = []
+
+            current_option = option_match.group(1)
+            option_type = option_match.group(2)
+            options[current_option] = {"name": current_option, "type": option_type, "help": ""}
+            continue
+
+        if current_option:
+            option_description.append(line.strip())
+
+    # Save the last option's description, if any
+    if current_option and option_description:
+        options[current_option]['help'] = ' '.join(option_description).strip()
+
+    return commands, options
+
+"""
 def extract_elements_for_service(aws_output):
     commands_pattern = re.compile(r'^\s*o\s+([\w-]+)', re.MULTILINE)
     options_pattern = r'(--[\w-]+)\s+\((\w+)\)'
@@ -155,6 +219,7 @@ def extract_elements_for_service(aws_output):
                 options.update({opt[0]: {"name": opt[0], "help": opt[1]} for opt in options_match})
 
     return commands, options
+"""
 
 def extract_description(aws_output):
     description_pattern = re.compile(r'\s*DESCRIPTION\s*([\s\S]*?)\n\n', re.MULTILINE)

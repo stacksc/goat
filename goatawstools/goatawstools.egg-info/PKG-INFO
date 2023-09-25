@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatawstools
-Version: 2023.9.24.1104
+Version: 2023.9.25.1229
 Summary: AWStools - CLI client for AWS GovCloud
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

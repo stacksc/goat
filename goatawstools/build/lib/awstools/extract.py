@@ -32,6 +32,7 @@ def commands(ctx):
     start = cleaned_output.find("AVAILABLE SERVICES")
     end = cleaned_output.find("SEE ALSO")
 
+    services = []
     if start != -1 and end != -1:
         service_block = cleaned_output[start:end]
         services = re.findall(r'o (\w+)', service_block, re.MULTILINE)
@@ -50,41 +51,38 @@ def commands(ctx):
     for service in services:
         if not service.islower() or service == "help":
             continue
-    
+
         aws_service_output = get_aws_help_output(service)
         if not aws_service_output:
             continue
-        
+
         commands, _ = extract_elements_for_service(aws_service_output)
-        description = clean_description(extract_description(aws_service_output))
         print(f"Exploring {service}")
         if commands:
             aws_data["aws"]["subcommands"][service] = {
-                "command": service, 
-                "help": description, 
-                "options": {}, 
+                "command": service,
+                "help": clean_description(extract_description(aws_service_output)),
+                "options": {},
                 "subcommands": {}
             }
-    
-        # Fetch options for each command
+
         for command, command_info in commands.items():
             if not command.islower():
                 continue
-            
+
             print(f"\tExploring {service} {command}")
             aws_command_output = get_aws_help_output(service, command)
             if not aws_command_output:
                 continue
-    
-            _, command_options = extract_elements_for_service(aws_command_output)
-            command_description = clean_description(extract_description(aws_command_output))
-            if command_options:
+
+            local_options = extract_local_options(aws_command_output)
+            if local_options:
                 aws_data["aws"]["subcommands"][service]["subcommands"][command] = {
-                    "options": command_options,
-                    "help": command_description
+                    "options": local_options,
+                    "help": clean_description(extract_description(aws_command_output))
                 }
-    
-    save_to_json(aws_data, json_file)
+
+        save_to_json(aws_data, json_file)
 
 def prompt_user_to_continue():
     """Prompts the user to decide if they want to continue the process."""
@@ -141,6 +139,45 @@ def extract_global_options(aws_output):
 
     return options
 
+def extract_local_options(text):
+    options = {}
+
+    # Check if both "OPTIONS" and "GLOBAL OPTIONS" are present, and extract the content between them
+    start_index = text.find("OPTIONS")
+    end_index = text.find("GLOBAL OPTIONS")
+
+    if start_index == -1 or end_index == -1:
+        return options
+
+    local_options_text = text[start_index:end_index]
+
+    lines = local_options_text.split("\n")
+    current_option = None
+    current_description = []
+
+    for line in lines:
+        option_match = re.match(r'^\s*(--[\w-]+)\s+\((\w+)\)', line)
+        if option_match:
+            if current_option:  # Save the previous option's description
+                full_description = ' '.join(current_description).strip()
+                first_sentence = extract_first_sentence(full_description)
+                options[current_option]["help"] = first_sentence
+                current_description = []
+
+            current_option = option_match.group(1)
+            option_type = option_match.group(2)
+            options[current_option] = {"type": option_type, "help": ""}
+        elif current_option:
+            current_description.append(line.strip())
+
+    # Save the last option's description, if any
+    if current_option and current_description:
+        full_description = ' '.join(current_description).strip()
+        first_sentence = extract_first_sentence(full_description)
+        options[current_option]["help"] = first_sentence
+
+    return options
+
 def extract_elements_for_service(aws_output):
     commands_pattern = re.compile(r'^\s*o\s+([\w-]+)', re.MULTILINE)
     options_pattern = r'(--[\w-]+)\s+\((\w+)\)'
@@ -188,39 +225,6 @@ def extract_elements_for_service(aws_output):
 
     return commands, options
 
-"""
-def extract_elements_for_service(aws_output):
-    commands_pattern = re.compile(r'^\s*o\s+([\w-]+)', re.MULTILINE)
-    options_pattern = r'(--[\w-]+)\s+\((\w+)\)'
-
-    commands = {}
-    options = {}
-
-    current_service = None
-    current_command = None
-
-    for line in aws_output.split("\n"):
-        command_match = re.search(commands_pattern, line)
-        if command_match:
-            current_service = command_match.group(1)
-            commands[current_service] = {"command": current_service, "options": {}, "subcommands": {}}
-            current_command = None
-
-        subcommand_match = re.search(r'^\s*o\s+([a-zA-Z0-9-]+)', line)
-        if subcommand_match:
-            current_command = subcommand_match.group(1)
-            commands[current_service]["subcommands"][current_command] = {"command": current_command, "options": {}}
-
-        options_match = re.findall(options_pattern, line, re.MULTILINE)
-        if options_match:
-            if current_command:
-                commands[current_service]["subcommands"][current_command]["options"] = {opt[0]: {"name": opt[0], "help": opt[1]} for opt in options_match}
-            else:
-                options.update({opt[0]: {"name": opt[0], "help": opt[1]} for opt in options_match})
-
-    return commands, options
-"""
-
 def extract_description(aws_output):
     description_pattern = re.compile(r'\s*DESCRIPTION\s*([\s\S]*?)\n\n', re.MULTILINE)
     match = re.search(description_pattern, aws_output)
@@ -248,6 +252,17 @@ def cleanup(filename="aws.json"):
         os.remove(filename)
 
 def clean_description(desc):
-    # Remove newlines and excessive whitespaces
+    # Normalize whitespace
     desc = ' '.join(desc.split())
+
+    # Extract the first sentence
+    match = re.match(r'^(.*?[.!?])', desc)
+    if match:
+        return match.group(1)
     return desc
+
+def extract_first_sentence(description):
+    match = re.match(r"^(.*?[.!?])", description)
+    if match:
+        return match.group(1).strip()
+    return description.strip()

@@ -30,7 +30,8 @@ class GoatCompleter(Completer):
             "gcloud": "Google Cloud Platform",
             "goat": "Local Goat Application",
             "oci": "Oracle Cloud Infrastructure",
-            "ibmcloud": "IBM Cloud Infrastructure"
+            "ibmcloud": "IBM Cloud Infrastructure",
+            "ovhai": "OVH AI & Public Cloud"
             # Add more commands and descriptions as needed
         }
 
@@ -57,7 +58,7 @@ class GoatCompleter(Completer):
     
         if not tokens:
             # Check if a command is available before suggesting it
-            available_commands = ["aliyun", "aws", "az", "gcloud", "goat", "oci", "ibmcloud"]
+            available_commands = ["aliyun", "aws", "az", "gcloud", "goat", "oci", "ibmcloud", "ovhai"]
             for command in available_commands:
                 if misc.is_command_available(command):
                     yield Completion(command, display=command, display_meta=self.command_descriptions.get(command, ""))
@@ -65,11 +66,11 @@ class GoatCompleter(Completer):
     
         first_token = tokens[0]
     
-        if first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud"] and self.current_json != first_token:
+        if first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud", "ovhai"] and self.current_json != first_token:
             self.load_json(first_token)
             self.current_json = first_token
     
-        if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud"]:
+        if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud", "ovhai"]:
             subcommands = self.parser.ast.children
             for subcmd in subcommands:
                 yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)

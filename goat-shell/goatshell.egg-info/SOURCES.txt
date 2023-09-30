@@ -27,3 +27,4 @@ goatshell/data/gcloud.json
 goatshell/data/goat.json
 goatshell/data/ibmcloud.json
 goatshell/data/oci.json
+goatshell/data/ovhai.json

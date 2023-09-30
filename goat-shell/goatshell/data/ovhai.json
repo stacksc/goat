@@ -1,0 +1,2845 @@
+{
+  "ovhai": {
+    "args": [],
+    "command": "ovhai",
+    "options": {
+      "--json-log": {
+        "help": "Log in json format rather than in plain text",
+        "name": "--json-log"
+      },
+      "--no-color": {
+        "help": "Remove colors from output",
+        "name": "--no-color"
+      },
+      "--token": {
+        "help": "<TOKEN>  Authentication using Token rather than OAuth",
+        "name": "--token"
+      }
+    },
+    "subcommands": {
+      "app": {
+        "args": [],
+        "command": "app",
+        "help": "Subcommand to manage apps",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Delete an app. Prompt for user confirmation if still running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "Get app status",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List apps status [aliases: ls]",
+            "options": {
+              "--order": {
+                "help": "<ORDER>",
+                "name": "--order"
+              },
+              "--page-index": {
+                "help": "<PAGE_INDEX>",
+                "name": "--page-index"
+              },
+              "--page-size": {
+                "help": "<PAGE_SIZE>",
+                "name": "--page-size"
+              },
+              "--sort": {
+                "help": "<SORT>",
+                "name": "--sort"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              },
+              "--updated-after": {
+                "help": "<UPDATED_AFTER>",
+                "name": "--updated-after"
+              },
+              "--updated-before": {
+                "help": "<UPDATED_BEFORE>",
+                "name": "--updated-before"
+              }
+            },
+            "subcommands": {}
+          },
+          "logs": {
+            "args": [],
+            "command": "logs",
+            "help": "Print app logs",
+            "options": {
+              "--from": {
+                "help": "<FROM>        Specify the source of the log to get",
+                "name": "--from"
+              },
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--no-timestamp": {
+                "help": "Choose to display the timestamp or not",
+                "name": "--no-timestamp"
+              },
+              "--token": {
+                "help": "<TOKEN>      Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "pull-data": {
+            "args": [],
+            "command": "pull-data",
+            "help": "Pull data from the Object Storage to the app while the app is running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "push-data": {
+            "args": [],
+            "command": "push-data",
+            "help": "Push data from the app to the Object Storage while the app is running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "remove-label": {
+            "args": [],
+            "command": "remove-label",
+            "help": "Remove a label",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "run": {
+            "args": [],
+            "command": "run",
+            "help": "Create and run new app",
+            "options": {
+              "--auto-max-replicas": {
+                "help": "<MAX REPLICAS>",
+                "name": "--auto-max-replicas"
+              },
+              "--auto-min-replicas": {
+                "help": "<MIN REPLICAS>",
+                "name": "--auto-min-replicas"
+              },
+              "--auto-resource-type": {
+                "help": "<TYPE>",
+                "name": "--auto-resource-type"
+              },
+              "--auto-resource-usage-threshold": {
+                "help": "<THRESHOLD>",
+                "name": "--auto-resource-usage-threshold"
+              },
+              "--max-surge": {
+                "help": "<MAX_SURGE>",
+                "name": "--max-surge"
+              },
+              "--max-unavailable": {
+                "help": "<MAX_UNAVAILABLE>",
+                "name": "--max-unavailable"
+              },
+              "--partner": {
+                "help": "<PARTNER_ID>",
+                "name": "--partner"
+              },
+              "--probe-path": {
+                "help": "<PATH>",
+                "name": "--probe-path"
+              },
+              "--probe-port": {
+                "help": "<PORT>",
+                "name": "--probe-port"
+              },
+              "--progress-deadline-seconds": {
+                "help": "<PROGRESS_DEADLINE_SECONDS>",
+                "name": "--progress-deadline-seconds"
+              },
+              "--replicas": {
+                "help": "<REPLICAS>",
+                "name": "--replicas"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "scale": {
+            "args": [],
+            "command": "scale",
+            "help": "Change the amount of app replicas",
+            "options": {
+              "--auto-max-replicas": {
+                "help": "<MAX REPLICAS>",
+                "name": "--auto-max-replicas"
+              },
+              "--auto-min-replicas": {
+                "help": "<MIN REPLICAS>",
+                "name": "--auto-min-replicas"
+              },
+              "--auto-resource-type": {
+                "help": "<TYPE>",
+                "name": "--auto-resource-type"
+              },
+              "--auto-resource-usage-threshold": {
+                "help": "<THRESHOLD>",
+                "name": "--auto-resource-usage-threshold"
+              },
+              "--replicas": {
+                "help": "<REPLICAS>",
+                "name": "--replicas"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "set-image": {
+            "args": [],
+            "command": "set-image",
+            "help": "Set the Docker image of an existing app",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "set-label": {
+            "args": [],
+            "command": "set-label",
+            "help": "Create or update a label",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "start": {
+            "args": [],
+            "command": "start",
+            "help": "Start an existing app",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "stop": {
+            "args": [],
+            "command": "stop",
+            "help": "Stop an app",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "update": {
+            "args": [],
+            "command": "update",
+            "help": "Perform several updates on parts of an App's spec",
+            "options": {
+              "--image": {
+                "help": "<IMAGE>",
+                "name": "--image"
+              },
+              "--max-surge": {
+                "help": "<MAX_SURGE>",
+                "name": "--max-surge"
+              },
+              "--max-unavailable": {
+                "help": "<MAX_UNAVAILABLE>",
+                "name": "--max-unavailable"
+              },
+              "--progress-deadline-seconds": {
+                "help": "<PROGRESS_DEADLINE_SECONDS>",
+                "name": "--progress-deadline-seconds"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "bucket": {
+        "args": [],
+        "command": "bucket",
+        "help": "Subcommand to manage data in object storage containers",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "create": {
+            "args": [],
+            "command": "create",
+            "help": "Create a container in a remote Object Storage [aliases: new]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Delete containers from a remote Object Storage [aliases: remove, rm, del]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>      Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List containers in a remote Object Storage [aliases: ls]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "object": {
+            "args": [],
+            "command": "object",
+            "help": "Sub commands on remote Object Storage containers content",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "copy": {
+                "args": [],
+                "command": "copy",
+                "help": "Copy an object within a data store [aliases: cp]",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>          Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "delete": {
+                "args": [],
+                "command": "delete",
+                "help": "Delete objects from a container [aliases: remove, rm, del]",
+                "options": {
+                  "--json": {
+                    "help": "Output json progress",
+                    "name": "--json"
+                  },
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>      Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "download": {
+                "args": [],
+                "command": "download",
+                "help": "Download data from a container [aliases: pull]",
+                "options": {
+                  "--create": {
+                    "help": "Create container if it does not exist",
+                    "name": "--create"
+                  },
+                  "--delete": {
+                    "help": "Should also delete files locally if they are not present on remote. !!WARNING!! we strongly advise to use `--dry-run` once before launching this command for real, also see the `--trash` option",
+                    "name": "--delete"
+                  },
+                  "--dry-run": {
+                    "help": "Doesn't execute anything but display what actions would be done if this flag was not set",
+                    "name": "--dry-run"
+                  },
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--no-overwrite": {
+                    "help": "Do not overwrite files",
+                    "name": "--no-overwrite"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>                  Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  },
+                  "--trash": {
+                    "help": "<TRASH>                  Move files to this folder instead of deleting them, to be used with `--delete`",
+                    "name": "--trash"
+                  },
+                  "--untar": {
+                    "help": "Uncompress given archive from object store",
+                    "name": "--untar"
+                  }
+                },
+                "subcommands": {}
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              },
+              "list": {
+                "args": [],
+                "command": "list",
+                "help": "List objects in a container [aliases: ls]",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "move": {
+                "args": [],
+                "command": "move",
+                "help": "Move an object within a data store [aliases: mv]",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>          Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "upload": {
+                "args": [],
+                "command": "upload",
+                "help": "Upload local data to a container [aliases: push]",
+                "options": {
+                  "--delete": {
+                    "help": "Should also delete files in remote storage that are not present locally. !!WARNING!! we strongly advise to use `--dry-run` once before launching this command for real, also see the `--trash` option",
+                    "name": "--delete"
+                  },
+                  "--dry-run": {
+                    "help": "Doesn't execute anything but display what actions would be done if this flag was not set",
+                    "name": "--dry-run"
+                  },
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--no-overwrite": {
+                    "help": "Do not overwrite objects",
+                    "name": "--no-overwrite"
+                  },
+                  "--tar": {
+                    "help": "<TAR>                      Compress all paths inside a tar archive before uploading it",
+                    "name": "--tar"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>                  Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  },
+                  "--trash": {
+                    "help": "<TRASH>                  Move files to this container and folder instead of deleting them, to be used with `--delete` (eg. `--trash trash_container/job1/`)",
+                    "name": "--trash"
+                  }
+                },
+                "subcommands": {}
+              }
+            }
+          }
+        }
+      },
+      "capabilities": {
+        "args": [],
+        "command": "capabilities",
+        "help": "Subcommand to list available capabilities, like GPU models",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "app": {
+            "args": [],
+            "command": "app",
+            "help": "Get list of partner images available for AI Deploy Apps",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              },
+              "list": {
+                "args": [],
+                "command": "list",
+                "help": "List of partner images available for AI Deploy Apps [aliases: ls]",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              }
+            }
+          },
+          "editor": {
+            "args": [],
+            "command": "editor",
+            "help": "Get list of editors for notebooks",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "get": {
+                "args": [],
+                "command": "get",
+                "help": "Get notebook editor information",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              },
+              "list": {
+                "args": [],
+                "command": "list",
+                "help": "List available notebook editors [aliases: ls]",
+                "options": {
+                  "--compatible-with-framework": {
+                    "help": "<COMPATIBLE_WITH_FRAMEWORK>",
+                    "name": "--compatible-with-framework"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              }
+            }
+          },
+          "flavor": {
+            "args": [],
+            "command": "flavor",
+            "help": "Get list of flavors available",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "get": {
+                "args": [],
+                "command": "get",
+                "help": "Get flavor information",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              },
+              "list": {
+                "args": [],
+                "command": "list",
+                "help": "List available flavors [aliases: ls]",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              }
+            }
+          },
+          "framework": {
+            "args": [],
+            "command": "framework",
+            "help": "Get list of frameworks for notebooks",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "get": {
+                "args": [],
+                "command": "get",
+                "help": "Get notebook framework information",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              },
+              "list": {
+                "args": [],
+                "command": "list",
+                "help": "List available notebook frameworks [aliases: ls]",
+                "options": {
+                  "--compatible-with-editor": {
+                    "help": "<COMPATIBLE_WITH_EDITOR>",
+                    "name": "--compatible-with-editor"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              }
+            }
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "quota": {
+            "args": [],
+            "command": "quota",
+            "help": "Get list of quota for the project which we are authenticated for",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "completion": {
+        "args": [],
+        "command": "completion",
+        "help": "Subcommand to output shell completion code for the specified shell",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {}
+      },
+      "config": {
+        "args": [],
+        "command": "config",
+        "help": "Subcommand to manage configurations of ovhai",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List of available configurations [aliases: ls]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "set": {
+            "args": [],
+            "command": "set",
+            "help": "",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "set-files-segment-size": {
+            "args": [],
+            "command": "set-files-segment-size",
+            "help": "",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "data": {
+        "args": [],
+        "command": "data",
+        "help": "Subcommand to upload or download data",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "copy": {
+            "args": [],
+            "command": "copy",
+            "help": "Copy an object in a remote Object Storage",
+            "options": {
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Delete container or objects from a remote Object Storage",
+            "options": {
+              "--disable-wizard": {
+                "help": "if set true, does not prompt user for credentials if remote server did not return them upon data actions",
+                "name": "--disable-wizard"
+              },
+              "--json": {
+                "help": "Output json progress",
+                "name": "--json"
+              },
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>      Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "download": {
+            "args": [],
+            "command": "download",
+            "help": "Download data from a remote Object Storage to a local file or folder",
+            "options": {
+              "--create": {
+                "help": "Create container if it does not exist",
+                "name": "--create"
+              },
+              "--delete": {
+                "help": "Should also delete files locally if they are not present on remote. !!WARNING!! we strongly advise to use `--dry-run` once before launching this command for real, also see the `--trash` option",
+                "name": "--delete"
+              },
+              "--disable-wizard": {
+                "help": "if set true, does not prompt user for credentials if remote server did not return them upon data actions",
+                "name": "--disable-wizard"
+              },
+              "--dry-run": {
+                "help": "Doesn't execute anything but display what actions would be done if this flag was not set",
+                "name": "--dry-run"
+              },
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--no-overwrite": {
+                "help": "Do not overwrite files",
+                "name": "--no-overwrite"
+              },
+              "--token": {
+                "help": "<TOKEN>                  Authentication using Token rather than OAuth",
+                "name": "--token"
+              },
+              "--trash": {
+                "help": "<TRASH>                  Move files to this folder instead of deleting them, to be used with `--delete`",
+                "name": "--trash"
+              },
+              "--untar": {
+                "help": "Uncompress given archive from object store",
+                "name": "--untar"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List containers or objects in a remote Object Storage [aliases: ls]",
+            "options": {
+              "--disable-wizard": {
+                "help": "if set true, does not prompt user for credentials if remote server did not return them upon data actions",
+                "name": "--disable-wizard"
+              },
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "move": {
+            "args": [],
+            "command": "move",
+            "help": "Move an object in a remote Object Storage",
+            "options": {
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "region": {
+            "args": [],
+            "command": "region",
+            "help": "List available regions for Object Storage data",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "store": {
+            "args": [],
+            "command": "store",
+            "help": "Manage data stores",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "add": {
+                "args": [],
+                "command": "add",
+                "help": "Add a data store",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {
+                  "git": {
+                    "args": [],
+                    "command": "git",
+                    "help": "Add a Git data store",
+                    "options": {
+                      "--no-color": {
+                        "help": "Remove colors from output",
+                        "name": "--no-color"
+                      },
+                      "--token": {
+                        "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                        "name": "--token"
+                      }
+                    },
+                    "subcommands": {
+                      "help": {
+                        "args": [],
+                        "command": "help",
+                        "help": "Print this message or the help of the given subcommand(s)",
+                        "options": {},
+                        "subcommands": {}
+                      },
+                      "http": {
+                        "args": [],
+                        "command": "http",
+                        "help": "Add a HTTP Git data store",
+                        "options": {
+                          "--no-color": {
+                            "help": "Remove colors from output",
+                            "name": "--no-color"
+                          },
+                          "--password-from-env": {
+                            "help": "<VARIABLE>  Read password from an environment variable",
+                            "name": "--password-from-env"
+                          },
+                          "--password-from-stdin": {
+                            "help": "Read password from standard input",
+                            "name": "--password-from-stdin"
+                          },
+                          "--store-credentials-locally": {
+                            "help": "Whether or not to store the data store credentials locally when creating or updating a data store",
+                            "name": "--store-credentials-locally"
+                          },
+                          "--token": {
+                            "help": "<TOKEN>                 Authentication using Token rather than OAuth",
+                            "name": "--token"
+                          }
+                        },
+                        "subcommands": {}
+                      },
+                      "ssh": {
+                        "args": [],
+                        "command": "ssh",
+                        "help": "Add an SSH Git data store",
+                        "options": {
+                          "--no-color": {
+                            "help": "Remove colors from output",
+                            "name": "--no-color"
+                          },
+                          "--private-key-from-env": {
+                            "help": "<VARIABLE>  Read private key from an environment variable",
+                            "name": "--private-key-from-env"
+                          },
+                          "--private-key-from-stdin": {
+                            "help": "Read private key from standard input",
+                            "name": "--private-key-from-stdin"
+                          },
+                          "--token": {
+                            "help": "<TOKEN>                    Authentication using Token rather than OAuth",
+                            "name": "--token"
+                          }
+                        },
+                        "subcommands": {}
+                      }
+                    }
+                  },
+                  "help": {
+                    "args": [],
+                    "command": "help",
+                    "help": "Print this message or the help of the given subcommand(s)",
+                    "options": {},
+                    "subcommands": {}
+                  }
+                }
+              },
+              "get": {
+                "args": [],
+                "command": "get",
+                "help": "Get a data store",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              },
+              "list": {
+                "args": [],
+                "command": "list",
+                "help": "List available data stores [aliases: ls]",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "remove": {
+                "args": [],
+                "command": "remove",
+                "help": "Delete an existing data store [aliases: rm]",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "update": {
+                "args": [],
+                "command": "update",
+                "help": "Update an existing data store",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {
+                  "git": {
+                    "args": [],
+                    "command": "git",
+                    "help": "Update an existing Git data store",
+                    "options": {
+                      "--no-color": {
+                        "help": "Remove colors from output",
+                        "name": "--no-color"
+                      },
+                      "--token": {
+                        "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                        "name": "--token"
+                      }
+                    },
+                    "subcommands": {
+                      "help": {
+                        "args": [],
+                        "command": "help",
+                        "help": "Print this message or the help of the given subcommand(s)",
+                        "options": {},
+                        "subcommands": {}
+                      },
+                      "http": {
+                        "args": [],
+                        "command": "http",
+                        "help": "Update a HTTP Git data store",
+                        "options": {
+                          "--no-color": {
+                            "help": "Remove colors from output",
+                            "name": "--no-color"
+                          },
+                          "--password-from-env": {
+                            "help": "<VARIABLE>  Read password from an environment variable",
+                            "name": "--password-from-env"
+                          },
+                          "--password-from-stdin": {
+                            "help": "Read password from standard input",
+                            "name": "--password-from-stdin"
+                          },
+                          "--store-credentials-locally": {
+                            "help": "Whether or not to store the data store credentials locally when creating or updating a data store",
+                            "name": "--store-credentials-locally"
+                          },
+                          "--token": {
+                            "help": "<TOKEN>                 Authentication using Token rather than OAuth",
+                            "name": "--token"
+                          }
+                        },
+                        "subcommands": {}
+                      },
+                      "ssh": {
+                        "args": [],
+                        "command": "ssh",
+                        "help": "Update an SSH Git data store",
+                        "options": {
+                          "--no-color": {
+                            "help": "Remove colors from output",
+                            "name": "--no-color"
+                          },
+                          "--private-key-from-env": {
+                            "help": "<VARIABLE>  Read private key from an environment variable",
+                            "name": "--private-key-from-env"
+                          },
+                          "--private-key-from-stdin": {
+                            "help": "Read private key from standard input",
+                            "name": "--private-key-from-stdin"
+                          },
+                          "--token": {
+                            "help": "<TOKEN>                    Authentication using Token rather than OAuth",
+                            "name": "--token"
+                          }
+                        },
+                        "subcommands": {}
+                      }
+                    }
+                  },
+                  "help": {
+                    "args": [],
+                    "command": "help",
+                    "help": "Print this message or the help of the given subcommand(s)",
+                    "options": {},
+                    "subcommands": {}
+                  }
+                }
+              }
+            }
+          },
+          "upload": {
+            "args": [],
+            "command": "upload",
+            "help": "Upload data from a local file or folder to a remote Object Storage",
+            "options": {
+              "--delete": {
+                "help": "Should also delete files in remote storage that are not present locally. !!WARNING!! we strongly advise to use `--dry-run` once before launching this command for real, also see the `--trash` option",
+                "name": "--delete"
+              },
+              "--disable-wizard": {
+                "help": "if set true, does not prompt user for credentials if remote server did not return them upon data actions",
+                "name": "--disable-wizard"
+              },
+              "--dry-run": {
+                "help": "Doesn't execute anything but display what actions would be done if this flag was not set",
+                "name": "--dry-run"
+              },
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--no-overwrite": {
+                "help": "Do not overwrite objects",
+                "name": "--no-overwrite"
+              },
+              "--tar": {
+                "help": "<TAR>                      Compress all paths inside a tar archive before uploading it",
+                "name": "--tar"
+              },
+              "--token": {
+                "help": "<TOKEN>                  Authentication using Token rather than OAuth",
+                "name": "--token"
+              },
+              "--trash": {
+                "help": "<TRASH>                  Move files to this container and folder instead of deleting them, to be used with `--delete` (eg. `--trash trash_container/job1/`)",
+                "name": "--trash"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "datastore": {
+        "args": [],
+        "command": "datastore",
+        "help": "Subcommand to manage data stores",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "add": {
+            "args": [],
+            "command": "add",
+            "help": "Add a data store",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "git": {
+                "args": [],
+                "command": "git",
+                "help": "Add a Git data store",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {
+                  "help": {
+                    "args": [],
+                    "command": "help",
+                    "help": "Print this message or the help of the given subcommand(s)",
+                    "options": {},
+                    "subcommands": {}
+                  },
+                  "http": {
+                    "args": [],
+                    "command": "http",
+                    "help": "Add a HTTP Git data store",
+                    "options": {
+                      "--no-color": {
+                        "help": "Remove colors from output",
+                        "name": "--no-color"
+                      },
+                      "--password-from-env": {
+                        "help": "<VARIABLE>  Read password from an environment variable",
+                        "name": "--password-from-env"
+                      },
+                      "--password-from-stdin": {
+                        "help": "Read password from standard input",
+                        "name": "--password-from-stdin"
+                      },
+                      "--store-credentials-locally": {
+                        "help": "Whether or not to store the data store credentials locally when creating or updating a data store",
+                        "name": "--store-credentials-locally"
+                      },
+                      "--token": {
+                        "help": "<TOKEN>                 Authentication using Token rather than OAuth",
+                        "name": "--token"
+                      }
+                    },
+                    "subcommands": {}
+                  },
+                  "ssh": {
+                    "args": [],
+                    "command": "ssh",
+                    "help": "Add an SSH Git data store",
+                    "options": {
+                      "--no-color": {
+                        "help": "Remove colors from output",
+                        "name": "--no-color"
+                      },
+                      "--private-key-from-env": {
+                        "help": "<VARIABLE>  Read private key from an environment variable",
+                        "name": "--private-key-from-env"
+                      },
+                      "--private-key-from-stdin": {
+                        "help": "Read private key from standard input",
+                        "name": "--private-key-from-stdin"
+                      },
+                      "--token": {
+                        "help": "<TOKEN>                    Authentication using Token rather than OAuth",
+                        "name": "--token"
+                      }
+                    },
+                    "subcommands": {}
+                  }
+                }
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              }
+            }
+          },
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "Get a data store",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List available data stores [aliases: ls]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "remove": {
+            "args": [],
+            "command": "remove",
+            "help": "Delete an existing data store [aliases: rm]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "update": {
+            "args": [],
+            "command": "update",
+            "help": "Update an existing data store",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "git": {
+                "args": [],
+                "command": "git",
+                "help": "Update an existing Git data store",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {
+                  "help": {
+                    "args": [],
+                    "command": "help",
+                    "help": "Print this message or the help of the given subcommand(s)",
+                    "options": {},
+                    "subcommands": {}
+                  },
+                  "http": {
+                    "args": [],
+                    "command": "http",
+                    "help": "Update a HTTP Git data store",
+                    "options": {
+                      "--no-color": {
+                        "help": "Remove colors from output",
+                        "name": "--no-color"
+                      },
+                      "--password-from-env": {
+                        "help": "<VARIABLE>  Read password from an environment variable",
+                        "name": "--password-from-env"
+                      },
+                      "--password-from-stdin": {
+                        "help": "Read password from standard input",
+                        "name": "--password-from-stdin"
+                      },
+                      "--store-credentials-locally": {
+                        "help": "Whether or not to store the data store credentials locally when creating or updating a data store",
+                        "name": "--store-credentials-locally"
+                      },
+                      "--token": {
+                        "help": "<TOKEN>                 Authentication using Token rather than OAuth",
+                        "name": "--token"
+                      }
+                    },
+                    "subcommands": {}
+                  },
+                  "ssh": {
+                    "args": [],
+                    "command": "ssh",
+                    "help": "Update an SSH Git data store",
+                    "options": {
+                      "--no-color": {
+                        "help": "Remove colors from output",
+                        "name": "--no-color"
+                      },
+                      "--private-key-from-env": {
+                        "help": "<VARIABLE>  Read private key from an environment variable",
+                        "name": "--private-key-from-env"
+                      },
+                      "--private-key-from-stdin": {
+                        "help": "Read private key from standard input",
+                        "name": "--private-key-from-stdin"
+                      },
+                      "--token": {
+                        "help": "<TOKEN>                    Authentication using Token rather than OAuth",
+                        "name": "--token"
+                      }
+                    },
+                    "subcommands": {}
+                  }
+                }
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              }
+            }
+          }
+        }
+      },
+      "debug": {
+        "args": [],
+        "command": "debug",
+        "help": "Subcommand to debug a command executed by the cli",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {}
+      },
+      "feature": {
+        "args": [],
+        "command": "feature",
+        "help": "Subcommand to enable or disable features of ovhai",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "disable": {
+            "args": [],
+            "command": "disable",
+            "help": "Disable a feature",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "enable": {
+            "args": [],
+            "command": "enable",
+            "help": "Enable a feature",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List features [aliases: ls]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "framework": {
+        "args": [],
+        "command": "framework",
+        "help": "Subcommand to manage frameworks",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "create": {
+            "args": [],
+            "command": "create",
+            "help": "Create a new framework",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>              Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Delete a framework",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "Get a framework",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List all frameworks",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "update": {
+            "args": [],
+            "command": "update",
+            "help": "Update a framework",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>              Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "help": {
+        "args": [],
+        "command": "help",
+        "help": "Print this message or the help of the given subcommand(s)",
+        "options": {},
+        "subcommands": {}
+      },
+      "job": {
+        "args": [],
+        "command": "job",
+        "help": "Subcommand to manage jobs",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Permanently delete a job. Prompt for user confirmation if still running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "exec": {
+            "args": [],
+            "command": "exec",
+            "help": "Execute a command in a job's container",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "Get job status",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List jobs status [aliases: ls]",
+            "options": {
+              "--order": {
+                "help": "<ORDER>",
+                "name": "--order"
+              },
+              "--page-index": {
+                "help": "<PAGE_INDEX>",
+                "name": "--page-index"
+              },
+              "--page-size": {
+                "help": "<PAGE_SIZE>",
+                "name": "--page-size"
+              },
+              "--sort": {
+                "help": "<SORT>",
+                "name": "--sort"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              },
+              "--updated-after": {
+                "help": "<UPDATED_AFTER>",
+                "name": "--updated-after"
+              },
+              "--updated-before": {
+                "help": "<UPDATED_BEFORE>",
+                "name": "--updated-before"
+              }
+            },
+            "subcommands": {}
+          },
+          "logs": {
+            "args": [],
+            "command": "logs",
+            "help": "Print job logs",
+            "options": {
+              "--from": {
+                "help": "<FROM>    Specify the source of the log to get",
+                "name": "--from"
+              },
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--no-timestamp": {
+                "help": "Choose to display the timestamp or not",
+                "name": "--no-timestamp"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "patch": {
+            "args": [],
+            "command": "patch",
+            "help": "Patch an existing job spec",
+            "options": {
+              "--restart-on-timeout": {
+                "help": "[<RESTART_ON_TIMEOUT>]",
+                "name": "--restart-on-timeout"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "pull-data": {
+            "args": [],
+            "command": "pull-data",
+            "help": "Pull data from the Object Storage to the job while the job is running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "push-data": {
+            "args": [],
+            "command": "push-data",
+            "help": "Push data from the job to the Object Storage while the job is running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "remove-label": {
+            "args": [],
+            "command": "remove-label",
+            "help": "Remove a label",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "rerun": {
+            "args": [],
+            "command": "rerun",
+            "help": "Run a new job based on an older job spec",
+            "options": {
+              "--restart-on-timeout": {
+                "help": "[<RESTART_ON_TIMEOUT>]",
+                "name": "--restart-on-timeout"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "run": {
+            "args": [],
+            "command": "run",
+            "help": "Run a new job",
+            "options": {
+              "--restart-on-timeout": {
+                "help": "[<RESTART_ON_TIMEOUT>]",
+                "name": "--restart-on-timeout"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "set-label": {
+            "args": [],
+            "command": "set-label",
+            "help": "Create or update a label",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "stop": {
+            "args": [],
+            "command": "stop",
+            "help": "Stop a job",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "login": {
+        "args": [],
+        "command": "login",
+        "help": "Login into OVHcloud AI Training platform on the current region",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--password-from-env": {
+            "help": "<VARIABLE>  Read password from an environment variable",
+            "name": "--password-from-env"
+          },
+          "--password-from-stdin": {
+            "help": "Read password from standard input",
+            "name": "--password-from-stdin"
+          },
+          "--token": {
+            "help": "<TOKEN>                 Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {}
+      },
+      "logout": {
+        "args": [],
+        "command": "logout",
+        "help": "Logout from OVHcloud AI Training platform from all regions",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {}
+      },
+      "me": {
+        "args": [],
+        "command": "me",
+        "help": "Me from OVHcloud AI Training platform",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>    Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {}
+      },
+      "notebook": {
+        "args": [],
+        "command": "notebook",
+        "help": "Subcommand to manage notebooks",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "backup": {
+            "args": [],
+            "command": "backup",
+            "help": "Manage backups",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {
+              "fork": {
+                "args": [],
+                "command": "fork",
+                "help": "Create a new notebook from one of its backup",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "get": {
+                "args": [],
+                "command": "get",
+                "help": "Get a notebook backup",
+                "options": {
+                  "--no-color": {
+                    "help": "Remove colors from output",
+                    "name": "--no-color"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                    "name": "--token"
+                  }
+                },
+                "subcommands": {}
+              },
+              "help": {
+                "args": [],
+                "command": "help",
+                "help": "Print this message or the help of the given subcommand(s)",
+                "options": {},
+                "subcommands": {}
+              },
+              "list": {
+                "args": [],
+                "command": "list",
+                "help": "List backups for a notebook [aliases: ls]",
+                "options": {
+                  "--order": {
+                    "help": "<ORDER>",
+                    "name": "--order"
+                  },
+                  "--page-index": {
+                    "help": "<PAGE_INDEX>",
+                    "name": "--page-index"
+                  },
+                  "--page-size": {
+                    "help": "<PAGE_SIZE>",
+                    "name": "--page-size"
+                  },
+                  "--sort": {
+                    "help": "<SORT>",
+                    "name": "--sort"
+                  },
+                  "--token": {
+                    "help": "<TOKEN>",
+                    "name": "--token"
+                  },
+                  "--updated-after": {
+                    "help": "<UPDATED_AFTER>",
+                    "name": "--updated-after"
+                  },
+                  "--updated-before": {
+                    "help": "<UPDATED_BEFORE>",
+                    "name": "--updated-before"
+                  }
+                },
+                "subcommands": {}
+              }
+            }
+          },
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Delete an existing notebook. Prompt for user confirmation if still running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "Get an existing notebook",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "Get existing notebooks [aliases: ls]",
+            "options": {
+              "--order": {
+                "help": "<ORDER>",
+                "name": "--order"
+              },
+              "--page-index": {
+                "help": "<PAGE_INDEX>",
+                "name": "--page-index"
+              },
+              "--page-size": {
+                "help": "<PAGE_SIZE>",
+                "name": "--page-size"
+              },
+              "--sort": {
+                "help": "<SORT>",
+                "name": "--sort"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              },
+              "--updated-after": {
+                "help": "<UPDATED_AFTER>",
+                "name": "--updated-after"
+              },
+              "--updated-before": {
+                "help": "<UPDATED_BEFORE>",
+                "name": "--updated-before"
+              }
+            },
+            "subcommands": {}
+          },
+          "patch": {
+            "args": [],
+            "command": "patch",
+            "help": "Patch an existing notebook",
+            "options": {
+              "--restart-on-timeout": {
+                "help": "[<RESTART_ON_TIMEOUT>]",
+                "name": "--restart-on-timeout"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              },
+              "--unsecure-http": {
+                "help": "<UNSECURE_HTTP>",
+                "name": "--unsecure-http"
+              }
+            },
+            "subcommands": {}
+          },
+          "pull-data": {
+            "args": [],
+            "command": "pull-data",
+            "help": "Pull data from the Object Storage to the notebook while the notebook is running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "push-data": {
+            "args": [],
+            "command": "push-data",
+            "help": "Push data from the notebook to the Object Storage while the notebook is running",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "remove-label": {
+            "args": [],
+            "command": "remove-label",
+            "help": "Remove a label",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "run": {
+            "args": [],
+            "command": "run",
+            "help": "Run a new notebook",
+            "options": {
+              "--framework-version": {
+                "help": "<FRAMEWORK_VERSION>",
+                "name": "--framework-version"
+              },
+              "--restart-on-timeout": {
+                "help": "[<RESTART_ON_TIMEOUT>]",
+                "name": "--restart-on-timeout"
+              },
+              "--token": {
+                "help": "<TOKEN>",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "set-label": {
+            "args": [],
+            "command": "set-label",
+            "help": "Create or update a label",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "start": {
+            "args": [],
+            "command": "start",
+            "help": "Start an existing notebook",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "stop": {
+            "args": [],
+            "command": "stop",
+            "help": "Stop an existing notebook",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "registry": {
+        "args": [],
+        "command": "registry",
+        "help": "Subcommand to manage private registries",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "add": {
+            "args": [],
+            "command": "add",
+            "help": "Add a private registry",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--password-from-env": {
+                "help": "<VARIABLE>  Read password from an environment variable",
+                "name": "--password-from-env"
+              },
+              "--password-from-stdin": {
+                "help": "Read password from standard input",
+                "name": "--password-from-stdin"
+              },
+              "--token": {
+                "help": "<TOKEN>                 Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Delete a private registry",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "Get private registry details",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List registries [aliases: ls]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "update": {
+            "args": [],
+            "command": "update",
+            "help": "Update a private registry",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--password-from-env": {
+                "help": "<VARIABLE>  Read password from an environment variable",
+                "name": "--password-from-env"
+              },
+              "--password-from-stdin": {
+                "help": "Read password from standard input",
+                "name": "--password-from-stdin"
+              },
+              "--token": {
+                "help": "<TOKEN>                 Authentication using Token rather than OAuth",
+                "name": "--token"
+              },
+              "--url": {
+                "help": "<URL>                     Docker registry URL",
+                "name": "--url"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "token": {
+        "args": [],
+        "command": "token",
+        "help": "Subcommand to manage application tokens",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "create": {
+            "args": [],
+            "command": "create",
+            "help": "Create an application token",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>                Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Delete an application token",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List application tokens [aliases: ls]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "renew": {
+            "args": [],
+            "command": "renew",
+            "help": "Renew an application token",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      },
+      "upgrade": {
+        "args": [],
+        "command": "upgrade",
+        "help": "Upgrade the CLI",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {}
+      },
+      "volume": {
+        "args": [],
+        "command": "volume",
+        "help": "Subcommand to manage user volumes",
+        "options": {
+          "--no-color": {
+            "help": "Remove colors from output",
+            "name": "--no-color"
+          },
+          "--token": {
+            "help": "<TOKEN>  Authentication using Token rather than OAuth",
+            "name": "--token"
+          }
+        },
+        "subcommands": {
+          "create": {
+            "args": [],
+            "command": "create",
+            "help": "Create a new volume",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "delete": {
+            "args": [],
+            "command": "delete",
+            "help": "Permanently delete a volume unless it's still used by other entities",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>  Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "get": {
+            "args": [],
+            "command": "get",
+            "help": "Get volume",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          },
+          "help": {
+            "args": [],
+            "command": "help",
+            "help": "Print this message or the help of the given subcommand(s)",
+            "options": {},
+            "subcommands": {}
+          },
+          "list": {
+            "args": [],
+            "command": "list",
+            "help": "List volumes [aliases: ls]",
+            "options": {
+              "--no-color": {
+                "help": "Remove colors from output",
+                "name": "--no-color"
+              },
+              "--token": {
+                "help": "<TOKEN>    Authentication using Token rather than OAuth",
+                "name": "--token"
+              }
+            },
+            "subcommands": {}
+          }
+        }
+      }
+    }
+  }
+}

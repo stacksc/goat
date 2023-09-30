@@ -29,7 +29,7 @@ setup(
     author='centerupt@gmail.com',
     url='https://github.com/stacksc/goat',
     packages=find_packages(),
-    package_data={'goatshell': ['data/oci.json', 'data/aws.json', 'data/gcloud.json', 'data/az.json', 'data/goat.json', 'data/aliyun.json', 'data/ibmcloud.json']},
+    package_data={'goatshell': ['data/ovhai.json', 'data/oci.json', 'data/aws.json', 'data/gcloud.json', 'data/az.json', 'data/goat.json', 'data/aliyun.json', 'data/ibmcloud.json']},
     zip_safe=False,
     install_requires=requires,
     entry_points={

@@ -142,7 +142,7 @@ class CustomKeyBindings(KeyBindings):
 
 # Define the main Goatshell class
 class Goatshell(object):
-    CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun']
+    CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun', 'ovhai']
 
     def __init__(self, app, completer, parser, toolbar_message=None):
         getLayout()

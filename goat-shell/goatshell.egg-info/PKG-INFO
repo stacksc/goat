@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2023.9.30.1621
+Version: 2023.9.30.2029
 Summary: goatshell - goat shell interface to common cloud providers.
 Home-page: https://github.com/stacksc/goat
 Author: centerupt@gmail.com
@@ -74,21 +74,13 @@ Requires-Dist: aws2
 │                                                                                                     Purpose: Cloud Wrapper                                                                                                     │
 │                                                                                             TIP: resource completion coming soon!                                                                                              │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-┌────────| Hotkeys |─────────┐┌─────────────| Advanced |─────────────┐┌────────| Commands |────────┐
-│[F9]  Toggle VI mode        ││history   : shell history             ││e|exit    : exit shell      │
-│[F10] Toggle Profile        ││!<cmd>    : run OS command            ││c|clear   : clear screen    │
-│[TAB] Fuzzy Complete        ││cloud     : view cloud details        ││h|help    : display usage   │
-└────────────────────────────┘└──────────────────────────────────────┘└────────────────────────────┘
-
-    Auto-Completion Instructions:
-    ----------------------------
-    1. To trigger auto-completion, start with TAB or type the beginning of a command or option and press Tab.
-    2. Auto-completion will suggest available commands, options, and arguments based on your input.
-    3. Use the arrow keys or Tab to navigate through the suggestions.
-    4. Press Enter to accept a suggestion or Esc to cancel.
-    5. If an option requires a value, use --option=value instead of --option value.
-    6. The prompt will change dynamically based on cloud provider interaction.
-
+┌──────────────────| Hotkeys |───────────────────┐┌──────────────────| Commands |──────────────────┐
+│[F8]  Toggle Provider                           ││e|exit    : exit shell                          │
+│[F9]  Toggle Profile                            ││c|clear   : clear screen                        │
+│[F10] Toggle VIM                                ││h|help    : display usage                       │
+│[F12] Toggle Safety Mode                        ││history   : shell history                       │
+│[TAB] Fuzzy Complete                            ││cloud     : cloud details                       │
+└────────────────────────────────────────────────┘└────────────────────────────────────────────────┘
 [oci:DEFAULT]>
 ```
 
@@ -106,7 +98,7 @@ This keeps the command line clean with the cloud providers you only work with.
 <br><br>
 The following cloud providers are currently supported:
 <br>
-<img width="777" alt="image" src="https://github.com/stacksc/goat/assets/116677370/faea14fd-0aba-42ec-93d2-9325614cffcd">
+<img width="918" alt="image" src="https://github.com/stacksc/goat/assets/116677370/c4bbe737-cda0-4174-9659-4a2960b80439">
 
 ## Toolbar
 The toolbar will refresh after hitting the ENTER key or with specific hotkeys.
@@ -176,6 +168,12 @@ The only toggle currently supported is profile switching. Everything else is dyn
             <td>Supported / Manual Installation</td>
             <td><a href="https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli">Installation Guide</a></td>
         </tr>
+       <tr>
+          <td>7</td>
+          <td>OVHCLOUD & AI</td>
+          <td>Supported / Manual Installation</td>
+          <td> <a href="https://cli.bhs.ai.cloud.ovh.net/">Installation Guide</a></td>
+       </tr>
     </tbody>
 </table>
 

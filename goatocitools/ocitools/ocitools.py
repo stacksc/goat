@@ -26,6 +26,8 @@ MESSAGE="OCI CLI Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.U
 def CLI(ctx, profile_name, region, cache):
     ctx.ensure_object(dict)
     ctx.obj['PROFILE'] = profile_name
+    if region is None:
+        region = 'us-ashburn-1'
     ctx.obj['REGION'] = region
     if cache is True:
         force_cache(profile_name, region)

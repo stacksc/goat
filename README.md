@@ -14,6 +14,7 @@ Please open an issue, leave comments, or even a thumbs up on the project goes a 
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#hlo">HLO</a></li>
+    <li><a href="#showcase">Gallery</a></li>
     <li><a href="#about-the-project">About The Project</a>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -41,6 +42,11 @@ Please open an issue, leave comments, or even a thumbs up on the project goes a 
 The presented project is currently undergoing significant development efforts.
 
 This initiative revolves around establishing seamless communication with a diverse array of APIs, including prominent platforms such as Slack, JIRA, and Jenkins. It doesn't stop there – the project extends its reach to encompass major public cloud providers such as GCP, OCI, AWS, and Azure. The primary goal is to simplify by streamlining credential and configuration management.
+
+<!-- SHOWCASE -->
+## Showcase
+
+https://vimeo.com/showcase/10685985
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project

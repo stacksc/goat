@@ -86,9 +86,10 @@ def parse_az_help(output):
                 if option_description:
                     option_parts = option_description.split(":", 1)
                     if len(option_parts) == 2:
-                        option_name = option_parts[0].strip()
+                        option_name = option_parts[0].strip().split()[0]  # Take the first part as the option name
                         option_description = option_parts[1].strip()
-                        parsed_data["options"][option_name] = {"help": option_description}
+                        if option_name.startswith("--"):
+                            parsed_data["options"][option_name] = {"help": option_description}
                 option_description = line
             else:
                 # Append to the existing option description
@@ -113,14 +114,14 @@ def parse_az_help(output):
     if option_description and option_description.startswith("--"):
         option_parts = option_description.split(":", 1)
         if len(option_parts) == 2:
-            option_name = option_parts[0].strip()
+            option_name = option_parts[0].strip().split()[0]  # Take the first part as the option name
             option_description = option_parts[1].strip()
-            parsed_data["options"][option_name] = {"help": option_description}
+            if option_name.startswith("--"):
+                parsed_data["options"][option_name] = {"help": option_description}
 
     # Use the captured command description as the "help" field
     parsed_data["help"] = command_description
     return parsed_data
-
 
 def recursive_parse(command, parent_data, stop_condition=None):
     subcommands_to_remove = []

@@ -66,6 +66,9 @@ This keeps the command line clean with the cloud providers you only work with.
 The following cloud providers are currently supported:
 <br>
 <img width="918" alt="image" src="https://github.com/stacksc/goat/assets/116677370/c4bbe737-cda0-4174-9659-4a2960b80439">
+<br>
+The following demonstrates the top-level commands for Azure.
+<img width="3164" alt="image" src="https://github.com/stacksc/goat/assets/116677370/469cdcc7-3c92-4bf4-b8db-08e80a589757">
 
 ## Toolbar
 The toolbar will refresh after hitting the ENTER key or with specific hotkeys.

@@ -29,6 +29,23 @@ def fix_json_structure(data):
             data.update(subcommand)
     return data
 
+# Function to clean up description text
+def clean_description(description):
+    if ":" in description:
+        _, cleaned_description = description.split(":", 1)
+        # Split cleaned_description by newline characters and take the first part
+        return cleaned_description.split('\n')[0].strip()
+    return description.strip()
+
+# Recursive function to process subcommands and clean "help" fields
+def process_subcommands(data):
+    if "subcommands" in data:
+        for subcommand_name, subcommand_data in data["subcommands"].items():
+            # Recursively process subcommands
+            process_subcommands(subcommand_data)
+            # Clean up the "help" field
+            subcommand_data["help"] = clean_description(subcommand_data.get("help", ""))
+
 # Iterate through each JSON file in the directory
 for filename in os.listdir(json_directory):
     if filename.endswith(".json"):
@@ -40,6 +57,11 @@ for filename in os.listdir(json_directory):
                 data = fix_json_structure(data)
                 command = data.get("command")
                 if command:
+                    # Clean up description field for top-level command
+                    description = data.get("help", "")
+                    data["help"] = clean_description(description)
+                    # Recursively clean "help" fields for subcommands
+                    process_subcommands(data)
                     combined_data["az"]["subcommands"][command] = data
             except json.JSONDecodeError as e:
                 print(f"Skipping {filename} due to JSON decode error: {e}")

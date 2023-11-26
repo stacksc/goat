@@ -100,4 +100,3 @@ with open("goat_command_tree.json", "w") as f:
     json.dump(initial_data, f, indent=4)
 
 print("Data has been saved to goat_command_tree.json")
-

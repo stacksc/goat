@@ -1,0 +1,10 @@
+pyproject.toml
+aztools/__init__.py
+aztools/aztools.py
+aztools/extract.py
+goataztools.egg-info/PKG-INFO
+goataztools.egg-info/SOURCES.txt
+goataztools.egg-info/dependency_links.txt
+goataztools.egg-info/entry_points.txt
+goataztools.egg-info/requires.txt
+goataztools.egg-info/top_level.txt

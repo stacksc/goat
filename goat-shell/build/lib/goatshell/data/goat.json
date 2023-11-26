@@ -342,7 +342,45 @@
                         "help": "display configuration data for awstools and awscli"
                     }
                 },
-                "help": "AWS CLI ClientCurrent Profile: DEFAULT..."
+                "help": "AWS CLI ClientCurrent Profile: CENTERUPT..."
+            },
+            "az": {
+                "command": "az",
+                "args": [],
+                "options": {
+                    "-h": {
+                        "name": "-h",
+                        "help": "--help  Show this message and exit."
+                    }
+                },
+                "subcommands": {
+                    "extract": {
+                        "command": "extract",
+                        "args": [],
+                        "options": {
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help  Show this message and exit."
+                            }
+                        },
+                        "subcommands": {
+                            "commands": {
+                                "command": "commands",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "manually refresh the Azure CLI command tree"
+                            }
+                        },
+                        "help": "extract the command tree for Azure CLI"
+                    }
+                },
+                "help": "AZ CLI ClientCurrent Profile: DEFAULT..."
             },
             "configs": {
                 "command": "configs",
@@ -360,7 +398,7 @@
                 "subcommands": {
                     "show": {
                         "command": "show",
-                        "args": ["awstools", "ocitools", "slacktools", "jenkinstools", "jiratools"],
+                        "args": [],
                         "options": {
                             "-n": {
                                 "name": "-n",
@@ -1841,7 +1879,7 @@
                         "help": "module to manage vaults"
                     }
                 },
-                "help": "OCI CLI ClientCurrent Profile: CENTERUPT..."
+                "help": "OCI CLI ClientCurrent Profile: DEFAULT..."
             },
             "slack": {
                 "command": "slack",

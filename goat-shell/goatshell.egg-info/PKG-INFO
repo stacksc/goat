@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2023.11.25.151
+Version: 2023.11.25.1936
 Summary: goatshell - goat shell interface to common cloud providers.
 Author-email: Christopher Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
@@ -95,6 +95,8 @@ This keeps the command line clean with the cloud providers you only work with.
 The following cloud providers are currently supported:
 <br>
 <img width="918" alt="image" src="https://github.com/stacksc/goat/assets/116677370/c4bbe737-cda0-4174-9659-4a2960b80439">
+<br>
+The latest goat-shell version holds all JSON data per cloud, correctly nested based on the cloud provider.
 
 ## Toolbar
 The toolbar will refresh after hitting the ENTER key or with specific hotkeys.

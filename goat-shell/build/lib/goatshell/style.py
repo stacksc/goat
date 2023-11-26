@@ -20,5 +20,6 @@ styles = {
     'bottom-toolbar': 'bg:#ffffff #000000',
     'bottom-toolbar-red': 'bg:#ff0000 #000000',
     'success-text': 'bold',
-    'failure-text': 'bg:#ff0000 #000000 bold'   # black background with red text
+    'failure-text': 'bg:#ff0000 #000000 bold',   # black background with red text
+    '': 'ansicyan'
 }

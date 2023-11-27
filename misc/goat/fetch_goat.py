@@ -2,6 +2,15 @@
 import subprocess
 import json
 import re
+from pathlib import Path
+import signal
+import atexit
+
+def get_save_path(filename="goat.json"):
+    user_home = Path.home()
+    goat_shell_data_path = user_home / "goat" / "shell" / "data"
+    goat_shell_data_path.mkdir(parents=True, exist_ok=True) # create directory if doesn't exist
+    return goat_shell_data_path / filename
 
 # Function to run 'goat' command and fetch its help info
 def run_goat_help(command):
@@ -51,7 +60,6 @@ def parse_goat_help(output):
     return parsed_data
 
 # Recursive function to traverse the command tree
-# Recursive function to traverse the command tree
 def recursive_parse(command, parent_data):
     output = run_goat_help(command)
     parsed_data = parse_goat_help(output)
@@ -88,6 +96,31 @@ def recursive_parse(command, parent_data):
 
     return parsed_data
 
+def cleanup(filename="goat.json"):
+    save_path = get_save_path(filename)
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+def prompt_user_to_continue():
+    """Prompts the user to decide if they want to continue the process."""
+    print("INFO: this process will take approximately 15 minutes to complete.")
+    choice = input("INFO: do you want to continue? [yes/no]: ").strip().lower()
+
+    if choice == "yes":
+        return True
+    elif choice == "no":
+        return False
+    else:
+        print("INFO: invalid choice. Please enter 'yes' or 'no'.")
+        return prompt_user_to_continue()  # Recursively ask until a valid choice is made.
+
+# Register cleanup function to handle the SIGINT (Ctrl_C) and SIGTERM signals
+signal.signal(signal.SIGINT, lambda signum, frame: (cleanup(), sys.exit(1)))
+signal.signal(signal.SIGTERM, lambda signum, frame: (cleanup(), sys.exit(1)))
+
+if not prompt_user_to_continue():
+    print("INFO: exiting the script now...")
+    exit()
 
 # Initialize data structure
 initial_data = {"Options": [], "Commands": {}}
@@ -99,4 +132,59 @@ recursive_parse("", initial_data)
 with open("goat_command_tree.json", "w") as f:
     json.dump(initial_data, f, indent=4)
 
-print("Data has been saved to goat_command_tree.json")
+print("INFO: initial data has been saved to goat_command_tree.json")
+
+# Function to process the JSON structure and convert it to the desired format
+def process_json(input_data, output_data):
+    if "Options" in input_data:
+        options = input_data["Options"]
+        formatted_options = {}
+        for option in options:
+            option_name = option["option"].strip(",")
+            formatted_option = {
+                "name": option_name,
+                "help": option["description"]
+            }
+            formatted_options[option_name] = formatted_option
+        output_data["options"] = formatted_options
+
+    if "Commands" in input_data:
+        for command, data in input_data["Commands"].items():
+            subcommand_data = {
+                "command": command,
+                "args": [],
+                "options": {},
+                "subcommands": {}
+            }
+
+            if "description" in data:
+                subcommand_data["help"] = data["description"]
+
+            process_json(data, subcommand_data)
+
+            output_data["subcommands"][command] = subcommand_data
+
+# Load the JSON data from the input file
+input_file = "goat_command_tree.json"
+with open(input_file, "r") as f:
+    input_data = json.load(f)
+
+# Initialize the output data
+output_data = {
+    "goat": {
+        "command": "goat",
+        "args": [],
+        "options": {},
+        "subcommands": {}
+    }
+}
+
+# Process the JSON data
+process_json(input_data, output_data["goat"])
+
+# Write the processed data to a new JSON file
+output_file = get_save_path()
+with open(output_file, "w") as f:
+    json.dump(output_data, f, indent=4)
+
+print("INFO: data has been saved to", output_file)

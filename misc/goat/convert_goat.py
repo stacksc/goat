@@ -55,4 +55,3 @@ with open(output_file, "w") as f:
     json.dump(output_data, f, indent=4)
 
 print("Data has been saved to", output_file)
-

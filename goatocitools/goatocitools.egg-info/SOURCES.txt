@@ -13,6 +13,8 @@ ocitools/compute.py
 ocitools/computeclient.py
 ocitools/dbs.py
 ocitools/dbsclient.py
+ocitools/extract.py
+ocitools/get_oci_commands.py
 ocitools/iam.py
 ocitools/iam_nongc.py
 ocitools/iamclient.py

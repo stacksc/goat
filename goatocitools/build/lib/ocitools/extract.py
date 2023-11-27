@@ -12,6 +12,7 @@ from subprocess import Popen, PIPE, CalledProcessError
 from pathlib import Path
 import signal
 import atexit
+from toolbox.misc import set_terminal_width
 
 lock = Lock()
 use_bold = True
@@ -258,27 +259,55 @@ def update_command_descriptions(command_tree, prefix_command=[]):
 
             update_command_descriptions(data, full_command_list)
 
-    def clean_subcommands(subcommands):
-        keys_to_remove = []
-        for key, value in subcommands.items():
-            if 'subcommands' in value:
-                nested_subcommands = value['subcommands']
-                if key in nested_subcommands:
-                    # Found a redundant subcommand entry; schedule it for removal.
-                    keys_to_remove.append((nested_subcommands, key))
-                    # Copy the values from the redundant entry to the parent.
-                    for inner_key, inner_value in nested_subcommands[key].items():
-                        if inner_key not in value:
-                            value[inner_key] = inner_value
-                # Recurse further to clean other subcommands
-                clean_subcommands(nested_subcommands)
-        # Actually remove the keys
-        for dictionary, key in keys_to_remove:
-            del dictionary[key]
+def clean_subcommands(subcommands):
+    keys_to_remove = []
+    for key, value in subcommands.items():
+        if 'subcommands' in value:
+            nested_subcommands = value['subcommands']
+            if key in nested_subcommands:
+                # Found a redundant subcommand entry; schedule it for removal.
+                keys_to_remove.append((nested_subcommands, key))
+                # Copy the values from the redundant entry to the parent.
+                for inner_key, inner_value in nested_subcommands[key].items():
+                    if inner_key not in value:
+                        value[inner_key] = inner_value
+            # Recurse further to clean other subcommands
+            clean_subcommands(nested_subcommands)
+    # Actually remove the keys
+    for dictionary, key in keys_to_remove:
+        del dictionary[key]
 
-if __name__ == "__main__":
+def prompt_user_to_continue():
+    """Prompts the user to decide if they want to continue the process."""
+    print("INFO: this process will take approximately 3-4 hours to complete.")
+    choice = input("INFO: do you want to continue? [yes/no]: ").strip().lower()
+
+    if choice == "yes":
+        return True
+    elif choice == "no":
+        return False
+    else:
+        print("INFO: invalid choice. Please enter 'yes' or 'no'.")
+        return prompt_user_to_continue()  # Recursively ask until a valid choice is made.
+
+@click.group('extract', invoke_without_command=True, help='extract the command tree for OCI CLI', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
+@click.pass_context
+def extract(ctx):
+    pass
+
+@extract.command(help='manually refresh the OCI CLI command tree', context_settings={'help_option_names':['-h','--help']})
+@click.pass_context
+def commands(ctx):
+    # Register cleanup function to handle the SIGINT (Ctrl_C) and SIGTERM signals
+    signal.signal(signal.SIGINT, lambda signum, frame: (cleanup(), sys.exit(1)))
+    signal.signal(signal.SIGTERM, lambda signum, frame: (cleanup(), sys.exit(1)))
+
+    if not prompt_user_to_continue():
+        print("INFO: exiting the script now...")
+        exit()
 
     global_options_dict = {}
+
     if 'oci_commands' not in sys.argv:
         sys.argv = ['./get_oci_commands.py', 'oci_commands']
 

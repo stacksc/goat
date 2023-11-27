@@ -112,6 +112,21 @@ class CustomKeyBindings(KeyBindings):
         self.app = app  # Store the Application reference
         self.goatshell_instance = goatshell_instance
 
+        @self.add(Keys.F7)
+        def handle_f7(event):
+            cloud_provider = self.goatshell_instance.prefix
+            os_command = f"goat {cloud_provider} extract commands"
+            try:
+                result = self.goatshell_instance.execute_command(os_command)
+                if result == "failure":
+                    print("INFO: failed to execute the command.")
+                else:
+                    print(f"INFO: executed the command {os_command}")
+            except:
+                pass
+            event.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to re-prompt.
+
         @self.add(Keys.F8)
         def handle_f8(event):
             goatshell_instance.switch_to_next_provider()

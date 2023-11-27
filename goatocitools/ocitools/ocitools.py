@@ -10,6 +10,7 @@ from .regions import regions
 from .compute import compute
 from .ocicli_wrapper import cli
 from .oci_config import OCIconfig
+from .extract import extract as extract
 from toolbox import misc
 from toolbox.misc import debug
 from .iam import get_latest_profile, get_latest_region
@@ -50,6 +51,7 @@ CLI.add_command(iam)
 CLI.add_command(oss)
 CLI.add_command(regions)
 CLI.add_command(vault)
+CLI.add_command(extract)
 
 if __name__ == "__main__":
     cli(ctx)

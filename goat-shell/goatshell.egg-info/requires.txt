@@ -6,6 +6,7 @@ goatconfigstore
 gnureadline
 goatocitools
 goatawstools
+goataztools
 goatjiratools
 goatslacktools
 goatjenkinstools

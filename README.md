@@ -76,7 +76,7 @@ GOAAT and GOATSHELL can work together or independently. When launching <b>goatsh
    ```
 3. Clone the repo:
    ```sh
-   git clone git@github.com:stacksc/goat.git
+   git clone https://github.com/stacksc/goat.git
    ```
 4. Install all required packages with 1 script from the main repository: 
    ```sh

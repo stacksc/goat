@@ -138,7 +138,6 @@ class CustomKeyBindings(KeyBindings):
                 except:
                     pass
 
-            print()
             event.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to re-prompt.
 

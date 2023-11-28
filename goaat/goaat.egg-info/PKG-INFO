@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goaat
-Version: 2023.11.27.2300
+Version: 2023.11.28.1702
 Summary: goat => GCP, OCI, & AWS tools : GOAT Team
 Author-email: Christopher Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
@@ -12,6 +12,9 @@ Requires-Dist: importlib_metadata
 Requires-Dist: click-man
 Requires-Dist: prompt_toolkit>=3
 Requires-Dist: goatocitools
+Requires-Dist: goataztools
+Requires-Dist: goatovhaitools
+Requires-Dist: goatibmcloudtools
 Requires-Dist: goatawstools
 Requires-Dist: goatjiratools
 Requires-Dist: goatslacktools

@@ -1,0 +1,33 @@
+[project]
+name = "goatibmcloudtools"
+authors = [
+  { name="Chris Stacks", email="centerupt@gmail.com" }
+]
+description = "IBMCLOUD Tools - CLI client for IBM"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+  "click >= 8.0.4",
+  "requests_ntlm"
+]
+dynamic = ["version", "readme"]
+
+[build-system]
+requires = [
+  "setuptools >= 61.0.0",
+  "goattoolbox",
+  "goatconfigstore"
+]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {attr = "ibmcloudtools.__version__"}
+
+[project.scripts]
+ibmcloudtools = "ibmcloudtools.ibmcloudtools:CLI"
+
+[tool.setuptools.packages]
+find = {}

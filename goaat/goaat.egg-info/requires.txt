@@ -3,6 +3,9 @@ importlib_metadata
 click-man
 prompt_toolkit>=3
 goatocitools
+goataztools
+goatovhaitools
+goatibmcloudtools
 goatawstools
 goatjiratools
 goatslacktools

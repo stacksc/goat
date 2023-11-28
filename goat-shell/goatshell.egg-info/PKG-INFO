@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2023.11.27.2316
+Version: 2023.11.28.1705
 Summary: goatshell - goat shell interface to common cloud providers.
 Author-email: Christopher Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
@@ -17,6 +17,7 @@ Requires-Dist: gnureadline
 Requires-Dist: goatocitools
 Requires-Dist: goatawstools
 Requires-Dist: goataztools
+Requires-Dist: goatibmcloudtools
 Requires-Dist: goatovhaitools
 Requires-Dist: goatjiratools
 Requires-Dist: goatslacktools

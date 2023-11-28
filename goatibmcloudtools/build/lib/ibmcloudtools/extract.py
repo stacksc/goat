@@ -1,8 +1,52 @@
 #!/usr/bin/env python3
-import subprocess
-import re
-import json
-import copy
+import click, os, json, re, sys, gnureadline, subprocess, copy
+from toolbox.logger import Log
+from toolbox.misc import set_terminal_width, get_save_path
+import signal
+import atexit
+from pathlib import Path
+
+@click.group('extract', invoke_without_command=True, help='extract the command tree for IBM CLI', context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()})
+@click.pass_context
+def extract(ctx):
+    pass
+
+@extract.command(help='manually refresh the IBM CLI command tree', context_settings={'help_option_names':['-h','--help']})
+@click.pass_context
+def commands(ctx):
+
+    json_file = get_save_path("ibmcloud.json")
+
+    # Register cleanup function to handle the SIGINT (Ctrl_C) and SIGTERM signals
+    signal.signal(signal.SIGINT, lambda signum, frame: (cleanup(), sys.exit(1)))
+    signal.signal(signal.SIGTERM, lambda signum, frame: (cleanup(), sys.exit(1)))
+
+    if not prompt_user_to_continue():
+        print("INFO: exiting the script now...")
+        exit()
+
+    # Initial call to start building the command tree
+    root_command = "ibmcloud"
+    command_tree = get_ibmcloud_command_tree(root_command, parent_command=None, depth=0, max_depth=3)
+
+    # Create the root "ibmcloud" key and add the command_tree as a subcommand
+    command_tree = {root_command: command_tree}
+
+    # Final save
+    save_to_json(command_tree, json_file)
+
+def prompt_user_to_continue():
+    """Prompts the user to decide if they want to continue the process."""
+    print("INFO: this process will take approximately 1 hour to complete.")
+    choice = input("INFO: do you want to continue? [yes/no]: ").strip().lower()
+
+    if choice == "yes":
+        return True
+    elif choice == "no":
+        return False
+    else:
+        print("INFO: invalid choice. Please enter 'yes' or 'no'.")
+        return prompt_user_to_continue()  # Recursively ask until a valid choice is made.
 
 def add_command_key(data, parent_key=None):
     if isinstance(data, dict):
@@ -37,7 +81,7 @@ def clean_output(output):
 def save_to_json(data, file_name="ibmcloud.json"):
     """Save the command tree to a JSON file."""
     with open(file_name, "w") as f:
-        json.dump(data, f, indent=2)
+        json.dump(data, f, sort_keys=True, indent=2)
 
 def split_commands(command_string):
     """Split commands separated by a comma (,) into separate commands and choose one."""
@@ -148,12 +192,3 @@ def get_ibmcloud_command_help(prefix_command):
     except subprocess.CalledProcessError as e:
         return ""
 
-# Initial call to start building the command tree
-root_command = "ibmcloud"
-command_tree = get_ibmcloud_command_tree(root_command, parent_command=None, depth=0, max_depth=3)
-
-# Create the root "ibmcloud" key and add the command_tree as a subcommand
-command_tree = {root_command: command_tree}
-
-# Final save
-save_to_json(command_tree)

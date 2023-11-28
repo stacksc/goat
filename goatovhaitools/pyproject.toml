@@ -1,0 +1,33 @@
+[project]
+name = "goatovhaitools"
+authors = [
+  { name="Chris Stacks", email="centerupt@gmail.com" }
+]
+description = "OVHAI tools - CLI client for OVHAI"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+  "click >= 8.0.4",
+  "requests_ntlm"
+]
+dynamic = ["version", "readme"]
+
+[build-system]
+requires = [
+  "setuptools >= 61.0.0",
+  "goattoolbox",
+  "goatconfigstore"
+]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {attr = "ovhaitools.__version__"}
+
+[project.scripts]
+awstools = "ovhaitools.ovhaitools:CLI"
+
+[tool.setuptools.packages]
+find = {}

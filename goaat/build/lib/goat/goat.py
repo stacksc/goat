@@ -8,6 +8,7 @@ from jiratools.jiraclient import cli as jira
 from configstore.configstore_ctrl import cli as configs
 from awstools.awstools import CLI as aws
 from aztools.aztools import CLI as az
+from ovhaitools.ovhaitools import CLI as ovhai
 from ocitools.ocitools import CLI as oci
 from jenkinstools.jenkinstools import cli as jenkins
 from toolbox.misc import set_terminal_width, detect_environment, search_man_pages, debug, draw_title
@@ -49,6 +50,7 @@ def goat_version():
     print('GOAT:\t\t\t' + version('goaat'))
     print('- awstools:\t\t' + version('goatawstools'))
     print('- aztools:\t\t' + version('goataztools'))
+    print('- ovhaitools:\t\t' + version('goatovhaitools'))
     print('- configstore:\t\t' + version('goatconfigstore'))
     print('- jenkinstools:\t\t' + version('goatjenkinstools'))
     print('- jiratools:\t\t' + version('goatjiratools'))
@@ -63,6 +65,7 @@ cli.add_command(jira, name='jira')
 cli.add_command(aws, name='aws')
 cli.add_command(az, name='az')
 cli.add_command(oci, name='oci')
+cli.add_command(ovhai, name='ovhai')
 cli.add_command(jenkins, name='jenkins')
 cli.add_command(slack)
 

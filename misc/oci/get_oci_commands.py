@@ -258,23 +258,23 @@ def update_command_descriptions(command_tree, prefix_command=[]):
 
             update_command_descriptions(data, full_command_list)
 
-    def clean_subcommands(subcommands):
-        keys_to_remove = []
-        for key, value in subcommands.items():
-            if 'subcommands' in value:
-                nested_subcommands = value['subcommands']
-                if key in nested_subcommands:
-                    # Found a redundant subcommand entry; schedule it for removal.
-                    keys_to_remove.append((nested_subcommands, key))
-                    # Copy the values from the redundant entry to the parent.
-                    for inner_key, inner_value in nested_subcommands[key].items():
-                        if inner_key not in value:
-                            value[inner_key] = inner_value
-                # Recurse further to clean other subcommands
-                clean_subcommands(nested_subcommands)
-        # Actually remove the keys
-        for dictionary, key in keys_to_remove:
-            del dictionary[key]
+def clean_subcommands(subcommands):
+    keys_to_remove = []
+    for key, value in subcommands.items():
+        if 'subcommands' in value:
+            nested_subcommands = value['subcommands']
+            if key in nested_subcommands:
+                # Found a redundant subcommand entry; schedule it for removal.
+                keys_to_remove.append((nested_subcommands, key))
+                # Copy the values from the redundant entry to the parent.
+                for inner_key, inner_value in nested_subcommands[key].items():
+                    if inner_key not in value:
+                        value[inner_key] = inner_value
+            # Recurse further to clean other subcommands
+            clean_subcommands(nested_subcommands)
+    # Actually remove the keys
+    for dictionary, key in keys_to_remove:
+        del dictionary[key]
 
 if __name__ == "__main__":
 

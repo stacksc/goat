@@ -40,11 +40,11 @@ func_title = HTML("""<b>Hotkeys</b>""")
 misc_title = HTML("""<b>Commands</b>""")
 advanced_title = HTML("""<b>Advanced</b>""")
 input = """\
+[F7]  Xtract CLI Tree
 [F8]  Toggle Provider
 [F9]  Toggle Profile
 [F10] Toggle VIM
 [F12] Toggle Safety Mode
-[TAB] Fuzzy Complete
 """
 
 misc_input = """\

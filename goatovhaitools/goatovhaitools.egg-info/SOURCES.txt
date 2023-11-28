@@ -1,0 +1,10 @@
+pyproject.toml
+goatovhaitools.egg-info/PKG-INFO
+goatovhaitools.egg-info/SOURCES.txt
+goatovhaitools.egg-info/dependency_links.txt
+goatovhaitools.egg-info/entry_points.txt
+goatovhaitools.egg-info/requires.txt
+goatovhaitools.egg-info/top_level.txt
+ovhaitools/__init__.py
+ovhaitools/extract.py
+ovhaitools/ovhaitools.py

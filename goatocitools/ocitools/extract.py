@@ -160,13 +160,18 @@ def clean_argument(argument):
 def parse_subcommands(lines):
     commands = {}
     global_options = {}
+    capturing_options = False
+    current_option = None
+
     for line in lines:
         parts = line.strip().split(" ")
         if len(parts) < 2:
             continue
+
         if parts[0] == 'global_options':
             global_options = parts[1:]
             continue
+
         main_command = parts[1]
         subcommand_chain = []
 
@@ -194,15 +199,17 @@ def parse_subcommands(lines):
 
         for part in parts[len(subcommand_chain) + 2:]:
             if part.startswith('--'):
-                options[part] = {"name": part, "help": "N/A"}
-            elif part.startswith('['):
-                arguments.append(clean_argument(part))
+                current_option = part
+                capturing_options = True
+            elif capturing_options and current_option:
+                if current_option not in options:
+                    options[current_option] = {"name": current_option, "help": ""}
+                if part.strip():
+                    options[current_option]["help"] += " " + part
 
-        # Remove duplicates and sort arguments
-        arguments = list(set(arguments))
-        arguments.sort()
-
-        current_subcommand[last_subcommand]["arguments"] = arguments
+            # Stop capturing when an empty line is encountered
+            if capturing_options and not part.strip():
+                capturing_options = False
 
     return commands, global_options
 
@@ -228,8 +235,20 @@ def get_description_from_help_text(help_text):
         if capture:
             description.append(line.strip())
 
-    return ' '.join(description).strip()
+        # Capture descriptions from the "OPTIONAL PARAMETERS" section
+        if 'OPTIONAL PARAMETERS' in line:
+            capture = True
 
+    # Join the lines of the description into a single string
+    description_text = ' '.join(description).strip()
+
+    # Split the description into sentences based on periods (.)
+    sentences = description_text.split('.')
+
+    # Get the first sentence
+    first_sentence = sentences[0]
+
+    return first_sentence.strip()
 
 def update_command_descriptions(command_tree, prefix_command=[]):
     if "subcommands" in command_tree:
@@ -256,6 +275,20 @@ def update_command_descriptions(command_tree, prefix_command=[]):
                 data["description"] = description
             else:
                 print(f"Could not find description for {full_command_str}. Raw output:")
+
+            # Extract option descriptions
+            option_lines = re.findall(r'^  (--[a-zA-Z0-9-]+[^\n]*)\n\s+([^\n]+)', output, re.MULTILINE)
+            for option, opt_description in option_lines:
+                option_name = option.strip()
+                if option_name in data["options"]:
+                    data["options"][option_name]["help"] = opt_description.strip()
+
+            # Extract argument descriptions
+            argument_lines = re.findall(r'^  (\[.*?\])\n\s+([^\n]+)', output, re.MULTILINE)
+            for argument, arg_description in argument_lines:
+                argument_name = clean_argument(argument)
+                if argument_name in data["arguments"]:
+                    data["arguments"][argument_name]["help"] = arg_description.strip()
 
             update_command_descriptions(data, full_command_list)
 
@@ -308,14 +341,17 @@ def commands(ctx):
 
     global_options_dict = {}
 
+    directory = os.path.dirname(os.path.abspath(__file__))
+
     if 'oci_commands' not in sys.argv:
-        sys.argv = ['./get_oci_commands.py', 'oci_commands']
+        sys.argv = [f'{directory}/get_oci_commands.py', 'oci_commands']
 
     get_oci_commands(sys.argv)
 
     # Read data from file or source
     with open('oci_commands.txt', 'r') as file:
         lines = file.readlines()
+    lines.sort()
     command_tree, global_options = parse_subcommands(lines)
     for option in global_options:
         global_options_dict[option] = {

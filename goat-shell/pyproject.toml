@@ -18,6 +18,7 @@ dependencies = [
     "goatocitools",
     "goatawstools",
     "goataztools",
+    "goatovhaitools",
     "goatjiratools",
     "goatslacktools",
     "goatjenkinstools",

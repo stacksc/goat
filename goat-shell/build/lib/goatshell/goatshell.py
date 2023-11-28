@@ -114,6 +114,7 @@ class CustomKeyBindings(KeyBindings):
 
         @self.add(Keys.F7)
         def handle_f7(event):
+            print()
             cloud_provider = self.goatshell_instance.prefix
             if cloud_provider != 'goat':
                 os_command = f"goat {cloud_provider} extract commands"
@@ -127,7 +128,7 @@ class CustomKeyBindings(KeyBindings):
                     pass
             else:
                 directory = os.path.dirname(os.path.abspath(__file__))
-                os_command = f"{directory}/fetch_goat.py"
+                os_command = f"python3 {directory}/fetch_goat.py"
                 try:
                     result = self.goatshell_instance.execute_command(os_command)
                     if result == "failure":
@@ -137,6 +138,7 @@ class CustomKeyBindings(KeyBindings):
                 except:
                     pass
 
+            print()
             event.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to re-prompt.
 

@@ -1,12 +1,13 @@
 
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-
-https://github.com/stacksc/goat/assets/116677370/ba34a042-9a40-4d67-a5ed-4b863ffb498b
+<br>
+<img alt="gif" border=5 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/8e24fd2c-8f04-4109-97a8-c9a74d409a4d">
+<br><br>
+<img alt="gif" border=5 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/adc2ca36-149d-4e4f-9406-055385bfadb0">
 
 <h1>Feedback Appreciation</h1>
 In order to make this application as user-friendly as possible, please provide any feedback to help the user expierience and logic.<br>
 Please open an issue, leave comments, or even a thumbs up on the project goes a long way with continued development.
-<br>
 
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
@@ -834,7 +835,6 @@ Commands:
 
 #### OCI / GCLOUD / AWS Shell Interface ####
 
-<img width="1804" alt="image" src="https://github.com/stacksc/goat/assets/116677370/a389470d-c010-41f9-8292-b82cd5ba3774">
+![image](https://github.com/stacksc/goat/assets/116677370/0041409f-3c9c-4570-9440-30a7c4a58801)
 
 <br>
-

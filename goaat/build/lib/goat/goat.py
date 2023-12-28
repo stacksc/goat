@@ -52,7 +52,7 @@ def goat_version():
     print('- awstools:\t\t' + version('goatawstools'))
     print('- aztools:\t\t' + version('goataztools'))
     print('- ovhaitools:\t\t' + version('goatovhaitools'))
-    print('- ibmcloudtools:\t\t' + version('goatibmcloudtools'))
+    print('- ibmcloudtools:\t' + version('goatibmcloudtools'))
     print('- configstore:\t\t' + version('goatconfigstore'))
     print('- jenkinstools:\t\t' + version('goatjenkinstools'))
     print('- jiratools:\t\t' + version('goatjiratools'))

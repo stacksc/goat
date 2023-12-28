@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goaat
-Version: 2023.11.28.1702
+Version: 2023.12.28.1713
 Summary: goat => GCP, OCI, & AWS tools : GOAT Team
 Author-email: Christopher Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

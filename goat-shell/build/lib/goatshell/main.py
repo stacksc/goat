@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, absolute_import, unicode_literals
-from goatshell.goatshell import Goatshell
+from goatshell.goatshell import Goatshell, load_default_provider_setting
 from goatshell.completer import GoatCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.application import Application
@@ -28,7 +28,7 @@ def startup_check():
 
 def cli():
     # Default to the 'oci' service
-    service = 'oci'
+    service = load_default_provider_setting()
 
     # Construct the path to the JSON file based on the selected service
     json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'data/{service}.json')

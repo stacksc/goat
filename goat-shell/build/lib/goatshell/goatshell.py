@@ -30,9 +30,12 @@ from .toolbar import create_toolbar
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.WARNING)
 
+# make this global to access outside goatshell
+def load_default_provider_setting():
+    return load_setting('default_provider', default_value='oci')
+
 # Global variables
 global vi_mode_enabled, safety_mode_enabled
-current_service = 'oci'       # You can set it to 'aws' if you prefer AWS mode initially
 os.environ['AWS_PAGER'] = ''  # Disable paging in AWS by default
 vi_mode_enabled = False       # Default vi mode to false on start up
 safety_mode_enabled = False   # Default safety mode to false on start up
@@ -130,11 +133,7 @@ class CustomKeyBindings(KeyBindings):
                 directory = os.path.dirname(os.path.abspath(__file__))
                 os_command = f"python3 {directory}/fetch_goat.py"
                 try:
-                    result = self.goatshell_instance.execute_command(os_command)
-                    if result == "failure":
-                        print("INFO: failed to execute the command.")
-                    else:
-                        print(f"INFO: executed the command {os_command}")
+                    os.system(os_command)
                 except:
                     pass
 
@@ -168,6 +167,7 @@ class CustomKeyBindings(KeyBindings):
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
+current_service = load_default_provider_setting()
 
 # Define the main Goatshell class
 class Goatshell(object):
@@ -198,6 +198,10 @@ class Goatshell(object):
     def load_safety_mode_setting(self):
         """Load the SAFETY mode setting."""
         return load_setting('safety_mode_enabled', default_value=False)
+    
+    def load_default_provider_setting(self):
+        """Load the provider setting."""
+        return load_setting('default_provider', default_value='oci')
 
     def save_vi_mode_setting(self):
         """Save the VI mode setting."""
@@ -206,6 +210,9 @@ class Goatshell(object):
     def save_safety_mode_setting(self):
         """Save the safety mode setting."""
         save_setting('safety_mode_enabled', self.safety_mode_enabled)
+
+    def save_default_provider(self, provider):
+        save_setting('default_provider', provider)
 
     def init_profile(self):
         self.aws_index = 0
@@ -254,6 +261,7 @@ class Goatshell(object):
                 current_service = next_service
                 self.prefix = next_service  # Update the instance attribute
                 self.set_parser_and_completer(next_service)
+                self.save_default_provider(next_service)
                 break
         
             current_idx = next_idx

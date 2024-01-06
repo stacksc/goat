@@ -9,7 +9,7 @@ def project(ctx):
     pass
 
 @project.command('search', help="show a summary of projects matching the specified filter", context_settings={'help_option_names':['-h','--help']})
-@click.argument('projects', nargs=-1, type=str, required=False, shell_complete=complete_projects)
+@click.argument('projects', nargs=-1, type=str, required=True, shell_complete=complete_projects)
 @click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True)
 @click.option('-g', '--group', help="i.e. devops", type=str, required=False, multiple=True)
 @click.option('-r', '--reporter', help="i.e. smithj", type=str, required=False, multiple=True)

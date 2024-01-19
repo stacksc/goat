@@ -25,18 +25,12 @@ dependencies = [
   "goatjiratools",
   "goatslacktools",
   "goatjenkinstools",
-  "goatshell",
-  "gnureadline",
-  "goattoolbox",
-  "goatconfigstore",
+  "goatshell"
 ]
 
 [build-system]
 requires = [
-  "setuptools >= 61.0.0",
-  "goattoolbox",
-  "goatconfigstore",
-  "gnureadline"
+  "setuptools >= 61.0.0"
 ]
 
 [project.scripts]

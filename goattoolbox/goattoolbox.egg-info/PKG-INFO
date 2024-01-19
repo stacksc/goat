@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goattoolbox
-Version: 2023.11.27.2302
+Version: 2024.1.19.129
 Summary: toolbox - a library of standalone python modules ready for use
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
@@ -11,4 +11,4 @@ Requires-Dist: argparse
 Requires-Dist: pync
 Requires-Dist: gnupg
 Requires-Dist: cryptography
-Requires-Dist: gnureadline
+Requires-Dist: pyreadline

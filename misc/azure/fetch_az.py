@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import click, os, json, re, sys, gnureadline, subprocess
+import click, os, json, re, sys, pyreadline, subprocess
 from toolbox.logger import Log
 from toolbox.misc import set_terminal_width, get_save_path
 import signal

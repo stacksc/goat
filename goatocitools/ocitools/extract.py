@@ -5,7 +5,7 @@ import re
 import sys
 import os
 import click
-import gnureadline
+import pyreadline
 import subprocess
 from time import sleep
 from subprocess import Popen, PIPE, CalledProcessError

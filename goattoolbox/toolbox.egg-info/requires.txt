@@ -2,4 +2,3 @@ argparse
 pync
 gnupg
 cryptography
-gnureadline

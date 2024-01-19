@@ -11,6 +11,3 @@ goatjiratools
 goatslacktools
 goatjenkinstools
 goatshell
-gnureadline
-goattoolbox
-goatconfigstore

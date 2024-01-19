@@ -17,9 +17,7 @@ dynamic = ["version", "readme"]
 
 [build-system]
 requires = [
-  "setuptools >= 61.0.0",
-  "goattoolbox",
-  "goatconfigstore"
+  "setuptools >= 61.0.0"
 ]
 
 [tool.setuptools.dynamic]

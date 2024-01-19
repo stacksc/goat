@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatconfigstore
-Version: 2023.11.27.2301
+Version: 2024.1.19.127
 Summary: configtools - manage settings for your Python application with encrypted json files
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

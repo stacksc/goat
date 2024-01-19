@@ -1,4 +1,4 @@
-import click, os, gnureadline, csv
+import click, os, pyreadline, csv
 from toolbox.logger import Log
 from .ec2client import EC2client
 from toolbox.menumaker import Menu

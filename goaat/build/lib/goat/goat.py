@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from prompt_toolkit.application import Application
-import click, os, sys, gnureadline, operator
+import click, os, sys, pyreadline, operator
 from pathlib import Path
 from toolbox.logger import Log
 from jiratools.jiraclient import cli as jira

@@ -229,16 +229,16 @@ if [ $TARGET == "all" ]; then
       if [[ ${ACTION} != "test" ]]; then
         if [[ ${ACTION} != "install" ]]; then
           [[ -d ./build ]] && rm -rf ./build >/dev/null 2>&1
-          python3 -m build --wheel --sdist
+          python -m build --wheel --sdist
         fi
         name=$(basename $folder)
         pip3 uninstall -y $name
-        pip3 install $(find ./dist -type f -name "*.whl" | sort -nr | head -n 1)
+        pip3 install $(find ./dist -type f -name "*.whl" | sort -nr | head -n 1) --no-cache-dir
       else
         chk=$(find ${folder} -name "tests.py")
         [[ -z ${chk} ]] && continue
         printf "INFO: running $ACTION on $(basename $folder)"
-        python3 -m unittest tests > /tmp/test_${name} 2>&1
+        python -m unittest tests > /tmp/test_${name} 2>&1
         test=$(cat /tmp/test_${name} | grep OK)
         [[ -z ${test} ]] && echo_failure || echo_success
       fi
@@ -251,15 +251,15 @@ else
   if [[ ${ACTION} != "test" ]]; then
     if [[ ${ACTION} != "install" ]]; then
       [[ -d ./build ]] && rm -rf ./build >/dev/null 2>&1
-      python3 -m build --wheel --sdist
+      python -m build --wheel --sdist
     fi
     pip3 uninstall -y ${TARGET}
-    pip3 install $(find ./dist -type f -name "*.whl" | sort -nr | head -n 1)
+    pip3 install $(find ./dist -type f -name "*.whl" | sort -nr | head -n 1) --no-cache-dir
   else
     chk=$(find ${folder} -name "tests.py")
     [[ -z ${chk} ]] && continue
     printf "INFO: running $ACTION on $(basename $folder)"
-    python3 -m unittest tests > /tmp/test_${name} 2>&1
+    python -m unittest tests > /tmp/test_${name} 2>&1
     test=$(cat /tmp/test_${name} | grep OK)
     [[ -z ${test} ]] && echo_failure  || echo_success
   fi

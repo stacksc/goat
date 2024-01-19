@@ -11,4 +11,3 @@ Requires-Dist: argparse
 Requires-Dist: pync
 Requires-Dist: gnupg
 Requires-Dist: cryptography
-Requires-Dist: gnureadline

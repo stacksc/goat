@@ -10,4 +10,6 @@ goatawstools
 goatjiratools
 goatslacktools
 goatjenkinstools
+goatconfigstore
+goattoolbox
 goatshell

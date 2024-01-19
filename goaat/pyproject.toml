@@ -25,6 +25,8 @@ dependencies = [
   "goatjiratools",
   "goatslacktools",
   "goatjenkinstools",
+  "goatconfigstore",
+  "goattoolbox",
   "goatshell"
 ]
 

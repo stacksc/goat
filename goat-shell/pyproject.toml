@@ -14,6 +14,7 @@ dependencies = [
     'fuzzyfinder >= 1.0.0',
     'click >= 8.0.4',
     "goatconfigstore",
+    "goattoolbox",
     "goatocitools",
     "goatawstools",
     "goataztools",

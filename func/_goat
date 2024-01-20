@@ -6,7 +6,7 @@ _goat_completion() {
     local -a response
     (( ! $+commands[goat] )) && return 1
 
-    response=("${(@f)$(env COMP_WORDS="${words[*]}" COMP_CWORD=$((CURRENT-1)) _GOAT_COMPLETE=zsh_complete goat)}")
+    response=("${(@f)$(env COMP_WORDS="${words[*]}" COMP_CWORD=$((CURRENT-1)) _GOAT_COMPLETE=bash_complete goat)}")
 
     for type key descr in ${response}; do
         if [[ "$type" == "plain" ]]; then

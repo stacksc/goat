@@ -1,6 +1,9 @@
 import os, sys, click
 if os.name != 'nt':
-    import curses
+    try:
+        import curses
+    except:
+        pass
 from math import *
 from tabulate import tabulate
 from jiratools.auth import get_jira_session, get_jira_url, get_jira_session_based_on_key, get_user_profile_based_on_key

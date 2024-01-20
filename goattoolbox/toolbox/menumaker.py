@@ -1,5 +1,6 @@
-import curses
 import os, sys
+if os.name != 'nt':
+    import curses
 from math import *
 from tabulate import tabulate
 

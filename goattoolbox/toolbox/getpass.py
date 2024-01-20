@@ -1,4 +1,8 @@
-import sys, os, tty, signal, readline
+import sys, os, signal, readline
+
+if os.name != 'nt':
+    import tty
+
 from prompt_toolkit import prompt
 from prompt_toolkit.filters import Condition
 from prompt_toolkit.keys import Keys

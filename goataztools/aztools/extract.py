@@ -52,31 +52,14 @@ def commands(ctx):
 def listToStringWithoutBrackets(list1):
     return str(list1).replace('[','').replace(']','').replace("'", "").replace('{','').replace('}','')
 
-def get_top_level_commands():
-    az_help_output = run_az_help("")
+def get_top_level_commands(az_help_output):
     top_level_commands = []
-
-    # Initialize current_section
-    current_section = None
-    ignore_words = {'and', 'as', 'default', 'for', 'in', 'is', 'it', 'of', 'to', 'with', 'if', 'the'}
-
-    # Parse the top-level commands from the help output
-    for line in az_help_output.split("\n"):
-        line = line.strip()
-
-        if "Commands" in line:
-            current_section = "commands"
-        elif "Arguments" in line:
-            current_section = "arguments"
-        elif current_section == "commands" and line:
-            parts = line.split(" ", 1)
-            if len(parts) == 2:
-                subcommand, _ = parts
-                subcommand = subcommand.strip()
-                if " " not in subcommand and subcommand.islower() and subcommand not in ignore_words and not any(
-                        c in subcommand for c in "!@#$%^&*()[]{};:,.<>?/\\|~`'\""):
-                    top_level_commands.append(subcommand)
-
+    lines = az_help_output.split('\n')
+    for line in lines:
+        if ':' in line:
+            command = line.split(':')[0].strip().split()[0]
+            if command.islower():  # Check if the command starts with lowercase
+                top_level_commands.append(command)
     return top_level_commands
 
 # Helper function to clean up command-line output

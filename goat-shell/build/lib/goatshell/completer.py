@@ -55,7 +55,7 @@ class GoatCompleter(Completer):
     
     def get_completions(self, document, complete_event, smart_completion=True):
         tokens = shlex.split(document.text_before_cursor.strip())
-    
+
         if not tokens:
             # Check if a command is available before suggesting it
             available_commands = ["aliyun", "aws", "az", "gcloud", "goat", "oci", "ibmcloud", "ovhai"]
@@ -63,19 +63,21 @@ class GoatCompleter(Completer):
                 if misc.is_command_available(command):
                     yield Completion(command, display=command, display_meta=self.command_descriptions.get(command, ""))
             return
-    
+
         first_token = tokens[0]
-    
+
         if first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud", "ovhai"] and self.current_json != first_token:
             self.load_json(first_token)
             self.current_json = first_token
-    
+
         if len(tokens) == 1 and first_token in ["oci", "aws", "gcloud", "az", "goat", "aliyun", "ibmcloud", "ovhai"]:
             subcommands = self.parser.ast.children
+            # Sort the subcommands alphabetically before yielding them
+            subcommands = sorted(subcommands, key=lambda x: x.node)
             for subcmd in subcommands:
                 yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
             return
-    
+
         parsed, unparsed, suggestions = self.parser.parse_tokens(tokens)
     
         if suggestions is None:

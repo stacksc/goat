@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goataztools
-Version: 2024.1.19.238
+Version: 2024.1.20.301
 Summary: AZtools - CLI client for Azure
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3

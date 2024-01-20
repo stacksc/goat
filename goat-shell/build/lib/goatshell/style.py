@@ -7,8 +7,8 @@ from prompt_toolkit.styles import Style
 
 styles = {
     'token.app.title': 'bg:#005577 #ffffff',
-    'completion-menu.completions.current': 'bg:#afb3b5 #666d6f',
-    'completion-menu.completion': 'bg:#666d6f #afb3b5',
+    'completion-menu.completions.current': 'bg:#00aaaa #000000',
+    'completion-menu.completion': 'bg:#008888 #000000',
     'completion-menu.meta.current': 'bg:#afb3b5 #000000',
     'completion-menu.meta': 'bg:#afb3b5 #7f7f7f',
     'bottom-toolbar.off': 'bg:#222222 #696969',

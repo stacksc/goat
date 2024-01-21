@@ -1,9 +1,8 @@
 
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
 <br>
-<img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/8e24fd2c-8f04-4109-97a8-c9a74d409a4d">
-<br><br>
-<img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/adc2ca36-149d-4e4f-9406-055385bfadb0">
+<br>
+<img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/7f4842a4-d028-4761-b032-4d6377f372e2">
 
 <h1>Feedback Appreciation</h1>
 In order to make this application as user-friendly as possible, please provide any feedback to help the user expierience and logic.<br>

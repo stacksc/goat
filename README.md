@@ -833,8 +833,9 @@ Commands:
   upload    upload from local storage to OSS bucket
 ```
 
-#### OCI / GCLOUD / AWS Shell Interface ####
+#### Improved Cloud Wrapper ####
 
-![image](https://github.com/stacksc/goat/assets/116677370/0041409f-3c9c-4570-9440-30a7c4a58801)
+![image](https://github.com/stacksc/goat/assets/116677370/b4d38bef-f4f3-46f6-8f7b-4b4ad3d1544b)
+
 
 <br>

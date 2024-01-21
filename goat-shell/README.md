@@ -1,5 +1,5 @@
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-<video width="600" height="300" src="https://github.com/stacksc/goat/assets/116677370/58e27064-3e4a-4e90-a8ba-229b1ae6258c"></video>
+![undefined-high (3)](https://github.com/stacksc/goat/assets/116677370/af962809-05a3-4116-8289-c92c0c095a3a)
 
 <h1>GOATSHELL</h1>
 <h2>7 Clouds & 1 Shell</h2>

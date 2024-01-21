@@ -77,7 +77,8 @@ class GoatCompleter(Completer):
             subcommands = self.parser.ast.children
             subcommands = sorted(subcommands, key=lambda x: x.node)
             for subcmd in subcommands:
-                yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
+                display = f'\u2794 {subcmd.node}'
+                yield Completion(subcmd.node, display=display, display_meta=subcmd.help)
             return
 
         if tokens and self.current_cloud_provider:
@@ -88,8 +89,9 @@ class GoatCompleter(Completer):
             # Check if a command is available before suggesting it
             available_commands = ["aliyun", "aws", "az", "gcloud", "goat", "oci", "ibmcloud", "ovhai"]
             for command in available_commands:
+                display = f'\u2794 {command}'
                 if misc.is_command_available(command):
-                    yield Completion(command, display=command, display_meta=self.command_descriptions.get(command, ""))
+                    yield Completion(command, display=display, display_meta=self.command_descriptions.get(command, ""))
             return
 
         first_token = tokens[0]
@@ -103,7 +105,8 @@ class GoatCompleter(Completer):
             # Sort the subcommands alphabetically before yielding them
             subcommands = sorted(subcommands, key=lambda x: x.node)
             for subcmd in subcommands:
-                yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
+                display = f'\u2794 {subcmd.node}'
+                yield Completion(subcmd.node, display=display, display_meta=subcmd.help)
             return
 
         parsed, unparsed, suggestions = self.parser.parse_tokens(tokens)
@@ -127,14 +130,17 @@ class GoatCompleter(Completer):
                     option_prefix = last_token
                     completions = fuzzyfinder(option_prefix, suggestions.keys())
                     for key in completions:
-                        yield Completion(key, start_position=-len(option_prefix), display=key, display_meta=suggestions.get(key, ""))
+                        display = f'\u2794 {key}'
+                        yield Completion(key, start_position=-len(option_prefix), display=display, display_meta=suggestions.get(key, ""))
             else:
                 completions = fuzzyfinder(last_token, suggestions.keys())
                 for key in completions:
-                    yield Completion(key, start_position=-len(last_token), display=key, display_meta=suggestions.get(key, ""))
+                    display = f'\u2794 {key}'
+                    yield Completion(key, start_position=-len(last_token), display=display, display_meta=suggestions.get(key, ""))
         else:
             for key in suggestions.keys():
-                yield Completion(key, display=key, display_meta=suggestions.get(key, ""))
+                display = f'\u2794 {key}'
+                yield Completion(key, display=display, display_meta=suggestions.get(key, ""))
 
     async def get_completions_async(self, document, complete_event):
         logger.debug("Entering get_completions")

@@ -549,8 +549,7 @@ class Goatshell(object):
 
         # Unicode character for an eye
         icon = '\U0001F441'
-
-        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]{icon}  ')
+        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>] {icon}  ')
 
     def execute_command(self, cmd):
         if not self.is_valid_command_for_provider(cmd, self.prefix):

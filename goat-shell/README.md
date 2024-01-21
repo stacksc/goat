@@ -1,5 +1,6 @@
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-![undefined-high (3)](https://github.com/stacksc/goat/assets/116677370/af962809-05a3-4116-8289-c92c0c095a3a)
+<br>
+<img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/7f4842a4-d028-4761-b032-4d6377f372e2">
 
 <h1>GOATSHELL</h1>
 <h2>7 Clouds & 1 Shell</h2>

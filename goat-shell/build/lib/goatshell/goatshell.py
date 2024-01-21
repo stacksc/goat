@@ -542,7 +542,8 @@ class Goatshell(object):
 
     def generate_prompt(self):
         context = self.get_current_context()
-        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]> ')
+        icon = '\u29BE'
+        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]{icon}  ')
 
     def execute_command(self, cmd):
         if not self.is_valid_command_for_provider(cmd, self.prefix):

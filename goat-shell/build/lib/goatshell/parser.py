@@ -24,7 +24,7 @@ class Parser:
             self.schema = dict()
             self.global_flags = list()
             self.root_name = root_name
-            with open(self.json_api) as api:
+            with open(self.json_api, encoding='utf-8') as api:
                 self.schema = json.load(api)
             self.ast = CommandTree(root_name)  # Set to dynamic root name
             root_schema = self.schema.get(root_name)
@@ -39,7 +39,7 @@ class Parser:
     def set_api_file(self, api_file):
         self.json_api = api_file
 
-        with open(self.json_api) as api:
+        with open(self.json_api, encoding='utf-8') as api:
             self.schema = json.load(api)
 
         api_schema = self.schema.get(self.json_api.split('/')[-1].split('.')[0])

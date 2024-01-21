@@ -21,6 +21,7 @@ class GoatCompleter(Completer):
         self.parser = parser
         self.current_json = None  # NEW: attribute to store the current JSON
         self.goat_dict = None
+        self.current_cloud_provider = None
 
         # Dictionary mapping command tokens to their descriptions
         self.command_descriptions = {
@@ -35,6 +36,9 @@ class GoatCompleter(Completer):
             # Add more commands and descriptions as needed
         }
 
+    def set_current_cloud_provider(self, provider):
+        self.current_cloud_provider = provider
+
     def load_json(self, provider):
         # Get the JSON path using the modularized function
         user_json_path = Path(get_save_path(provider)).with_suffix('.json')
@@ -46,15 +50,39 @@ class GoatCompleter(Completer):
                 user_json_path = Path(os.path.dirname(os.path.realpath(__file__))) / "data" / f"{provider}.json"
 
         try:
-            with user_json_path.open() as json_file:
+            with user_json_path.open(encoding='utf-8') as json_file:
                 self.goat_dict = json.load(json_file)
     
             self.parser = Parser(str(user_json_path), provider)
         except Exception as ex:
             logger.error(f"Exception while loading JSON for {provider}: {ex}")
     
+    def set_current_cloud_provider(self, provider):
+        if provider in ["aliyun", "aws", "az", "gcloud", "goat", "oci", "ibmcloud", "ovhai"]:
+            self.current_cloud_provider = provider
+            self.load_json(provider)
+            logger.debug(f"Current cloud provider set to: {provider}")
+        else:
+            logger.error(f"Invalid cloud provider: {provider}")
+
     def get_completions(self, document, complete_event, smart_completion=True):
         tokens = shlex.split(document.text_before_cursor.strip())
+
+        # Check if there's no input and a current cloud provider is set
+        if not tokens and self.current_cloud_provider:
+            # Load the json for the current cloud provider
+            self.load_json(self.current_cloud_provider)
+
+            # Provide completions for the current cloud provider
+            subcommands = self.parser.ast.children
+            subcommands = sorted(subcommands, key=lambda x: x.node)
+            for subcmd in subcommands:
+                yield Completion(subcmd.node, display=subcmd.node, display_meta=subcmd.help)
+            return
+
+        if tokens and self.current_cloud_provider:
+            # Prepend the current cloud provider as the first token
+            tokens = [self.current_cloud_provider] + tokens
 
         if not tokens:
             # Check if a command is available before suggesting it

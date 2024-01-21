@@ -50,7 +50,7 @@ class GoatCompleter(Completer):
                 user_json_path = Path(os.path.dirname(os.path.realpath(__file__))) / "data" / f"{provider}.json"
 
         try:
-            with user_json_path.open() as json_file:
+            with user_json_path.open(encoding='utf-8') as json_file:
                 self.goat_dict = json.load(json_file)
     
             self.parser = Parser(str(user_json_path), provider)

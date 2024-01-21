@@ -172,6 +172,7 @@ current_service = load_default_provider_setting()
 # Define the main Goatshell class
 class Goatshell(object):
     CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun', 'ovhai']
+    INTERNAL_COMMANDS = {'exit', 'clear', 'help', 'history', 'cd', 'ls', 'c', 'h', 'e'}
 
     def __init__(self, app, completer, parser, toolbar_message=None):
         getLayout()
@@ -190,6 +191,10 @@ class Goatshell(object):
         self.session = self.init_session()
         self.set_parser_and_completer(current_service)
         self.initial_warning_displayed = False
+        self.context_stack = []
+
+    def set_completer(self, completer):
+        self.completer = completer
 
     def load_vi_mode_setting(self):
         """Load the VI mode setting."""
@@ -220,6 +225,31 @@ class Goatshell(object):
         profile = 'DEFAULT'  # Initial value before getting profile
         return self.get_profile(self.prefix)  # update the profile
 
+    def execute_command(self, cmd):
+        # Check for empty command
+        if not cmd.strip():
+            return "empty command"
+
+        # Split the command safely
+        command_parts = cmd.split()
+        if not command_parts:
+            return "invalid command"
+
+        # Check if the command is recognized
+        if not self.is_valid_command_for_provider(cmd, self.prefix):
+            print(f"'{command_parts[0]}' is misspelled or not recognized by the system.")
+            return "invalid command"
+
+        # Proceed with executing the command
+        p = subprocess.Popen(cmd, shell=True)
+        p.communicate()
+
+        # Check the return code
+        if p.returncode != 0:
+            return "failure"
+        else:
+            return ""
+
     def init_history(self):
         shell_dir = os.path.expanduser("~/goat/shell/")
         if not os.path.exists(shell_dir):
@@ -246,8 +276,15 @@ class Goatshell(object):
             user_json_path = Path(os.path.dirname(os.path.abspath(__file__))) / "data" / f"{api_type}.json"
     
         self.parser = Parser(str(user_json_path), api_type)  # Reset parser
+
+        # Update this line to pass both self and self.parser to GoatCompleter
         self.completer = GoatCompleter(self.parser)  # Reset completer
+        self.completer.set_current_cloud_provider(self.prefix)  # Update current cloud provider in completer
         self.session.completer = self.completer  # Reset session completer
+
+        #self.parser = Parser(str(user_json_path), api_type)  # Reset parser
+        #self.completer = GoatCompleter(self.parser)  # Reset completer
+        #self.session.completer = self.completer  # Reset session completer
     
     def switch_to_next_provider(self):
         global current_service
@@ -325,12 +362,23 @@ class Goatshell(object):
             details["user"] = user.strip()
             details["tenant"] = tenant
         return details
+
+    def execute_os_command(self, cmd):
+        try:
+            result = subprocess.run(cmd, shell=True, check=True)
+            return result.returncode == 0
+        except subprocess.CalledProcessError as e:
+            print(f"Error executing command: {e}")
+            return False
     
+        # Return None or appropriate response to indicate context change
+        return None
+
     def process_user_input(self, user_input):
         user_input = user_input.strip()
         tokens = user_input.split(' ')
         first_token = tokens[0].lower()
-      
+
         # Handle the history command
         if user_input == "history":
             history_file = os.path.expanduser("~/goat/shell/history")
@@ -361,10 +409,65 @@ class Goatshell(object):
                 print(f"Error: {e}")
             return ""
 
-        if first_token not in Goatshell.CLOUD_PROVIDERS:
-            return self.handle_non_provider_input(user_input)
+        # OS-level command check (starts with '#')
+        if user_input.startswith('#'):
+            # Execute OS-level command directly
+            os_command = user_input[1:].strip()
+            self.execute_os_command(os_command)
+            return None
 
-        return self.handle_provider_input(user_input)
+        # Check if it's a recognized cloud provider or internal command
+        if first_token in Goatshell.CLOUD_PROVIDERS or first_token in Goatshell.INTERNAL_COMMANDS:
+            # Handle the 'clear' command specifically
+            if first_token == 'clear':
+                self.execute_clear_command()
+                return None
+            else:
+                return user_input  # Other internal commands
+
+        # Prepend the cloud provider for other commands
+        prepared_command = f"{self.prefix} {user_input}"
+
+        # Validate the command for the current cloud provider
+        if not self.is_valid_command_for_provider(prepared_command, self.prefix):
+            print(f"Invalid command for {self.prefix}. Please check the available commands.")
+            return None  # Or some other indication that the command is invalid
+
+        return prepared_command
+
+    def execute_clear_command(self):
+        # Clear the screen
+        os.system('clear' if os.name == 'posix' else 'cls')
+
+    def is_valid_command_for_provider(self, command, provider):
+        if not command.strip():
+            return False
+
+        """Check if the command is valid for the given cloud provider."""
+        # Load JSON for the provider
+        self.completer.load_json(provider)
+
+        # Ensure the JSON data is loaded
+        if self.completer.goat_dict is None:
+            logger.error(f"No JSON data found for provider {provider}")
+            return False
+
+        # Parse the user's command
+        command_parts = command.split()
+
+        # Check the primary command
+        primary_command = command_parts[0]
+        if primary_command not in self.completer.goat_dict:
+            return False
+
+        # If there are subcommands, check them as well
+        if len(command_parts) > 1:
+            # Assuming subcommands are nested within the command key
+            subcommand = command_parts[1]
+            # Check if the subcommand is in the list of valid subcommands
+            return subcommand in self.completer.goat_dict[primary_command].get('subcommands', {})
+
+        return True
 
     def update_profile_for_provider(self, provider):
         if provider == 'aws':
@@ -378,7 +481,7 @@ class Goatshell(object):
         tokens = user_input.split(' ')
         first_token = tokens[0].lower()
 
-        if first_token in Goatshell.CLOUD_PROVIDERS or first_token in ['help', 'h', 'c', 'clear', 'e', 'exit']:
+        if first_token in Goatshell.CLOUD_PROVIDERS or first_token in INTERNAL_COMMANDS:
             return user_input
         elif self.safety_mode_enabled:  # safe mode
             print("INFO: OS commands are currently blocked due to safety mode. Please disable safety mode [F12] to execute OS commands.")
@@ -439,9 +542,21 @@ class Goatshell(object):
 
     def generate_prompt(self):
         context = self.get_current_context()
-        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]> ')
+        # Define your style
+        style = Style([
+                ('icon', 'bold fg:green'),  # Style for the icon
+                ])
+
+        # Unicode character for an eye
+        icon = '\U0001F441'
+
+        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]{icon}  ')
 
     def execute_command(self, cmd):
+        if not self.is_valid_command_for_provider(cmd, self.prefix):
+            print(f"'{cmd.split()[0]}' is misspelled or not recognized by the system.")
+            return "invalid command"
+
         p = subprocess.Popen(cmd, shell=True)
         p.communicate()
     
@@ -481,7 +596,7 @@ class Goatshell(object):
                 sys.exit()
             
             last_executed_command = user_input
-            if user_input == 're-prompt':
+            if user_input == 're-prompt' or user_input is None or user_input == '':
                 user_input = ''
                 continue
 
@@ -503,6 +618,11 @@ class Goatshell(object):
                 printInstructions()
                 continue
 
-            user_input = self.process_user_input(user_input)
-            last_executed_status = self.execute_command(user_input)
-           
+            processed_input = self.process_user_input(user_input)
+
+            if processed_input is None:
+                continue
+
+            if processed_input and processed_input.strip():
+                last_executed_status = self.execute_command(processed_input)
+

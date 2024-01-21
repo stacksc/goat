@@ -8,6 +8,9 @@ from toolbox.logger import Log
 from toolbox.click_complete import complete_jira_profiles
 from toolbox.misc import detect_environment, remove_html_tags
 
+user_env_var = "USERNAME" if os.name == 'nt' else "LOGNAME"
+default_assignee = os.environ.get(user_env_var, None)
+
 @click.group(help="manage JIRA issues", context_settings={'help_option_names':['-h','--help']})
 @click.pass_context
 def issue(ctx):
@@ -58,7 +61,7 @@ def review(ctx, issue_key, value, profile=None):
 
 @issue.command('assign', help="change assignee of a given JIRA issue(s)", context_settings={'help_option_names':['-h','--help']})
 @click.argument('issue_keys', nargs=-1, type=str, required=True)
-@click.option('-a', '--assignee', help="assignee name, i.e. " + os.environ["LOGNAME"], type=str, required=False, default=None)
+@click.option('-a', '--assignee', help="assignee name, i.e. " + str(default_assignee), type=str, required=False, default=None)
 @click.pass_context
 def assign(ctx, issue_keys, assignee=None, profile=None):
     if profile is None:

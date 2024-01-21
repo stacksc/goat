@@ -1,6 +1,9 @@
 import os, sys
 if os.name != 'nt':
-    import curses
+    try:
+       import curses
+    except:
+        pass
 from math import *
 from tabulate import tabulate
 

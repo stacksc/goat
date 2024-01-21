@@ -542,7 +542,14 @@ class Goatshell(object):
 
     def generate_prompt(self):
         context = self.get_current_context()
-        icon = '\u29BE'
+        # Define your style
+        style = Style([
+                ('icon', 'bold fg:green'),  # Style for the icon
+                ])
+
+        # Unicode character for an eye
+        icon = '\U0001F441'
+
         return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>]{icon}  ')
 
     def execute_command(self, cmd):
@@ -589,7 +596,7 @@ class Goatshell(object):
                 sys.exit()
             
             last_executed_command = user_input
-            if user_input == 're-prompt':
+            if user_input == 're-prompt' or user_input is None or user_input == '':
                 user_input = ''
                 continue
 

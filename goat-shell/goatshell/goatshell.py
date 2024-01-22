@@ -51,6 +51,9 @@ def printInstructions():
     4. Press Enter to accept a suggestion or Esc to cancel.
     5. If an option requires a value, use --option=value instead of --option value.
     6. The prompt will change dynamically based on cloud provider interaction.
+    7. Special key '%%' will change scopes. Use it with TAB completion to change depth levels. 
+       %%.. will go back a depth level
+       %% will unscope to root of the tree
     """
     print(instructions)
 
@@ -193,6 +196,9 @@ class Goatshell(object):
         self.initial_warning_displayed = False
         self.context_stack = []
 
+        # Add this line to initialize the completer with the current context stack
+        self.update_completer_context()
+
     def set_completer(self, completer):
         self.completer = completer
 
@@ -225,30 +231,24 @@ class Goatshell(object):
         profile = 'DEFAULT'  # Initial value before getting profile
         return self.get_profile(self.prefix)  # update the profile
 
-    def execute_command(self, cmd):
-        # Check for empty command
-        if not cmd.strip():
-            return "empty command"
+    def change_context(self, context_command):
+        if context_command == '..':  # Go up one level
+            if self.context_stack:
+                self.context_stack.pop()
+        elif context_command:  # Go into a specific context
+            self.context_stack.append(context_command)
 
-        # Split the command safely
-        command_parts = cmd.split()
-        if not command_parts:
-            return "invalid command"
+        # Update the prompt based on the new context
+        self.session.message = self.generate_prompt()
 
-        # Check if the command is recognized
-        if not self.is_valid_command_for_provider(cmd, self.prefix):
-            print(f"'{command_parts[0]}' is misspelled or not recognized by the system.")
-            return "invalid command"
+        # Update the context in the completer
+        self.completer.set_current_context(self.context_stack)
 
-        # Proceed with executing the command
-        p = subprocess.Popen(cmd, shell=True)
-        p.communicate()
-
-        # Check the return code
-        if p.returncode != 0:
-            return "failure"
-        else:
-            return ""
+    # Add this new method
+    def update_completer_context(self):
+        # Update the completer with the current context stack
+        if self.completer:
+            self.completer.set_current_context(self.context_stack)
 
     def init_history(self):
         shell_dir = os.path.expanduser("~/goat/shell/")
@@ -289,7 +289,8 @@ class Goatshell(object):
     def switch_to_next_provider(self):
         global current_service
         current_idx = self.CLOUD_PROVIDERS.index(current_service)
-        
+        self.context_stack = []
+
         for _ in range(len(self.CLOUD_PROVIDERS)):  # At most, loop through all providers once
             next_idx = (current_idx + 1) % len(self.CLOUD_PROVIDERS)
             next_service = self.CLOUD_PROVIDERS[next_idx]
@@ -300,13 +301,14 @@ class Goatshell(object):
                 self.set_parser_and_completer(next_service)
                 self.save_default_provider(next_service)
                 break
-        
             current_idx = next_idx
         else:  # This block runs if the loop completed without finding an available command
             # Handle the case where none of the commands are available.
             # This can be an error message, fallback, etc.
             print(f"None of the providers are available.")
-    
+
+        self.completer.set_current_context(self.context_stack)
+
     def toggle_vi_mode(self):
         self.vi_mode_enabled = not self.vi_mode_enabled
         self.save_vi_mode_setting()
@@ -364,6 +366,10 @@ class Goatshell(object):
         return details
 
     def execute_os_command(self, cmd):
+
+        if self.safety_mode_enabled:  # safe mode
+            print("INFO: OS commands are currently blocked due to safety mode. Please disable safety mode [F12] to execute OS commands.")
+            return ''
         try:
             result = subprocess.run(cmd, shell=True, check=True)
             return result.returncode == 0
@@ -374,10 +380,20 @@ class Goatshell(object):
         # Return None or appropriate response to indicate context change
         return None
 
+    def reset_context(self):
+        # Reset the context to the initial state
+        self.context_stack = []
+        # Notify the completer about the context reset
+        self.completer.set_current_context(self.context_stack)
+
     def process_user_input(self, user_input):
         user_input = user_input.strip()
         tokens = user_input.split(' ')
         first_token = tokens[0].lower()
+
+        if user_input == '%%':
+            self.reset_context()
+            return 're-prompt'
 
         # Handle the history command
         if user_input == "history":
@@ -416,6 +432,11 @@ class Goatshell(object):
             self.execute_os_command(os_command)
             return None
 
+        if user_input.startswith('%%'):
+            context_command = user_input[2:].strip()
+            self.change_context(context_command)
+            return None  # No further processing needed
+
         # Check if it's a recognized cloud provider or internal command
         if first_token in Goatshell.CLOUD_PROVIDERS or first_token in Goatshell.INTERNAL_COMMANDS:
             # Handle the 'clear' command specifically
@@ -426,14 +447,23 @@ class Goatshell(object):
                 return user_input  # Other internal commands
 
         # Prepend the cloud provider for other commands
-        prepared_command = f"{self.prefix} {user_input}"
+        full_command = ' '.join([self.prefix] + self.context_stack + [user_input])
 
-        # Validate the command for the current cloud provider
-        if not self.is_valid_command_for_provider(prepared_command, self.prefix):
+        if not self.is_valid_command_for_provider(full_command, self.prefix):
             print(f"Invalid command for {self.prefix}. Please check the available commands.")
-            return None  # Or some other indication that the command is invalid
+            return None
 
-        return prepared_command
+        return full_command
+
+    def change_context(self, context_command):
+        if context_command == '..':  # Go up one level
+            if self.context_stack:
+                self.context_stack.pop()
+        elif context_command:  # Go into a specific context
+            self.context_stack.append(context_command)
+
+        # Update the prompt based on the new context
+        self.session.message = self.generate_prompt()
 
     def execute_clear_command(self):
         # Clear the screen
@@ -477,89 +507,68 @@ class Goatshell(object):
             self.oci_profiles = misc.read_oci_profiles()
             self.profile = self.get_profile('oci')
 
-    def handle_non_provider_input(self, user_input):
-        tokens = user_input.split(' ')
-        first_token = tokens[0].lower()
-
-        if first_token in Goatshell.CLOUD_PROVIDERS or first_token in INTERNAL_COMMANDS:
-            return user_input
-        elif self.safety_mode_enabled:  # safe mode
-            print("INFO: OS commands are currently blocked due to safety mode. Please disable safety mode [F12] to execute OS commands.")
-            return ''
-        else:
-            return user_input
-
-    def handle_provider_input(self, user_input):
-        tokens = user_input.split(' ')
-        first_token = tokens[0]
-        last_token = tokens[-1]
-        last_but_one_token = tokens[-2] if len(tokens) > 1 else None
-
-        if self.prefix == 'aws':
-            return self.process_aws_input(user_input, first_token, last_token, last_but_one_token)
-        elif self.prefix == 'oci':
-            return self.process_oci_input(user_input, first_token, last_token, last_but_one_token)
-        return user_input
-
-    def process_oci_input(self, user_input, first_token, last_token, last_but_one_token):
-        if self.profile not in self.oci_profiles:
-            self.profile = self.get_profile(first_token.lower())
-
-        if last_token in ['--compartment-id', '--tenancy-id'] and not last_token.startswith('ocid'):
-            try:
-                OCID = self.get_account_or_tenancy(self.profile)
-                user_input += f' {OCID}'
-            except:
-                pass
-
-        if last_token == '--user-id' and not last_token.startswith('ocid'):
-            try:
-                OCID = misc.get_oci_user(self.profile)
-                user_input += f' {OCID}'
-            except:
-                pass
-
-        return user_input
-
-    def process_aws_input(self, user_input, first_token, last_token, last_but_one_token):
-        if self.profile not in self.aws_profiles:
-            self.profile = self.get_profile(first_token.lower())
-
-        if last_but_one_token == '--user-name' and not last_token:
-            try:
-                USER = misc.get_aws_user(self.profile)
-                user_input += f' {USER}'
-            except:
-                pass
-
-        return user_input
-
-    def get_current_context(self):
-        return {
-            'cloud_provider': self.prefix,
-            'profile': self.profile
+    def get_current_context(self, user_input=None):
+        # Get the cloud provider and default profile
+        cloud_provider = self.prefix
+        default_profile = self.profile
+        
+        # Extract additional context information from user input
+        additional_context = self.extract_additional_context(user_input)
+        
+        # Combine all context information into a dictionary
+        current_context = {
+            'cloud_provider': cloud_provider,
+            'profile': default_profile,
+            **additional_context  # Merge in additional context
         }
-
+        
+        return current_context
+    
+    def extract_additional_context(self, user_input):
+        # Parse the user input to extract additional context information
+        additional_context = {}
+        # Your logic to extract context information from user_input goes here
+        
+        return additional_context
+    
     def generate_prompt(self):
-        context = self.get_current_context()
+        # Getting the cloud provider context
+        cloud_context = self.get_current_context()
+    
+        # Building the custom context stack string
+        custom_context = '/'.join(self.context_stack) if self.context_stack else 'root'
+    
         # Define your style
         style = Style([
                 ('icon', 'bold fg:green'),  # Style for the icon
                 ])
-
+    
         # Unicode character for an eye
         icon = '\U0001F441'
-        return HTML(f'[<b><u>{context["cloud_provider"]}</u></b>:<b><u>{context["profile"]}</u></b>] {icon}  ')
-
+    
+        # Construct the prompt using both cloud context and custom context
+        return HTML(f'[<b><u>{cloud_context["cloud_provider"]}</u></b>:<b><u>{cloud_context["profile"]}</u></b>] [{custom_context}] {icon}  ')
+    
     def execute_command(self, cmd):
-        if not self.is_valid_command_for_provider(cmd, self.prefix):
-            print(f"'{cmd.split()[0]}' is misspelled or not recognized by the system.")
+        # Check for empty command
+        if not cmd.strip():
+            return "empty command"
+
+        # Split the command safely
+        command_parts = cmd.split()
+        if not command_parts:
             return "invalid command"
 
+        # Check if the command is recognized for the current provider
+        if not self.is_valid_command_for_provider(cmd, self.prefix):
+            print(f"'{command_parts[0]}' is misspelled or not recognized by the system.")
+            return "invalid command"
+
+        # Proceed with executing the command
         p = subprocess.Popen(cmd, shell=True)
         p.communicate()
-    
-        # If the return code is 0, it means success. Otherwise, it's a failure.
+
+        # Check the return code
         if p.returncode != 0:
             return "failure"
         else:
@@ -619,7 +628,7 @@ class Goatshell(object):
 
             processed_input = self.process_user_input(user_input)
 
-            if processed_input is None:
+            if processed_input is None or processed_input == 're-prompt':
                 continue
 
             if processed_input and processed_input.strip():

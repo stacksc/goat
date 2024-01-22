@@ -52,7 +52,7 @@ e|exit    : exit shell
 c|clear   : clear screen
 h|help    : display usage
 #         : key to run OS command
-%%        : key to change scopes
+%         : key to change scopes
 """
 
 def getLayout():

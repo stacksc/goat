@@ -51,9 +51,9 @@ def printInstructions():
     4. Press Enter to accept a suggestion or Esc to cancel.
     5. If an option requires a value, use --option=value instead of --option value.
     6. The prompt will change dynamically based on cloud provider interaction.
-    7. Special key '%%' will change scopes. Use it with TAB completion to change depth levels. 
-       %%.. will go back a depth level
-       %% will unscope to root of the tree
+    7. Special key '%' will change scopes. Use it with TAB completion to change depth levels. 
+       %.. will go back a depth level
+       % will unscope to root of the tree
     """
     print(instructions)
 
@@ -391,7 +391,7 @@ class Goatshell(object):
         tokens = user_input.split(' ')
         first_token = tokens[0].lower()
 
-        if user_input == '%%':
+        if user_input == '%':
             self.reset_context()
             return 're-prompt'
 
@@ -432,8 +432,8 @@ class Goatshell(object):
             self.execute_os_command(os_command)
             return None
 
-        if user_input.startswith('%%'):
-            context_command = user_input[2:].strip()
+        if user_input.startswith('%'):
+            context_command = user_input[1:].strip()
             self.change_context(context_command)
             return None  # No further processing needed
 

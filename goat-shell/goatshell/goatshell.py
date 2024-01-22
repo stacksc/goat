@@ -356,7 +356,6 @@ class Goatshell(object):
         return details
 
     def execute_os_command(self, cmd):
-
         if self.safety_mode_enabled:  # safe mode
             print("INFO: OS commands are currently blocked due to safety mode. Please disable safety mode [F12] to execute OS commands.")
             return ''
@@ -415,10 +414,10 @@ class Goatshell(object):
                 print(f"Error: {e}")
             return ""
 
-        # OS-level command check (starts with '#')
+        # OS-level command check (starts with '##')
         if user_input.startswith('##'):
             # Execute OS-level command directly
-            os_command = user_input[1:].strip()
+            os_command = user_input[2:].strip()
             self.execute_os_command(os_command)
             return None
 

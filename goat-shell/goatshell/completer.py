@@ -70,7 +70,7 @@ class GoatCompleter(Completer):
             logger.error(f"Invalid cloud provider: {provider}")
 
     def get_percent_completions(self, trimmed_input, document):
-        # Method for generating completions when '%' is typed
+        # Method for generating completions when '%%' is typed
         completions = []
         current_node = self.goat_dict.get(self.current_cloud_provider, {})
 
@@ -87,7 +87,7 @@ class GoatCompleter(Completer):
         # Generate completions based on fuzzy matches
         for match in fuzzy_matches:
             display = f'\u2794 {match}'
-            # Calculate start_position to overwrite only the part after '%'
+            # Calculate start_position to overwrite only the part after '%%'
             start_position = -len(trimmed_input) if trimmed_input else 0
             completions.append(Completion(match, start_position=start_position, display=display))
 
@@ -97,8 +97,8 @@ class GoatCompleter(Completer):
         input_text = document.text_before_cursor.strip()
         tokens = shlex.split(document.text_before_cursor.strip())
 
-        if input_text.startswith('%'):
-            trimmed_input = input_text[2:]  # Remove '%' from the input
+        if input_text.startswith('%%'):
+            trimmed_input = input_text[2:]  # Remove '%%' from the input
             yield from self.get_percent_completions(trimmed_input, document)
             return
         

@@ -51,8 +51,8 @@ misc_input = """\
 e|exit    : exit shell
 c|clear   : clear screen
 h|help    : display usage
-history   : shell history
-cloud     : cloud details
+#         : key to run OS command
+%%        : key to change scopes
 """
 
 def getLayout():

@@ -22,6 +22,7 @@ class GoatCompleter(Completer):
         self.current_json = None  # NEW: attribute to store the current JSON
         self.goat_dict = None
         self.current_cloud_provider = None
+        self.current_context = []
 
         # Dictionary mapping command tokens to their descriptions
         self.command_descriptions = {
@@ -35,6 +36,9 @@ class GoatCompleter(Completer):
             "ovhai": "OVH AI & Public Cloud"
             # Add more commands and descriptions as needed
         }
+
+    def set_current_context(self, context):
+        self.current_context = context
 
     def set_current_cloud_provider(self, provider):
         self.current_cloud_provider = provider
@@ -65,8 +69,44 @@ class GoatCompleter(Completer):
         else:
             logger.error(f"Invalid cloud provider: {provider}")
 
+    def get_percent_completions(self, trimmed_input, document):
+        # Method for generating completions when '%%' is typed
+        completions = []
+        current_node = self.goat_dict.get(self.current_cloud_provider, {})
+
+        # If there is a current context, navigate to the appropriate node
+        for context_part in self.current_context:
+            current_node = current_node.get('subcommands', {}).get(context_part, {})
+
+        # Combine all subcommands for fuzzy matching
+        subcommand_keys = current_node.get('subcommands', {}).keys()
+
+        # Use fuzzyfinder to filter and rank candidates based on the trimmed input
+        fuzzy_matches = fuzzyfinder(trimmed_input, subcommand_keys)
+
+        # Generate completions based on fuzzy matches
+        for match in fuzzy_matches:
+            display = f'\u2794 {match}'
+            # Calculate start_position to overwrite only the part after '%%'
+            start_position = -len(trimmed_input) if trimmed_input else 0
+            completions.append(Completion(match, start_position=start_position, display=display))
+
+        return completions
+
     def get_completions(self, document, complete_event, smart_completion=True):
+        input_text = document.text_before_cursor.strip()
         tokens = shlex.split(document.text_before_cursor.strip())
+
+        if input_text.startswith('%%'):
+            trimmed_input = input_text[2:]  # Remove '%%' from the input
+            yield from self.get_percent_completions(trimmed_input, document)
+            return
+        
+        if self.current_context:
+            context_completions = self.get_context_specific_completions(tokens, document)
+            if context_completions:
+                yield from context_completions
+            return
 
         # Check if there's no input and a current cloud provider is set
         if not tokens and self.current_cloud_provider:
@@ -84,6 +124,14 @@ class GoatCompleter(Completer):
         if tokens and self.current_cloud_provider:
             # Prepend the current cloud provider as the first token
             tokens = [self.current_cloud_provider] + tokens
+
+            # Update the command line based on selected subcommand
+            if len(tokens) > 1:
+                # Identify the selected subcommand (e.g., the last token)
+                selected_subcommand = tokens[-1]
+
+                # Update the command line by replacing the last token with the selected subcommand
+                updated_command_line = " ".join(tokens[:-1]) + f" {selected_subcommand}"
 
         if not tokens:
             # Check if a command is available before suggesting it
@@ -141,10 +189,56 @@ class GoatCompleter(Completer):
             for key in suggestions.keys():
                 display = f'\u2794 {key}'
                 yield Completion(key, display=display, display_meta=suggestions.get(key, ""))
+    
+    def get_context_specific_completions(self, tokens, document):
+        self.load_json(self.current_cloud_provider)
+
+        current_node = self.goat_dict.get(self.current_cloud_provider, {})
+        context_string = ' '.join(self.current_context)
+
+        # Track the full path traversed so far
+        traversed_path = list(self.current_context)
+
+        # Navigate based on the current context
+        for context_part in self.current_context:
+            if 'subcommands' in current_node and context_part in current_node['subcommands']:
+                current_node = current_node['subcommands'][context_part]
+            else:
+                return []
+
+        # Filter out tokens that are redundant with the context
+        filtered_tokens = [token for token in tokens if token not in self.current_context]
+
+        # Navigate based on the filtered tokens and update the traversed path
+        for token in filtered_tokens:
+            if 'subcommands' in current_node and token in current_node['subcommands']:
+                current_node = current_node['subcommands'][token]
+                traversed_path.append(token)  # Add token to the traversed path
+
+        # Generate completions based on the current_node and the traversed path
+        completions = []
+
+        # Get the current input for fuzzy matching
+        current_input = document.get_word_before_cursor()
+
+        # Combine subcommands and options for fuzzy matching
+        completion_candidates = list(current_node.get('subcommands', {}).keys()) + list(current_node.get('options', {}).keys())
+
+        # Use fuzzyfinder to filter and rank candidates based on the current input
+        fuzzy_matches = fuzzyfinder(current_input, completion_candidates)
+
+        # Generate completions based on fuzzy matches
+        for match in fuzzy_matches:
+            value = current_node.get('subcommands', {}).get(match, {}) or current_node.get('options', {}).get(match, {})
+            help_text = value.get('help', 'No description available')
+            display_text = ' '.join(traversed_path + [match]).strip()  # Use the full traversed path
+            completions.append(Completion(match, start_position=-len(current_input),
+                                          display=f'\u2794 {display_text}', display_meta=help_text))
+
+        return completions or []
 
     async def get_completions_async(self, document, complete_event):
         logger.debug("Entering get_completions")
         completions = await asyncio.to_thread(self.get_completions, document, complete_event)
         for completion in completions:
             yield completion
-

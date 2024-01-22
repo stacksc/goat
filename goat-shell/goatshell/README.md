@@ -1,5 +1,6 @@
 <img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
-<video width="600" height="300" src="https://github.com/stacksc/goat/assets/116677370/58e27064-3e4a-4e90-a8ba-229b1ae6258c"></video>
+<br><br>
+<img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/7f4842a4-d028-4761-b032-4d6377f372e2">
 
 <h1>GOATSHELL</h1>
 <h2>7 Clouds & 1 Shell</h2>
@@ -66,6 +67,8 @@ This keeps the command line clean with the cloud providers you only work with.
 The following cloud providers are currently supported:
 <br>
 <img width="918" alt="image" src="https://github.com/stacksc/goat/assets/116677370/c4bbe737-cda0-4174-9659-4a2960b80439">
+<br>
+The latest goat-shell version holds all JSON data per cloud, correctly nested based on the cloud provider.
 
 ## Toolbar
 The toolbar will refresh after hitting the ENTER key or with specific hotkeys.

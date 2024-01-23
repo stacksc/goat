@@ -127,7 +127,7 @@ class CustomKeyBindings(KeyBindings):
             if cloud_provider != 'goat':
                 os_command = f"goat {cloud_provider} extract commands"
                 try:
-                    result = self.goatshell_instance.execute_command(os_command)
+                    result = self.goatshell_instance.execute_os_command(os_command)
                     if result == "failure":
                         print("INFO: failed to execute the command.")
                     else:

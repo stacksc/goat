@@ -5,24 +5,6 @@ import shutil
 CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun', 'ovhai']
 INTERNAL_COMMANDS = {'exit', 'clear', 'help', 'history', 'cd', 'ls', 'c', 'h', 'e'}
 
-# Function to print instructions
-def printInstructions():
-    instructions = """
-    General Help:
-    -------------
-    1. To trigger auto-completion, start with TAB or type the beginning of a command or option and press Tab.
-    2. Auto-completion will suggest available commands, options, and arguments based on your input.
-    3. Use the arrow keys or Tab to navigate through the suggestions.
-    4. Press Enter to accept a suggestion or Esc to cancel.
-    5. If an option requires a value, use --option=value instead of --option value.
-    6. The prompt will change dynamically based on cloud provider interaction.
-    7. Special key '%%' will change scopes. Use it with TAB completion to change depth levels.
-       %% ..        - go back a depth level
-       %% {scope}   - change context to selected scope in TAB completion
-       %%           - unscope to root of the tree
-    """
-    print(instructions)
-
 def get_aws_account(profile_name='default'):
     import boto3
     session = boto3.Session(profile_name=profile_name)

@@ -1,3 +1,8 @@
+from prompt_toolkit.formatted_text import FormattedText
+from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.formatted_text import to_formatted_text, HTML
+from pathlib import Path
+
 import os
 import sys
 import subprocess
@@ -7,24 +12,20 @@ import logging
 import shutil
 import json
 import configparser
-from pathlib import Path
-
-from prompt_toolkit.formatted_text import FormattedText
-from prompt_toolkit.completion import WordCompleter
-from prompt_toolkit.formatted_text import to_formatted_text, HTML
 from prompt_toolkit.patch_stdout import patch_stdout
-from prompt_toolkit import Application
+from prompt_toolkit import Application, PromptSession
 from prompt_toolkit.history import InMemoryHistory, FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.styles import Style
+from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.keys import Keys
 
 from . import misc as misc
-from .customKeys import CustomKeyBindings as myCustomKeys
-from .dynamic_prompt import DynamicPromptSession
 from goatshell.style import styles
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 from goatshell.ui import getLayout
+from .dynamic_prompt import DynamicPromptSession
 from pygments.token import Token
 from .toolbar import create_toolbar
 
@@ -84,11 +85,79 @@ def load_setting(setting_key, default_value=None):
 
     return default_value
 
+# Define key bindings class
+class CustomKeyBindings(KeyBindings):
+    def __init__(self, app, goatshell_instance):
+        super().__init__()
+        self.app = app  # Store the Application reference
+        self.goatshell_instance = goatshell_instance
+
+        @self.add(Keys.F7)
+        def handle_f7(event):
+            print()
+            cloud_provider = self.goatshell_instance.prefix
+            if cloud_provider != 'goat':
+                os_command = f"goat {cloud_provider} extract commands"
+                try:
+                    result = self.goatshell_instance.execute_os_command(os_command)
+                    if result == "failure":
+                        print("INFO: failed to execute the command.")
+                    else:
+                        print(f"INFO: executed the command {os_command}")
+                except:
+                    pass
+            else:
+                directory = os.path.dirname(os.path.abspath(__file__))
+                os_command = f"python3 {directory}/fetch_goat.py"
+                try:
+                    os.system(os_command)
+                except:
+                    pass
+
+            event.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to re-prompt.
+
+        @self.add(Keys.F8)
+        def handle_f8(event):
+            goatshell_instance.switch_to_next_provider()
+            if self.goatshell_instance.prefix == 'az':
+                sub_id, sub_name = self.goatshell_instance.fetch_current_azure_subscription()
+                if sub_id and sub_name:
+                    self.goatshell_instance.profile = sub_name
+                else:
+                    self.profile = 'DEFAULT'
+            else:
+                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
+            getLayout()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
+        @self.add(Keys.F9)
+        def handle_f9(event):
+            if self.goatshell_instance.prefix == 'az':
+                self.goatshell_instance.switch_to_next_subscription()  # Call the method on the Goatshell instance
+            else:
+                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
+            getLayout()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')
+
+        @self.add(Keys.F10)
+        def handle_f10(event):
+            self.goatshell_instance.toggle_vi_mode()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
+        @self.add(Keys.F12)
+        def handle_f12(event):
+            self.goatshell_instance.toggle_safety_mode()
+            self.app.invalidate()
+            event.app.exit(result='re-prompt')  # Signal to reprompt.
+
 current_service = load_default_provider_setting()
 
 # Define the main Goatshell class
 class Goatshell(object):
-
     CLOUD_PROVIDERS = misc.CLOUD_PROVIDERS
     INTERNAL_COMMANDS = misc.INTERNAL_COMMANDS
 
@@ -103,7 +172,7 @@ class Goatshell(object):
         self.prefix = 'oci'
         self.aws_profiles = misc.read_aws_profiles()
         self.oci_profiles = misc.read_oci_profiles()
-        self.key_bindings = myCustomKeys(self.app, self)
+        self.key_bindings = CustomKeyBindings(self.app, self)
         self.init_history()
         self.session = self.init_session()
         self.set_parser_and_completer(current_service)
@@ -127,10 +196,11 @@ class Goatshell(object):
             result = subprocess.run(['az', 'account', 'show', '--output', 'json'],
                                     capture_output=True, text=True, check=True)
             current_subscription = json.loads(result.stdout)
-            return current_subscription['id'], current_subscription['name']
         except Exception as e:
             print(f"Error fetching current Azure subscription: {e}")
             return None, None
+        azure_subscription_cache = (current_subscription['id'], current_subscription['name'])
+        return azure_subscription_cache 
     
     def fetch_azure_subscriptions(self):
         try:
@@ -401,6 +471,16 @@ class Goatshell(object):
             return None
 
         return full_command
+
+    def change_context(self, context_command):
+        if context_command == '..':  # Go up one level
+            if self.context_stack:
+                self.context_stack.pop()
+        elif context_command:  # Go into a specific context
+            self.context_stack.append(context_command)
+
+        # Update the prompt based on the new context
+        self.session.message = self.generate_prompt()
 
     def execute_clear_command(self):
         # Clear the screen

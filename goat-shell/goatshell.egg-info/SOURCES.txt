@@ -3,7 +3,6 @@ README.md
 pyproject.toml
 goatshell/__init__.py
 goatshell/completer.py
-goatshell/customKeys.py
 goatshell/dynamic_prompt.py
 goatshell/fetch_goat.py
 goatshell/goatshell.py

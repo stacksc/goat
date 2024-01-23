@@ -232,10 +232,17 @@ class Goatshell(object):
             self.subscriptions = self.fetch_azure_subscriptions()
 
         if len(self.subscriptions) > 0:
-            current_sub_id, current_sub_name = self.subscriptions[self.current_subscription_index]
-            os.system("az account set -s " + current_sub_id)
-            self.profile = current_sub_name
-            self.current_subscription_index = (self.current_subscription_index + 1) % len(self.subscriptions)
+            if len(self.subscriptions) < 5:
+                current_sub_id, current_sub_name = self.subscriptions[self.current_subscription_index]
+                os.system("az account set -s " + current_sub_id)
+                self.profile = current_sub_name
+                self.current_subscription_index = (self.current_subscription_index + 1) % len(self.subscriptions)
+            else:
+                from goatshell.switch_azure_subscription import switch_azure_subscription as switch
+                subscriptions_dicts = [{'id': sub[0], 'name': sub[1]} for sub in self.subscriptions]
+                result = switch(subscriptions_dicts)
+                active_subscription_info, error_message = result
+                self.profile = active_subscription_info.split(':')[1].strip()
 
     def set_completer(self, completer):
         self.completer = completer

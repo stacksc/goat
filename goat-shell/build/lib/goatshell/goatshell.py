@@ -10,6 +10,7 @@ import re
 import click
 import logging
 import shutil
+import json
 import configparser
 from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit import Application, PromptSession
@@ -24,6 +25,7 @@ from goatshell.style import styles
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 from goatshell.ui import getLayout
+#from goatshell.switch_azure_subscription import switch_azure_subscription
 from pygments.token import Token
 from .toolbar import create_toolbar
 
@@ -146,17 +148,27 @@ class CustomKeyBindings(KeyBindings):
         @self.add(Keys.F8)
         def handle_f8(event):
             goatshell_instance.switch_to_next_provider()
-            self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
+            if self.goatshell_instance.prefix == 'az':
+                sub_id, sub_name = self.goatshell_instance.fetch_current_azure_subscription()
+                if sub_id and sub_name:
+                    self.goatshell_instance.profile = sub_name
+                else:
+                    self.profile = 'DEFAULT'
+            else:
+                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
             getLayout()
             self.app.invalidate()
             event.app.exit(result='re-prompt')  # Signal to reprompt.
 
         @self.add(Keys.F9)
         def handle_f9(event):
-            self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)  # Access the get_profile method of Goatshell
+            if self.goatshell_instance.prefix == 'az':
+                self.goatshell_instance.switch_to_next_subscription()  # Call the method on the Goatshell instance
+            else:
+                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
             getLayout()
             self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
+            event.app.exit(result='re-prompt')
 
         @self.add(Keys.F10)
         def handle_f10(event):
@@ -188,16 +200,69 @@ class Goatshell(object):
         self.prefix = 'oci'
         self.aws_profiles = misc.read_aws_profiles()
         self.oci_profiles = misc.read_oci_profiles()
-        self.profile = self.init_profile()
         self.key_bindings = CustomKeyBindings(self.app, self)
         self.init_history()
         self.session = self.init_session()
         self.set_parser_and_completer(current_service)
         self.initial_warning_displayed = False
         self.context_stack = []
+        self.subscriptions = None
+        self.current_subscription_index = 0
+        self.aws_index = 0
+        self.oci_index = 0
+        self.profile = self.init_profile()
 
+        if self.prefix == 'az':
+            sub_id, sub_name = self.fetch_current_azure_subscription()
+            if sub_id and sub_name:
+                self.profile = sub_name  # Set the profile to the current Azure subscription name
         # Add this line to initialize the completer with the current context stack
         self.update_completer_context()
+    
+    def fetch_current_azure_subscription(self):
+        try:
+            result = subprocess.run(['az', 'account', 'show', '--output', 'json'],
+                                    capture_output=True, text=True, check=True)
+            current_subscription = json.loads(result.stdout)
+            return current_subscription['id'], current_subscription['name']
+        except Exception as e:
+            print(f"Error fetching current Azure subscription: {e}")
+            return None, None
+    
+    def fetch_azure_subscriptions(self):
+        try:
+            # Run Azure CLI command to list subscriptions and capture the output
+            result = subprocess.run(['az', 'account', 'list', '--all', '--output', 'json'],
+                                    capture_output=True, text=True, check=True)
+    
+            # Parse the JSON output into Python objects
+            subscriptions = json.loads(result.stdout)
+    
+            # Extract the relevant information (e.g., subscription IDs)
+            subscription_ids = [sub['id'] for sub in subscriptions]
+
+            return [(sub['id'], sub['name']) for sub in subscriptions]
+    
+        except subprocess.SubprocessError as e:
+            print(f"Error fetching subscriptions: {e}")
+            return []
+        except json.JSONDecodeError as e:
+            print(f"Error decoding subscription data: {e}")
+            return []
+        except Exception as e:
+            # Catch-all for any other exceptions
+            print(f"Unexpected error: {e}")
+            return []
+    
+    def switch_to_next_subscription(self):
+        if self.subscriptions is None or len(self.subscriptions) == 0:
+            self.subscriptions = self.fetch_azure_subscriptions()
+
+        if len(self.subscriptions) > 0:
+            current_sub_id, current_sub_name = self.subscriptions[self.current_subscription_index]
+            os.system("az account set -s " + current_sub_id)
+            self.profile = current_sub_name
+            self.current_subscription_index = (self.current_subscription_index + 1) % len(self.subscriptions)
 
     def set_completer(self, completer):
         self.completer = completer
@@ -323,16 +388,12 @@ class Goatshell(object):
     def get_profile(self, mode):
         if mode == 'aws':
             if self.aws_profiles:
-                if self.profile in self.aws_profiles:
-                    self.aws_index = self.aws_profiles.index(self.profile)
                 self.aws_index = (self.aws_index + 1) % len(self.aws_profiles)
                 self.profile = self.aws_profiles[self.aws_index]
             else:
                 self.profile = 'DEFAULT'
         elif mode == 'oci':
             if self.oci_profiles:
-                if self.profile in self.oci_profiles:
-                    self.oci_index = self.oci_profiles.index(self.profile)
                 self.oci_index = (self.oci_index + 1) % len(self.oci_profiles)
                 self.profile = self.oci_profiles[self.oci_index]
             else:
@@ -488,14 +549,6 @@ class Goatshell(object):
 
         return True
 
-    def update_profile_for_provider(self, provider):
-        if provider == 'aws':
-            self.aws_profiles = misc.read_aws_profiles()
-            self.profile = self.get_profile('aws')
-        elif provider == 'oci':
-            self.oci_profiles = misc.read_oci_profiles()
-            self.profile = self.get_profile('oci')
-
     def get_current_context(self, user_input=None):
         # Get the cloud provider and default profile
         cloud_provider = self.prefix
@@ -622,4 +675,3 @@ class Goatshell(object):
 
             if processed_input and processed_input.strip():
                 last_executed_status = self.execute_command(processed_input)
-

@@ -69,37 +69,38 @@ h|help    : display usage
 def getLayout(with_help=None):
     os.system('clear')
 
-    if with_help:
-        # Create a TextArea for the instructions
-        instructions_area = TextArea(
-            text=instructions,  # Your instructions text
-            read_only=True,     # Makes the TextArea read-only
-            scrollbar=True      # Enables scrollbar if the content is too long
-        )
-    else:
-        instructions_area = TextArea(
-            text = "INFO: general instructions will be displayed here with the 'help' command",
-            read_only=True,     # Makes the TextArea read-only
-            scrollbar=False     # Enables scrollbar if the content is too long
-        )
+    instructions_text = instructions if with_help else "INFO: general instructions will be displayed here with the 'help' command"
+    instructions_area = TextArea(
+        text=instructions_text,
+        read_only=True,
+        scrollbar=with_help
+    )
 
     instructions_frame = Frame(
         instructions_area,
         title=HTML("<b>Instructions</b>")
     )
 
-    print_container(
-        HSplit([
-            Frame(
-                Window(FormattedTextControl(text), height=2, align=WindowAlign.CENTER), title=(title)
-            ),
-            VSplit([
-                Frame(body=Label(text=input.strip()), width=60, title=(func_title)),
-                Frame(body=Label(text=misc_input.rstrip()), width=60, title=(misc_title))
-            ]),
-            instructions_frame # Add the instructions frame here
-        ])
-    )
+    # Explicitly setting the width of frames in VSplit
+    func_frame = Frame(body=Label(text=input.strip()), width=D(preferred=60), title=(func_title))
+    misc_frame = Frame(body=Label(text=misc_input.rstrip()), width=D(preferred=60), title=(misc_title))
+
+    # Aligning frames within VSplit
+    main_vsplit = VSplit([
+        func_frame,
+        misc_frame
+    ], align=VerticalAlign.CENTER)
+
+    main_layout = HSplit([
+        Frame(
+            Window(FormattedTextControl(text), height=D.exact(2), align=WindowAlign.CENTER), title=(title)
+        ),
+        main_vsplit,
+        instructions_frame
+    ])
+
+    print_container(main_layout)
 
 if __name__ == '__main__':
     getLayout()
+

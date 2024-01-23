@@ -1,8 +1,3 @@
-from prompt_toolkit.formatted_text import FormattedText
-from prompt_toolkit.completion import WordCompleter
-from prompt_toolkit.formatted_text import to_formatted_text, HTML
-from pathlib import Path
-
 import os
 import sys
 import subprocess
@@ -12,20 +7,24 @@ import logging
 import shutil
 import json
 import configparser
+from pathlib import Path
+
+from prompt_toolkit.formatted_text import FormattedText
+from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.formatted_text import to_formatted_text, HTML
 from prompt_toolkit.patch_stdout import patch_stdout
-from prompt_toolkit import Application, PromptSession
+from prompt_toolkit import Application
 from prompt_toolkit.history import InMemoryHistory, FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.styles import Style
-from prompt_toolkit.key_binding import KeyBindings
-from prompt_toolkit.keys import Keys
 
 from . import misc as misc
+from .customKeys import CustomKeyBindings as myCustomKeys
+from .dynamic_prompt import DynamicPromptSession
 from goatshell.style import styles
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 from goatshell.ui import getLayout
-#from goatshell.switch_azure_subscription import switch_azure_subscription
 from pygments.token import Token
 from .toolbar import create_toolbar
 
@@ -41,23 +40,6 @@ global vi_mode_enabled, safety_mode_enabled
 os.environ['AWS_PAGER'] = ''  # Disable paging in AWS by default
 vi_mode_enabled = False       # Default vi mode to false on start up
 safety_mode_enabled = False   # Default safety mode to false on start up
-
-# Function to print instructions
-def printInstructions():
-    instructions = """
-    Auto-Completion Instructions:
-    ----------------------------
-    1. To trigger auto-completion, start with TAB or type the beginning of a command or option and press Tab.
-    2. Auto-completion will suggest available commands, options, and arguments based on your input.
-    3. Use the arrow keys or Tab to navigate through the suggestions.
-    4. Press Enter to accept a suggestion or Esc to cancel.
-    5. If an option requires a value, use --option=value instead of --option value.
-    6. The prompt will change dynamically based on cloud provider interaction.
-    7. Special key '%%' will change scopes. Use it with TAB completion to change depth levels. 
-       %%.. will go back a depth level
-       %% will unscope to root of the tree
-    """
-    print(instructions)
 
 def save_setting(setting_key, setting_value):
     """Generic function to save a setting to config.ini."""
@@ -102,92 +84,13 @@ def load_setting(setting_key, default_value=None):
 
     return default_value
 
-# Define a custom PromptSession class
-class DynamicPromptSession(PromptSession):
-    def __init__(self, vi_mode_enabled=True, *args, **kwargs):
-        self.vi_mode_enabled = vi_mode_enabled
-        super().__init__(*args, **kwargs)
-
-    def prompt(self, *args, **kwargs):
-        # Set the 'vi_mode' parameter based on 'vi_mode_enabled'
-        kwargs['vi_mode'] = self.vi_mode_enabled
-        return super().prompt(*args, **kwargs)
-
-# Define key bindings class
-class CustomKeyBindings(KeyBindings):
-    def __init__(self, app, goatshell_instance):
-        super().__init__()
-        self.app = app  # Store the Application reference
-        self.goatshell_instance = goatshell_instance
-
-        @self.add(Keys.F7)
-        def handle_f7(event):
-            print()
-            cloud_provider = self.goatshell_instance.prefix
-            if cloud_provider != 'goat':
-                os_command = f"goat {cloud_provider} extract commands"
-                try:
-                    result = self.goatshell_instance.execute_os_command(os_command)
-                    if result == "failure":
-                        print("INFO: failed to execute the command.")
-                    else:
-                        print(f"INFO: executed the command {os_command}")
-                except:
-                    pass
-            else:
-                directory = os.path.dirname(os.path.abspath(__file__))
-                os_command = f"python3 {directory}/fetch_goat.py"
-                try:
-                    os.system(os_command)
-                except:
-                    pass
-
-            event.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to re-prompt.
-
-        @self.add(Keys.F8)
-        def handle_f8(event):
-            goatshell_instance.switch_to_next_provider()
-            if self.goatshell_instance.prefix == 'az':
-                sub_id, sub_name = self.goatshell_instance.fetch_current_azure_subscription()
-                if sub_id and sub_name:
-                    self.goatshell_instance.profile = sub_name
-                else:
-                    self.profile = 'DEFAULT'
-            else:
-                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
-            getLayout()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
-        @self.add(Keys.F9)
-        def handle_f9(event):
-            if self.goatshell_instance.prefix == 'az':
-                self.goatshell_instance.switch_to_next_subscription()  # Call the method on the Goatshell instance
-            else:
-                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
-            getLayout()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')
-
-        @self.add(Keys.F10)
-        def handle_f10(event):
-            self.goatshell_instance.toggle_vi_mode()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
-        @self.add(Keys.F12)
-        def handle_f12(event):
-            self.goatshell_instance.toggle_safety_mode()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
 current_service = load_default_provider_setting()
 
 # Define the main Goatshell class
 class Goatshell(object):
-    CLOUD_PROVIDERS = ['aws', 'oci', 'ibmcloud', 'gcloud', 'goat', 'az', 'aliyun', 'ovhai']
-    INTERNAL_COMMANDS = {'exit', 'clear', 'help', 'history', 'cd', 'ls', 'c', 'h', 'e'}
+
+    CLOUD_PROVIDERS = misc.CLOUD_PROVIDERS
+    INTERNAL_COMMANDS = misc.INTERNAL_COMMANDS
 
     def __init__(self, app, completer, parser, toolbar_message=None):
         getLayout()
@@ -200,7 +103,7 @@ class Goatshell(object):
         self.prefix = 'oci'
         self.aws_profiles = misc.read_aws_profiles()
         self.oci_profiles = misc.read_oci_profiles()
-        self.key_bindings = CustomKeyBindings(self.app, self)
+        self.key_bindings = myCustomKeys(self.app, self)
         self.init_history()
         self.session = self.init_session()
         self.set_parser_and_completer(current_service)
@@ -347,10 +250,6 @@ class Goatshell(object):
         self.completer.set_current_cloud_provider(self.prefix)  # Update current cloud provider in completer
         self.session.completer = self.completer  # Reset session completer
 
-        #self.parser = Parser(str(user_json_path), api_type)  # Reset parser
-        #self.completer = GoatCompleter(self.parser)  # Reset completer
-        #self.session.completer = self.completer  # Reset session completer
-    
     def switch_to_next_provider(self):
         global current_service
         current_idx = self.CLOUD_PROVIDERS.index(current_service)
@@ -377,9 +276,7 @@ class Goatshell(object):
     def toggle_vi_mode(self):
         self.vi_mode_enabled = not self.vi_mode_enabled
         self.save_vi_mode_setting()
-        self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, style=self.style, history=self.history, auto_suggest=AutoSuggestFromHistory(),
-                                           completer=self.completer, complete_while_typing=True,
-                                           enable_history_search=True, key_bindings=self.key_bindings)
+        self.session = DynamicPromptSession(vi_mode_enabled=self.vi_mode_enabled, style=self.style, history=self.history, auto_suggest=AutoSuggestFromHistory(), completer=self.completer, complete_while_typing=True, enable_history_search=True, key_bindings=self.key_bindings)
 
     def toggle_safety_mode(self):
         self.safety_mode_enabled = not self.safety_mode_enabled
@@ -504,16 +401,6 @@ class Goatshell(object):
             return None
 
         return full_command
-
-    def change_context(self, context_command):
-        if context_command == '..':  # Go up one level
-            if self.context_stack:
-                self.context_stack.pop()
-        elif context_command:  # Go into a specific context
-            self.context_stack.append(context_command)
-
-        # Update the prompt based on the new context
-        self.session.message = self.generate_prompt()
 
     def execute_clear_command(self):
         # Clear the screen
@@ -664,8 +551,7 @@ class Goatshell(object):
                 user_input = 'exit'
                 sys.exit()
             elif user_input == "help" or user_input == 'h':
-                getLayout()
-                printInstructions()
+                getLayout(with_help=True)
                 continue
 
             processed_input = self.process_user_input(user_input)

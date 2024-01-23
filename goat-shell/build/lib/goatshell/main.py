@@ -6,6 +6,7 @@ from goatshell.goatshell import Goatshell, load_default_provider_setting
 from goatshell.completer import GoatCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.application import Application
+from prompt_toolkit.layout.layout import Layout
 from goatshell.style import styles
 from toolbox.misc import get_corrupt_provider_files, get_save_path
 import os
@@ -38,7 +39,7 @@ def cli():
     completer = GoatCompleter(parser)
 
     # Initialize and run Goatshell
-    app = Application()
+    app = Application(mouse_support=True)
     goatshell = Goatshell(app, completer, parser) # first init so we have access to our variables
 
     # startup check for json health

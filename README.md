@@ -835,5 +835,7 @@ Commands:
 #### Improved Cloud Wrapper ####
 
 <img width="1703" alt="image" src="https://github.com/stacksc/goat/assets/116677370/39b87c3c-49d0-4576-b452-f1e3bdb31015">
-
+<br>
+<br>
+<img width="1703" alt="image" src="https://github.com/stacksc/goat/assets/116677370/4e9f678b-9cae-462a-89a1-5494d2468aca">
 <br>

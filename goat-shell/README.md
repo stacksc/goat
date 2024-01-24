@@ -1,5 +1,4 @@
-<img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/bddf0dc8-7a9f-4fe5-9498-4518818a3da9">
-<br><br>
+<img width="300" height="300" alt="image" src="https://github.com/stacksc/goat/assets/116677370/e262e953-d57a-4b55-82cf-4c8ea537c429">
 <img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/7f4842a4-d028-4761-b032-4d6377f372e2">
 
 <h1>GOATSHELL</h1>

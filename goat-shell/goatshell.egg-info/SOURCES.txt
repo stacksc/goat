@@ -2,6 +2,7 @@ LICENSE
 README.md
 pyproject.toml
 goatshell/__init__.py
+goatshell/azure_cli.py
 goatshell/completer.py
 goatshell/custom_keys.py
 goatshell/dynamic_prompt.py

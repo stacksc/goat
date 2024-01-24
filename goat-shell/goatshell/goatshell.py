@@ -401,6 +401,8 @@ class Goatshell(object):
 
         # Parse the user's command
         command_parts = command.split()
+        if command_parts[1].startswith('-'):
+            return self.is_valid_global_option(command_parts[1])
 
         # Check the primary command
         primary_command = command_parts[0]
@@ -415,6 +417,12 @@ class Goatshell(object):
             return subcommand in self.completer.goat_dict[primary_command].get('subcommands', {})
 
         return True
+
+    def is_valid_global_option(self, option):
+        # Implement this method based on how you determine valid global options
+        # Example:
+        valid_global_options = ['-v', '-h', '--version', '--help']
+        return option in valid_global_options
 
     def get_current_context(self, user_input=None):
         # Get the cloud provider and default profile

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2024.1.24.32
+Version: 2024.1.24.46
 Summary: goatshell - goat shell interface to common cloud providers.
 Author-email: Christopher Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
@@ -179,6 +179,9 @@ The only toggle currently supported is profile switching. Everything else is dyn
 
 </body>
 </html>
+
+## Newly Improved Interface Now Available
+![image](https://github.com/stacksc/goat/assets/116677370/14287920-9db8-4d53-a775-c60ace20d0cf)
 
 
 Once the relative CLI is installed, the goatshell application will recognize that it is available & syntax completion will be provided.<br>

@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 goatshell/__init__.py
 goatshell/completer.py
+goatshell/custom_keys.py
 goatshell/dynamic_prompt.py
 goatshell/fetch_goat.py
 goatshell/goatshell.py
@@ -10,6 +11,7 @@ goatshell/logger.py
 goatshell/main.py
 goatshell/misc.py
 goatshell/parser.py
+goatshell/settings_manager.py
 goatshell/style.py
 goatshell/switch_azure_subscription.py
 goatshell/toolbar.py

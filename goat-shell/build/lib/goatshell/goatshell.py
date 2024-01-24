@@ -25,6 +25,8 @@ from goatshell.style import styles
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 from goatshell.ui import getLayout
+from goatshell.settings_manager import SettingsManager
+from goatshell.custom_keys import CustomKeyBindings
 from .dynamic_prompt import DynamicPromptSession
 from pygments.token import Token
 from .toolbar import create_toolbar
@@ -32,127 +34,18 @@ from .toolbar import create_toolbar
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.WARNING)
 
+# used to manage settings
+settings_manager = SettingsManager()
+
 # make this global to access outside goatshell
 def load_default_provider_setting():
-    return load_setting('default_provider', default_value='oci')
+    return settings_manager.load_setting('default_provider', default_value='oci')
 
 # Global variables
 global vi_mode_enabled, safety_mode_enabled
 os.environ['AWS_PAGER'] = ''  # Disable paging in AWS by default
 vi_mode_enabled = False       # Default vi mode to false on start up
 safety_mode_enabled = False   # Default safety mode to false on start up
-
-def save_setting(setting_key, setting_value):
-    """Generic function to save a setting to config.ini."""
-    shell_dir = os.path.expanduser("~/goat/shell/")
-    if not os.path.exists(shell_dir):
-        os.makedirs(shell_dir)
-
-    config_path = os.path.join(shell_dir, 'config.ini')
-    config = configparser.ConfigParser()
-
-    # Load existing settings if they exist
-    if os.path.exists(config_path):
-        config.read(config_path)
-
-    if 'Settings' not in config:
-        config['Settings'] = {}
-
-    config['Settings'][setting_key] = str(setting_value)
-
-    with open(config_path, 'w') as configfile:
-        config.write(configfile)
-
-def load_setting(setting_key, default_value=None):
-    """Generic function to load a setting from config.ini."""
-    shell_dir = os.path.expanduser("~/goat/shell/")
-    config_path = os.path.join(shell_dir, 'config.ini')
-    config = configparser.ConfigParser()
-
-    if not os.path.exists(config_path):
-        return default_value
-
-    config.read(config_path)
-
-    if 'Settings' in config and setting_key in config['Settings']:
-        value = config['Settings'][setting_key]
-        if value.lower() == 'true':
-            return True
-        elif value.lower() == 'false':
-            return False
-        else:
-            return value
-
-    return default_value
-
-# Define key bindings class
-class CustomKeyBindings(KeyBindings):
-    def __init__(self, app, goatshell_instance):
-        super().__init__()
-        self.app = app  # Store the Application reference
-        self.goatshell_instance = goatshell_instance
-
-        @self.add(Keys.F7)
-        def handle_f7(event):
-            print()
-            cloud_provider = self.goatshell_instance.prefix
-            if cloud_provider != 'goat':
-                os_command = f"goat {cloud_provider} extract commands"
-                try:
-                    result = self.goatshell_instance.execute_os_command(os_command)
-                    if result == "failure":
-                        print("INFO: failed to execute the command.")
-                    else:
-                        print(f"INFO: executed the command {os_command}")
-                except:
-                    pass
-            else:
-                directory = os.path.dirname(os.path.abspath(__file__))
-                os_command = f"python3 {directory}/fetch_goat.py"
-                try:
-                    os.system(os_command)
-                except:
-                    pass
-
-            event.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to re-prompt.
-
-        @self.add(Keys.F8)
-        def handle_f8(event):
-            goatshell_instance.switch_to_next_provider()
-            if self.goatshell_instance.prefix == 'az':
-                sub_id, sub_name = self.goatshell_instance.fetch_current_azure_subscription()
-                if sub_id and sub_name:
-                    self.goatshell_instance.profile = sub_name
-                else:
-                    self.profile = 'DEFAULT'
-            else:
-                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
-            getLayout()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
-        @self.add(Keys.F9)
-        def handle_f9(event):
-            if self.goatshell_instance.prefix == 'az':
-                self.goatshell_instance.switch_to_next_subscription()  # Call the method on the Goatshell instance
-            else:
-                self.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
-            getLayout()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')
-
-        @self.add(Keys.F10)
-        def handle_f10(event):
-            self.goatshell_instance.toggle_vi_mode()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
-
-        @self.add(Keys.F12)
-        def handle_f12(event):
-            self.goatshell_instance.toggle_safety_mode()
-            self.app.invalidate()
-            event.app.exit(result='re-prompt')  # Signal to reprompt.
 
 current_service = load_default_provider_setting()
 
@@ -242,33 +135,34 @@ class Goatshell(object):
                 subscriptions_dicts = [{'id': sub[0], 'name': sub[1]} for sub in self.subscriptions]
                 result = switch(subscriptions_dicts)
                 active_subscription_info, error_message = result
-                self.profile = active_subscription_info.split(':')[1].strip()
+                if active_subscription_info:
+                    self.profile = active_subscription_info.split(':')[1].strip()
 
     def set_completer(self, completer):
         self.completer = completer
 
     def load_vi_mode_setting(self):
         """Load the VI mode setting."""
-        return load_setting('vi_mode_enabled', default_value=False)
+        return settings_manager.load_setting('vi_mode_enabled', default_value=False)
     
     def load_safety_mode_setting(self):
         """Load the SAFETY mode setting."""
-        return load_setting('safety_mode_enabled', default_value=False)
+        return settings_manager.load_setting('safety_mode_enabled', default_value=False)
     
     def load_default_provider_setting(self):
         """Load the provider setting."""
-        return load_setting('default_provider', default_value='oci')
+        return settings_manager.load_setting('default_provider', default_value='oci')
 
     def save_vi_mode_setting(self):
         """Save the VI mode setting."""
-        save_setting('vi_mode_enabled', self.vi_mode_enabled)
+        settings_manager.save_setting('vi_mode_enabled', self.vi_mode_enabled)
     
     def save_safety_mode_setting(self):
         """Save the safety mode setting."""
-        save_setting('safety_mode_enabled', self.safety_mode_enabled)
+        settings_manager.save_setting('safety_mode_enabled', self.safety_mode_enabled)
 
     def save_default_provider(self, provider):
-        save_setting('default_provider', provider)
+        settings_manager.save_setting('default_provider', provider)
 
     def init_profile(self):
         self.aws_index = 0

@@ -309,9 +309,14 @@ class Goatshell(object):
         tokens = user_input.split(' ')
         first_token = tokens[0].lower()
 
-        if user_input == '%%':
-            self.reset_context()
-            return 're-prompt'
+        # Handle Reset and Context Change Commands
+        if user_input.startswith('%%'):
+            command = user_input[2:].strip()
+            if command == '':
+                self.reset_context()
+            else:
+                self.change_context(command)
+            return None
 
         # Handle the history command
         if user_input == "history":
@@ -350,15 +355,9 @@ class Goatshell(object):
             self.execute_os_command(os_command)
             return None
 
-        if user_input.startswith('%%'):
-            context_command = user_input[2:].strip()
-            self.change_context(context_command)
-            return None  # No further processing needed
-
-        # Check if it's a recognized cloud provider or internal command
         if first_token in Goatshell.CLOUD_PROVIDERS or first_token in Goatshell.INTERNAL_COMMANDS:
             # Handle the 'clear' command specifically
-            if first_token == 'clear':
+            if first_token == 'clear' or first_token == 'c':
                 self.execute_clear_command()
                 return None
             else:
@@ -526,7 +525,6 @@ class Goatshell(object):
 
             user_input = re.sub(r'[-]{3,}', '--', user_input)
             if user_input == "clear" or user_input == 'c':
-                user_input = 'clear'
                 click.clear()
             elif user_input == "exit" or user_input == 'e':
                 user_input = 'exit'

@@ -150,6 +150,9 @@ The only toggle currently supported is profile switching. Everything else is dyn
 </body>
 </html>
 
+## Newly Improved Interface Now Available
+![image](https://github.com/stacksc/goat/assets/116677370/14287920-9db8-4d53-a775-c60ace20d0cf)
+
 
 Once the relative CLI is installed, the goatshell application will recognize that it is available & syntax completion will be provided.<br>
 The project is packaged with cloud provider JSON files which get refreshed automatically per major release with dynamic CLI scrapers.<br><br>

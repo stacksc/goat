@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatshell
-Version: 2024.1.24.117
+Version: 2024.1.24.233
 Summary: goatshell - goat shell interface to common cloud providers.
 Author-email: Christopher Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
@@ -28,7 +28,7 @@ Requires-Dist: oci-cli
 Requires-Dist: oci
 Requires-Dist: aws2
 
-<img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/1c49320a-f116-4a7e-bb36-0bdbaf3934ac">
+<img width="150" height="150" alt="image" src="https://github.com/stacksc/goat/assets/116677370/bddf0dc8-7a9f-4fe5-9498-4518818a3da9">
 <br><br>
 <img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/7f4842a4-d028-4761-b032-4d6377f372e2">
 

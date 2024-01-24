@@ -64,11 +64,11 @@ def goat_version():
 
 cli.add_command(configs, name='configs')
 cli.add_command(jira, name='jira')
-cli.add_command(aws, name='aws')
-cli.add_command(az, name='az')
-cli.add_command(ibmcloud, name='ibmcloud')
-cli.add_command(oci, name='oci')
-cli.add_command(ovhai, name='ovhai')
+cli.add_command(aws, name='amazon')
+cli.add_command(az, name='azure')
+cli.add_command(ibmcloud, name='ibm')
+cli.add_command(oci, name='oracle')
+cli.add_command(ovhai, name='ovh')
 cli.add_command(jenkins, name='jenkins')
 cli.add_command(slack)
 

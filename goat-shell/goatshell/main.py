@@ -27,7 +27,6 @@ def startup_check():
     return None
 
 def cli():
-    # Default to the 'oci' service
     service = load_default_provider_setting()
 
     # Construct the path to the JSON file based on the selected service

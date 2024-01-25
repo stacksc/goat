@@ -414,43 +414,43 @@
                                 "options": {
                                     "-a": {
                                         "name": "-a",
-                                        "help": "--assignee TEXT  i.e. jdoe"
+                                        "help": "--assignee TEXT             i.e. jdoe"
                                     },
                                     "-r": {
                                         "name": "-r",
-                                        "help": "--reporter TEXT  i.e. smithj"
-                                    },
-                                    "-s": {
-                                        "name": "-s",
-                                        "help": "--state TEXT     i.e. closed"
+                                        "help": "--reporter TEXT             i.e. smithj"
                                     },
                                     "--title": {
                                         "name": "--title",
-                                        "help": "TEXT         text to search for in the summary field"
+                                        "help": "TEXT                    text to search for in the summary field"
+                                    },
+                                    "-s": {
+                                        "name": "-s",
+                                        "help": "--state [active|closed|new|resolved|blocked]"
                                     },
                                     "-o": {
                                         "name": "-o",
-                                        "help": "--orderby TEXT   choose which field to use for sorting"
+                                        "help": "--orderby TEXT              choose which field to use for sorting"
                                     },
                                     "-A": {
                                         "name": "-A",
-                                        "help": "--ascending      show issues in ascending order  [default: False]"
+                                        "help": "--ascending                 show issues in ascending order  [default:"
                                     },
                                     "-D": {
                                         "name": "-D",
-                                        "help": "--descending     show issues in descending order  [default: False]"
+                                        "help": "--descending                show issues in descending order  [default:"
                                     },
                                     "-c": {
                                         "name": "-c",
-                                        "help": "--csv TEXT       name of the csv file to save the results to"
+                                        "help": "--csv TEXT                  name of the csv file to save the results to"
                                     },
                                     "-J": {
                                         "name": "-J",
-                                        "help": "--json           output results in JSON format  [default: False]"
+                                        "help": "--json                      output results in JSON format  [default:"
                                     },
                                     "-h": {
                                         "name": "-h",
-                                        "help": "--help           Show this message and exit."
+                                        "help": "--help                      Show this message and exit."
                                     }
                                 },
                                 "subcommands": {},
@@ -986,7 +986,7 @@
                         "help": "retrieve information from Jenkins"
                     }
                 },
-                "help": "Jenkins ClientCurrent Profile:..."
+                "help": "Jenkins ClientCurrent Profile: DEFAULT"
             },
             "jira": {
                 "command": "jira",
@@ -1058,7 +1058,7 @@
                                 "options": {
                                     "-a": {
                                         "name": "-a",
-                                        "help": "--assignee TEXT  assignee name, i.e. stacksc"
+                                        "help": "--assignee TEXT  assignee name, i.e. chris"
                                     },
                                     "-h": {
                                         "name": "-h",

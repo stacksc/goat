@@ -146,7 +146,7 @@ def build_wiql(assignee=None, reporter=None, states=None, title=None, project=No
         clauses.append(handle_single_or_multiple("System.CreatedBy", reporter))
 
     if states:
-        clauses.append(handle_single_or_multiple("System.State", states))
+        clauses.append(f"[System.State] = '{states}'")
 
     if title:
         clauses.append(f"System.Title CONTAINS '{title}'")

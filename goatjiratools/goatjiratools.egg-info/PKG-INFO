@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatjiratools
-Version: 2024.1.20.2232
+Version: 2024.1.25.636
 Summary: jiratools - a CLI client for Jira included by default
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
@@ -10,4 +10,5 @@ Description-Content-Type: text/markdown
 Requires-Dist: click>=8.0.4
 Requires-Dist: jira
 Requires-Dist: tabulate
+Requires-Dist: six
 Requires-Dist: prompt_toolkit

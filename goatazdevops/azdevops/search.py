@@ -96,19 +96,18 @@ def search_issues(assignee=None, reporter=None, state=None, title=None, project=
     return ISSUES
 
 def parse_datetime(datetime_str):
-    # Check and adjust the milliseconds part
-    parts = datetime_str.split('.')
-    if len(parts) == 2:
-        datetime_str, milliseconds = parts
-        datetime_str = f"{datetime_str}.{milliseconds:0<3}"  # Pad with zeros if needed
-    else:
-        datetime_str = f"{datetime_str}.000"  # Add milliseconds part if missing
+    # Split the string into the main part and the milliseconds + timezone
+    main_part, ms_and_timezone = datetime_str.split('.')
 
-    # Add timezone information if missing
-    if not datetime_str.endswith("Z"):
-        datetime_str += "Z"
+    # Separate the milliseconds and the timezone ('Z')
+    # Ensure milliseconds are padded to 3 digits
+    milliseconds = ms_and_timezone.rstrip('Z').ljust(3, '0')
+    
+    # Reconstruct the timestamp with padded milliseconds
+    formatted_datetime_str = f"{main_part}.{milliseconds}"
 
-    return datetime.fromisoformat(datetime_str.rstrip("Z"))
+    # Parse the string into a datetime object
+    return datetime.fromisoformat(formatted_datetime_str)
 
 def save_query_results(issues, csvfile):
     ROWS = ['ID', 'State', 'Title', 'CreatedDate', 'Assignee', 'CreatedBy']

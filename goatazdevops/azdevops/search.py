@@ -7,6 +7,9 @@ from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from toolbox.menuboard import MenuBoard
 import requests
+from configstore.configstore import Config
+
+CONFIG = Config('azdev')
 
 @click.command(help="search for issues in AZ DevOps", context_settings={'help_option_names':['-h','--help']})
 @click.option('-k', '--key', help="i.e. 12345", type=str, required=False, multiple=True, default=None)
@@ -14,13 +17,12 @@ import requests
 @click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True)
 @click.option('-r', '--reporter', help="i.e. smithj", type=str, required=False, multiple=True)
 @click.option('-s', '--state', help="i.e. [Closed, Active, New, Resolved, Removed]", type=str, required=False, multiple=True)
-@click.option('-t', help="text to search for in the title field", type=str, required=False, multiple=True)
+@click.option('-t', '--title', help="text to search for in the title field", type=str, required=False, multiple=True)
 @click.option('-j', '--json',help="output results in JSON format", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-o', '--orderby', help="choose which field to use for sorting", show_default=True, required=False)
 @click.option('-A', '--ascending', help="show issues in ascending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False)
-@click.pass_context
 def search(ctx, project, key, assignee, reporter, state, title, json, orderby, ascending, descending, csv):
     if ctx.obj['PROFILE'] is None:
         if key != () or project != ():
@@ -31,9 +33,9 @@ def search(ctx, project, key, assignee, reporter, state, title, json, orderby, a
         else:
             Log.critical("One of the following fields is required: key, project")
 
-def run_jql_query(projects, key, assignee, reporter, state, title, csv, json, orderby, ascending, descending, profile):
+def run_jql_query(projects, keys, assignee, reporter, state, title, csv, json, orderby, ascending, descending, profile):
     START = time.time()
-    ISSUES = search_issues(assignee, reporter, state, title, projects, profile, orderby, ascending)
+    ISSUES = search_issues(assignee, reporter, state, title, projects, keys, profile, orderby, ascending)
     END = time.time()
     RUNTIME = END - START
 
@@ -44,15 +46,21 @@ def run_jql_query(projects, key, assignee, reporter, state, title, csv, json, or
     else:
         Log.info(f"\n{tabulate(ISSUES, headers='keys', tablefmt='rst')}")
 
-def search_issues(assignee=None, reporter=None, state=None, title=None, project=None, profile=None, orderby=None, ascending=True):
+def search_issues(assignee=None, reporter=None, state=None, title=None, project=None, keys=None, profile=None, orderby=None, ascending=True):
     ISSUES = []
     url = get_url(profile)
     creds = get_user_creds(profile)
     token = creds[1]
     title = title[0] if title else None
     project = project[0] if project else None
+    if project is None:
+        CACHED_PROJECTS = CONFIG.get_metadata('projects', profile)
+        if CACHED_PROJECTS is not None:
+            for CACHED_PROJECT in CACHED_PROJECTS:
+                project = CACHED_PROJECT
+                break
 
-    wiql = build_wiql(assignee, reporter, state, title, project, orderby, ascending)
+    wiql = build_wiql(assignee, reporter, state, title, project, keys, orderby, ascending)
     Log.info(jjson.dumps(wiql['query'], indent=2, sort_keys=True))
 
     # Setup headers and authentication
@@ -97,12 +105,13 @@ def search_issues(assignee=None, reporter=None, state=None, title=None, project=
 
 def parse_datetime(datetime_str):
     # Split the string into the main part and the milliseconds + timezone
-    main_part, ms_and_timezone = datetime_str.split('.')
+    try:
+        main_part, ms_and_timezone = datetime_str.split('.')
+        milliseconds = ms_and_timezone.rstrip('Z').ljust(3, '0')
+    except:
+        main_part = datetime_str.rstrip('Z')
+        milliseconds = '000'
 
-    # Separate the milliseconds and the timezone ('Z')
-    # Ensure milliseconds are padded to 3 digits
-    milliseconds = ms_and_timezone.rstrip('Z').ljust(3, '0')
-    
     # Reconstruct the timestamp with padded milliseconds
     formatted_datetime_str = f"{main_part}.{milliseconds}"
 
@@ -124,7 +133,7 @@ def create_link(url, label=None):
     escape_mask = '\033]8;{};{}\033\\{}\033]8;;\033\\'
     return escape_mask.format(parameters, url, label)
 
-def build_wiql(assignee=None, reporter=None, states=None, title=None, project=None, orderby=None, ascending=True):
+def build_wiql(assignee=None, reporter=None, states=None, title=None, project=None, keys=None, orderby=None, ascending=True):
     clauses = []
 
     if project:
@@ -138,6 +147,9 @@ def build_wiql(assignee=None, reporter=None, states=None, title=None, project=No
         else:
             # Single value
             return f"{field} = '{values[0]}'"
+
+    if keys:
+        clauses.append(handle_single_or_multiple("System.Id", keys))
 
     if assignee:
         clauses.append(handle_single_or_multiple("System.AssignedTo", assignee))

@@ -398,6 +398,51 @@
                         "subcommands": {},
                         "help": "manage configuration details for the AZ DevOps server on this..."
                     },
+                    "issue": {
+                        "command": "issue",
+                        "args": [],
+                        "options": {
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help  Show this message and exit."
+                            }
+                        },
+                        "subcommands": {
+                            "search": {
+                                "command": "search",
+                                "args": [],
+                                "options": {
+                                    "-j": {
+                                        "name": "-j",
+                                        "help": "--json          output results in JSON format  [default: False]"
+                                    },
+                                    "-o": {
+                                        "name": "-o",
+                                        "help": "--orderby TEXT  choose which field to use for sorting"
+                                    },
+                                    "-A": {
+                                        "name": "-A",
+                                        "help": "--ascending     show issues in ascending order  [default: False]"
+                                    },
+                                    "-D": {
+                                        "name": "-D",
+                                        "help": "--descending    show issues in descending order  [default: False]"
+                                    },
+                                    "-c": {
+                                        "name": "-c",
+                                        "help": "--csv TEXT      name of the csv file to save the results to"
+                                    },
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help          Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "show a summary of specified issue or issues"
+                            }
+                        },
+                        "help": "manage Azure DevOps worklist items"
+                    },
                     "project": {
                         "command": "project",
                         "args": [],
@@ -458,62 +503,6 @@
                             }
                         },
                         "help": "manage AZ DevOps projects"
-                    },
-                    "search": {
-                        "command": "search",
-                        "args": [],
-                        "options": {
-                            "-k": {
-                                "name": "-k",
-                                "help": "--key TEXT       i.e. 12345"
-                            },
-                            "-p": {
-                                "name": "-p",
-                                "help": "--project TEXT   i.e. BCUProd"
-                            },
-                            "-a": {
-                                "name": "-a",
-                                "help": "--assignee TEXT  i.e. jdoe"
-                            },
-                            "-r": {
-                                "name": "-r",
-                                "help": "--reporter TEXT  i.e. smithj"
-                            },
-                            "-s": {
-                                "name": "-s",
-                                "help": "--state TEXT     i.e. [Closed, Active, New, Resolved, Removed]"
-                            },
-                            "-t": {
-                                "name": "-t",
-                                "help": "TEXT              text to search for in the title field"
-                            },
-                            "-j": {
-                                "name": "-j",
-                                "help": "--json           output results in JSON format  [default: False]"
-                            },
-                            "-o": {
-                                "name": "-o",
-                                "help": "--orderby TEXT   choose which field to use for sorting"
-                            },
-                            "-A": {
-                                "name": "-A",
-                                "help": "--ascending      show issues in ascending order  [default: False]"
-                            },
-                            "-D": {
-                                "name": "-D",
-                                "help": "--descending     show issues in descending order  [default: False]"
-                            },
-                            "-c": {
-                                "name": "-c",
-                                "help": "--csv TEXT       name of the csv file to save the results to"
-                            },
-                            "-h": {
-                                "name": "-h",
-                                "help": "--help           Show this message and exit."
-                            }
-                        },
-                        "subcommands": {},
-                        "help": "search for issues in AZ DevOps"
                     }
                 },
                 "help": "AZDEV ClientCurrent Profile:..."

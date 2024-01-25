@@ -78,7 +78,7 @@ def search_issues(assignee=None, reporter=None, state=None, title=None, project=
                 TOTAL = TOTAL + 1
                 work_item = work_item_response.json()
                 # Extract specific fields
-                parsed_time = datetime.fromisoformat(work_item['fields'].get("System.CreatedDate").rstrip("Z"))
+                parsed_time = parse_datetime(work_item['fields'].get("System.CreatedDate"))
                 standard_format_time = parsed_time.strftime("%B %d, %Y")
                 work_item_data = {
                     "ID": work_item_ref['id'],
@@ -94,7 +94,22 @@ def search_issues(assignee=None, reporter=None, state=None, title=None, project=
     else:
         print(f"Failed to retrieve work items: {response.status_code}, {response.text}")
     return ISSUES
-    
+
+def parse_datetime(datetime_str):
+    # Check and adjust the milliseconds part
+    parts = datetime_str.split('.')
+    if len(parts) == 2:
+        datetime_str, milliseconds = parts
+        datetime_str = f"{datetime_str}.{milliseconds:0<3}"  # Pad with zeros if needed
+    else:
+        datetime_str = f"{datetime_str}.000"  # Add milliseconds part if missing
+
+    # Add timezone information if missing
+    if not datetime_str.endswith("Z"):
+        datetime_str += "Z"
+
+    return datetime.fromisoformat(datetime_str.rstrip("Z"))
+
 def save_query_results(issues, csvfile):
     ROWS = ['ID', 'State', 'Title', 'CreatedDate', 'Assignee', 'CreatedBy']
     with open(csvfile, 'w') as CSV:

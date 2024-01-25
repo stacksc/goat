@@ -13,6 +13,7 @@ dependencies = [
   "click >= 8.0.4",
   "jira",
   "tabulate",
+  "six",
   "prompt_toolkit"
 ]
 dynamic = ["version", "readme"]

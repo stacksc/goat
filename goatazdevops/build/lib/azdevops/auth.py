@@ -6,6 +6,7 @@ from azure.devops.connection import Connection
 from msrest.authentication import BasicAuthentication
 import pprint
 import requests
+import datetime
 
 CONFIG = Config('azdev')
 
@@ -171,15 +172,22 @@ def get_url(userprofile):
 @click.command(help="manage configuration details for the AZ DevOps server on this profile", context_settings={'help_option_names':['-h','--help']})
 @click.option('-d', '--default', help='mark this profile as the default profile to use for AZ DevOps', is_flag=True)
 @click.option('-s', '--show', help='show the entire config for the AZ DevOps server on this profile', is_flag=True)
+@click.option('-t', '--token', 'token', help='show the personal access token for the AZ DevOps server on this profile', is_flag=True)
 @click.pass_context
-def config(ctx, default, show):
+def config(ctx, default, show, token):
     profile = ctx.obj['PROFILE']
     if default is True:
         CURRENT_DEFAULT_PROFILE = get_default_profile()
         RESULT = get_default_url()
         set_default_url(profile, CURRENT_DEFAULT_PROFILE)
     else:
-        RESULT = get_my_config()
+        if token:
+            RESULT = get_access_token(user_profile=profile)
+            Log.info(f"Personal Access Token: {RESULT}")
+            RESULT = get_access_token_age(user_profile=profile)
+            Log.info(f"Access token has been created {RESULT} minutes ago")
+        else:
+            RESULT = get_my_config()
     return RESULT
 
 # worker functions required for non-click usage
@@ -236,4 +244,22 @@ def get_user_profile_based_on_key(key, return_first=True):
             return None
     else:
         return FOUND_PROFILES
+
+def get_property(property_name, user_profile='default'):
+    CONFIG = Config('azdev')
+    AZ_CONFIG = CONFIG.get_config(property_name, user_profile)
+    if AZ_CONFIG is None:
+        Log.critical('please setup azdev - auth setup - before proceeding with this option')
+    return AZ_CONFIG
+
+def get_access_token(user_profile='default'):
+    TOKEN_DATA = get_property('pass', user_profile)
+    return TOKEN_DATA
+
+def get_access_token_age(user_profile='default'):
+    CREATED_ON = float(CONFIG.get_metadata('created_at', user_profile))
+    TIME_NOW = float(datetime.datetime.now().timestamp())
+    RESULT = TIME_NOW - CREATED_ON
+    RESULT = round(RESULT / 60.0, 2) # convert to minutes 
+    return RESULT
 

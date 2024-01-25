@@ -344,6 +344,180 @@
                 },
                 "help": "AWS CLI ClientCurrent Profile: DEFAULT..."
             },
+            "azdev": {
+                "command": "azdev",
+                "args": [],
+                "options": {
+                    "-p": {
+                        "name": "-p",
+                        "help": "--profile TEXT  profile name to use when working with the azdev client"
+                    },
+                    "-h": {
+                        "name": "-h",
+                        "help": "--help          Show this message and exit."
+                    }
+                },
+                "subcommands": {
+                    "auth": {
+                        "command": "auth",
+                        "args": [],
+                        "options": {
+                            "-u": {
+                                "name": "-u",
+                                "help": "--url TEXT  address of the Organization URL"
+                            },
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help      Show this message and exit."
+                            }
+                        },
+                        "subcommands": {},
+                        "help": "setup or change authentication settings for AZ DevOps"
+                    },
+                    "config": {
+                        "command": "config",
+                        "args": [],
+                        "options": {
+                            "-d": {
+                                "name": "-d",
+                                "help": "--default  mark this profile as the default profile to use for AZ DevOps"
+                            },
+                            "-s": {
+                                "name": "-s",
+                                "help": "--show     show the entire config for the AZ DevOps server on this"
+                            },
+                            "-t": {
+                                "name": "-t",
+                                "help": "--token    show the personal access token for the AZ DevOps server on"
+                            },
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help     Show this message and exit."
+                            }
+                        },
+                        "subcommands": {},
+                        "help": "manage configuration details for the AZ DevOps server on this..."
+                    },
+                    "project": {
+                        "command": "project",
+                        "args": [],
+                        "options": {
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help  Show this message and exit."
+                            }
+                        },
+                        "subcommands": {
+                            "search": {
+                                "command": "search",
+                                "args": [],
+                                "options": {
+                                    "-a": {
+                                        "name": "-a",
+                                        "help": "--assignee TEXT  i.e. jdoe"
+                                    },
+                                    "-r": {
+                                        "name": "-r",
+                                        "help": "--reporter TEXT  i.e. smithj"
+                                    },
+                                    "-s": {
+                                        "name": "-s",
+                                        "help": "--state TEXT     i.e. closed"
+                                    },
+                                    "--title": {
+                                        "name": "--title",
+                                        "help": "TEXT         text to search for in the summary field"
+                                    },
+                                    "-o": {
+                                        "name": "-o",
+                                        "help": "--orderby TEXT   choose which field to use for sorting"
+                                    },
+                                    "-A": {
+                                        "name": "-A",
+                                        "help": "--ascending      show issues in ascending order  [default: False]"
+                                    },
+                                    "-D": {
+                                        "name": "-D",
+                                        "help": "--descending     show issues in descending order  [default: False]"
+                                    },
+                                    "-c": {
+                                        "name": "-c",
+                                        "help": "--csv TEXT       name of the csv file to save the results to"
+                                    },
+                                    "-J": {
+                                        "name": "-J",
+                                        "help": "--json           output results in JSON format  [default: False]"
+                                    },
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help           Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "show a summary of projects matching the specified filter"
+                            }
+                        },
+                        "help": "manage AZ DevOps projects"
+                    },
+                    "search": {
+                        "command": "search",
+                        "args": [],
+                        "options": {
+                            "-k": {
+                                "name": "-k",
+                                "help": "--key TEXT       i.e. 12345"
+                            },
+                            "-p": {
+                                "name": "-p",
+                                "help": "--project TEXT   i.e. BCUProd"
+                            },
+                            "-a": {
+                                "name": "-a",
+                                "help": "--assignee TEXT  i.e. jdoe"
+                            },
+                            "-r": {
+                                "name": "-r",
+                                "help": "--reporter TEXT  i.e. smithj"
+                            },
+                            "-s": {
+                                "name": "-s",
+                                "help": "--state TEXT     i.e. [Closed, Active, New, Resolved, Removed]"
+                            },
+                            "-t": {
+                                "name": "-t",
+                                "help": "TEXT              text to search for in the title field"
+                            },
+                            "-j": {
+                                "name": "-j",
+                                "help": "--json           output results in JSON format  [default: False]"
+                            },
+                            "-o": {
+                                "name": "-o",
+                                "help": "--orderby TEXT   choose which field to use for sorting"
+                            },
+                            "-A": {
+                                "name": "-A",
+                                "help": "--ascending      show issues in ascending order  [default: False]"
+                            },
+                            "-D": {
+                                "name": "-D",
+                                "help": "--descending     show issues in descending order  [default: False]"
+                            },
+                            "-c": {
+                                "name": "-c",
+                                "help": "--csv TEXT       name of the csv file to save the results to"
+                            },
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help           Show this message and exit."
+                            }
+                        },
+                        "subcommands": {},
+                        "help": "search for issues in AZ DevOps"
+                    }
+                },
+                "help": "AZDEV ClientCurrent Profile:..."
+            },
             "azure": {
                 "command": "azure",
                 "args": [],
@@ -812,7 +986,7 @@
                         "help": "retrieve information from Jenkins"
                     }
                 },
-                "help": "Jenkins ClientCurrent Profile: DEFAULT"
+                "help": "Jenkins ClientCurrent Profile:..."
             },
             "jira": {
                 "command": "jira",

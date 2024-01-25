@@ -5,6 +5,7 @@ import click, os, sys, operator
 from pathlib import Path
 from toolbox.logger import Log
 from jiratools.jiraclient import cli as jira
+from azdevops.azdev import cli as azdev
 from configstore.configstore_ctrl import cli as configs
 from awstools.awstools import CLI as aws
 from aztools.aztools import CLI as az
@@ -51,6 +52,7 @@ def goat_version():
     print('GOAT:\t\t\t' + version('goaat'))
     print('- awstools:\t\t' + version('goatawstools'))
     print('- aztools:\t\t' + version('goataztools'))
+    print('- azdevops:\t\t' + version('goatazdevops'))
     print('- ovhaitools:\t\t' + version('goatovhaitools'))
     print('- ibmcloudtools:\t' + version('goatibmcloudtools'))
     print('- configstore:\t\t' + version('goatconfigstore'))
@@ -62,6 +64,7 @@ def goat_version():
     print(RES)
     sys.exit(0)
 
+cli.add_command(azdev, name='azdev')
 cli.add_command(configs, name='configs')
 cli.add_command(jira, name='jira')
 cli.add_command(aws, name='amazon')

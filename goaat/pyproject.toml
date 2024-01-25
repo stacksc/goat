@@ -18,6 +18,7 @@ dependencies = [
   "click-man",
   "prompt_toolkit >= 3",
   "goatocitools",
+  "goatazdevops",
   "goataztools",
   "goatovhaitools",
   "goatibmcloudtools",

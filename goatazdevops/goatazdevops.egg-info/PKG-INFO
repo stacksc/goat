@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: goatazdevops
+Version: 2024.1.25.223
+Summary: azdevops - a CLI client for Azure DevOps included by default
+Author-email: Chris Stacks <centerupt@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.0.4
+Requires-Dist: azure-devops
+Requires-Dist: tabulate
+Requires-Dist: prompt_toolkit

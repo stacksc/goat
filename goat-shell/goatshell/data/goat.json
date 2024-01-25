@@ -386,6 +386,10 @@
                                 "name": "-s",
                                 "help": "--show     show the entire config for the AZ DevOps server on this"
                             },
+                            "-t": {
+                                "name": "-t",
+                                "help": "--token    show the personal access token for the AZ DevOps server on"
+                            },
                             "-h": {
                                 "name": "-h",
                                 "help": "--help     Show this message and exit."

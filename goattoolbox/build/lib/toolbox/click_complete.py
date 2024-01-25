@@ -110,6 +110,13 @@ def complete_configstore_names(ctx, param, incomplete):
             NAMES.append(str(BASE))
     return [k for k in NAMES if k.startswith(incomplete)]
 
+def complete_azdev_projects(ctx, param, incomplete):
+    from azdevops.auth import get_default_profile
+    CONFIG = Config('azdev')
+    CACHED_PROJECTS = {}
+    CACHED_PROJECTS.update(CONFIG.get_metadata('projects', get_default_profile()))
+    return [k for k in CACHED_PROJECTS if k.startswith(incomplete)]
+
 def complete_projects(ctx, param, incomplete):
     from jiratools.auth import get_default_profile
     CONFIG = Config('jiratools')

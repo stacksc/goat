@@ -4,6 +4,8 @@ from toolbox.logger import Log
 from .project import project
 from .auth import auth, config, get_default_url, get_default_profile
 from .search import search
+from .issue import issue
+from .boards import boards
 from toolbox import misc
 from toolbox.misc import debug
 
@@ -19,9 +21,10 @@ def cli(ctx, profile_name):
     pass
     
 cli.add_command(auth)
+cli.add_command(boards)
 cli.add_command(config)
+cli.add_command(issue)
 cli.add_command(project)
-cli.add_command(search)
 
 if __name__ == "__main__":
     cli(ctx)

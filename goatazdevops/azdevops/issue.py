@@ -21,8 +21,9 @@ def issue(ctx):
 @click.option('-A', '--ascending', help="show issues in ascending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False)
+@click.option('-d', '--details', help="display more details per ticket", is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
-def search_issues(ctx, keys, json, orderby, ascending, descending, csv):
+def search_issues(ctx, keys, json, orderby, ascending, descending, csv, details):
     profile = ctx.obj['PROFILE']
-    run_jql_query(None, keys, None, None, None, None, csv, json, orderby, ascending, descending, profile)
+    run_jql_query(None, keys, None, details, None, None, None, csv, json, orderby, ascending, descending, profile)
 

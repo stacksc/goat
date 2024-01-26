@@ -2,6 +2,8 @@ pyproject.toml
 azdevops/__init__.py
 azdevops/auth.py
 azdevops/azdev.py
+azdevops/boards.py
+azdevops/issue.py
 azdevops/project.py
 azdevops/search.py
 goatazdevops.egg-info/PKG-INFO

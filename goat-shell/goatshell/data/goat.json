@@ -374,6 +374,87 @@
                         "subcommands": {},
                         "help": "setup or change authentication settings for AZ DevOps"
                     },
+                    "boards": {
+                        "command": "boards",
+                        "args": [],
+                        "options": {
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help  Show this message and exit."
+                            }
+                        },
+                        "subcommands": {
+                            "find": {
+                                "command": "find",
+                                "args": [],
+                                "options": {
+                                    "-t": {
+                                        "name": "-t",
+                                        "help": "--team TEXT      provide team name for board search  [default:"
+                                    },
+                                    "-b": {
+                                        "name": "-b",
+                                        "help": "--board TEXT     provide sprint board to search - default is current"
+                                    },
+                                    "-j": {
+                                        "name": "-j",
+                                        "help": "--json           output results in JSON format  [default: False]"
+                                    },
+                                    "-o": {
+                                        "name": "-o",
+                                        "help": "--orderby TEXT   choose which field to use for sorting"
+                                    },
+                                    "-A": {
+                                        "name": "-A",
+                                        "help": "--ascending      show issues in ascending order  [default: False]"
+                                    },
+                                    "-D": {
+                                        "name": "-D",
+                                        "help": "--descending     show issues in descending order  [default: False]"
+                                    },
+                                    "-c": {
+                                        "name": "-c",
+                                        "help": "--csv TEXT       name of the csv file to save the results to"
+                                    },
+                                    "-a": {
+                                        "name": "-a",
+                                        "help": "--assignee TEXT  retrieve work items from board and filter by assignee"
+                                    },
+                                    "-r": {
+                                        "name": "-r",
+                                        "help": "--reporter TEXT  retrieve work items from board and filter by reporter"
+                                    },
+                                    "-s": {
+                                        "name": "-s",
+                                        "help": "--state TEXT     retrieve work items from board and filter by state"
+                                    },
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help           Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "search boards and sprints"
+                            },
+                            "list": {
+                                "command": "list",
+                                "args": [],
+                                "options": {
+                                    "-t": {
+                                        "name": "-t",
+                                        "help": "--team TEXT  provide team name for board search  [default:"
+                                    },
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help       Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "List boards and sprints"
+                            }
+                        },
+                        "help": "manage boards and sprints"
+                    },
                     "config": {
                         "command": "config",
                         "args": [],
@@ -432,6 +513,10 @@
                                         "name": "-c",
                                         "help": "--csv TEXT      name of the csv file to save the results to"
                                     },
+                                    "-d": {
+                                        "name": "-d",
+                                        "help": "--details       display more details per ticket  [default: False]"
+                                    },
                                     "-h": {
                                         "name": "-h",
                                         "help": "--help          Show this message and exit."
@@ -460,6 +545,10 @@
                                     "-a": {
                                         "name": "-a",
                                         "help": "--assignee TEXT             i.e. jdoe"
+                                    },
+                                    "-d": {
+                                        "name": "-d",
+                                        "help": "--details                   display more details per ticket  [default:"
                                     },
                                     "-r": {
                                         "name": "-r",
@@ -975,7 +1064,7 @@
                         "help": "retrieve information from Jenkins"
                     }
                 },
-                "help": "Jenkins ClientCurrent Profile: DEFAULT"
+                "help": "Jenkins ClientCurrent Profile:..."
             },
             "jira": {
                 "command": "jira",
@@ -1047,7 +1136,7 @@
                                 "options": {
                                     "-a": {
                                         "name": "-a",
-                                        "help": "--assignee TEXT  assignee name, i.e. chris"
+                                        "help": "--assignee TEXT  assignee name, i.e. stacksc"
                                     },
                                     "-h": {
                                         "name": "-h",

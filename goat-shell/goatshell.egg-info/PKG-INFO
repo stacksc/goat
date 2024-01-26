@@ -1,0 +1,189 @@
+Metadata-Version: 2.1
+Name: goatshell
+Version: 2024.1.26.1109
+Summary: goatshell - goat shell interface to common cloud providers.
+Author-email: Christopher Stacks <centerupt@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: prompt-toolkit>=3.0.0
+Requires-Dist: Pygments<3.0.0,>=2.1.3
+Requires-Dist: fuzzyfinder>=1.0.0
+Requires-Dist: click>=8.0.4
+Requires-Dist: goatconfigstore
+Requires-Dist: goattoolbox
+Requires-Dist: goatocitools
+Requires-Dist: goatawstools
+Requires-Dist: goataztools
+Requires-Dist: goatibmcloudtools
+Requires-Dist: goatovhaitools
+Requires-Dist: goatjiratools
+Requires-Dist: goatslacktools
+Requires-Dist: goatjenkinstools
+Requires-Dist: goaat
+Requires-Dist: azure-cli
+Requires-Dist: oci-cli
+Requires-Dist: oci
+Requires-Dist: aws2
+
+<img width="200" height="200" alt="image" src="https://github.com/stacksc/goat/assets/116677370/36bb12c0-e491-40fe-8cd5-171329d10653">
+<img alt="gif" border=1 width=900 height=500 src="https://github.com/stacksc/goat/assets/116677370/7f4842a4-d028-4761-b032-4d6377f372e2">
+
+<h1>GOATSHELL</h1>
+<h2>7 Clouds & 1 Shell</h2>
+
+## Installation
+
+### Manual Installation
+
+1. Create a virtual environment. We will call it `prod`:
+   ```sh
+   python3 -m venv ~/prod
+   ```
+2. Activate virtual environment:
+   ```sh
+   cd ~/prod && source bin/activate
+   ```
+3. Clone the repo:
+   ```sh
+   git clone git@github.com:stacksc/goat.git
+   ```
+4. Install all required packages with 1 script from the main repository: 
+   ```sh
+   cd ~/prod/goat && ./bulk.sh --action rebuild --target all
+   ```
+
+### PIP installation (stable)
+
+1. Install the following packages from pypi:
+   ```
+   pip install goatshell goaat --force-reinstall
+   ```
+2. Type the following command to launch goatshell:
+   ```
+   goatshell
+   ```
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────| GOAT INTERFACE |───────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                     Purpose: Cloud Wrapper                                                                                                     │
+│                                                                                             TIP: resource completion coming soon!                                                                                              │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────| Hotkeys |───────────────────┐┌──────────────────| Commands |──────────────────┐
+│[F8]  Toggle Provider                           ││e|exit    : exit shell                          │
+│[F9]  Toggle Profile                            ││c|clear   : clear screen                        │
+│[F10] Toggle VIM                                ││h|help    : display usage                       │
+│[F12] Toggle Safety Mode                        ││history   : shell history                       │
+│[TAB] Fuzzy Complete                            ││cloud     : cloud details                       │
+└────────────────────────────────────────────────┘└────────────────────────────────────────────────┘
+[oci:DEFAULT]>
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Contacts
+Christopher Stacks - <centerupt@gmail.com>
+
+## Mechanics
+The project is built with dependecies such as aws2, oci-cli, az-cli. <br>However, other cloud providers are configured to work but <u>NOT</u> packaged with the project such as ibmcloud, gcloud, and Alibaba cloud.
+<br><br>
+Each time the first token is passed (i.e. cloud provider) a function will verify if the command is avialable.
+<br>
+This keeps the command line clean with the cloud providers you only work with.
+<br><br>
+The following cloud providers are currently supported:
+<br>
+<img width="918" alt="image" src="https://github.com/stacksc/goat/assets/116677370/c4bbe737-cda0-4174-9659-4a2960b80439">
+<br>
+The latest goat-shell version holds all JSON data per cloud, correctly nested based on the cloud provider.
+
+## Toolbar
+The toolbar will refresh after hitting the ENTER key or with specific hotkeys.
+<br><br>
+The toolbar is updated appropriately based on what command you ran. Once you run a command, the toolbar is refreshed with your <u>current</u> cloud.
+<br><br>
+The profile is updated <u>dynamically</u> based on your <u>current</u> cloud and you have the ability to toggle profiles for any cloud.
+
+```
+goat>
+Current Cloud: AWS  F8 Usage F10 Toggle Profile: CENTERUPT F12 Quit
+```
+
+## Toggle
+The only toggle currently supported is profile switching. Everything else is dynamic based on first token.
+<br>
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Cloud CLI Options</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Additional Info</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>OCI-CLI</td>
+            <td>Default / Supported</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>AWS</td>
+            <td>Default / Supported</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>AZ</td>
+            <td>Default / Supported</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>GCLOUD</td>
+            <td>Supported / Manual Installation</td>
+            <td><a href="https://cloud.google.com/sdk/docs/install">Installation Guide</a></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>ALIYUN</td>
+            <td>Supported / Manual Installation</td>
+            <td><a href="https://www.alibabacloud.com/help/en/alibaba-cloud-cli/latest/install">Installation Guide</a></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>IBMCLOUD</td>
+            <td>Supported / Manual Installation</td>
+            <td><a href="https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli">Installation Guide</a></td>
+        </tr>
+       <tr>
+          <td>7</td>
+          <td>OVHCLOUD & AI</td>
+          <td>Supported / Manual Installation</td>
+          <td> <a href="https://cli.bhs.ai.cloud.ovh.net/">Installation Guide</a></td>
+       </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+## Newly Improved Interface Now Available
+![image](https://github.com/stacksc/goat/assets/116677370/14287920-9db8-4d53-a775-c60ace20d0cf)
+
+
+Once the relative CLI is installed, the goatshell application will recognize that it is available & syntax completion will be provided.<br>
+The project is packaged with cloud provider JSON files which get refreshed automatically per major release with dynamic CLI scrapers.<br><br>
+As the first token is passed (i.e. cloud provider) it directs the goatshell application to the correct JSON file.
+

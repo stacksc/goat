@@ -45,3 +45,9 @@ version = {attr = "goatshell.__version__"}
 
 [project.scripts]
 goatshell = "goatshell.main:cli"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.package-data]
+"*" = ["*.json"]

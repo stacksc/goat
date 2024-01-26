@@ -23,3 +23,11 @@ goatshell.egg-info/dependency_links.txt
 goatshell.egg-info/entry_points.txt
 goatshell.egg-info/requires.txt
 goatshell.egg-info/top_level.txt
+goatshell/data/aliyun.json
+goatshell/data/aws.json
+goatshell/data/az.json
+goatshell/data/gcloud.json
+goatshell/data/goat.json
+goatshell/data/ibmcloud.json
+goatshell/data/oci.json
+goatshell/data/ovhai.json

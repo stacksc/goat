@@ -338,9 +338,16 @@ class Goatshell(object):
             print()
             print(details_str)
             return ""
-        elif user_input.startswith("cd "):
-            path = user_input.split(" ", 1)[1]
-            # expand any "~" to the users home directory
+        elif user_input.startswith("cd"):
+            tokens = user_input.split(" ", 1)
+            # Check if a path is provided
+            if len(tokens) > 1 and tokens[1]:
+                path = tokens[1]
+            else:
+                # Default to the user's home directory if no path is provided
+                path = os.path.expanduser("~")
+        
+            # Expand any "~" to the user's home directory and change directory
             path = os.path.expanduser(path)
             try:
                 os.chdir(path)
@@ -389,33 +396,34 @@ class Goatshell(object):
     def is_valid_command_for_provider(self, command, provider):
         if not command.strip():
             return False
-
-        """Check if the command is valid for the given cloud provider."""
+    
         # Load JSON for the provider
         self.completer.load_json(provider)
-
+    
         # Ensure the JSON data is loaded
         if self.completer.goat_dict is None:
             logger.error(f"No JSON data found for provider {provider}")
             return False
-
+    
         # Parse the user's command
         command_parts = command.split()
-        if command_parts[1].startswith('-'):
+    
+        # Check for global options if the command has more than one part
+        if len(command_parts) > 1 and command_parts[1].startswith('-'):
             return self.is_valid_global_option(command_parts[1])
-
+    
         # Check the primary command
         primary_command = command_parts[0]
         if primary_command not in self.completer.goat_dict:
             return False
-
+    
         # If there are subcommands, check them as well
         if len(command_parts) > 1:
             # Assuming subcommands are nested within the command key
             subcommand = command_parts[1]
             # Check if the subcommand is in the list of valid subcommands
             return subcommand in self.completer.goat_dict[primary_command].get('subcommands', {})
-
+    
         return True
 
     def is_valid_global_option(self, option):

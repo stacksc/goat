@@ -4,6 +4,7 @@ azdevops/auth.py
 azdevops/azdev.py
 azdevops/boards.py
 azdevops/issue.py
+azdevops/pipelines.py
 azdevops/project.py
 azdevops/search.py
 goatazdevops.egg-info/PKG-INFO

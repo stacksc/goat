@@ -6,6 +6,7 @@ from .auth import auth, config, get_default_url, get_default_profile
 from .search import search
 from .issue import issue
 from .boards import boards
+from .pipelines import pipeline
 from toolbox import misc
 from toolbox.misc import debug
 
@@ -24,6 +25,7 @@ cli.add_command(auth)
 cli.add_command(boards)
 cli.add_command(config)
 cli.add_command(issue)
+cli.add_command(pipeline)
 cli.add_command(project)
 
 if __name__ == "__main__":

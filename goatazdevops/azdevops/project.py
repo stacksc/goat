@@ -37,6 +37,7 @@ def project(ctx, debug):
 @click.option('-J', '--json',help="output results in JSON format", is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
 def search_projects(ctx, projects, assignee, details, reporter, state, title, orderby, ascending, descending, csv, json):
+    CONFIG = Config('azdev')
     if ctx.obj['PROFILE'] is None:
         RUN = {}
         for project in projects:

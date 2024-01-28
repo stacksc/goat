@@ -2,18 +2,29 @@ import csv, time, click, re
 from datetime import datetime
 import json as jjson
 from tabulate import tabulate
-from .auth import get_session, get_url, get_session_based_on_key, get_user_profile_based_on_key, get_user_creds
 from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from toolbox.menuboard import MenuBoard
 import requests
 from configstore.configstore import Config
+from azdevops.azdevclient import AzDevClient
 
 CONFIG = Config('azdev')
+AZDEV = AzDevClient()
 
 @click.group(help="manage boards and sprints", context_settings={'help_option_names':['-h','--help']})
+@click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
 @click.pass_context
-def boards(ctx):
+def boards(ctx, debug):
+    user_profile = ctx.obj['PROFILE']
+    url = None  # Initialize url as None
+    if ctx.obj['setup'] == True:
+        if user_profile is None:
+            user_profile = 'default'
+        # Fetch the URL based on the profile
+        url = AZDEV.get_url(user_profile)
+        AZDEV.get_session(url, user_profile)
+    log = Log('azdev.log', debug)
     pass
 
 @boards.command(help="search boards and sprints", context_settings={'help_option_names':['-h','--help']})
@@ -30,9 +41,8 @@ def boards(ctx):
 @click.pass_context
 def find(ctx, team, board, json, orderby, ascending, descending, csv, assignee, reporter, state):
     profile = ctx.obj['PROFILE']
-    from azdevops.auth import get_default_profile
     CACHED_PROJECTS = {}
-    CACHED_PROJECTS.update(CONFIG.get_metadata('projects', get_default_profile()))
+    CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
     projects = tuple([(v) for v in CACHED_PROJECTS])
     project = projects[0] if projects else None
     START = time.time()
@@ -51,7 +61,7 @@ def get_credentials(profile):
     """
     Retrieves credentials for a given profile.
     """
-    creds = get_user_creds(profile)
+    creds = AZDEV.get_user_creds(profile)
     token = creds[1]
     headers = {
         'Content-Type': 'application/json',
@@ -64,7 +74,7 @@ def search_boards(team_name=None, board_name=None, project_name=None, profile=No
     DATA = []
     TOTAL = 0
 
-    url = get_url(profile)
+    url = AZDEV.get_url(profile)
     headers, credentials = get_credentials(profile)
 
     try:
@@ -106,7 +116,7 @@ def list_iterations(team_name, project_name, profile):
     yellow_start = "\033[33m"  # Yellow text color
     color_end = "\033[0m"  # Reset color to default
 
-    url = get_url(profile)
+    url = AZDEV.get_url(profile)
     headers, credentials = get_credentials(profile)
 
     iterations_data = []
@@ -140,10 +150,13 @@ def list_iterations(team_name, project_name, profile):
 @click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default="Infrastructure Engineering and Operations", multiple=False, show_default=True)
 @click.pass_context
 def list(ctx, team):
+    CONFIG = Config('azdev')
     profile = ctx.obj['PROFILE']
-    from azdevops.auth import get_default_profile
     CACHED_PROJECTS = {}
-    CACHED_PROJECTS.update(CONFIG.get_metadata('projects', get_default_profile()))
+    cached_projects_data = CONFIG.get_metadata('projects', profile)
+    # Check if cached_projects_data is not None before updating CACHED_PROJECTS
+    if cached_projects_data:
+        CACHED_PROJECTS.update(cached_projects_data)
     projects = tuple([(v) for v in CACHED_PROJECTS])
     project = projects[0] if projects else None
 

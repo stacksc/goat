@@ -1,17 +1,28 @@
 import os, click, re, json
-from .auth import get_session
-from .auth import get_session_based_on_key
-from .auth import get_user_profile_based_on_key
 from .search import run_jql_query
 from toolbox.logger import Log
 from toolbox.misc import detect_environment, remove_html_tags
+from azdevops.azdevclient import AzDevClient
+from toolbox.logger import Log
+
+AZDEV = AzDevClient()
 
 user_env_var = "USERNAME" if os.name == 'nt' else "LOGNAME"
 default_assignee = os.environ.get(user_env_var, None)
 
 @click.group(help="manage Azure DevOps worklist items", context_settings={'help_option_names':['-h','--help']})
+@click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
 @click.pass_context
-def issue(ctx):
+def issue(ctx, debug):
+    user_profile = ctx.obj['PROFILE']
+    url = None  # Initialize url as None
+    if ctx.obj['setup'] == True:
+        if user_profile is None:
+            user_profile = 'default'
+        # Fetch the URL based on the profile
+        url = AZDEV.get_url(user_profile)
+        AZDEV.get_session(url, user_profile)
+    log = Log('azdev.log', debug)
     pass
 
 @issue.command('search', help="show a summary of specified issue or issues", context_settings={'help_option_names':['-h','--help']})

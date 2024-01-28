@@ -1,12 +1,26 @@
 import click
 from .search import run_jql_query
-from .auth import get_user_profile_based_on_key
 from toolbox.click_complete import complete_azdev_projects
 from configstore.configstore import Config
+from azdevops.azdevclient import AzDevClient
+from toolbox.logger import Log
+
+CONFIG = Config('azdev')
+AZDEV = AzDevClient()
 
 @click.group(help='manage AZ DevOps projects', context_settings={'help_option_names':['-h','--help']})
+@click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
 @click.pass_context
-def project(ctx):
+def project(ctx, debug):
+    user_profile = ctx.obj['PROFILE']
+    url = None  # Initialize url as None
+    if ctx.obj['setup'] == True:
+        if user_profile is None:
+            user_profile = 'default'
+        # Fetch the URL based on the profile
+        url = AZDEV.get_url(user_profile)
+        AZDEV.get_session(url, user_profile)
+    log = Log('azdev.log', debug)
     pass
 
 @project.command('search', help="show a summary of projects matching the specified filter", context_settings={'help_option_names':['-h','--help']})
@@ -26,7 +40,7 @@ def search_projects(ctx, projects, assignee, details, reporter, state, title, or
     if ctx.obj['PROFILE'] is None:
         RUN = {}
         for project in projects:
-            PROFILE = get_user_profile_based_on_key(project)
+            PROFILE = AZDEV.get_user_profile_based_on_key(project)
             if PROFILE not in RUN:
                 RUN[PROFILE] = {
                     "%s" %(project)
@@ -40,9 +54,8 @@ def search_projects(ctx, projects, assignee, details, reporter, state, title, or
     else:
         if not projects:
             PROFILE = ctx.obj['PROFILE']
-            from azdevops.auth import get_default_profile
             CONFIG = Config('azdev')
             CACHED_PROJECTS = {}
-            CACHED_PROJECTS.update(CONFIG.get_metadata('projects', get_default_profile()))
+            CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
             projects = tuple([(v) for v in CACHED_PROJECTS])
         run_jql_query(projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, ctx.obj['PROFILE'])

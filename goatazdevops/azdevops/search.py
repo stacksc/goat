@@ -2,14 +2,14 @@ import csv, time, click, re
 from datetime import datetime
 import json as jjson
 from tabulate import tabulate
-from .auth import get_session, get_url, get_session_based_on_key, get_user_profile_based_on_key, get_user_creds
 from toolbox.logger import Log
-from toolbox.menumaker import Menu
-from toolbox.menuboard import MenuBoard
 import requests
 from configstore.configstore import Config
+from azdevops.azdevclient import AzDevClient
+from toolbox.logger import Log
 
 CONFIG = Config('azdev')
+AZDEV = AzDevClient()
 
 @click.command(help="search for issues in AZ DevOps", context_settings={'help_option_names':['-h','--help']})
 @click.option('-k', '--key', help="i.e. 12345", type=str, required=False, multiple=True, default=None)
@@ -28,9 +28,9 @@ def search(ctx, project, key, assignee, details, reporter, state, title, json, o
     if ctx.obj['PROFILE'] is None:
         if key != () or project != ():
             if key != ():
-                profile = get_user_profile_based_on_key(key)
+                profile = AZDEV.get_user_profile_based_on_key(key)
             if project != ():
-                profile = get_user_profile_based_on_key(project)
+                profile = AZDEV.get_user_profile_based_on_key(project)
         else:
             Log.critical("One of the following fields is required: key, project")
 
@@ -49,8 +49,8 @@ def run_jql_query(projects, keys, assignee, details, reporter, state, title, csv
 
 def search_issues(assignee=None, details=None, reporter=None, state=None, title=None, project=None, keys=None, profile=None, orderby=None, ascending=True):
     ISSUES = []
-    url = get_url(profile)
-    creds = get_user_creds(profile)
+    url = AZDEV.get_url(profile)
+    creds = AZDEV.get_user_creds(profile)
     token = creds[1]
     title = title[0] if title else None
     project = project[0] if project else None

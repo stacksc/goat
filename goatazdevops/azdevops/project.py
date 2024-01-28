@@ -3,6 +3,7 @@ from .search import run_jql_query
 from toolbox.click_complete import complete_azdev_projects
 from configstore.configstore import Config
 from azdevops.azdevclient import AzDevClient
+from azdevops.misc import remove_equals
 from toolbox.logger import Log
 
 CONFIG = Config('azdev')
@@ -25,15 +26,15 @@ def project(ctx, debug):
 
 @project.command('search', help="show a summary of projects matching the specified filter", context_settings={'help_option_names':['-h','--help']})
 @click.argument('projects', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
-@click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True)
+@click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True, callback=remove_equals)
 @click.option('-d', '--details', help="display more details per ticket", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-r', '--reporter', help="i.e. smithj", type=str, required=False, multiple=True)
-@click.option('--title', help="text to search for in the summary field", type=str, required=False, multiple=True)
-@click.option('-s', '--state', help="i.e. active", required=False, type=click.Choice(['active', 'closed', 'new', 'resolved', 'blocked']))
+@click.option('-r', '--reporter', help="i.e. smithj", type=str, required=False, multiple=True, callback=remove_equals)
+@click.option('--title', help="text to search for in the summary field", type=str, required=False, multiple=True, callback=remove_equals)
+@click.option('-s', '--state', help="i.e. active", required=False, type=str, multiple=True, callback=remove_equals)
 @click.option('-o', '--orderby', help="choose which field to use for sorting", show_default=True, required=False)
 @click.option('-A', '--ascending', help="show issues in ascending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False)
+@click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False, callback=remove_equals)
 @click.option('-J', '--json',help="output results in JSON format", is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
 def search_projects(ctx, projects, assignee, details, reporter, state, title, orderby, ascending, descending, csv, json):

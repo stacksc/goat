@@ -3,11 +3,10 @@ from datetime import datetime
 import json as jjson
 from tabulate import tabulate
 from toolbox.logger import Log
-from toolbox.menumaker import Menu
-from toolbox.menuboard import MenuBoard
 import requests
 from configstore.configstore import Config
 from azdevops.azdevclient import AzDevClient
+from azdevops.misc import remove_equals
 
 CONFIG = Config('azdev')
 AZDEV = AzDevClient()
@@ -28,16 +27,16 @@ def boards(ctx, debug):
     pass
 
 @boards.command(help="search boards and sprints", context_settings={'help_option_names':['-h','--help']})
-@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default="Infrastructure Engineering and Operations", multiple=False, show_default=True)
-@click.option('-b', '--board', help="provide sprint board to search - default is current sprint", type=str, required=False, default=None)
+@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default=["Infrastructure Engineering and Operations"], show_default=True, multiple=True, callback=remove_equals)
+@click.option('-b', '--board', help="provide sprint board to search - default is current sprint", type=str, required=False, default=None, callback=remove_equals)
 @click.option('-j', '--json', help="output results in JSON format", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-o', '--orderby', help="choose which field to use for sorting", show_default=True, required=False)
+@click.option('-o', '--orderby', help="choose which field to use for sorting", required=False)
 @click.option('-A', '--ascending', help="show issues in ascending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False)
-@click.option('-a', '--assignee', help="retrieve work items from board and filter by assignee", type=str, required=False)
-@click.option('-r', '--reporter', help="retrieve work items from board and filter by reporter", type=str, required=False)
-@click.option('-s', '--state', help="retrieve work items from board and filter by state", type=str, required=False)
+@click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False, multiple=True, callback=remove_equals)
+@click.option('-a', '--assignee', help="retrieve work items from board and filter by assignee", type=str, multiple=True, required=False, callback=remove_equals)
+@click.option('-r', '--reporter', help="retrieve work items from board and filter by reporter", type=str, multiple=True, required=False, callback=remove_equals)
+@click.option('-s', '--state', help="retrieve work items from board and filter by state", type=str, multiple=True, required=False, callback=remove_equals)
 @click.pass_context
 def find(ctx, team, board, json, orderby, ascending, descending, csv, assignee, reporter, state):
     CONFIG = Config('azdev')
@@ -47,6 +46,10 @@ def find(ctx, team, board, json, orderby, ascending, descending, csv, assignee, 
     projects = tuple([(v) for v in CACHED_PROJECTS])
     project = projects[0] if projects else None
     START = time.time()
+    variables_to_join = [team, assignee, reporter, state, board]
+    joined_variables = join_lists_to_strings(*variables_to_join)
+    team, assignee, reporter, state, board = joined_variables
+
     ISSUES, TOTAL = search_boards(team, board, project, profile, orderby, ascending, assignee, reporter, state)
     END = time.time()
     RUNTIME = END - START
@@ -57,6 +60,23 @@ def find(ctx, team, board, json, orderby, ascending, descending, csv, assignee, 
         save_query_results(ISSUES, csv)
     else:
         Log.info(f"\n{tabulate(ISSUES, headers='keys', tablefmt='rst')}")
+
+def join_lists_to_strings(*lists, separator=','):
+    """
+    Joins elements of multiple lists into strings with the specified separator.
+    
+    Args:
+        *lists (list): Variable number of lists to join.
+        separator (str, optional): Separator to use (default is ',').
+    
+    Returns:
+        tuple: A tuple containing the joined strings for each input list.
+    """
+    joined_strings = tuple(
+        separator.join(map(str, lst)) if lst else ""  # Join if not None or empty
+        for lst in lists
+    )
+    return joined_strings
 
 def get_credentials(profile):
     """
@@ -148,7 +168,7 @@ def list_iterations(team_name, project_name, profile):
         print(f"No iterations / sprints found for Team '{team_name}'.")
 
 @boards.command(help="List boards and sprints", context_settings={'help_option_names':['-h','--help']})
-@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default="Infrastructure Engineering and Operations", multiple=False, show_default=True)
+@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default=["Infrastructure Engineering and Operations"], multiple=True, show_default=True, callback=remove_equals)
 @click.pass_context
 def list(ctx, team):
     CONFIG = Config('azdev')
@@ -160,6 +180,8 @@ def list(ctx, team):
         CACHED_PROJECTS.update(cached_projects_data)
     projects = tuple([(v) for v in CACHED_PROJECTS])
     project = projects[0] if projects else None
+    if team:
+        team = ','.join(team)
 
     if project:
         list_iterations(team, project, profile)

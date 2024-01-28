@@ -1,4 +1,5 @@
 from configstore.configstore import Config
+import click
 
 def get_default_profile():
     PROFILE = 'default'
@@ -30,3 +31,14 @@ def get_default_url():
         return URL.upper()
     else:
         return 'DEFAULT'
+
+def remove_equals(ctx, param, value):
+    if value:
+        if isinstance(value, str):
+            modified_value = value.replace('=', '')
+            return modified_value
+        elif isinstance(value, tuple):
+            modified_value = tuple(v.replace('=', '') if isinstance(v, str) else v for v in value)
+            return modified_value
+    return value
+

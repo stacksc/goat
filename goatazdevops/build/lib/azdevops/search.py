@@ -7,24 +7,26 @@ import requests
 from configstore.configstore import Config
 from azdevops.azdevclient import AzDevClient
 from toolbox.logger import Log
+from azdevops.misc import remove_equals
 
 CONFIG = Config('azdev')
 AZDEV = AzDevClient()
 
 @click.command(help="search for issues in AZ DevOps", context_settings={'help_option_names':['-h','--help']})
-@click.option('-k', '--key', help="i.e. 12345", type=str, required=False, multiple=True, default=None)
-@click.option('-p', '--project', help="i.e. BCUProd", type=str, required=False, multiple=True, default=None)
-@click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True)
+@click.option('-k', '--key', help="i.e. 12345", type=str, multiple=True, callback=remove_equals)
+@click.option('-p', '--project', help="i.e. BCUProd", type=str, multiple=True, callback=remove_equals)
+@click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True, callback=remove_equals)
 @click.option('-d', '--details', help="display more details per ticket", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-r', '--reporter', help="i.e. smithj", type=str, required=False, multiple=True)
-@click.option('-s', '--state', help="i.e. [Closed, Active, New, Resolved, Removed]", type=str, required=False, multiple=True)
-@click.option('-t', '--title', help="text to search for in the title field", type=str, required=False, multiple=True)
+@click.option('-r', '--reporter', help="i.e. smithj", multiple=True, callback=remove_equals)
+@click.option('-s', '--state', help="i.e. active", required=False, type=str, multiple=True, callback=remove_equals)
+@click.option('-t', '--title', help="text to search for in the title field", multiple=True, callback=remove_equals)
 @click.option('-j', '--json',help="output results in JSON format", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-o', '--orderby', help="choose which field to use for sorting", show_default=True, required=False)
 @click.option('-A', '--ascending', help="show issues in ascending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False)
+@click.option('-c', '--csv', help="name of the csv file to save the results to", callback=remove_equals)
 def search(ctx, project, key, assignee, details, reporter, state, title, json, orderby, ascending, descending, csv):
+    print(assignee)
     if ctx.obj['PROFILE'] is None:
         if key != () or project != ():
             if key != ():
@@ -54,6 +56,7 @@ def search_issues(assignee=None, details=None, reporter=None, state=None, title=
     token = creds[1]
     title = title[0] if title else None
     project = project[0] if project else None
+
     if project is None:
         CACHED_PROJECTS = CONFIG.get_metadata('projects', profile)
         if CACHED_PROJECTS is not None:
@@ -179,7 +182,7 @@ def build_detailed_wiql(assignee=None, reporter=None, states=None, title=None, p
         clauses.append(handle_single_or_multiple("System.CreatedBy", reporter))
 
     if states:
-        clauses.append(f"[System.State] = '{states}'")
+        clauses.append(handle_single_or_multiple("System.State", states))
 
     if title:
         clauses.append(f"System.Title CONTAINS '{title}'")
@@ -228,7 +231,7 @@ def build_wiql(assignee=None, reporter=None, states=None, title=None, project=No
         clauses.append(handle_single_or_multiple("System.CreatedBy", reporter))
 
     if states:
-        clauses.append(f"[System.State] = '{states}'")
+        clauses.append(handle_single_or_multiple("System.State", states))
 
     if title:
         clauses.append(f"System.Title CONTAINS '{title}'")

@@ -2,8 +2,10 @@ pyproject.toml
 azdevops/__init__.py
 azdevops/auth.py
 azdevops/azdev.py
+azdevops/azdevclient.py
 azdevops/boards.py
 azdevops/issue.py
+azdevops/misc.py
 azdevops/pipelines.py
 azdevops/project.py
 azdevops/search.py

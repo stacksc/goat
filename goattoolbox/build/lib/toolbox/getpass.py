@@ -151,6 +151,70 @@ def getOtherCreds(title='default'):
     # return credentials
     return USER, PASS
 
+def get_azure_org(title='default'):
+
+    hidden = [True]  # Nonlocal
+    bindings = KeyBindings()
+
+    signal.signal(signal.SIGTSTP, signal.SIG_IGN)
+    stdin = sys.__stdin__.fileno()
+    stream = sys.__stderr__.fileno()
+
+    if os.name != 'nt':
+        old = tty.tcgetattr(stdin)
+
+    @bindings.add("c-t")
+    def _(event):
+        "When ControlT has been pressed, toggle visibility."
+        hidden[0] = not hidden[0]
+
+    U = 'baxtercu'
+    ORG = input('Paste ' + title + ' default org here: ' + "[" + str(U) + "] : ").strip()
+
+    if not ORG:
+        ORG = str(U).strip()
+
+    if os.name != 'nt':
+        # restore terminal settings
+        tty.tcsetattr(stdin, tty.TCSAFLUSH, old)
+        # enable (^Z) SIGTSTP
+        signal.signal(signal.SIGTSTP, signal.SIG_DFL)
+
+    # return ORG
+    return remove_lead_and_trail_slash(ORG)
+
+def get_azure_url(title='default'):
+
+    hidden = [True]  # Nonlocal
+    bindings = KeyBindings()
+
+    signal.signal(signal.SIGTSTP, signal.SIG_IGN)
+    stdin = sys.__stdin__.fileno()
+    stream = sys.__stderr__.fileno()
+
+    if os.name != 'nt':
+        old = tty.tcgetattr(stdin)
+
+    @bindings.add("c-t")
+    def _(event):
+        "When ControlT has been pressed, toggle visibility."
+        hidden[0] = not hidden[0]
+
+    U = 'https://dev.azure.com'
+    URL = input('Paste ' + title + ' full URL here: ' + "[" + str(U) + "] : ").strip()
+
+    if not URL:
+        URL = str(U).strip()
+
+    if os.name != 'nt':
+        # restore terminal settings
+        tty.tcsetattr(stdin, tty.TCSAFLUSH, old)
+        # enable (^Z) SIGTSTP
+        signal.signal(signal.SIGTSTP, signal.SIG_DFL)
+
+    # return URL
+    return remove_lead_and_trail_slash(URL)
+
 def getFullUrl(title='default'):
 
     hidden = [True]  # Nonlocal

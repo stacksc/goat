@@ -8,13 +8,24 @@ from configstore.configstore import Config
 from prompt_toolkit.styles import Style
 from toolbox.logger import Log
 from prompt_toolkit.shortcuts import radiolist_dialog
-from .auth import get_session, get_url, get_session_based_on_key, get_user_profile_based_on_key, get_user_creds
+from azdevops.azdevclient import AzDevClient
 
+AZDEV = AzDevClient()
 CONFIG = Config('azdev')
 
 @click.group(help="manage pipelines", context_settings={'help_option_names':['-h','--help']})
+@click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
 @click.pass_context
-def pipeline(ctx):
+def pipeline(ctx, debug):
+    user_profile = ctx.obj['PROFILE']
+    url = None  # Initialize url as None
+    if ctx.obj['setup'] == True:
+        if user_profile is None:
+            user_profile = 'default'
+        # Fetch the URL based on the profile
+        url = AZDEV.get_url(user_profile)
+        AZDEV.get_session(url, user_profile)
+    log = Log('azdev.log', debug)
     pass
 
 @pipeline.command(help="List pipelines", context_settings={'help_option_names':['-h','--help']})
@@ -23,9 +34,8 @@ def pipeline(ctx):
 def list_pipelines(ctx, project):
     profile = ctx.obj['PROFILE']
     if not project:
-        from azdevops.auth import get_default_profile
         CACHED_PROJECTS = {}
-        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', get_default_profile()))
+        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
         projects = tuple([(v) for v in CACHED_PROJECTS])
         project = projects[0] if projects else None
     OUTPUT = get_pipelines(profile, project)
@@ -44,23 +54,10 @@ def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')  # Clear the visible content
     print("\033c", end='')  # Clear the terminal history (scroll-back buffer)
 
-def get_credentials(profile):
-    """
-    Retrieves credentials for a given profile.
-    """
-    creds = get_user_creds(profile)
-    token = creds[1]
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
-    credentials = ('', token)
-    return headers, credentials
-
 def get_pipelines(profile, project):
-    url = get_url(profile)
+    url = AZDEV.get_url(profile)
     url = f"{url}/{project}/_apis/pipelines"
-    headers, credentials = get_credentials(profile)
+    headers, credentials = AZDEV.get_credentials(profile)
     response = requests.get(url, headers=headers, auth=credentials)
 
     if response.status_code == 200:
@@ -108,10 +105,10 @@ def display_menu(data):
     return selected_id
 
 def get_pipeline_details(profile, pipeline_id, project):
-    my_url = get_url(profile)
+    my_url = AZDEV.get_url(profile)
     url = f"{my_url}/{project}/_apis/pipelines/{pipeline_id}"
 
-    headers, credentials = get_credentials(profile)
+    headers, credentials = AZDEV.get_credentials(profile)
     response = requests.get(url, headers=headers, auth=credentials)
 
     if response.status_code == 200:
@@ -127,9 +124,8 @@ def get_pipeline_details(profile, pipeline_id, project):
 def list_builds(ctx, project):
     profile = ctx.obj['PROFILE']
     if not project:
-        from azdevops.auth import get_default_profile
         CACHED_PROJECTS = {}
-        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', get_default_profile()))
+        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
         projects = tuple([(v) for v in CACHED_PROJECTS])
         project = projects[0] if projects else None
     OUTPUT = get_builds_list(profile, project)
@@ -142,9 +138,9 @@ def list_builds(ctx, project):
         Log.info(jjson.dumps(build_details, sort_keys=True, indent=2))
 
 def get_build_details(profile, build_id, project):
-    url = get_url(profile)
+    url = AZDEV.get_url(profile)
     url = f"{url}/{project}/_apis/build/builds/{build_id}"
-    headers, credentials = get_credentials(profile)
+    headers, credentials = AZDEV.get_credentials(profile)
     response = requests.get(url, headers=headers, auth=credentials)
 
     if response.status_code == 200:
@@ -155,9 +151,9 @@ def get_build_details(profile, build_id, project):
         return None
 
 def get_builds(profile, project):
-    url = get_url(profile)
+    url = AZDEV.get_url(profile)
     url = f"{url}/{project}/_apis/build/builds"
-    headers, credentials = get_credentials(profile)
+    headers, credentials = AZDEV.get_credentials(profile)
     response = requests.get(url, headers=headers, auth=credentials)
     if response.status_code == 200:
         builds_data = response.json().get('value', [])
@@ -170,9 +166,9 @@ def get_builds(profile, project):
         return []
 
 def get_builds_list_active(profile, project):
-    url = get_url(profile)
+    url = AZDEV.get_url(profile)
     url = f"{url}/{project}/_apis/build/builds"
-    headers, credentials = get_credentials(profile)
+    headers, credentials = AZDEV.get_credentials(profile)
     response = requests.get(url, headers=headers, auth=credentials)
 
     if response.status_code == 200:
@@ -185,9 +181,9 @@ def get_builds_list_active(profile, project):
         return []
 
 def get_builds_list(profile, project):
-    url = get_url(profile)
+    url = AZDEV.get_url(profile)
     url = f"{url}/{project}/_apis/build/builds"
-    headers, credentials = get_credentials(profile)
+    headers, credentials = AZDEV.get_credentials(profile)
     response = requests.get(url, headers=headers, auth=credentials)
 
     if response.status_code == 200:

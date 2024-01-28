@@ -16,6 +16,7 @@ MESSAGE="Jenkins Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.U
 @click.option('-p', '--profile', 'user_profile', help='user profile for Jenkins operations', required=False, default=get_latest_profile(), shell_complete=complete_jenkins_profiles)
 @click.pass_context
 def cli(ctx, user_profile):
+    ctx.obj['setup'] = False
     ctx.ensure_object(dict)
     if user_profile is not None:
         try:

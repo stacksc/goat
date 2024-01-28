@@ -85,9 +85,9 @@ def display_menu(data):
         nonlocal selected_id
         style = Style.from_dict({
             'dialog': 'bg:#4B4B4B',
-            'dialog.body': 'bg:#242424',
+            'dialog.body': 'bg:#242424 fg:#FFFFFF',  # Change fg to a lighter color (white in this case)
             'dialog.title': 'bg:#00aa00',
-            'radiolist': 'bg:#1C1C1C',
+            'radiolist': 'bg:#1C1C1C fg:#FFFFFF',  # Change fg to a lighter color
             'button': 'bg:#528B8B',
             'button.focused': 'bg:#00aa00',
         })
@@ -203,9 +203,9 @@ def display_builds_menu(builds_list):
         nonlocal selected_build_id
         style = Style.from_dict({
             'dialog': 'bg:#4B4B4B',
-            'dialog.body': 'bg:#242424',
+            'dialog.body': 'bg:#242424 fg:#FFFFFF',  # Change fg to a lighter color (white in this case)
             'dialog.title': 'bg:#00aa00',
-            'radiolist': 'bg:#1C1C1C',
+            'radiolist': 'bg:#1C1C1C fg:#FFFFFF',  # Change fg to a lighter color
             'button': 'bg:#528B8B',
             'button.focused': 'bg:#00aa00',
         })

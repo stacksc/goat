@@ -40,6 +40,7 @@ def boards(ctx, debug):
 @click.option('-s', '--state', help="retrieve work items from board and filter by state", type=str, required=False)
 @click.pass_context
 def find(ctx, team, board, json, orderby, ascending, descending, csv, assignee, reporter, state):
+    CONFIG = Config('azdev')
     profile = ctx.obj['PROFILE']
     CACHED_PROJECTS = {}
     CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))

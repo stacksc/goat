@@ -32,6 +32,7 @@ def pipeline(ctx, debug):
 @click.argument('project', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
 @click.pass_context
 def list_pipelines(ctx, project):
+    CONFIG = Config('azdev')
     profile = ctx.obj['PROFILE']
     if not project:
         CACHED_PROJECTS = {}
@@ -122,6 +123,7 @@ def get_pipeline_details(profile, pipeline_id, project):
 @click.argument('project', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
 @click.pass_context
 def list_builds(ctx, project):
+    CONFIG = Config('azdev')
     profile = ctx.obj['PROFILE']
     if not project:
         CACHED_PROJECTS = {}
@@ -225,6 +227,7 @@ def display_builds_menu(builds_list):
 @click.argument('project', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
 @click.pass_context
 def stop_build(ctx, project):
+    CONFIG = Config('azdev')
     profile = ctx.obj['PROFILE']
     if not project:
         from azdevops.auth import get_default_profile

@@ -528,6 +528,55 @@
                         },
                         "help": "manage Azure DevOps worklist items"
                     },
+                    "pipeline": {
+                        "command": "pipeline",
+                        "args": [],
+                        "options": {
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help  Show this message and exit."
+                            }
+                        },
+                        "subcommands": {
+                            "list-builds": {
+                                "command": "list-builds",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "list builds"
+                            },
+                            "list-pipelines": {
+                                "command": "list-pipelines",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "List pipelines"
+                            },
+                            "stop-build": {
+                                "command": "stop-build",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "Stop a running build"
+                            }
+                        },
+                        "help": "manage pipelines"
+                    },
                     "project": {
                         "command": "project",
                         "args": [],

@@ -9,6 +9,7 @@ from prompt_toolkit.styles import Style
 from toolbox.logger import Log
 from prompt_toolkit.shortcuts import radiolist_dialog
 from azdevops.azdevclient import AzDevClient
+from azdevops.misc import clear_terminal
 
 AZDEV = AzDevClient()
 CONFIG = Config('azdev')
@@ -24,7 +25,7 @@ def pipeline(ctx, debug):
             user_profile = 'default'
         # Fetch the URL based on the profile
         url = AZDEV.get_url(user_profile)
-        AZDEV.get_session(url, user_profile)
+        AZDEV.get_session(url, user_profile, force=True)
     log = Log('azdev.log', debug)
     pass
 
@@ -49,11 +50,6 @@ def list_pipelines(ctx, project):
         Log.info(jjson.dumps(OUTPUT, sort_keys=True, indent=2))
     else:
         return None
-
-# Function to clear the terminal screen
-def clear_terminal():
-    os.system('cls' if os.name == 'nt' else 'clear')  # Clear the visible content
-    print("\033c", end='')  # Clear the terminal history (scroll-back buffer)
 
 def get_pipelines(profile, project):
     url = AZDEV.get_url(profile)

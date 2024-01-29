@@ -2,12 +2,13 @@
 import click
 from toolbox.logger import Log
 from .project import project
-from .auth import auth, config
+from azdevops.auth import auth
+from azdevops.azdev_show import show
 from azdevops.misc import get_default_url, get_default_profile
-from .search import search
-from .issue import issue
-from .boards import boards
-from .pipelines import pipeline
+from azdevops.search import search
+from azdevops.issue import issue
+from azdevops.boards import boards
+from azdevops.pipelines import pipeline
 from toolbox import misc
 from toolbox.misc import debug
 from configstore.configstore import Config
@@ -42,10 +43,10 @@ def cli(ctx, user_profile):
 
 cli.add_command(auth)
 cli.add_command(boards)
-cli.add_command(config)
 cli.add_command(issue)
 cli.add_command(pipeline)
 cli.add_command(project)
+cli.add_command(show)
 
 if __name__ == "__main__":
     cli(ctx)

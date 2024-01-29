@@ -1,4 +1,5 @@
-import csv, time, click, re
+import os, csv, time, click, re, threading
+from typing import List, Tuple, Optional
 from datetime import datetime
 import json as jjson
 from tabulate import tabulate
@@ -6,23 +7,30 @@ from toolbox.logger import Log
 import requests
 from configstore.configstore import Config
 from azdevops.azdevclient import AzDevClient
-from azdevops.misc import remove_equals
+from azdevops.misc import remove_equals, clear_terminal, join_lists_to_strings, display_menu
+from prompt_toolkit.styles import Style
+from prompt_toolkit.shortcuts import radiolist_dialog
 
 CONFIG = Config('azdev')
 AZDEV = AzDevClient()
 
 @click.group(help="manage boards and sprints", context_settings={'help_option_names':['-h','--help']})
 @click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
+@click.option('-m', '--menu', help="launch a menu driven interface for common actions", is_flag=True)
 @click.pass_context
-def boards(ctx, debug):
+def boards(ctx, debug, menu):
     user_profile = ctx.obj['PROFILE']
+    if menu is True:
+        ctx.obj['menu'] = True
+    else:
+        ctx.obj['menu'] = False
     url = None  # Initialize url as None
     if ctx.obj['setup'] == True:
         if user_profile is None:
             user_profile = 'default'
         # Fetch the URL based on the profile
         url = AZDEV.get_url(user_profile)
-        AZDEV.get_session(url, user_profile)
+        AZDEV.get_session(url, user_profile, force=True)
     log = Log('azdev.log', debug)
     pass
 
@@ -54,29 +62,19 @@ def find(ctx, team, board, json, orderby, ascending, descending, csv, assignee, 
     END = time.time()
     RUNTIME = END - START
 
-    if json:
+    if ctx.obj['menu']:
+        selected_id = display_menu(ISSUES, ctx)
+        if selected_id:
+            clear_terminal()
+            work_item_details = get_work_item_details_by_id(selected_id, ctx)
+            if work_item_details:
+                print(remove_html_tags(jjson.dumps(work_item_details, indent=2, sort_keys=True)))
+    elif json:
         print(jjson.dumps(ISSUES, indent=2, sort_keys=True))
     elif csv:
         save_query_results(ISSUES, csv)
     else:
         Log.info(f"\n{tabulate(ISSUES, headers='keys', tablefmt='rst')}")
-
-def join_lists_to_strings(*lists, separator=','):
-    """
-    Joins elements of multiple lists into strings with the specified separator.
-    
-    Args:
-        *lists (list): Variable number of lists to join.
-        separator (str, optional): Separator to use (default is ',').
-    
-    Returns:
-        tuple: A tuple containing the joined strings for each input list.
-    """
-    joined_strings = tuple(
-        separator.join(map(str, lst)) if lst else ""  # Join if not None or empty
-        for lst in lists
-    )
-    return joined_strings
 
 def get_credentials(profile):
     """
@@ -270,5 +268,25 @@ def remove_html_tags(text):
         clean = re.compile('<.*?>')
         return re.sub(clean, '', text)
     except:
+        return None
+
+def get_work_item_details_by_id(work_item_id, ctx):
+    # Construct the work item URL based on work_item_id
+    url = AZDEV.get_url(ctx.obj['PROFILE'])
+    creds = AZDEV.get_user_creds(ctx.obj['PROFILE'])
+    token = creds[1]
+    work_item_url = f"{url}/_apis/wit/workitems/{work_item_id}?api-version=6.0"
+
+    # Setup headers and authentication
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+    auth = ('', token)
+
+    # Execute the API call to get work item details
+    response = requests.get(work_item_url, headers=headers, auth=auth)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Warning: Failed to retrieve work item details: {response.status_code}")
         return None
 

@@ -21,7 +21,7 @@ def issue(ctx, debug):
             user_profile = 'default'
         # Fetch the URL based on the profile
         url = AZDEV.get_url(user_profile)
-        AZDEV.get_session(url, user_profile)
+        AZDEV.get_session(url, user_profile, force=True)
     log = Log('azdev.log', debug)
     pass
 
@@ -36,5 +36,5 @@ def issue(ctx, debug):
 @click.pass_context
 def search_issues(ctx, keys, json, orderby, ascending, descending, csv, details):
     profile = ctx.obj['PROFILE']
-    run_jql_query(None, keys, None, details, None, None, None, csv, json, orderby, ascending, descending, profile)
+    run_jql_query(ctx, None, keys, None, details, None, None, None, csv, json, orderby, ascending, descending, profile)
 

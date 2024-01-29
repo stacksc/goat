@@ -1,4 +1,5 @@
-import csv, time, click, re
+import os, csv, time, click, re, threading
+from typing import List, Tuple, Optional
 from datetime import datetime
 import json as jjson
 from tabulate import tabulate
@@ -7,7 +8,9 @@ import requests
 from configstore.configstore import Config
 from azdevops.azdevclient import AzDevClient
 from toolbox.logger import Log
-from azdevops.misc import remove_equals
+from azdevops.misc import remove_equals, clear_terminal, display_menu
+from prompt_toolkit.styles import Style
+from prompt_toolkit.shortcuts import radiolist_dialog
 
 CONFIG = Config('azdev')
 AZDEV = AzDevClient()
@@ -26,7 +29,6 @@ AZDEV = AzDevClient()
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-c', '--csv', help="name of the csv file to save the results to", callback=remove_equals)
 def search(ctx, project, key, assignee, details, reporter, state, title, json, orderby, ascending, descending, csv):
-    print(assignee)
     if ctx.obj['PROFILE'] is None:
         if key != () or project != ():
             if key != ():
@@ -36,13 +38,21 @@ def search(ctx, project, key, assignee, details, reporter, state, title, json, o
         else:
             Log.critical("One of the following fields is required: key, project")
 
-def run_jql_query(projects, keys, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile):
+
+def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile):
     START = time.time()
     ISSUES = search_issues(assignee, details, reporter, state, title, projects, keys, profile, orderby, ascending)
     END = time.time()
     RUNTIME = END - START
 
-    if json or details:
+    if ctx.obj['menu']:
+        selected_id = display_menu(ISSUES, ctx)
+        if selected_id:
+            clear_terminal()
+            work_item_details = get_work_item_details_by_id(selected_id, ctx)
+            if work_item_details:
+                print(remove_html_tags(jjson.dumps(work_item_details, indent=2, sort_keys=True)))
+    elif json or details:
         print(jjson.dumps(ISSUES, indent=2, sort_keys=True))
     elif csv:
         save_query_results(ISSUES, csv)
@@ -255,5 +265,62 @@ def remove_html_tags(text):
         clean = re.compile('<.*?>')
         return re.sub(clean, '', text)
     except:
+        return None
+
+def display_issue_menu(data, ctx):
+    selected_id = None
+    if not data:
+        print("No items match the selected criteria.")
+        return None
+
+    if ctx.obj['menu']:
+        def run_dialog():
+            nonlocal selected_id
+            style = Style.from_dict({
+                'dialog': 'bg:#4B4B4B',
+                'dialog.body': 'bg:#242424 fg:#FFFFFF',
+                'dialog.title': 'bg:#00aa00',
+                'radiolist': 'bg:#1C1C1C fg:#FFFFFF',
+                'button': 'bg:#528B8B',
+                'button.focused': 'bg:#00aa00',
+            })
+
+            if ctx.obj['menu']:
+                menu_items = [(item['ID'], f"ID: {item['ID']} => {item['Title']}") for item in data]
+            else:
+                menu_items = [(item['id'], f"{item['name']} (ID: {item['id']})") for item in data]
+
+            selected_id = radiolist_dialog(
+                title="Select Issue",
+                text="Choose an Issue:",
+                values=menu_items,
+                style=style
+            ).run()
+
+        dialog_thread = threading.Thread(target=run_dialog)
+        dialog_thread.start()
+        dialog_thread.join()
+    else:
+        return None
+    return selected_id
+
+def get_work_item_details_by_id(work_item_id, ctx):
+    # Construct the work item URL based on work_item_id
+    url = AZDEV.get_url(ctx.obj['PROFILE'])
+    creds = AZDEV.get_user_creds(ctx.obj['PROFILE'])
+    token = creds[1]
+    work_item_url = f"{url}/_apis/wit/workitems/{work_item_id}?api-version=6.0"
+
+    # Setup headers and authentication
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+    auth = ('', token)
+
+    # Execute the API call to get work item details
+    response = requests.get(work_item_url, headers=headers, auth=auth)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Warning: Failed to retrieve work item details: {response.status_code}")
         return None
 

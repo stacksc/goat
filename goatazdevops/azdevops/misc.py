@@ -1,5 +1,8 @@
+import os, csv, time, click, re, threading
+from typing import List, Tuple, Optional
 from configstore.configstore import Config
-import click
+from prompt_toolkit.styles import Style
+from prompt_toolkit.shortcuts import radiolist_dialog
 
 def get_default_profile():
     PROFILE = 'default'
@@ -42,3 +45,63 @@ def remove_equals(ctx, param, value):
             return modified_value
     return value
 
+def join_lists_to_strings(*lists, separator=','):
+    """
+    Joins elements of multiple lists into strings with the specified separator.
+
+    Args:
+        *lists (list): Variable number of lists to join.
+        separator (str, optional): Separator to use (default is ',').
+
+    Returns:
+        tuple: A tuple containing the joined strings for each input list.
+    """
+    joined_strings = tuple(
+        separator.join(map(str, lst)) if lst else ""  # Join if not None or empty
+        for lst in lists
+    )
+    return joined_strings
+
+# Function to clear the terminal screen
+def clear_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')  # Clear the visible content
+    print("\033c", end='')  # Clear the terminal history (scroll-back buffer)
+
+def display_menu(data, ctx):
+    selected_id = None
+    if not data:
+        print("No items match the selected criteria.")
+        return None
+
+    if ctx.obj['menu']:
+        def run_dialog():
+            nonlocal selected_id
+            style = Style.from_dict({
+                'dialog': 'bg:#4B4B4B',
+                'dialog.body': 'bg:#242424 fg:#FFFFFF',
+                'dialog.title': 'bg:#00aa00',
+                'radiolist': 'bg:#1C1C1C fg:#FFFFFF',
+                'button': 'bg:#528B8B',
+                'button.focused': 'bg:#00aa00',
+            })
+
+            menu_key = 'ID' if ctx.obj['menu'] else 'Id'
+            menu_items = []
+            for item in data:
+                item_id = item.get(menu_key, item.get('Id', None))
+                if item_id is not None:
+                    menu_items.append((item_id, f"ID: {item_id} => {item['Title']}"))
+
+            selected_id = radiolist_dialog(
+                title="Select Issue",
+                text="Choose an Issue:",
+                values=menu_items,
+                style=style
+            ).run()
+
+        dialog_thread = threading.Thread(target=run_dialog)
+        dialog_thread.start()
+        dialog_thread.join()
+    else:
+        return None
+    return selected_id

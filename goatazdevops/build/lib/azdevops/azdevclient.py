@@ -165,13 +165,13 @@ class AzDevClient:
                 return True
         return False
 
-    def get_session(self, url=None, profile_name='default'):
+    def get_session(self, url=None, profile_name='default', force=False):
         CONFIG = Config('azdev')
         auth_mode = 'pass'  # default to pass, it really is a PAT though
         PROFILE = CONFIG.get_profile(profile_name)
         
-        if PROFILE is None or PROFILE['config'] == {}:
-            Log.debug(f"Profile '{profile_name}' not found; creating a new profile")
+        if PROFILE is None or PROFILE['config'] == {} or force is True:
+            Log.debug(f"Profile '{profile_name}' not found or force recreate enabled => creating a new profile now")
             while auth_mode != 'pass':
                 auth_mode = 'pass'
             
@@ -199,7 +199,7 @@ class AzDevClient:
                 if MODE == 'pass':
                     USER = CONFIG.get_config('user', profile_name=profile_name)
                     PASS = CONFIG.get_config('pass', profile_name=profile_name)
-                    return self.get_session_pass_auth(URL, USER, PASS)
+                    return self.get_session_pass_auth(URL, USER, PASS, force=False)
                 else:
                     Log.critical("something went wrong")
             except:

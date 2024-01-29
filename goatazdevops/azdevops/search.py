@@ -17,7 +17,7 @@ AZDEV = AzDevClient()
 
 @click.command(help="search for issues in AZ DevOps", context_settings={'help_option_names':['-h','--help']})
 @click.option('-k', '--key', help="i.e. 12345", type=str, multiple=True, callback=remove_equals)
-@click.option('-p', '--project', help="i.e. BCUProd", type=str, multiple=True, callback=remove_equals)
+@click.option('-p', '--project', help="i.e. Azure DevOps Project Name", type=str, multiple=True, callback=remove_equals)
 @click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True, callback=remove_equals)
 @click.option('-d', '--details', help="display more details per ticket", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-r', '--reporter', help="i.e. smithj", multiple=True, callback=remove_equals)

@@ -11,16 +11,21 @@ AZDEV = AzDevClient()
 
 @click.group(help='manage AZ DevOps projects', context_settings={'help_option_names':['-h','--help']})
 @click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
+@click.option('-m', '--menu', help="launch a menu driven interface for common actions", is_flag=True)
 @click.pass_context
-def project(ctx, debug):
+def project(ctx, debug, menu):
     user_profile = ctx.obj['PROFILE']
+    if menu is True:
+        ctx.obj['menu'] = True
+    else:
+        ctx.obj['menu'] = False
     url = None  # Initialize url as None
     if ctx.obj['setup'] == True:
         if user_profile is None:
             user_profile = 'default'
         # Fetch the URL based on the profile
         url = AZDEV.get_url(user_profile)
-        AZDEV.get_session(url, user_profile)
+        AZDEV.get_session(url, user_profile, force=True)
     log = Log('azdev.log', debug)
     pass
 
@@ -52,7 +57,7 @@ def search_projects(ctx, projects, assignee, details, reporter, state, title, or
         for profile in RUN:
             projects = RUN[profile]
             projects = tuple([(v) for v in projects])
-            run_jql_query(projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, ctx.obj['PROFILE'])
+            run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, ctx.obj['PROFILE'])
     else:
         if not projects:
             PROFILE = ctx.obj['PROFILE']
@@ -60,4 +65,4 @@ def search_projects(ctx, projects, assignee, details, reporter, state, title, or
             CACHED_PROJECTS = {}
             CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
             projects = tuple([(v) for v in CACHED_PROJECTS])
-        run_jql_query(projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, ctx.obj['PROFILE'])
+        run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, ctx.obj['PROFILE'])

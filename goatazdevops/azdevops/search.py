@@ -267,43 +267,6 @@ def remove_html_tags(text):
     except:
         return None
 
-def display_issue_menu(data, ctx):
-    selected_id = None
-    if not data:
-        print("No items match the selected criteria.")
-        return None
-
-    if ctx.obj['menu']:
-        def run_dialog():
-            nonlocal selected_id
-            style = Style.from_dict({
-                'dialog': 'bg:#4B4B4B',
-                'dialog.body': 'bg:#242424 fg:#FFFFFF',
-                'dialog.title': 'bg:#00aa00',
-                'radiolist': 'bg:#1C1C1C fg:#FFFFFF',
-                'button': 'bg:#528B8B',
-                'button.focused': 'bg:#00aa00',
-            })
-
-            if ctx.obj['menu']:
-                menu_items = [(item['ID'], f"ID: {item['ID']} => {item['Title']}") for item in data]
-            else:
-                menu_items = [(item['id'], f"{item['name']} (ID: {item['id']})") for item in data]
-
-            selected_id = radiolist_dialog(
-                title="Select Issue",
-                text="Choose an Issue:",
-                values=menu_items,
-                style=style
-            ).run()
-
-        dialog_thread = threading.Thread(target=run_dialog)
-        dialog_thread.start()
-        dialog_thread.join()
-    else:
-        return None
-    return selected_id
-
 def get_work_item_details_by_id(work_item_id, ctx):
     # Construct the work item URL based on work_item_id
     url = AZDEV.get_url(ctx.obj['PROFILE'])

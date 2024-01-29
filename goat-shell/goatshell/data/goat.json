@@ -551,9 +551,17 @@
                                 "command": "list-builds",
                                 "args": [],
                                 "options": {
+                                    "-a": {
+                                        "name": "-a",
+                                        "help": "--artifacts  output the artifacts for build ID found  [default: False]"
+                                    },
+                                    "-d": {
+                                        "name": "-d",
+                                        "help": "--details    output the details for build ID found  [default: True]"
+                                    },
                                     "-h": {
                                         "name": "-h",
-                                        "help": "--help  Show this message and exit."
+                                        "help": "--help       Show this message and exit."
                                     }
                                 },
                                 "subcommands": {},

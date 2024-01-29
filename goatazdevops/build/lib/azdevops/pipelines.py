@@ -117,8 +117,10 @@ def get_pipeline_details(profile, pipeline_id, project):
 
 @pipeline.command(help="list builds", context_settings={'help_option_names':['-h','--help']})
 @click.argument('project', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
+@click.option('-a', '--artifacts',help="output the artifacts for build ID found", is_flag=True, show_default=True, default=False, required=False)
+@click.option('-d', '--details',help="output the details for build ID found", is_flag=True, show_default=True, default=True, required=False)
 @click.pass_context
-def list_builds(ctx, project):
+def list_builds(ctx, project, artifacts, details):
     CONFIG = Config('azdev')
     profile = ctx.obj['PROFILE']
     if not project:
@@ -131,13 +133,16 @@ def list_builds(ctx, project):
     selected_build_id = display_builds_menu(OUTPUT)
 
     if selected_build_id:
-        build_details = get_build_details(profile, selected_build_id, project)
+        build_details = get_build_details(profile, selected_build_id, project, artifacts)
         clear_terminal()
         Log.info(jjson.dumps(build_details, sort_keys=True, indent=2))
 
-def get_build_details(profile, build_id, project):
+def get_build_details(profile, build_id, project, artifacts=False):
     url = AZDEV.get_url(profile)
-    url = f"{url}/{project}/_apis/build/builds/{build_id}"
+    if artifacts:
+        url = f"{url}/{project}/_apis/build/builds//{build_id}/artifacts?api-version=7.2-preview.5"
+    else:
+        url = f"{url}/{project}/_apis/build/builds/{build_id}"
     headers, credentials = AZDEV.get_credentials(profile)
     response = requests.get(url, headers=headers, auth=credentials)
 

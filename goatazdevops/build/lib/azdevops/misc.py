@@ -3,6 +3,29 @@ from typing import List, Tuple, Optional
 from configstore.configstore import Config
 from prompt_toolkit.styles import Style
 from prompt_toolkit.shortcuts import radiolist_dialog
+import shutil
+
+def get_terminal_size():
+    try:
+        terminal_width, terminal_height = shutil.get_terminal_size()
+        return terminal_width, terminal_height
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def calculate_dialog_size():
+    terminal_width, terminal_height = get_terminal_size()
+
+    # Define your desired dialog width and height, or adjust it dynamically
+    dialog_width = min(terminal_width - 2, 90)  # Adjust as needed
+    dialog_height = min(terminal_height - 4, 24)  # Adjust as needed
+
+    return dialog_width, dialog_height
+
+def center_text(text, width):
+    # Calculate the left indentation to center text within 'width' columns
+    left_indent = (width - len(text)) // 2
+    return ' ' * left_indent + text
 
 def get_default_profile():
     PROFILE = 'default'
@@ -67,7 +90,20 @@ def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')  # Clear the visible content
     print("\033c", end='')  # Clear the terminal history (scroll-back buffer)
 
+
 def display_menu(data, ctx):
+    WIDTH, HEIGHT = calculate_dialog_size()
+    INSTRUCTIONS = "[INSTRUCTIONS]"
+    MANUAL = "[ARROW KEYS] to navigate | [SPACEBAR] to select | [TAB] to OK | [ENTER] to execute"
+
+    # Calculate the padding for the "INSTRUCTIONS" line
+    instructions_padding = " " * ((WIDTH - len(INSTRUCTIONS)) // 2)
+
+    # Calculate the padding for the "MANUAL" line
+    manual_padding = " " * ((WIDTH - len(MANUAL)) // 2)
+
+    MANUAL = f"{instructions_padding}{INSTRUCTIONS}\n{manual_padding}{MANUAL}\n"
+
     selected_id = None
     if not data:
         print("No items match the selected criteria.")
@@ -87,6 +123,7 @@ def display_menu(data, ctx):
 
             menu_key = 'ID' if ctx.obj['menu'] else 'Id'
             menu_items = []
+
             for item in data:
                 item_id = item.get(menu_key, item.get('Id', None))
                 if item_id is not None:
@@ -94,7 +131,7 @@ def display_menu(data, ctx):
 
             selected_id = radiolist_dialog(
                 title="Select Issue",
-                text="Choose an Issue:",
+                text=MANUAL + "\nChoose an Issue:",
                 values=menu_items,
                 style=style
             ).run()

@@ -372,30 +372,6 @@
                             }
                         },
                         "subcommands": {
-                            "config": {
-                                "command": "config",
-                                "args": [],
-                                "options": {
-                                    "-d": {
-                                        "name": "-d",
-                                        "help": "--default  mark this profile as the default profile to use for AZ DevOps"
-                                    },
-                                    "-s": {
-                                        "name": "-s",
-                                        "help": "--show     show the entire config for the AZ DevOps server on this"
-                                    },
-                                    "-t": {
-                                        "name": "-t",
-                                        "help": "--token    show the personal access token for the AZ DevOps server on"
-                                    },
-                                    "-h": {
-                                        "name": "-h",
-                                        "help": "--help     Show this message and exit."
-                                    }
-                                },
-                                "subcommands": {},
-                                "help": "manage configuration details for the AZ DevOps server on this..."
-                            },
                             "setup": {
                                 "command": "setup",
                                 "args": [],
@@ -422,6 +398,10 @@
                             "-d": {
                                 "name": "-d",
                                 "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                            },
+                            "-m": {
+                                "name": "-m",
+                                "help": "--menu           launch a menu driven interface for common actions"
                             },
                             "-h": {
                                 "name": "-h",
@@ -499,30 +479,6 @@
                             }
                         },
                         "help": "manage boards and sprints"
-                    },
-                    "config": {
-                        "command": "config",
-                        "args": [],
-                        "options": {
-                            "-d": {
-                                "name": "-d",
-                                "help": "--default  mark this profile as the default profile to use for AZ DevOps"
-                            },
-                            "-s": {
-                                "name": "-s",
-                                "help": "--show     show the entire config for the AZ DevOps server on this"
-                            },
-                            "-t": {
-                                "name": "-t",
-                                "help": "--token    show the personal access token for the AZ DevOps server on"
-                            },
-                            "-h": {
-                                "name": "-h",
-                                "help": "--help     Show this message and exit."
-                            }
-                        },
-                        "subcommands": {},
-                        "help": "manage configuration details for the AZ DevOps server on this..."
                     },
                     "issue": {
                         "command": "issue",
@@ -638,6 +594,10 @@
                                 "name": "-d",
                                 "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
                             },
+                            "-m": {
+                                "name": "-m",
+                                "help": "--menu           launch a menu driven interface for common actions"
+                            },
                             "-h": {
                                 "name": "-h",
                                 "help": "--help           Show this message and exit."
@@ -698,6 +658,71 @@
                             }
                         },
                         "help": "manage AZ DevOps projects"
+                    },
+                    "show": {
+                        "command": "show",
+                        "args": [],
+                        "options": {
+                            "-d": {
+                                "name": "-d",
+                                "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                            },
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help           Show this message and exit."
+                            }
+                        },
+                        "subcommands": {
+                            "access-token": {
+                                "command": "access-token",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "API token for accessing the Jenins functionality"
+                            },
+                            "access-token-age": {
+                                "command": "access-token-age",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "how long the current access token will remain active"
+                            },
+                            "config": {
+                                "command": "config",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "retrieve the entire content of azdev's configstore..."
+                            },
+                            "health": {
+                                "command": "health",
+                                "args": [],
+                                "options": {
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help  Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "retrieve health status for services and regions"
+                            }
+                        },
+                        "help": "retrieve information from Azure DevOps"
                     }
                 },
                 "help": "AZDEV ClientCurrent Profile:..."

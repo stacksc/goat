@@ -255,9 +255,11 @@ class AzDevClient:
         Log.info("Caching some system info now to save time later... please wait")
         PROJECT_KEYS = {}
         PROJECTS = self.get_projects(session)
-        for PROJECT in PROJECTS:
-            PROJECT_KEYS[PROJECT] = {}
-        CONFIG.update_metadata(PROJECT_KEYS, 'projects', profile_name)
+        if PROJECTS:
+            for PROJECT in PROJECTS:
+                PROJECT_KEYS[PROJECT] = {}
+        if PROJECT_KEYS:
+            CONFIG.update_metadata(PROJECT_KEYS, 'projects', profile_name)
         Log.info("Caching facts complete")
     
     def get_session_pass_auth(self, url, user, token):

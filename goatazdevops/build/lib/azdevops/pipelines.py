@@ -31,55 +31,58 @@ def pipeline(ctx, debug):
 
 @pipeline.command(help="List pipelines", context_settings={'help_option_names':['-h','--help']})
 @click.argument('project', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
-@click.option('-r', '--runs',help="output the runs for pipeline ID found", is_flag=True, show_default=True, default=False, required=False)
+@click.option('-r', '--runs',help="output the run information for selected pipeline", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-d', '--details',help="output the details for pipeline ID found", is_flag=True, show_default=True, default=True, required=False)
 @click.pass_context
 def list_pipelines(ctx, project, runs, details):
     CONFIG = Config('azdev')
     profile = ctx.obj['PROFILE']
+
     if not project:
         CACHED_PROJECTS = {}
         CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
         projects = tuple([(v) for v in CACHED_PROJECTS])
         project = projects[0] if projects else None
-    OUTPUT = get_pipelines(profile, project)
 
-    selected_id = display_menu(OUTPUT)
-    clear_terminal()
-    Log.info(f'selected ID: {selected_id} found')
+    if runs:
+        OUTPUT = get_pipelines(profile, project)
+        selected_pipeline_id = display_menu(OUTPUT)
+        clear_terminal()
+        Log.info(f'Selected Pipeline ID: {selected_pipeline_id} found')
 
-    if selected_id and runs:
-        OUTPUT = get_pipeline_details(profile, selected_id, project, runs)
-        if 'value' in OUTPUT and isinstance(OUTPUT['value'], list):
-            extracted_output = []
-    
-            for item in OUTPUT['value']:
-                extracted_item = {
-                    "createdDate": item.get("createdDate", ""),
-                    "finishedDate": item.get("finishedDate", ""),
-                    "id": item.get("id", ""),
-                    "name": item.get("name", ""),
-                    "pipeline": {
-                        "folder": item["pipeline"].get("folder", ""),
-                        "id": item["pipeline"].get("id", ""),
-                        "name": item["pipeline"].get("name", ""),
-                        "revision": item["pipeline"].get("revision", ""),
-                        "url": item["pipeline"]["url"] if "pipeline" in item else ""
-                    },
-                    "result": item.get("result", ""),
-                    "state": item.get("state", ""),
-                    "templateParameters": item.get("templateParameters", {}),
-                    "url": item.get("url", "")
-                }
-                extracted_output.append(extracted_item)
-    
-            # Sort the extracted output by the "id" field
-            sorted_output = sorted(extracted_output, key=lambda x: x.get('id'))
-            Log.info(jjson.dumps(sorted_output, sort_keys=True, indent=2))
-        else:
-            Log.info("Unexpected OUTPUT format")
-    else:
-        OUTPUT = get_pipeline_details(profile, selected_id, project, runs)
+        if selected_pipeline_id:
+            OUTPUT = get_pipeline_details(profile, selected_pipeline_id, project, runs)
+            if 'value' in OUTPUT and isinstance(OUTPUT['value'], list):
+                extracted_output = []
+                extracted_runs = []
+        
+                for item in OUTPUT['value']:
+                    extracted_item = {
+                        "createdDate": item.get("createdDate", ""),
+                        "finishedDate": item.get("finishedDate", ""),
+                        "id": item.get("id", ""),
+                        "name": item.get("name", ""),
+                        "pipeline": {
+                            "folder": item["pipeline"].get("folder", ""),
+                            "id": item["pipeline"].get("id", ""),
+                            "name": item["pipeline"].get("name", ""),
+                            "revision": item["pipeline"].get("revision", ""),
+                            "url": item["pipeline"]["url"] if "pipeline" in item else ""
+                        },
+                        "result": item.get("result", ""),
+                        "state": item.get("state", ""),
+                        "templateParameters": item.get("templateParameters", {}),
+                        "url": item.get("url", "")
+                    }
+                    extracted_output.append(extracted_item)
+        
+                # Sort the extracted output by the "id" field
+                Log.info("Log JSON:")
+                Log.info(jjson.dumps(extracted_output, sort_keys=True, indent=2))
+
+    elif details:
+        # Output details for the selected pipeline
+        OUTPUT = get_pipeline_details(profile, selected_pipeline_id, project, runs)
         Log.info(jjson.dumps(OUTPUT, sort_keys=True, indent=2))
 
 def get_pipelines(profile, project):
@@ -119,10 +122,15 @@ def display_menu(data):
             'button.focused': 'bg:#00aa00',
         })
 
+        try:
+            values=[(sub['id'], f"{sub['name']} (ID: {sub['id']})") for sub in data]
+        except:
+            values=[(url, url) for url in data]
+
         selected_id = radiolist_dialog(
             title="Select Pipeline",
             text="Choose a Pipeline:",
-            values=[(sub['id'], f"{sub['name']} (ID: {sub['id']})") for sub in data],
+            values=values,
             style=style
         ).run()
 
@@ -276,7 +284,6 @@ def stop_build(ctx, project):
         return
 
     selected_build_id = display_builds_menu(builds_list)
-    print(selected_build_id)
 
 if __name__ == '__main__':
     pipeline()

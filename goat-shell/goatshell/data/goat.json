@@ -571,9 +571,17 @@
                                 "command": "list-pipelines",
                                 "args": [],
                                 "options": {
+                                    "-r": {
+                                        "name": "-r",
+                                        "help": "--runs     output the run information for selected pipeline  [default:"
+                                    },
+                                    "-d": {
+                                        "name": "-d",
+                                        "help": "--details  output the details for pipeline ID found  [default: True]"
+                                    },
                                     "-h": {
                                         "name": "-h",
-                                        "help": "--help  Show this message and exit."
+                                        "help": "--help     Show this message and exit."
                                     }
                                 },
                                 "subcommands": {},

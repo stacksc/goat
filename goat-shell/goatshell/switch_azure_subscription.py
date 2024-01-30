@@ -13,12 +13,12 @@ def display_subscription_menu_thread(subscriptions):
         nonlocal selected_subscription_id
         # Define custom styles for the dialog
         style = Style.from_dict({
-            'dialog': 'bg:#4B4B4B',  # Background color for the dialog
-            'dialog.body': 'bg:#242424',  # Background color for the dialog body
-            'dialog.title': 'bg:#00aa00',  # Background color for the dialog title
-            'radiolist': 'bg:#1C1C1C',  # Background color for the radiolist
-            'button': 'bg:#528B8B',  # Background color for buttons
-            'button.focused': 'bg:#00aa00',  # Background color for a focused button
+            'dialog': 'bg:#4B4B4B',
+            'dialog.body': 'bg:#242424 fg:#FFFFFF',  # Change fg to a lighter color (white in this case)
+            'dialog.title': 'bg:#00aa00',
+            'radiolist': 'bg:#1C1C1C fg:#FFFFFF',  # Change fg to a lighter color
+            'button': 'bg:#528B8B',
+            'button.focused': 'bg:#00aa00',
         })
 
         # Create and run the dialog

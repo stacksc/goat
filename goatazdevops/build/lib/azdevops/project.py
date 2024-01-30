@@ -65,4 +65,5 @@ def search_projects(ctx, projects, assignee, details, reporter, state, title, or
             CACHED_PROJECTS = {}
             CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
             projects = tuple([(v) for v in CACHED_PROJECTS])
+            print(projects)
         run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, ctx.obj['PROFILE'])

@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
-import os, json, datetime, signal, time
+import os, json, datetime, signal, time, click
 from toolbox import fernet
 
+import signal
+
+class ExitSignal(Exception):
+    pass
+
 def handler(signum, frame):
-    res = input("\nCTRL-C was pressed => Do you really want to exit? (y/n): ")
-    if res == 'Y' or res == 'y':
-        exit(1)
+    raise ExitSignal()
 
 signal.signal(signal.SIGINT, handler)
 

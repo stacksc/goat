@@ -4,12 +4,12 @@ azdevops/auth.py
 azdevops/azdev.py
 azdevops/azdev_show.py
 azdevops/azdevclient.py
-azdevops/boards.py
 azdevops/issue.py
 azdevops/misc.py
 azdevops/pipelines.py
 azdevops/project.py
 azdevops/search.py
+azdevops/sprints.py
 goatazdevops.egg-info/PKG-INFO
 goatazdevops.egg-info/SOURCES.txt
 goatazdevops.egg-info/dependency_links.txt

@@ -38,15 +38,19 @@ def cli(ctx, user_profile):
             ctx.obj['setup'] = True
             pass
     else:
-        user_profile = ctx.obj['PROFILE'] = get_default_profile()
-        PROFILE = CONFIG.get_profile(user_profile)
-        ALL = PROFILE['config']
-        for ID in ALL:
-            AUTH = ID
-            if AUTH:
-                ctx.obj['pass'] = AUTH
-                ctx.obj['setup'] = False
-                break
+        try:
+            user_profile = ctx.obj['PROFILE'] = get_default_profile()
+            PROFILE = CONFIG.get_profile(user_profile)
+            ALL = PROFILE['config']
+            for ID in ALL:
+                AUTH = ID
+                if AUTH:
+                    ctx.obj['pass'] = AUTH
+                    ctx.obj['setup'] = False
+                    break
+        except:
+            ctx.obj['setup'] = True
+            pass
     Log.setup('azdev', int(debug))
     pass
 

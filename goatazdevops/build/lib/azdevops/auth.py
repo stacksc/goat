@@ -28,3 +28,25 @@ def setup(ctx, url):
         profile = 'default'
     AZDEV.get_session(url, profile, force=True)
 
+def get_user_profile_based_on_key(key, return_first=True):
+    if not key:
+        return None
+    try:
+        if type(key) is str:
+            PROJECT_KEY = key
+        else:
+            PROJECT_KEY = key[0]
+    except IndexError:
+        Log.critical("You must provide a issue key, project key, or a user profile to use jiratools")
+    FOUND_PROFILES = []
+    for PROFILE in CONFIG.PROFILES:
+        CACHED_PROJECTS = CONFIG.get_metadata('projects', PROFILE)
+        if CACHED_PROJECTS is not None:
+            for CACHED_PROJECT in CACHED_PROJECTS:
+                if PROJECT_KEY == CACHED_PROJECT:
+                    FOUND_PROFILES.append(PROFILE)
+    if return_first:
+        try:
+            return FOUND_PROFILES[0]
+        except IndexError:
+            return None

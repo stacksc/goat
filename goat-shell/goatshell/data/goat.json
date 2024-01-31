@@ -391,95 +391,6 @@
                         },
                         "help": "perform authentication operations for AZ DevOps"
                     },
-                    "boards": {
-                        "command": "boards",
-                        "args": [],
-                        "options": {
-                            "-d": {
-                                "name": "-d",
-                                "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
-                            },
-                            "-m": {
-                                "name": "-m",
-                                "help": "--menu           launch a menu driven interface for common actions"
-                            },
-                            "-h": {
-                                "name": "-h",
-                                "help": "--help           Show this message and exit."
-                            }
-                        },
-                        "subcommands": {
-                            "find": {
-                                "command": "find",
-                                "args": [],
-                                "options": {
-                                    "-t": {
-                                        "name": "-t",
-                                        "help": "--team TEXT      provide team name for board search  [default:"
-                                    },
-                                    "-b": {
-                                        "name": "-b",
-                                        "help": "--board TEXT     provide sprint board to search - default is current"
-                                    },
-                                    "-j": {
-                                        "name": "-j",
-                                        "help": "--json           output results in JSON format  [default: False]"
-                                    },
-                                    "-o": {
-                                        "name": "-o",
-                                        "help": "--orderby TEXT   choose which field to use for sorting"
-                                    },
-                                    "-A": {
-                                        "name": "-A",
-                                        "help": "--ascending      show issues in ascending order  [default: False]"
-                                    },
-                                    "-D": {
-                                        "name": "-D",
-                                        "help": "--descending     show issues in descending order  [default: False]"
-                                    },
-                                    "-c": {
-                                        "name": "-c",
-                                        "help": "--csv TEXT       name of the csv file to save the results to"
-                                    },
-                                    "-a": {
-                                        "name": "-a",
-                                        "help": "--assignee TEXT  retrieve work items from board and filter by assignee"
-                                    },
-                                    "-r": {
-                                        "name": "-r",
-                                        "help": "--reporter TEXT  retrieve work items from board and filter by reporter"
-                                    },
-                                    "-s": {
-                                        "name": "-s",
-                                        "help": "--state TEXT     retrieve work items from board and filter by state"
-                                    },
-                                    "-h": {
-                                        "name": "-h",
-                                        "help": "--help           Show this message and exit."
-                                    }
-                                },
-                                "subcommands": {},
-                                "help": "search boards and sprints"
-                            },
-                            "list": {
-                                "command": "list",
-                                "args": [],
-                                "options": {
-                                    "-t": {
-                                        "name": "-t",
-                                        "help": "--team TEXT  provide team name for board search  [default:"
-                                    },
-                                    "-h": {
-                                        "name": "-h",
-                                        "help": "--help       Show this message and exit."
-                                    }
-                                },
-                                "subcommands": {},
-                                "help": "List boards and sprints"
-                            }
-                        },
-                        "help": "manage boards and sprints"
-                    },
                     "issue": {
                         "command": "issue",
                         "args": [],
@@ -541,6 +452,10 @@
                                 "name": "-d",
                                 "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
                             },
+                            "-m": {
+                                "name": "-m",
+                                "help": "--menu           launch a menu driven interface for common actions"
+                            },
                             "-h": {
                                 "name": "-h",
                                 "help": "--help           Show this message and exit."
@@ -577,7 +492,7 @@
                                     },
                                     "-d": {
                                         "name": "-d",
-                                        "help": "--details  output the details for pipeline ID found  [default: True]"
+                                        "help": "--details  output the details for pipeline ID found  [default: False]"
                                     },
                                     "-h": {
                                         "name": "-h",
@@ -739,6 +654,95 @@
                             }
                         },
                         "help": "retrieve information from Azure DevOps"
+                    },
+                    "sprints": {
+                        "command": "sprints",
+                        "args": [],
+                        "options": {
+                            "-d": {
+                                "name": "-d",
+                                "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                            },
+                            "-m": {
+                                "name": "-m",
+                                "help": "--menu           launch a menu driven interface for common actions"
+                            },
+                            "-h": {
+                                "name": "-h",
+                                "help": "--help           Show this message and exit."
+                            }
+                        },
+                        "subcommands": {
+                            "list": {
+                                "command": "list",
+                                "args": [],
+                                "options": {
+                                    "-t": {
+                                        "name": "-t",
+                                        "help": "--team TEXT  provide team name for board search  [default:"
+                                    },
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help       Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "List boards and sprints"
+                            },
+                            "search": {
+                                "command": "search",
+                                "args": [],
+                                "options": {
+                                    "-t": {
+                                        "name": "-t",
+                                        "help": "--title TEXT     text to search for in the title field"
+                                    },
+                                    "-s": {
+                                        "name": "-s",
+                                        "help": "--state TEXT     retrieve work items from board and filter by state"
+                                    },
+                                    "-j": {
+                                        "name": "-j",
+                                        "help": "--json           output results in JSON format  [default: False]"
+                                    },
+                                    "-o": {
+                                        "name": "-o",
+                                        "help": "--orderby TEXT   choose which field to use for sorting"
+                                    },
+                                    "-A": {
+                                        "name": "-A",
+                                        "help": "--ascending      show issues in ascending order  [default: False]"
+                                    },
+                                    "-D": {
+                                        "name": "-D",
+                                        "help": "--descending     show issues in descending order  [default: False]"
+                                    },
+                                    "-c": {
+                                        "name": "-c",
+                                        "help": "--csv TEXT       name of the csv file to save the results to"
+                                    },
+                                    "-a": {
+                                        "name": "-a",
+                                        "help": "--assignee TEXT  retrieve work items from board and filter by assignee"
+                                    },
+                                    "-r": {
+                                        "name": "-r",
+                                        "help": "--reporter TEXT  retrieve work items from board and filter by reporter"
+                                    },
+                                    "-d": {
+                                        "name": "-d",
+                                        "help": "--details        display more details per ticket  [default: False]"
+                                    },
+                                    "-h": {
+                                        "name": "-h",
+                                        "help": "--help           Show this message and exit."
+                                    }
+                                },
+                                "subcommands": {},
+                                "help": "search boards and sprints"
+                            }
+                        },
+                        "help": "manage boards and sprints"
                     }
                 },
                 "help": "AZDEV ClientCurrent Profile:..."

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import os, json, datetime, signal, time
+import os, json, datetime, signal, time, click
 from toolbox import fernet
 
-user_env_var = "USERNAME" if os.name == 'nt' else "LOGNAME"
-default_assignee = os.environ.get(user_env_var, None)
+import signal
+
+class ExitSignal(Exception):
+    pass
 
 def handler(signum, frame):
-    res = input("\nCTRL-C was pressed => Do you really want to exit? (y/n): ")
-    if res == 'Y' or res == 'y':
-        exit(1)
+    raise ExitSignal()
 
 signal.signal(signal.SIGINT, handler)
 
@@ -61,7 +61,7 @@ class Config:
             PROFILE = self.PROFILES['preset']
             PROFILE['metadata'].update({
                 'name': profile_name,
-                'created_by': default_assignee,
+                'created_by': os.environ['USER'],
                 'created_at': str(datetime.datetime.now().timestamp())
             })
         else:
@@ -69,7 +69,7 @@ class Config:
                 'config': {},
                 'metadata': {
                     'name': profile_name,
-                    'created_by': default_assignee,
+                    'created_by': os.environ['USER'],
                     'created_at': str(datetime.datetime.now().timestamp())
                 }
             }
@@ -84,7 +84,7 @@ class Config:
             'config': preset_data['config'],
             'metadata': {
                 'name': 'preset',
-                'created_by': default_assignee,
+                'created_by': os.environ['USER'],
                 'created_at': str(datetime.datetime.now().timestamp()),
             }    
         } 

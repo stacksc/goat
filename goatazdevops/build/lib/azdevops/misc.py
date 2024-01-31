@@ -2,7 +2,9 @@ import os, csv, time, click, re, threading
 from typing import List, Tuple, Optional
 from configstore.configstore import Config
 from prompt_toolkit.styles import Style
+from prompt_toolkit import prompt
 from prompt_toolkit.shortcuts import radiolist_dialog
+from azdevops.auth import get_user_profile_based_on_key
 import shutil
 
 def get_terminal_size():
@@ -142,3 +144,109 @@ def display_menu(data, ctx):
     else:
         return None
     return selected_id
+
+def generic_menu(data):
+    WIDTH, HEIGHT = calculate_dialog_size()
+    INSTRUCTIONS = "[INSTRUCTIONS]"
+    MANUAL = "[ARROW KEYS] to navigate | [SPACEBAR] to select | [TAB] to OK | [ENTER] to execute"
+
+    # Calculate the padding for the "INSTRUCTIONS" line
+    instructions_padding = " " * ((WIDTH - len(INSTRUCTIONS)) // 2)
+
+    # Calculate the padding for the "MANUAL" line
+    manual_padding = " " * ((WIDTH - len(MANUAL)) // 2)
+
+    MANUAL = f"{instructions_padding}{INSTRUCTIONS}\n{manual_padding}{MANUAL}\n"
+
+    selected = None
+    if not data:
+        print("No items match the selected criteria.")
+        return None
+
+    def run_dialog():
+        nonlocal selected
+        style = Style.from_dict({
+            'dialog': 'bg:#4B4B4B',
+            'dialog.body': 'bg:#242424 fg:#FFFFFF',
+            'dialog.title': 'bg:#00aa00',
+            'radiolist': 'bg:#1C1C1C fg:#FFFFFF',
+            'button': 'bg:#528B8B',
+            'button.focused': 'bg:#00aa00',
+        })
+
+        values = [(b, b) for b in data]
+
+        selected = radiolist_dialog(
+            title="Select Item",
+            text="Choose an Object:",
+            values=values,
+            style=style
+        ).run()
+
+    run_dialog()  # Call run_dialog to display the menu and make a selection
+
+    return (selected,)
+
+def setup_runner(ctx, projects):
+    # setup our config store to use
+    CONFIG = Config('azdev')
+    # define the profile if its configured in ctx.obj
+    PROFILE = ctx.obj['PROFILE']
+    # init our RUN dictionary
+    RUN = {}
+    # rip thru each project
+
+    if projects:
+        for project in projects:
+            PROFILE = get_user_profile_based_on_key(project)
+            if PROFILE not in RUN:
+                RUN[PROFILE] = {
+                    "%s" %(project)
+                }
+            else:
+                RUN[PROFILE].update({ "%s" %(project) })
+    else:
+        # init a dictionary to hold ALL projects to prepare for menu
+        CACHED_PROJECTS = {}
+        for PROFILE in CONFIG.PROFILES:
+            CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
+        if CACHED_PROJECTS:
+            CACHED_PROJECTS = sorted(CACHED_PROJECTS)
+        projects = generic_menu(CACHED_PROJECTS)
+        if projects:
+            # rip thru each project now
+            for project in projects:
+                # get the profile
+                PROFILE = get_user_profile_based_on_key(project)
+                # if profile exists based on project selected
+                if PROFILE not in RUN:
+                    RUN[PROFILE] = {
+                        "%s" %(project)
+                    }
+                else:
+                    RUN[PROFILE].update({ "%s" %(project) })
+    return RUN
+
+def setup_az_ctx(ctx, debug, menu):
+    from azdevops.azdevclient import AzDevClient
+    AZDEV = AzDevClient()
+    user_profile = ctx.obj['PROFILE']
+    url = None
+
+    ctx.obj['menu'] = bool(menu)
+
+    if ctx.obj.get('setup', False):
+        if user_profile is None:
+            user_profile = 'default'
+
+        try:
+            INPUT = click.prompt(f'INFO: profile "{user_profile}" not found - create a new one now? (y/n)')
+        except click.exceptions.ExitSignal:
+            click.echo("\nINFO: operation was canceled.")
+            exit(-1)
+
+        if 'y' in INPUT.lower():
+            AZDEV.get_session(url, user_profile, force=True)
+        else:
+            exit(0)
+

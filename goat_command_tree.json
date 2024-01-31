@@ -1,0 +1,2316 @@
+{
+    "Options": [
+        {
+            "option": "-v,",
+            "description": "--version       print version of goat and all its submodules"
+        },
+        {
+            "option": "-m,",
+            "description": "--manuals TEXT  print all defined manuals matching pattern(s)"
+        },
+        {
+            "option": "-s,",
+            "description": "--shell         launch the GOAT Shell for improved cloud interaction"
+        },
+        {
+            "option": "-h,",
+            "description": "--help          Show this message and exit."
+        }
+    ],
+    "Commands": {
+        "amazon": {
+            "description": "AWS CLI ClientCurrent Profile: DEFAULT...",
+            "Commands": {
+                "cli": {
+                    "description": "run any awscli (aws) command while leveraging awstools profile...",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-r,",
+                            "description": "--region TEXT  AWS region to authenticate against"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help         Show this message and exit."
+                        }
+                    ]
+                },
+                "ec2": {
+                    "description": "ec2 to manage the instances and related configuration",
+                    "Commands": {
+                        "delete": {
+                            "description": "Delete EC2 objects such as instances, EBS volumes or snapshots",
+                            "Commands": {
+                                "orphaned_ebs": {
+                                    "description": "delete orphaned EBS volumes or snapshots",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-v,",
+                                            "description": "--volume    flag to delete orphaned EBS volumes"
+                                        },
+                                        {
+                                            "option": "-s,",
+                                            "description": "--snapshot  flag to delete orphaned EBS snapshots"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help      Show this message and exit."
+                                        }
+                                    ]
+                                }
+                            },
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "refresh": {
+                            "description": "manually refresh ec2 cached data",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in ec2 cache (instacnes, IPs, regions)",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform EC2 actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "extract": {
+                    "description": "extract the command tree for AWS CLI",
+                    "Commands": {
+                        "commands": {
+                            "description": "manually refresh the AWS CLI command tree",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "iam": {
+                    "description": "manage and switch between AWS profiles in GC and SIM regions",
+                    "Commands": {
+                        "authenticate": {
+                            "description": "login using existing IAM creds or add new creds to config",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-r,",
+                                    "description": "--region TEXT  aws region to connect to"
+                                },
+                                {
+                                    "option": "-o,",
+                                    "description": "--output TEXT  output type for awscli"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help         Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "rds": {
+                    "description": "rds to manage the DB instances and related configuration",
+                    "Commands": {
+                        "refresh": {
+                            "description": "manually refresh ec2 cached data",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in rds cache",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform EC2 actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "s3": {
+                    "description": "s3 functions to sync buckets and filesystems",
+                    "Commands": {
+                        "create": {
+                            "description": "create a new bucket",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "description": "delete a specified bucket",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "download": {
+                            "description": "download from s3 to local storage",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "--destination",
+                                    "description": "TEXT  provide a local destination for download  [default:"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help          Show this message and exit."
+                                }
+                            ]
+                        },
+                        "refresh": {
+                            "description": "manually refresh s3 cached data",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in s3 cache",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "upload": {
+                            "description": "upload from local storage to s3 bucket",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "--source",
+                                    "description": "TEXT  provide a local source for upload  [required]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help     Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform S3 actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "show": {
+                    "description": "display configuration data for awstools and awscli",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-p,",
+                    "description": "--profile TEXT  profile name to use when working with awstools"
+                },
+                {
+                    "option": "-r,",
+                    "description": "--region TEXT   region name to use when working with awstools"
+                },
+                {
+                    "option": "-c,",
+                    "description": "--cache         refresh all cache for region and tenant  [default:"
+                },
+                {
+                    "option": "-h,",
+                    "description": "--help          Show this message and exit."
+                }
+            ]
+        },
+        "azdev": {
+            "description": "AZDEV ClientCurrent Profile:...",
+            "Commands": {
+                "auth": {
+                    "description": "perform authentication operations for AZ DevOps",
+                    "Commands": {
+                        "setup": {
+                            "description": "setup or change authentication settings for AZ DevOps",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-u,",
+                                    "description": "--url TEXT  address of the Organization URL"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help      Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                },
+                "issue": {
+                    "description": "manage Azure DevOps worklist items",
+                    "Commands": {
+                        "search": {
+                            "description": "show a summary of specified issue or issues",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-j,",
+                                    "description": "--json          output results in JSON format  [default: False]"
+                                },
+                                {
+                                    "option": "-o,",
+                                    "description": "--orderby TEXT  choose which field to use for sorting"
+                                },
+                                {
+                                    "option": "-A,",
+                                    "description": "--ascending     show issues in ascending order  [default: False]"
+                                },
+                                {
+                                    "option": "-D,",
+                                    "description": "--descending    show issues in descending order  [default: False]"
+                                },
+                                {
+                                    "option": "-c,",
+                                    "description": "--csv TEXT      name of the csv file to save the results to"
+                                },
+                                {
+                                    "option": "-d,",
+                                    "description": "--details       display more details per ticket  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help          Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                },
+                "pipeline": {
+                    "description": "manage pipelines",
+                    "Commands": {
+                        "list-builds": {
+                            "description": "list builds",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-a,",
+                                    "description": "--artifacts  output the artifacts for build ID found  [default: False]"
+                                },
+                                {
+                                    "option": "-d,",
+                                    "description": "--details    output the details for build ID found  [default: True]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help       Show this message and exit."
+                                }
+                            ]
+                        },
+                        "list-pipelines": {
+                            "description": "List pipelines",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-r,",
+                                    "description": "--runs     output the run information for selected pipeline  [default:"
+                                },
+                                {
+                                    "option": "-d,",
+                                    "description": "--details  output the details for pipeline ID found  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help     Show this message and exit."
+                                }
+                            ]
+                        },
+                        "stop-build": {
+                            "description": "Stop a running build",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-m,",
+                            "description": "--menu           launch a menu driven interface for common actions"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                },
+                "project": {
+                    "description": "manage AZ DevOps projects",
+                    "Commands": {
+                        "search": {
+                            "description": "show a summary of projects matching the specified filter",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-a,",
+                                    "description": "--assignee TEXT  i.e. jdoe"
+                                },
+                                {
+                                    "option": "-d,",
+                                    "description": "--details        display more details per ticket  [default: False]"
+                                },
+                                {
+                                    "option": "-r,",
+                                    "description": "--reporter TEXT  i.e. smithj"
+                                },
+                                {
+                                    "option": "--title",
+                                    "description": "TEXT         text to search for in the summary field"
+                                },
+                                {
+                                    "option": "-s,",
+                                    "description": "--state TEXT     i.e. active"
+                                },
+                                {
+                                    "option": "-o,",
+                                    "description": "--orderby TEXT   choose which field to use for sorting"
+                                },
+                                {
+                                    "option": "-A,",
+                                    "description": "--ascending      show issues in ascending order  [default: False]"
+                                },
+                                {
+                                    "option": "-D,",
+                                    "description": "--descending     show issues in descending order  [default: False]"
+                                },
+                                {
+                                    "option": "-c,",
+                                    "description": "--csv TEXT       name of the csv file to save the results to"
+                                },
+                                {
+                                    "option": "-J,",
+                                    "description": "--json           output results in JSON format  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help           Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-m,",
+                            "description": "--menu           launch a menu driven interface for common actions"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                },
+                "show": {
+                    "description": "retrieve information from Azure DevOps",
+                    "Commands": {
+                        "access-token": {
+                            "description": "API token for accessing the Jenins functionality",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "access-token-age": {
+                            "description": "how long the current access token will remain active",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "config": {
+                            "description": "retrieve the entire content of azdev's configstore...",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "health": {
+                            "description": "retrieve health status for services and regions",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                },
+                "sprints": {
+                    "description": "manage boards and sprints",
+                    "Commands": {
+                        "list": {
+                            "description": "List boards and sprints",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-t,",
+                                    "description": "--team TEXT  provide team name for board search  [default:"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help       Show this message and exit."
+                                }
+                            ]
+                        },
+                        "search": {
+                            "description": "search boards and sprints",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-t,",
+                                    "description": "--title TEXT     text to search for in the title field"
+                                },
+                                {
+                                    "option": "-s,",
+                                    "description": "--state TEXT     retrieve work items from board and filter by state"
+                                },
+                                {
+                                    "option": "-j,",
+                                    "description": "--json           output results in JSON format  [default: False]"
+                                },
+                                {
+                                    "option": "-o,",
+                                    "description": "--orderby TEXT   choose which field to use for sorting"
+                                },
+                                {
+                                    "option": "-A,",
+                                    "description": "--ascending      show issues in ascending order  [default: False]"
+                                },
+                                {
+                                    "option": "-D,",
+                                    "description": "--descending     show issues in descending order  [default: False]"
+                                },
+                                {
+                                    "option": "-c,",
+                                    "description": "--csv TEXT       name of the csv file to save the results to"
+                                },
+                                {
+                                    "option": "-a,",
+                                    "description": "--assignee TEXT  retrieve work items from board and filter by assignee"
+                                },
+                                {
+                                    "option": "-r,",
+                                    "description": "--reporter TEXT  retrieve work items from board and filter by reporter"
+                                },
+                                {
+                                    "option": "-d,",
+                                    "description": "--details        display more details per ticket  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help           Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-m,",
+                            "description": "--menu           launch a menu driven interface for common actions"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-p,",
+                    "description": "--profile TEXT  profile name to use when working with the azdev client"
+                },
+                {
+                    "option": "-h,",
+                    "description": "--help          Show this message and exit."
+                }
+            ]
+        },
+        "azure": {
+            "description": "AZ CLI ClientCurrent Profile: DEFAULT...",
+            "Commands": {
+                "extract": {
+                    "description": "extract the command tree for Azure CLI",
+                    "Commands": {
+                        "commands": {
+                            "description": "manually refresh the Azure CLI command tree",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-h,",
+                    "description": "--help  Show this message and exit."
+                }
+            ]
+        },
+        "configs": {
+            "description": "Config ClientCurrent Profile: N/A",
+            "Commands": {
+                "show": {
+                    "description": "show records stored in a configstore; you can use profile and...",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-n,",
+                            "description": "--name TEXT  name of the configstore to use  [required]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help       Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-p,",
+                    "description": "--profile TEXT  name of the profile to use"
+                },
+                {
+                    "option": "-h,",
+                    "description": "--help          Show this message and exit."
+                }
+            ]
+        },
+        "ibm": {
+            "description": "IBMCLOUD CLI ClientCurrent Profile:...",
+            "Commands": {
+                "extract": {
+                    "description": "extract the command tree for IBM CLI",
+                    "Commands": {
+                        "commands": {
+                            "description": "manually refresh the IBM CLI command tree",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-h,",
+                    "description": "--help  Show this message and exit."
+                }
+            ]
+        },
+        "jenkins": {
+            "description": "Jenkins ClientCurrent Profile:...",
+            "Commands": {
+                "auth": {
+                    "description": "perform authentication operations against Jenkins",
+                    "Commands": {
+                        "setup": {
+                            "description": "setup your API access to jenkins",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "update-profile": {
+                            "description": "update the default profile",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                },
+                "show": {
+                    "description": "retrieve information from Jenkins",
+                    "Commands": {
+                        "access-token": {
+                            "description": "API token for accessing the Jenins functionality",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "access-token-age": {
+                            "description": "how long the current access token will remain active",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "config": {
+                            "description": "retrieve the entire content of jenkinstool's...",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "credentials": {
+                            "description": "display system credentials available for jobs",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-d,",
+                                    "description": "--description  display description of credentials in the output"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help         Show this message and exit."
+                                }
+                            ]
+                        },
+                        "crumb-token": {
+                            "description": "API crumb for accessing the Jenins functionality",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "crumb-token-age": {
+                            "description": "how long the current crumb token will remain active",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "jobs": {
+                            "description": "display information about Jenkins job names",
+                            "Commands": {
+                                "config": {
+                                    "description": "show XML configuration of a specific job from jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "console": {
+                                    "description": "show console output of a specific job build number from...",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "details": {
+                                    "description": "show details of a specific job from jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "info": {
+                                    "description": "show details for a specific build and job name in jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "last": {
+                                    "description": "show the last build information for a specific job in...",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "last-failed": {
+                                    "description": "get the last failed build of a specific job from jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "last-success": {
+                                    "description": "get the last successful build of a specific job from jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "names": {
+                                    "description": "show all job names from jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "urls": {
+                                    "description": "show last 100 build urls for a specific job in jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                }
+                            },
+                            "Options": [
+                                {
+                                    "option": "-p,",
+                                    "description": "--pattern TEXT  pattern to search on due to the number of job names"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help          Show this message and exit."
+                                }
+                            ]
+                        },
+                        "user": {
+                            "description": "display information about Jenkins users",
+                            "Commands": {
+                                "details": {
+                                    "description": "display user details for a selected user from Jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-r,",
+                                            "description": "--raw   display raw json; don't reduce output"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "who": {
+                                    "description": "display list of users from Jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "whoami": {
+                                    "description": "simple LDAP verification against Jenkins",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                }
+                            },
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
+                        },
+                        {
+                            "option": "-m,",
+                            "description": "--menu           launch a menu driven interface for common Jenkins user"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-p,",
+                    "description": "--profile TEXT  user profile for Jenkins operations"
+                },
+                {
+                    "option": "-h,",
+                    "description": "--help          Show this message and exit."
+                }
+            ]
+        },
+        "jira": {
+            "description": "JIRA CLI ClientCurrent Profile:...",
+            "Commands": {
+                "auth": {
+                    "description": "setup or change authentication settings for JIRA",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-u,",
+                            "description": "--url TEXT           address of the jira server  [required]"
+                        },
+                        {
+                            "option": "-m,",
+                            "description": "--mode [token|pass]  choose authentication mode"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help               Show this message and exit."
+                        }
+                    ]
+                },
+                "config": {
+                    "description": "manage configuration details for the Jira server on this profile",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-d,",
+                            "description": "--default  mark this profile as the default profile to use for JIRA"
+                        },
+                        {
+                            "option": "-s,",
+                            "description": "--show     show the entire config for the JIRA server on this profile"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help     Show this message and exit."
+                        }
+                    ]
+                },
+                "issue": {
+                    "description": "manage JIRA issues",
+                    "Commands": {
+                        "assign": {
+                            "description": "change assignee of a given JIRA issue(s)",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-a,",
+                                    "description": "--assignee TEXT  assignee name, i.e. stacksc"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help           Show this message and exit."
+                                }
+                            ]
+                        },
+                        "attach": {
+                            "description": "attach a file to a given JIRA issue(s)",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-a,",
+                                    "description": "--attach PATH  name of file to attach"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help         Show this message and exit."
+                                }
+                            ]
+                        },
+                        "change-plan": {
+                            "description": "dump entire change implementation plan of a given issue",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-r,",
+                                    "description": "--regex TEXT  pattern to lookup"
+                                },
+                                {
+                                    "option": "-u,",
+                                    "description": "--url         extract jenkins build URL"
+                                },
+                                {
+                                    "option": "-c,",
+                                    "description": "--cred        extract helm credentials for the build"
+                                },
+                                {
+                                    "option": "-v,",
+                                    "description": "--verify      verify the extracted helm credentials for the build by"
+                                },
+                                {
+                                    "option": "-p,",
+                                    "description": "--post        extract the runway post-deploy URL from the change-plan"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help        Show this message and exit."
+                                }
+                            ]
+                        },
+                        "comment": {
+                            "description": "post a comment to a given JIRA issue(s)",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-c,",
+                                    "description": "--comment TEXT  body of the comment to post  [required]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help          Show this message and exit."
+                                }
+                            ]
+                        },
+                        "comments": {
+                            "description": "look for specific data in the comments of a given issue",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-r,",
+                                    "description": "--regex TEXT  pattern to lookup"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help        Show this message and exit."
+                                }
+                            ]
+                        },
+                        "create": {
+                            "description": "creates a new JIRA issue in a given project",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-s,",
+                                    "description": "--summary TEXT      title of the ticket  [required]"
+                                },
+                                {
+                                    "option": "-d,",
+                                    "description": "--description TEXT  body of the ticket"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help              Show this message and exit."
+                                }
+                            ]
+                        },
+                        "extract": {
+                            "description": "look for specific data in the description of a given issue",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-k,",
+                                    "description": "--key TEXT  data key to lookup  [required]"
+                                },
+                                {
+                                    "option": "-e,",
+                                    "description": "--exact     only grab exact matches  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help      Show this message and exit."
+                                }
+                            ]
+                        },
+                        "review": {
+                            "description": "change the VMC Ops Review to Yes or No for a JIRA issue",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-v,",
+                                    "description": "--value [Yes|No]  value to be used  [required]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help            Show this message and exit."
+                                }
+                            ]
+                        },
+                        "search": {
+                            "description": "show a summary of specified issue or issues",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-J,",
+                                    "description": "--json           output results in JSON format  [default: False]"
+                                },
+                                {
+                                    "option": "-w,",
+                                    "description": "--wizard         output results in wizard format for transitioning"
+                                },
+                                {
+                                    "option": "-t,",
+                                    "description": "--tui            use the native TUI to launch tickets in the browser"
+                                },
+                                {
+                                    "option": "-l,",
+                                    "description": "--limit INTEGER  max amount of issues to show"
+                                },
+                                {
+                                    "option": "-o,",
+                                    "description": "--orderby TEXT   choose which field to use for sorting"
+                                },
+                                {
+                                    "option": "-A,",
+                                    "description": "--ascending      show issues in ascending order  [default: False]"
+                                },
+                                {
+                                    "option": "-D,",
+                                    "description": "--descending     show issues in descending order  [default: False]"
+                                },
+                                {
+                                    "option": "-c,",
+                                    "description": "--csv TEXT       name of the csv file to save the results to"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help           Show this message and exit."
+                                }
+                            ]
+                        },
+                        "transition": {
+                            "description": "transition a given issue",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-w,",
+                                    "description": "--wizard            launch a wizard to guide you through transitioning"
+                                },
+                                {
+                                    "option": "-s,",
+                                    "description": "--showavailable     display the available transitions for a given issue"
+                                },
+                                {
+                                    "option": "-i,",
+                                    "description": "--id TEXT           the ID of the state to transition to"
+                                },
+                                {
+                                    "option": "-n,",
+                                    "description": "--name TEXT         name of the state to transition to"
+                                },
+                                {
+                                    "option": "-f,",
+                                    "description": "--field_name TEXT   name(s) of the field(s) to update during transition"
+                                },
+                                {
+                                    "option": "-t,",
+                                    "description": "--field_type TEXT   value of the field(s) to update during transition"
+                                },
+                                {
+                                    "option": "-v,",
+                                    "description": "--field_value TEXT  type of field(s) to update during transition"
+                                },
+                                {
+                                    "option": "-P,",
+                                    "description": "--payload TEXT      dict/json to be used as transition payload (field"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help              Show this message and exit."
+                                }
+                            ]
+                        },
+                        "update": {
+                            "description": "update a field in a given JIRA issue",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-f,",
+                                    "description": "--field TEXT  name of the field to update i.e. reporter  [required]"
+                                },
+                                {
+                                    "option": "-v,",
+                                    "description": "--value TEXT  new value for the field i.e. jsmith  [required]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help        Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "project": {
+                    "description": "manage JIRA projects",
+                    "Commands": {
+                        "search": {
+                            "description": "show a summary of projects matching the specified filter",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-a,",
+                                    "description": "--assignee TEXT  i.e. jdoe"
+                                },
+                                {
+                                    "option": "-g,",
+                                    "description": "--group TEXT     i.e. devops"
+                                },
+                                {
+                                    "option": "-r,",
+                                    "description": "--reporter TEXT  i.e. smithj"
+                                },
+                                {
+                                    "option": "-s,",
+                                    "description": "--status TEXT    i.e. closed"
+                                },
+                                {
+                                    "option": "--summary",
+                                    "description": "TEXT       text to search for in the summary field"
+                                },
+                                {
+                                    "option": "--description",
+                                    "description": "TEXT   text to search for in the description field"
+                                },
+                                {
+                                    "option": "-l,",
+                                    "description": "--limit INTEGER  max amount of issues to show"
+                                },
+                                {
+                                    "option": "-o,",
+                                    "description": "--orderby TEXT   choose which field to use for sorting"
+                                },
+                                {
+                                    "option": "-A,",
+                                    "description": "--ascending      show issues in ascending order  [default: False]"
+                                },
+                                {
+                                    "option": "-D,",
+                                    "description": "--descending     show issues in descending order  [default: False]"
+                                },
+                                {
+                                    "option": "-c,",
+                                    "description": "--csv TEXT       name of the csv file to save the results to"
+                                },
+                                {
+                                    "option": "-J,",
+                                    "description": "--json           output results in JSON format  [default: False]"
+                                },
+                                {
+                                    "option": "-w,",
+                                    "description": "--wizard         output results in wizard format for transitioning"
+                                },
+                                {
+                                    "option": "-t,",
+                                    "description": "--tui            use the native TUI to launch tickets in the browser"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help           Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "search": {
+                    "description": "search for issues in Jira",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-k,",
+                            "description": "--key TEXT       i.e. PUBSECSRE-123"
+                        },
+                        {
+                            "option": "-p,",
+                            "description": "--project TEXT   i.e. PUBSECSRE"
+                        },
+                        {
+                            "option": "-a,",
+                            "description": "--assignee TEXT  i.e. jdoe"
+                        },
+                        {
+                            "option": "-g,",
+                            "description": "--group TEXT     i.e. devops"
+                        },
+                        {
+                            "option": "-r,",
+                            "description": "--reporter TEXT  i.e. smithj"
+                        },
+                        {
+                            "option": "-s,",
+                            "description": "--status TEXT    i.e. closed"
+                        },
+                        {
+                            "option": "--summary",
+                            "description": "TEXT       text to search for in the summary field"
+                        },
+                        {
+                            "option": "--description",
+                            "description": "TEXT   text to search for in the description field"
+                        },
+                        {
+                            "option": "-j,",
+                            "description": "--jql TEXT       ignore other filters and use explicit jql query"
+                        },
+                        {
+                            "option": "-J,",
+                            "description": "--json           output results in JSON format  [default: False]"
+                        },
+                        {
+                            "option": "-w,",
+                            "description": "--wizard         output results in wizard format for transitioning"
+                        },
+                        {
+                            "option": "-t,",
+                            "description": "--tui            use the native TUI to launch tickets in the browser"
+                        },
+                        {
+                            "option": "-l,",
+                            "description": "--limit INTEGER  max amount of issues to show"
+                        },
+                        {
+                            "option": "-o,",
+                            "description": "--orderby TEXT   choose which field to use for sorting"
+                        },
+                        {
+                            "option": "-A,",
+                            "description": "--ascending      show issues in ascending order  [default: False]"
+                        },
+                        {
+                            "option": "-D,",
+                            "description": "--descending     show issues in descending order  [default: False]"
+                        },
+                        {
+                            "option": "-c,",
+                            "description": "--csv TEXT       name of the csv file to save the results to"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help           Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-p,",
+                    "description": "--profile TEXT  profile name to use when working with the jiraclient"
+                },
+                {
+                    "option": "-h,",
+                    "description": "--help          Show this message and exit."
+                }
+            ]
+        },
+        "oracle": {
+            "description": "OCI CLI ClientCurrent Profile: DEFAULT...",
+            "Commands": {
+                "cli": {
+                    "description": "run any ocicli (oci) command while leveraging ocitools...",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-r,",
+                            "description": "--region TEXT  OCI region to authenticate against"
+                        },
+                        {
+                            "option": "-i,",
+                            "description": "--interactive  spawn the interactive shell"
+                        },
+                        {
+                            "option": "-h",
+                            "description": "Show this message and exit."
+                        }
+                    ]
+                },
+                "compartment": {
+                    "description": "module to manage compartments for tenant",
+                    "Commands": {
+                        "create": {
+                            "description": "create OCI compartment for region and tenant",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-d,",
+                                    "description": "--description TEXT  provide a short description for the new compartment"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help              Show this message and exit."
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "description": "menu-guided solution to delete OCI compartment's for region...",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "refresh": {
+                            "description": "manually refresh comparments stored in cache",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in cached compartments",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform compartment actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "compute": {
+                    "description": "compute to manage the instances and related configuration",
+                    "Commands": {
+                        "refresh": {
+                            "description": "manually refresh compute cached data",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in compute cache (instacnes, IPs, regions)",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform compute actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "dbs": {
+                    "description": "dbs module to manage the DBS instances and related...",
+                    "Commands": {
+                        "refresh": {
+                            "description": "manually refresh dbs cached data",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in dbs cache",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform DBS actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "extract": {
+                    "description": "extract the command tree for OCI CLI",
+                    "Commands": {
+                        "commands": {
+                            "description": "manually refresh the OCI CLI command tree",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "iam": {
+                    "description": "manage and switch between OCI profiles for all realms",
+                    "Commands": {
+                        "authenticate": {
+                            "description": "login using existing IAM creds or add new creds to config",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-r,",
+                                    "description": "--region TEXT       oci region to connect to"
+                                },
+                                {
+                                    "option": "-t,",
+                                    "description": "--tenant TEXT       tenant ocid to connect to"
+                                },
+                                {
+                                    "option": "-u,",
+                                    "description": "--user TEXT         user ocid to connect with"
+                                },
+                                {
+                                    "option": "-k,",
+                                    "description": "--keyfile TEXT      user oci API private key file to connect with"
+                                },
+                                {
+                                    "option": "-f,",
+                                    "description": "--fingerprint TEXT  fingerprint of oci private key to connect with"
+                                },
+                                {
+                                    "option": "-p,",
+                                    "description": "--profile TEXT      oci profile to connect with"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help              Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "oss": {
+                    "description": "object storage functions to sync buckets and filesystems",
+                    "Commands": {
+                        "create": {
+                            "description": "create a new bucket",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "description": "delete a specified bucket",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "download": {
+                            "description": "download from OSS to local storage",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "--destination",
+                                    "description": "TEXT  provide a local destination for download  [default:"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help          Show this message and exit."
+                                }
+                            ]
+                        },
+                        "refresh": {
+                            "description": "manually refresh OSS cached data",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in OSS cache",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "upload": {
+                            "description": "upload from local storage to OSS bucket",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "--source",
+                                    "description": "TEXT  provide a local source for upload  [required]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help     Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform OCI OSS actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "regions": {
+                    "description": "module to manage region subscriptions",
+                    "Commands": {
+                        "refresh": {
+                            "description": "manually refresh regions cached data",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in cached regions",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform region actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "vault": {
+                    "description": "module to manage vaults",
+                    "Commands": {
+                        "create": {
+                            "description": "create OCI vault for region and tenant",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "description": "menu-guided solution to delete OCI vault's for region and tenant",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-a,",
+                                    "description": "--all   delete all vaults found  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "keys": {
+                            "description": "module to manage vault keys",
+                            "Commands": {
+                                "create": {
+                                    "description": "create OCI keys for region and tenant",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-n,",
+                                            "description": "--name TEXT         secret name  [required]"
+                                        },
+                                        {
+                                            "option": "-d,",
+                                            "description": "--description TEXT  short description for the secret; default uses the"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help              Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "delete": {
+                                    "description": "menu-guided solution to delete OCI keys for region and tenant",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-a,",
+                                            "description": "--all   delete all keys found  [default: False]"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "refresh": {
+                                    "description": "manually refresh keys stored in cache",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "show": {
+                                    "description": "show the keys stored in cache",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                }
+                            },
+                            "Options": [
+                                {
+                                    "option": "-m,",
+                                    "description": "--menu  use the menu to perform key actions  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "refresh": {
+                            "description": "manually refresh vaults stored in cache",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "secrets": {
+                            "description": "module to manage secrets",
+                            "Commands": {
+                                "create": {
+                                    "description": "create OCI secrets for region and tenant",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-n,",
+                                            "description": "--name TEXT         secret name  [required]"
+                                        },
+                                        {
+                                            "option": "-d,",
+                                            "description": "--description TEXT  short description for the secret; default uses the"
+                                        },
+                                        {
+                                            "option": "-c,",
+                                            "description": "--content TEXT      secret content; default creates a random 16"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help              Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "delete": {
+                                    "description": "menu-guided solution to delete OCI secrets for region and tenant",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-a,",
+                                            "description": "--all   delete all secrets found  [default: False]"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "refresh": {
+                                    "description": "manually refresh secrets stored in cache",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help  Show this message and exit."
+                                        }
+                                    ]
+                                },
+                                "show": {
+                                    "description": "show the secrets stored in cache",
+                                    "Commands": {},
+                                    "Options": [
+                                        {
+                                            "option": "-d,",
+                                            "description": "--decrypt  decrypt secret content of type base64  [default: False]"
+                                        },
+                                        {
+                                            "option": "-h,",
+                                            "description": "--help     Show this message and exit."
+                                        }
+                                    ]
+                                }
+                            },
+                            "Options": [
+                                {
+                                    "option": "-m,",
+                                    "description": "--menu  use the menu to perform secret actions  [default: False]"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        },
+                        "show": {
+                            "description": "show the data stored in cached vault",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--menu  use the menu to perform vault actions  [default: False]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-p,",
+                    "description": "--profile TEXT  profile name to use when working with ocitools"
+                },
+                {
+                    "option": "-r,",
+                    "description": "--region TEXT   region name to use when working with ocitools"
+                },
+                {
+                    "option": "-c,",
+                    "description": "--cache         refresh all cache for region and tenant  [default:"
+                },
+                {
+                    "option": "-h,",
+                    "description": "--help          Show this message and exit."
+                }
+            ]
+        },
+        "ovh": {
+            "description": "OVHAI CLI ClientCurrent Profile: DEFAULT...",
+            "Commands": {
+                "extract": {
+                    "description": "extract the command tree for OVHAI CLI",
+                    "Commands": {
+                        "commands": {
+                            "description": "manually refresh the OVHAI CLI command tree",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-h,",
+                                    "description": "--help  Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-h,",
+                    "description": "--help  Show this message and exit."
+                }
+            ]
+        },
+        "slack": {
+            "description": "Slack CLI ClientCurrent Profile: DEFAULT",
+            "Commands": {
+                "channel": {
+                    "description": "manage Slack channels; create, archive, invite users etc",
+                    "Commands": {
+                        "adduser": {
+                            "description": "add (invite) new user to the channel",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-i,",
+                                    "description": "--id TEXT    target channel"
+                                },
+                                {
+                                    "option": "-u,",
+                                    "description": "--user TEXT  user id to invite to the channel"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help       Show this message and exit."
+                                }
+                            ]
+                        },
+                        "archive": {
+                            "description": "set channel status to \"archived\"",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-i,",
+                                    "description": "--id TEXT  target channel"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help     Show this message and exit."
+                                }
+                            ]
+                        },
+                        "create": {
+                            "description": "create a new slack channel",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-n,",
+                                    "description": "--name TEXT        name for the new channel"
+                                },
+                                {
+                                    "option": "-p,",
+                                    "description": "--private BOOLEAN  should the new channel be private"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help             Show this message and exit."
+                                }
+                            ]
+                        },
+                        "deluser": {
+                            "description": "delete (kick) a user from the channel",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-i,",
+                                    "description": "--id TEXT    target channel"
+                                },
+                                {
+                                    "option": "-u,",
+                                    "description": "--user TEXT  user id to kick from the channel"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help       Show this message and exit."
+                                }
+                            ]
+                        },
+                        "topic": {
+                            "description": "set the topic message for the channel",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-i,",
+                                    "description": "--id TEXT     target channel"
+                                },
+                                {
+                                    "option": "-t,",
+                                    "description": "--topic TEXT  what to put in the topic channel"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help        Show this message and exit."
+                                }
+                            ]
+                        },
+                        "unarchive": {
+                            "description": "remove \"archived\" status from channel",
+                            "Commands": {},
+                            "Options": [
+                                {
+                                    "option": "-i,",
+                                    "description": "--id TEXT  target channel"
+                                },
+                                {
+                                    "option": "-h,",
+                                    "description": "--help     Show this message and exit."
+                                }
+                            ]
+                        }
+                    },
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "config": {
+                    "description": "retrieve the entire content of slacktools's configstore",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-h,",
+                            "description": "--help  Show this message and exit."
+                        }
+                    ]
+                },
+                "post": {
+                    "description": "post a meessage to a given channel(s)",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-m,",
+                            "description": "--message TEXT  Text to include in the message  [required]"
+                        },
+                        {
+                            "option": "-r,",
+                            "description": "--reply TEXT    TS of the message to reply to"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help          Show this message and exit."
+                        }
+                    ]
+                },
+                "react": {
+                    "description": "post a reaction to a given message in specific channel",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-t,",
+                            "description": "--timestamp TEXT  timestamp of the target message  [required]"
+                        },
+                        {
+                            "option": "-e,",
+                            "description": "--emoji TEXT      emoji name to react with  [required]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help            Show this message and exit."
+                        }
+                    ]
+                },
+                "unpost": {
+                    "description": "delete a meessage in a given channel",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-t,",
+                            "description": "--timestamp TEXT  Text to include in the message  [required]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help            Show this message and exit."
+                        }
+                    ]
+                },
+                "unreact": {
+                    "description": "remove a reaction to a given message in a specific channel",
+                    "Commands": {},
+                    "Options": [
+                        {
+                            "option": "-t,",
+                            "description": "--timestamp TEXT  timestamp of the target message  [required]"
+                        },
+                        {
+                            "option": "-e,",
+                            "description": "--emoji TEXT      emoji name to react with  [required]"
+                        },
+                        {
+                            "option": "-h,",
+                            "description": "--help            Show this message and exit."
+                        }
+                    ]
+                }
+            },
+            "Options": [
+                {
+                    "option": "-p,",
+                    "description": "--profile TEXT  User profile to use for connecting to Slack"
+                },
+                {
+                    "option": "-h,",
+                    "description": "--help          Show this message and exit."
+                }
+            ]
+        }
+    }
+}

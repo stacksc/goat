@@ -1,5 +1,5 @@
 # these are some examples of click auto completion for projects and slack emoji names
-import os, glob
+import os, glob, click
 from pathlib import Path
 from configstore.configstore import Config
 from toolbox.misc import detect_environment
@@ -100,6 +100,13 @@ def complete_jira_profiles(ctx, param, incomplete):
         CACHED_PROFILES.append(PROFILE)
     return [k for k in CACHED_PROFILES if k.startswith(incomplete)]
 
+def complete_azdev_profiles(ctx, param, incomplete):
+    CONFIG = Config('azdev')
+    CACHED_PROFILES = []
+    for PROFILE in CONFIG.PROFILES:
+        CACHED_PROFILES.append(PROFILE)
+    return [k for k in CACHED_PROFILES if k.startswith(incomplete)]
+
 def complete_configstore_names(ctx, param, incomplete):
     NAMES = []
     HOME = str(Path.home())
@@ -115,7 +122,8 @@ def complete_azdev_projects(ctx, param, incomplete):
     AZDEV = AzDevClient()
     CONFIG = Config('azdev')
     CACHED_PROJECTS = {}
-    CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
+    for PROFILE in CONFIG.PROFILES:
+        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
     return [k for k in CACHED_PROJECTS if k.startswith(incomplete)]
 
 def complete_projects(ctx, param, incomplete):

@@ -9,81 +9,76 @@ from prompt_toolkit.styles import Style
 from toolbox.logger import Log
 from prompt_toolkit.shortcuts import radiolist_dialog
 from azdevops.azdevclient import AzDevClient
-from azdevops.misc import clear_terminal
+from azdevops.misc import clear_terminal, generic_menu, setup_runner, setup_az_ctx
+from azdevops.auth import get_user_profile_based_on_key
 
 AZDEV = AzDevClient()
 CONFIG = Config('azdev')
 
 @click.group(help="manage pipelines", context_settings={'help_option_names':['-h','--help']})
 @click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
+@click.option('-m', '--menu', help="launch a menu driven interface for common actions", is_flag=True)
 @click.pass_context
-def pipeline(ctx, debug):
-    user_profile = ctx.obj['PROFILE']
-    url = None  # Initialize url as None
-    if ctx.obj['setup'] == True:
-        if user_profile is None:
-            user_profile = 'default'
-        # Fetch the URL based on the profile
-        url = AZDEV.get_url(user_profile)
-        AZDEV.get_session(url, user_profile, force=True)
+def pipeline(ctx, debug, menu):
+    setup_az_ctx(ctx, debug, menu)
     log = Log('azdev.log', debug)
     pass
 
 @pipeline.command(help="List pipelines", context_settings={'help_option_names':['-h','--help']})
-@click.argument('project', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
+@click.argument('projects', nargs=-1, type=str, required=False, shell_complete=lambda ctx, param, incomplete: complete_azdev_projects(ctx, param, incomplete))
 @click.option('-r', '--runs',help="output the run information for selected pipeline", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-d', '--details',help="output the details for pipeline ID found", is_flag=True, show_default=True, default=True, required=False)
+@click.option('-d', '--details',help="output the details for pipeline ID found", is_flag=True, show_default=True, default=False, required=False)
 @click.pass_context
-def list_pipelines(ctx, project, runs, details):
-    CONFIG = Config('azdev')
-    profile = ctx.obj['PROFILE']
-
-    if not project:
-        CACHED_PROJECTS = {}
-        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
-        projects = tuple([(v) for v in CACHED_PROJECTS])
-        project = projects[0] if projects else None
-
-    if runs:
-        OUTPUT = get_pipelines(profile, project)
-        selected_pipeline_id = display_menu(OUTPUT)
-        clear_terminal()
-        Log.info(f'Selected Pipeline ID: {selected_pipeline_id} found')
-
-        if selected_pipeline_id:
-            OUTPUT = get_pipeline_details(profile, selected_pipeline_id, project, runs)
-            if 'value' in OUTPUT and isinstance(OUTPUT['value'], list):
-                extracted_output = []
-                extracted_runs = []
+def list_pipelines(ctx, projects, runs, details):
+    RUN = setup_runner(ctx, projects)
+    if RUN and RUN != {}:
+        for profile in RUN:
+            project = RUN[profile]
+            # we can only select one
+            project = ','.join(tuple([(v) for v in project]))
+            if project is not None:
+                if runs:
+                    OUTPUT = get_pipelines(profile, project)
+                    selected_pipeline_id = display_menu(OUTPUT)
+                    clear_terminal()
+                    Log.info(f'Selected Pipeline ID: {selected_pipeline_id} found')
+                    if selected_pipeline_id:
+                        OUTPUT = get_pipeline_details(profile, selected_pipeline_id, project, runs)
+                        if 'value' in OUTPUT and isinstance(OUTPUT['value'], list):
+                            extracted_output = []
+                            extracted_runs = []
+                            for item in OUTPUT['value']:
+                                extracted_item = {
+                                    "createdDate": item.get("createdDate", ""),
+                                    "finishedDate": item.get("finishedDate", ""),
+                                    "id": item.get("id", ""),
+                                    "name": item.get("name", ""),
+                                    "pipeline": {
+                                        "folder": item["pipeline"].get("folder", ""),
+                                         "id": item["pipeline"].get("id", ""),
+                                         "name": item["pipeline"].get("name", ""),
+                                         "revision": item["pipeline"].get("revision", ""),
+                                         "url": item["pipeline"]["url"] if "pipeline" in item else ""
+                                    },
+                                    "result": item.get("result", ""),
+                                    "state": item.get("state", ""),
+                                    "templateParameters": item.get("templateParameters", {}),
+                                    "url": item.get("url", "")
+                                }
+                                extracted_output.append(extracted_item)
         
-                for item in OUTPUT['value']:
-                    extracted_item = {
-                        "createdDate": item.get("createdDate", ""),
-                        "finishedDate": item.get("finishedDate", ""),
-                        "id": item.get("id", ""),
-                        "name": item.get("name", ""),
-                        "pipeline": {
-                            "folder": item["pipeline"].get("folder", ""),
-                            "id": item["pipeline"].get("id", ""),
-                            "name": item["pipeline"].get("name", ""),
-                            "revision": item["pipeline"].get("revision", ""),
-                            "url": item["pipeline"]["url"] if "pipeline" in item else ""
-                        },
-                        "result": item.get("result", ""),
-                        "state": item.get("state", ""),
-                        "templateParameters": item.get("templateParameters", {}),
-                        "url": item.get("url", "")
-                    }
-                    extracted_output.append(extracted_item)
-        
-                # Sort the extracted output by the "id" field
-                Log.info("Log JSON:")
-                Log.info(jjson.dumps(extracted_output, sort_keys=True, indent=2))
-
-    elif details:
-        # Output details for the selected pipeline
-        OUTPUT = get_pipeline_details(profile, selected_pipeline_id, project, runs)
-        Log.info(jjson.dumps(OUTPUT, sort_keys=True, indent=2))
+                            # Sort the extracted output by the "id" field
+                            Log.info("Log JSON:")
+                            Log.info(jjson.dumps(extracted_output, sort_keys=True, indent=2))
+                elif details:
+                    OUTPUT = get_pipelines(profile, project)
+                    selected_pipeline_id = display_menu(OUTPUT)
+                    clear_terminal()
+                    Log.info(f'Selected Pipeline ID: {selected_pipeline_id} found')
+                    # Output details for the selected pipeline
+                    if selected_pipeline_id:
+                        OUTPUT = get_pipeline_details(profile, selected_pipeline_id, project, runs)
+                        Log.info(jjson.dumps(OUTPUT, sort_keys=True, indent=2))
 
 def get_pipelines(profile, project):
     url = AZDEV.get_url(profile)
@@ -163,21 +158,20 @@ def get_pipeline_details(profile, pipeline_id, project, runs):
 @click.option('-d', '--details',help="output the details for build ID found", is_flag=True, show_default=True, default=True, required=False)
 @click.pass_context
 def list_builds(ctx, project, artifacts, details):
-    CONFIG = Config('azdev')
-    profile = ctx.obj['PROFILE']
-    if not project:
-        CACHED_PROJECTS = {}
-        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', AZDEV.get_default_profile()))
-        projects = tuple([(v) for v in CACHED_PROJECTS])
-        project = projects[0] if projects else None
-    OUTPUT = get_builds_list(profile, project)
+    RUN = setup_runner(ctx, project)
+    if RUN and RUN != {}:
+        for profile in RUN:
+            project = RUN[profile]
+            # we can only select one
+            project = ','.join(tuple([(v) for v in project]))
+            if project is not None:
+                OUTPUT = get_builds_list(profile, project)
+                selected_build_id = display_builds_menu(OUTPUT)
 
-    selected_build_id = display_builds_menu(OUTPUT)
-
-    if selected_build_id:
-        build_details = get_build_details(profile, selected_build_id, project, artifacts)
-        clear_terminal()
-        Log.info(jjson.dumps(build_details, sort_keys=True, indent=2))
+                if selected_build_id:
+                    build_details = get_build_details(profile, selected_build_id, project, artifacts)
+                    clear_terminal()
+                    Log.info(jjson.dumps(build_details, sort_keys=True, indent=2))
 
 def get_build_details(profile, build_id, project, artifacts=False):
     url = AZDEV.get_url(profile)

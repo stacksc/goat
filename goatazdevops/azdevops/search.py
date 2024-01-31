@@ -18,6 +18,7 @@ AZDEV = AzDevClient()
 @click.command(help="search for issues in AZ DevOps", context_settings={'help_option_names':['-h','--help']})
 @click.option('-k', '--key', help="i.e. 12345", type=str, multiple=True, callback=remove_equals)
 @click.option('-p', '--project', help="i.e. Azure DevOps Project Name", type=str, multiple=True, callback=remove_equals)
+@click.option('--sprint', help="filter based on Azure DevOps Sprint Path", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-a', '--assignee', help="i.e. jdoe", type=str, required=False, multiple=True, callback=remove_equals)
 @click.option('-d', '--details', help="display more details per ticket", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-r', '--reporter', help="i.e. smithj", multiple=True, callback=remove_equals)
@@ -28,7 +29,7 @@ AZDEV = AzDevClient()
 @click.option('-A', '--ascending', help="show issues in ascending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-c', '--csv', help="name of the csv file to save the results to", callback=remove_equals)
-def search(ctx, project, key, assignee, details, reporter, state, title, json, orderby, ascending, descending, csv):
+def search(ctx, project, sprint, key, assignee, details, reporter, state, title, json, orderby, ascending, descending, csv):
     if ctx.obj['PROFILE'] is None:
         if key != () or project != ():
             if key != ():
@@ -38,10 +39,9 @@ def search(ctx, project, key, assignee, details, reporter, state, title, json, o
         else:
             Log.critical("One of the following fields is required: key, project")
 
-
-def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile):
+def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile, sprint=None):
     START = time.time()
-    ISSUES = search_issues(assignee, details, reporter, state, title, projects, keys, profile, orderby, ascending)
+    ISSUES = search_issues(assignee, details, reporter, state, title, projects, keys, profile, orderby, ascending, sprint)
     END = time.time()
     RUNTIME = END - START
 
@@ -49,7 +49,7 @@ def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title
         selected_id = display_menu(ISSUES, ctx)
         if selected_id:
             clear_terminal()
-            work_item_details = get_work_item_details_by_id(selected_id, ctx)
+            work_item_details = get_work_item_details_by_id(selected_id, profile)
             if work_item_details:
                 print(remove_html_tags(jjson.dumps(work_item_details, indent=2, sort_keys=True)))
     elif json or details:
@@ -59,7 +59,7 @@ def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title
     else:
         Log.info(f"\n{tabulate(ISSUES, headers='keys', tablefmt='rst')}")
 
-def search_issues(assignee=None, details=None, reporter=None, state=None, title=None, project=None, keys=None, profile=None, orderby=None, ascending=True):
+def search_issues(assignee=None, details=None, reporter=None, state=None, title=None, project=None, keys=None, profile=None, orderby=None, ascending=True, sprint=None):
     ISSUES = []
     url = AZDEV.get_url(profile)
     creds = AZDEV.get_user_creds(profile)
@@ -75,9 +75,9 @@ def search_issues(assignee=None, details=None, reporter=None, state=None, title=
                 break
 
     if details is True:
-        wiql = build_detailed_wiql(assignee, reporter, state, title, project, keys, orderby, ascending)
+        wiql = build_detailed_wiql(assignee, reporter, state, title, project, keys, orderby, ascending, sprint)
     else:
-        wiql = build_wiql(assignee, reporter, state, title, project, keys, orderby, ascending)
+        wiql = build_wiql(assignee, reporter, state, title, project, keys, orderby, ascending, sprint)
 
     formatted_query = ' '.join(wiql['query'].split())
     Log.info(jjson.dumps(formatted_query, indent=2, sort_keys=True))
@@ -168,7 +168,7 @@ def create_link(url, label=None):
     escape_mask = '\033]8;{};{}\033\\{}\033]8;;\033\\'
     return escape_mask.format(parameters, url, label)
 
-def build_detailed_wiql(assignee=None, reporter=None, states=None, title=None, project=None, keys=None, orderby=None, ascending=True):
+def build_detailed_wiql(assignee=None, reporter=None, states=None, title=None, project=None, keys=None, orderby=None, ascending=True, sprint=None):
     clauses = []
     if project:
         clauses.append(f"[System.TeamProject] = '{project}'")
@@ -196,6 +196,9 @@ def build_detailed_wiql(assignee=None, reporter=None, states=None, title=None, p
 
     if title:
         clauses.append(f"System.Title CONTAINS '{title}'")
+
+    if sprint:
+        clauses.append(f"System.IterationPath = '{sprint}'")
 
     query = " AND ".join(clauses)
 
@@ -216,7 +219,7 @@ def build_detailed_wiql(assignee=None, reporter=None, states=None, title=None, p
         WHERE {query}
     """}
 
-def build_wiql(assignee=None, reporter=None, states=None, title=None, project=None, keys=None, orderby=None, ascending=True):
+def build_wiql(assignee=None, reporter=None, states=None, title=None, project=None, keys=None, orderby=None, ascending=True, sprint=None):
     clauses = []
 
     if project:
@@ -245,13 +248,15 @@ def build_wiql(assignee=None, reporter=None, states=None, title=None, project=No
 
     if title:
         clauses.append(f"System.Title CONTAINS '{title}'")
+    if sprint:
+        clauses.append(f"System.IterationPath = '{sprint}'")
 
     query = " AND ".join(clauses)
     if orderby:
         order_direction = "ASC" if ascending else "DESC"
         query += f" ORDER BY [{orderby}] {order_direction}"
 
-    return {"query": f"SELECT [System.Id], [System.Title], [System.State], [System.AssignedTo], [System.CreatedBy] FROM WorkItems WHERE {query}"}
+    return {"query": f"SELECT [System.Id], [System.IterationPath], [System.Title], [System.State], [System.AssignedTo], [System.CreatedBy] FROM WorkItems WHERE {query}"}
 
 def trim_string(s, max_length=50):
     if len(s) > max_length:
@@ -267,10 +272,10 @@ def remove_html_tags(text):
     except:
         return None
 
-def get_work_item_details_by_id(work_item_id, ctx):
+def get_work_item_details_by_id(work_item_id, profile):
     # Construct the work item URL based on work_item_id
-    url = AZDEV.get_url(ctx.obj['PROFILE'])
-    creds = AZDEV.get_user_creds(ctx.obj['PROFILE'])
+    url = AZDEV.get_url(profile)
+    creds = AZDEV.get_user_creds(profile)
     token = creds[1]
     work_item_url = f"{url}/_apis/wit/workitems/{work_item_id}?api-version=6.0"
 

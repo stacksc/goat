@@ -178,7 +178,7 @@ def generic_menu(data):
 
         selected = radiolist_dialog(
             title="Select Item",
-            text="Choose an Object:",
+            text=MANUAL + "Choose an Object:",
             values=values,
             style=style
         ).run()

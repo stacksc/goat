@@ -9,7 +9,7 @@ from prompt_toolkit.styles import Style
 from toolbox.logger import Log
 from prompt_toolkit.shortcuts import radiolist_dialog
 from azdevops.azdevclient import AzDevClient
-from azdevops.misc import clear_terminal, generic_menu, setup_runner, setup_az_ctx
+from azdevops.misc import clear_terminal, generic_menu, setup_runner, setup_az_ctx, calculate_dialog_size
 from azdevops.auth import get_user_profile_based_on_key
 
 AZDEV = AzDevClient()
@@ -70,7 +70,7 @@ def list_pipelines(ctx, projects, runs, details):
                             # Sort the extracted output by the "id" field
                             Log.info("Log JSON:")
                             Log.info(jjson.dumps(extracted_output, sort_keys=True, indent=2))
-                elif details:
+                else:
                     OUTPUT = get_pipelines(profile, project)
                     selected_pipeline_id = display_menu(OUTPUT)
                     clear_terminal()
@@ -105,6 +105,18 @@ def get_pipelines(profile, project):
         return []
 
 def display_menu(data):
+    WIDTH, HEIGHT = calculate_dialog_size()
+    INSTRUCTIONS = "[INSTRUCTIONS]"
+    MANUAL = "[ARROW KEYS] to navigate | [SPACEBAR] to select | [TAB] to OK | [ENTER] to execute"
+
+    # Calculate the padding for the "INSTRUCTIONS" line
+    instructions_padding = " " * ((WIDTH - len(INSTRUCTIONS)) // 2)
+
+    # Calculate the padding for the "MANUAL" line
+    manual_padding = " " * ((WIDTH - len(MANUAL)) // 2)
+
+    MANUAL = f"{instructions_padding}{INSTRUCTIONS}\n{manual_padding}{MANUAL}\n"
+
     selected_id = None
     def run_dialog():
         nonlocal selected_id
@@ -124,7 +136,7 @@ def display_menu(data):
 
         selected_id = radiolist_dialog(
             title="Select Pipeline",
-            text="Choose a Pipeline:",
+            text=MANUAL + "\nChoose a Pipeline:",
             values=values,
             style=style
         ).run()
@@ -234,6 +246,19 @@ def get_builds_list(profile, project):
         return []
 
 def display_builds_menu(builds_list):
+
+    WIDTH, HEIGHT = calculate_dialog_size()
+    INSTRUCTIONS = "[INSTRUCTIONS]"
+    MANUAL = "[ARROW KEYS] to navigate | [SPACEBAR] to select | [TAB] to OK | [ENTER] to execute"
+
+    # Calculate the padding for the "INSTRUCTIONS" line
+    instructions_padding = " " * ((WIDTH - len(INSTRUCTIONS)) // 2)
+
+    # Calculate the padding for the "MANUAL" line
+    manual_padding = " " * ((WIDTH - len(MANUAL)) // 2)
+
+    MANUAL = f"{instructions_padding}{INSTRUCTIONS}\n{manual_padding}{MANUAL}\n"
+
     selected_build_id = None
 
     def run_dialog():
@@ -249,7 +274,7 @@ def display_builds_menu(builds_list):
 
         selected_build_id = radiolist_dialog(
             title="Select Build",
-            text="Choose a build:",
+            text=MANUAL + "Choose a build:",
             values=[(str(build['id']), build['definition']['name']) for build in builds_list],
             style=style
         ).run()

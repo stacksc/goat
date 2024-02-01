@@ -289,18 +289,17 @@ def display_builds_menu(builds_list):
 @click.argument('project', nargs=-1, type=str, required=False, shell_complete=complete_azdev_projects)
 @click.pass_context
 def stop_build(ctx, project):
-    CONFIG = Config('azdev')
-    profile = ctx.obj['PROFILE']
-    if not project:
-        from azdevops.auth import get_default_profile
-        CACHED_PROJECTS = {}
-        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', get_default_profile()))
-        projects = tuple([(v) for v in CACHED_PROJECTS])
-        project = projects[0] if projects else None
-    builds_list = get_builds_list_active(profile, project)
-    if not builds_list:
-        print("No builds found.")
-        return
+    RUN = setup_runner(ctx, project)
+    if RUN and RUN != {}:
+        for profile in RUN:
+            project = RUN[profile]
+            # we can only select one
+            project = ','.join(tuple([(v) for v in project]))
+            if project is not None:
+                builds_list = get_builds_list_active(profile, project)
+                if not builds_list:
+                    print("No builds found.")
+                    return
 
     selected_build_id = display_builds_menu(builds_list)
 

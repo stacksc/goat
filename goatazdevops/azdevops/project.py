@@ -4,7 +4,7 @@ from .search import run_jql_query
 from toolbox.click_complete import complete_azdev_projects
 from configstore.configstore import Config, ExitSignal
 from azdevops.azdevclient import AzDevClient
-from azdevops.misc import remove_equals, generic_menu, calculate_dialog_size
+from azdevops.misc import remove_equals, generic_menu
 from azdevops.auth import get_user_profile_based_on_key
 from toolbox.logger import Log
 from prompt_toolkit.styles import Style
@@ -46,19 +46,6 @@ def search_projects(ctx, projects, assignee, details, reporter, state, title, or
                 run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile)
 
 def display_menu(data):
-
-    WIDTH, HEIGHT = calculate_dialog_size()
-    INSTRUCTIONS = "[INSTRUCTIONS]"
-    MANUAL = "[ARROW KEYS] to navigate | [SPACEBAR] to select | [TAB] to OK | [ENTER] to execute"
-
-    # Calculate the padding for the "INSTRUCTIONS" line
-    instructions_padding = " " * ((WIDTH - len(INSTRUCTIONS)) // 2)
-
-    # Calculate the padding for the "MANUAL" line
-    manual_padding = " " * ((WIDTH - len(MANUAL)) // 2)
-
-    MANUAL = f"{instructions_padding}{INSTRUCTIONS}\n{manual_padding}{MANUAL}\n"
-
     selected_project = None
     def run_dialog():
         nonlocal selected_project
@@ -75,7 +62,7 @@ def display_menu(data):
 
         selected_project = radiolist_dialog(
             title="Select Project",
-            text=MANUAL + "Choose a Project:",
+            text="Choose a Project:",
             values=values,
             style=style
         ).run()

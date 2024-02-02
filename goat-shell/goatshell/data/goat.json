@@ -399,6 +399,10 @@
                                 "name": "-d",
                                 "help": "--debug [0|1|2]  0 = no output, 1 = default, 2 = debug on"
                             },
+                            "-m": {
+                                "name": "-m",
+                                "help": "--menu           launch a menu driven interface for common actions"
+                            },
                             "-h": {
                                 "name": "-h",
                                 "help": "--help           Show this message and exit."
@@ -474,13 +478,25 @@
                                         "name": "-d",
                                         "help": "--details    output the details for build ID found  [default: True]"
                                     },
+                                    "-l": {
+                                        "name": "-l",
+                                        "help": "--logs       display log output for build ID found  [default: False]"
+                                    },
+                                    "-A": {
+                                        "name": "-A",
+                                        "help": "--active     display only active running builds  [default: False]"
+                                    },
+                                    "-u": {
+                                        "name": "-u",
+                                        "help": "--user TEXT  i.e. john.doe@bcu.org"
+                                    },
                                     "-h": {
                                         "name": "-h",
                                         "help": "--help       Show this message and exit."
                                     }
                                 },
                                 "subcommands": {},
-                                "help": "list builds"
+                                "help": "list builds, details and logs with optional filters"
                             },
                             "list-pipelines": {
                                 "command": "list-pipelines",
@@ -488,19 +504,23 @@
                                 "options": {
                                     "-r": {
                                         "name": "-r",
-                                        "help": "--runs     output the run information for selected pipeline  [default:"
+                                        "help": "--runs                      output the run information for selected"
                                     },
                                     "-d": {
                                         "name": "-d",
-                                        "help": "--details  output the details for pipeline ID found  [default: False]"
+                                        "help": "--details                   output the details for pipeline ID found"
+                                    },
+                                    "-s": {
+                                        "name": "-s",
+                                        "help": "--status [succeeded|failed|all]"
                                     },
                                     "-h": {
                                         "name": "-h",
-                                        "help": "--help     Show this message and exit."
+                                        "help": "--help                      Show this message and exit."
                                     }
                                 },
                                 "subcommands": {},
-                                "help": "List pipelines"
+                                "help": "list pipelines and details with optional filters"
                             },
                             "stop-build": {
                                 "command": "stop-build",

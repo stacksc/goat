@@ -9,10 +9,9 @@ from prompt_toolkit.styles import Style
 from toolbox.logger import Log
 from prompt_toolkit.shortcuts import radiolist_dialog
 from azdevops.azdevclient import AzDevClient
-from azdevops.misc import clear_terminal, generic_menu, setup_runner, setup_az_ctx, remove_equals
+from azdevops.misc import clear_terminal, generic_menu, setup_runner, setup_az_ctx, remove_equals, pretty_print_log
 from azdevops.auth import get_user_profile_based_on_key
 from rich.console import Console
-from rich.syntax import Syntax
 
 AZDEV = AzDevClient()
 CONFIG = Config('azdev')
@@ -30,7 +29,7 @@ def pipeline(ctx, debug, menu):
 @click.argument('projects', nargs=-1, type=str, required=False, shell_complete=lambda ctx, param, incomplete: complete_azdev_projects(ctx, param, incomplete))
 @click.option('-r', '--runs',help="output the run information for selected pipeline", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-d', '--details',help="output the details for pipeline ID found", is_flag=True, show_default=True, default=False, required=False)
-@click.option('-s', '--status', type=click.Choice(['succeeded', 'failed', 'all'], case_sensitive=False), default='all', help="Display pipeline builds based on completion status: succeeded, failed, or all.")
+@click.option('-s', '--status', type=click.Choice(['succeeded', 'failed', 'all'], case_sensitive=False), default=None, help="Display pipeline builds based on completion status: succeeded, failed, or all.")
 @click.pass_context
 def list_pipelines(ctx, projects, runs, details, status):
     RUN = setup_runner(ctx, projects)
@@ -427,14 +426,6 @@ def get_pipeline_runs_by_result(profile, project, pipeline_id, result_filter):
     else:
         print(f"Failed to retrieve pipeline runs. Status code: {response.status_code}")
         return []
-
-def pretty_print_log(log, console):
-    if log:
-        json_str = jjson.dumps(log, indent=4)
-        syntax = Syntax(json_str, "json", theme="monokai", line_numbers=True)
-        console.print(syntax)
-    else:
-        console.print("No log data available.", style="bold red")
 
 def get_builds_by_user(profile, project, user_email):
     """

@@ -13,7 +13,8 @@ dependencies = [
   "click >= 8.0.4",
   "azure-devops",
   "tabulate",
-  "prompt_toolkit"
+  "prompt_toolkit",
+  "sendgrid"
 ]
 dynamic = ["version", "readme"]
 

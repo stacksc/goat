@@ -6,6 +6,8 @@ from prompt_toolkit import prompt
 from prompt_toolkit.shortcuts import radiolist_dialog
 from azdevops.auth import get_user_profile_based_on_key
 import shutil
+import json as jjson
+from rich.syntax import Syntax
 
 def get_terminal_size():
     try:
@@ -209,7 +211,8 @@ def setup_runner(ctx, projects):
         # init a dictionary to hold ALL projects to prepare for menu
         CACHED_PROJECTS = {}
         for PROFILE in CONFIG.PROFILES:
-            CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
+            if PROFILE != 'sendgrid':
+                CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
         if CACHED_PROJECTS:
             CACHED_PROJECTS = sorted(CACHED_PROJECTS)
         projects = generic_menu(CACHED_PROJECTS)
@@ -250,3 +253,10 @@ def setup_az_ctx(ctx, debug, menu):
         else:
             exit(0)
 
+def pretty_print_log(log, console):
+    if log:
+        json_str = jjson.dumps(log, indent=4)
+        syntax = Syntax(json_str, "json", theme="monokai", line_numbers=True)
+        console.print(syntax)
+    else:
+        console.print("No log data available.", style="bold red")

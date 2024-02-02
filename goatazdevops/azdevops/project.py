@@ -35,15 +35,16 @@ def project(ctx, debug, menu):
 @click.option('-D', '--descending', help="show issues in descending order", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-c', '--csv', help="name of the csv file to save the results to", type=str, required=False, callback=remove_equals)
 @click.option('-J', '--json',help="output results in JSON format", is_flag=True, show_default=True, default=False, required=False)
+@click.option('-e', '--email-address',help="send results to specific email address; i.e. john.doe@bcu.org", type=str, show_default=True, default=False, required=False)
 @click.pass_context
-def search_projects(ctx, projects, assignee, details, reporter, state, title, orderby, ascending, descending, csv, json):
+def search_projects(ctx, projects, assignee, details, reporter, state, title, orderby, ascending, descending, csv, json, email_address):
     RUN = setup_runner(ctx, projects)
     if RUN and RUN != {}:
         for profile in RUN:
             projects = RUN[profile]
             projects = tuple([(v) for v in projects])
             if projects is not None and profile is not None:
-                run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile)
+                run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile, email_address)
 
 def display_menu(data):
     selected_project = None

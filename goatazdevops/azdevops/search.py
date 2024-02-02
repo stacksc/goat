@@ -8,9 +8,12 @@ import requests
 from configstore.configstore import Config
 from azdevops.azdevclient import AzDevClient
 from toolbox.logger import Log
-from azdevops.misc import remove_equals, clear_terminal, display_menu
+from azdevops.misc import remove_equals, clear_terminal, display_menu, pretty_print_log
 from prompt_toolkit.styles import Style
 from prompt_toolkit.shortcuts import radiolist_dialog
+from azdevops.sendgrid import send_email
+from rich.console import Console
+from rich.syntax import Syntax
 
 CONFIG = Config('azdev')
 AZDEV = AzDevClient()
@@ -39,9 +42,9 @@ def search(ctx, project, sprint, key, assignee, details, reporter, state, title,
         else:
             Log.critical("One of the following fields is required: key, project")
 
-def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile, sprint=None):
+def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile, email_address=None, sprint=None):
     START = time.time()
-    ISSUES = search_issues(assignee, details, reporter, state, title, projects, keys, profile, orderby, ascending, sprint)
+    ISSUES = search_issues(assignee, details, reporter, state, title, projects, keys, profile, orderby, ascending, email_address, sprint)
     END = time.time()
     RUNTIME = END - START
 
@@ -53,13 +56,18 @@ def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title
             if work_item_details:
                 print(remove_html_tags(jjson.dumps(work_item_details, indent=2, sort_keys=True)))
     elif json or details:
-        print(jjson.dumps(ISSUES, indent=2, sort_keys=True))
+        #print(jjson.dumps(ISSUES, indent=2, sort_keys=True))
+        console = Console()
+        pretty_print_log(ISSUES, console)
     elif csv:
         save_query_results(ISSUES, csv)
+    elif email_address is not False:
+        Log.info(f"\n{tabulate(ISSUES, headers='keys', tablefmt='rst')}")
+        send_email(email_address, 'Report Email', ISSUES)
     else:
         Log.info(f"\n{tabulate(ISSUES, headers='keys', tablefmt='rst')}")
 
-def search_issues(assignee=None, details=None, reporter=None, state=None, title=None, project=None, keys=None, profile=None, orderby=None, ascending=True, sprint=None):
+def search_issues(assignee=None, details=None, reporter=None, state=None, title=None, project=None, keys=None, profile=None, orderby=None, ascending=True, email_address=None, sprint=None):
     ISSUES = []
     url = AZDEV.get_url(profile)
     creds = AZDEV.get_user_creds(profile)

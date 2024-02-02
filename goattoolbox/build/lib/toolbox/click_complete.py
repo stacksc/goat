@@ -123,7 +123,8 @@ def complete_azdev_projects(ctx, param, incomplete):
     CONFIG = Config('azdev')
     CACHED_PROJECTS = {}
     for PROFILE in CONFIG.PROFILES:
-        CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
+        if 'sendgrid' not in PROFILE:
+            CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
     return [k for k in CACHED_PROJECTS if k.startswith(incomplete)]
 
 def complete_projects(ctx, param, incomplete):

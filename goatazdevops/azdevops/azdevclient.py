@@ -165,6 +165,41 @@ class AzDevClient:
                 return True
         return False
 
+    def get_session_sendgrid(self, profile_name='sendgrid', force=False):
+        CONFIG = Config('azdev')
+        auth_mode = 'pass'  # default to pass, it really is a token though
+        PROFILE = CONFIG.get_profile(profile_name)
+        
+        if PROFILE is None or PROFILE['config'] == {} or force is True:
+            Log.debug(f"Profile '{profile_name}' not found or force recreate enabled => creating a new profile now")
+            while auth_mode != 'pass':
+                auth_mode = 'pass'
+            
+            CONFIG.create_profile(profile_name)
+            CONFIG.update_config(auth_mode, 'mode', profile_name=profile_name)
+            PASS = CONFIG.get_config('pass', profile_name=profile_name)
+            return PASS
+        else:
+            try:
+                MODE = CONFIG.get_config('mode', profile_name=profile_name)
+                if MODE == 'pass':
+                    PASS = CONFIG.get_config('pass', profile_name=profile_name)
+                    return PASS
+                else:
+                    Log.critical("something went wrong")
+            except:
+                Log.warn(f"Profile {profile_name} might be corrupted. Would you like to delete it?")
+                CHOICE = ""
+                while CHOICE != "Y" and CHOICE != "y" and CHOICE != "N" and CHOICE != "n":
+                    CHOICE = input("Delete profile? (Y/N): ")
+                
+                if CHOICE == "Y" or CHOICE == "y":
+                    CONFIG.clear_profile(profile_name)
+                    Log.info(f"Profile {profile_name} has been deleted. Please try again.")
+                    sys.exit()
+                else:
+                    Log.warn(f"Profile {profile_name} not deleted. Please verify it manually and try again")
+
     def get_session(self, url=None, profile_name='default', force=False):
         CONFIG = Config('azdev')
         auth_mode = 'pass'  # default to pass, it really is a PAT though

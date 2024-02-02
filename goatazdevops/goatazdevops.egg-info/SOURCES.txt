@@ -9,6 +9,7 @@ azdevops/misc.py
 azdevops/pipelines.py
 azdevops/project.py
 azdevops/search.py
+azdevops/sendgrid.py
 azdevops/sprints.py
 goatazdevops.egg-info/PKG-INFO
 goatazdevops.egg-info/SOURCES.txt

@@ -44,7 +44,7 @@ def search_projects(ctx, projects, assignee, details, reporter, state, title, or
             projects = RUN[profile]
             projects = tuple([(v) for v in projects])
             if projects is not None and profile is not None:
-                run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile, email_address)
+                run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, profile, email_address, None)
 
 def display_menu(data):
     selected_project = None

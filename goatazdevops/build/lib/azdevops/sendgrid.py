@@ -57,7 +57,7 @@ def send_email(to_email, subject, report_data):
                 try:
                     TOKEN = AZDEV.get_access_token(user_profile=user_profile)
                 except:
-                    TOKEN = input("Enter your SendGrid API Key: ")
+                    TOKEN = getOtherToken('sendgrid')
                     PROFILE.setdefault('config', {})['pass'] = TOKEN
                     CONFIG.update_profile(PROFILE)
 

@@ -13,7 +13,8 @@ dependencies = [
   "argparse",
   "pync",
   "gnupg",
-  "cryptography"
+  "cryptography",
+  "rich"
 ]
 dynamic = ["version", "readme"]
 

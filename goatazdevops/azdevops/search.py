@@ -56,12 +56,11 @@ def run_jql_query(ctx, projects, keys, assignee, details, reporter, state, title
             if work_item_details:
                 print(remove_html_tags(jjson.dumps(work_item_details, indent=2, sort_keys=True)))
     elif json or details:
-        #print(jjson.dumps(ISSUES, indent=2, sort_keys=True))
         console = Console()
         pretty_print_log(ISSUES, console)
     elif csv:
         save_query_results(ISSUES, csv)
-    elif email_address is not False:
+    elif email_address is not False and email_address != 'False':
         Log.info(f"\n{tabulate(ISSUES, headers='keys', tablefmt='rst')}")
         send_email(email_address, 'Report Email', ISSUES)
     else:

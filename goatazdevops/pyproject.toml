@@ -14,7 +14,8 @@ dependencies = [
   "azure-devops",
   "tabulate",
   "prompt_toolkit",
-  "sendgrid"
+  "sendgrid",
+  "rich"
 ]
 dynamic = ["version", "readme"]
 

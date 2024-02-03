@@ -3,3 +3,4 @@ azure-devops
 tabulate
 prompt_toolkit
 sendgrid
+rich

@@ -2,3 +2,4 @@ argparse
 pync
 gnupg
 cryptography
+rich

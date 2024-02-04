@@ -8,10 +8,13 @@ from toolbox.misc import set_terminal_width, detect_environment
 CONFIG = Config('ocitools')
 LATEST = CONFIG.get_profile('latest')
 
-if LATEST is None:
+try:
+    if LATEST is None:
+        LATEST = 'DEFAULT'
+    else:
+        LATEST = LATEST['config']['name']
+except:
     LATEST = 'DEFAULT'
-else:
-    LATEST = LATEST['config']['name']
 
 CONTEXT_SETTINGS = {'help_option_names':['-h'], 'max_content_width': set_terminal_width(), 'ignore_unknown_options': True, 'allow_extra_args': True}
 

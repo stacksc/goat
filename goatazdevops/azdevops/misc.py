@@ -1,4 +1,4 @@
-import os, csv, time, click, re, threading
+import os, csv, time, click, re, threading, asyncio
 from typing import List, Tuple, Optional
 from configstore.configstore import Config
 from prompt_toolkit.styles import Style
@@ -8,6 +8,7 @@ from azdevops.auth import get_user_profile_based_on_key
 import shutil
 import json as jjson
 from rich.syntax import Syntax
+from concurrent.futures import ThreadPoolExecutor
 
 def get_terminal_size():
     try:
@@ -93,7 +94,6 @@ def join_lists_to_strings(*lists, separator=','):
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')  # Clear the visible content
     print("\033c", end='')  # Clear the terminal history (scroll-back buffer)
-
 
 def display_menu(data, ctx):
     WIDTH, HEIGHT = calculate_dialog_size()
@@ -189,6 +189,28 @@ def generic_menu(data):
 
     return (selected,)
 
+def run_dialog_in_thread(data, WIDTH, HEIGHT, INSTRUCTIONS, MANUAL):
+    instructions_padding = " " * ((WIDTH - len(INSTRUCTIONS)) // 2)
+    manual_padding = " " * ((WIDTH - len(MANUAL)) // 2)
+    MANUAL = f"{instructions_padding}{INSTRUCTIONS}\n{manual_padding}{MANUAL}\n"
+
+    style = Style.from_dict({
+        'dialog': 'bg:#4B4B4B',
+        'dialog.body': 'bg:#242424 fg:#FFFFFF',
+        'dialog.title': 'bg:#00aa00',
+        'radiolist': 'bg:#1C1C1C fg:#FFFFFF',
+        'button': 'bg:#528B8B',
+        'button.focused': 'bg:#00aa00',
+    })
+
+    values = [(b, b) for b in data]
+    return radiolist_dialog(
+        title="Select Item",
+        text=MANUAL + "Choose an Object:",
+        values=values,
+        style=style
+    ).run()
+
 def setup_runner(ctx, projects):
     # setup our config store to use
     CONFIG = Config('azdev')
@@ -211,7 +233,7 @@ def setup_runner(ctx, projects):
         # init a dictionary to hold ALL projects to prepare for menu
         CACHED_PROJECTS = {}
         for PROFILE in CONFIG.PROFILES:
-            if PROFILE != 'sendgrid':
+            if PROFILE != 'sendgrid' and PROFILE != 'latest':
                 CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
         if CACHED_PROJECTS:
             CACHED_PROJECTS = sorted(CACHED_PROJECTS)

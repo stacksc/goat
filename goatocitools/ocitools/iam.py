@@ -13,10 +13,13 @@ def get_latest_profile():
 
     CONFIGSTORE = Config('ocitools')
     LATEST = CONFIGSTORE.get_profile('latest')
-    if LATEST is None:
+    try:
+        if LATEST is None:
+            PROFILE = 'default'
+        else:
+            PROFILE = LATEST['config']['name']
+    except:
         PROFILE = 'default'
-    else:
-        PROFILE = LATEST['config']['name']
     return PROFILE
 
 def get_latest_region(profile_name):

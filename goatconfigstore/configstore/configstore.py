@@ -131,6 +131,14 @@ class Config:
 
     # worker method for update_config and update_metadata
     def update_section(self, section, data, data_name, profile_data, overwrite=False):
+        if profile_data is None:
+            print(f"Profile data is None, cannot update section '{section}'.")
+            return
+
+        if section not in profile_data or not isinstance(profile_data[section], dict):
+            # Initialize the section if it does not exist or is not a dictionary
+            profile_data[section] = {}
+
         self.load_cfg()
         try:
             if type(data) == dict:
@@ -158,6 +166,7 @@ class Config:
                 else:
                     profile_data[section][data_name].update(data)
         except KeyError:
+            print("ERROR")
             return False
         self.update_profile(profile_data)
         self.reload_cfg()

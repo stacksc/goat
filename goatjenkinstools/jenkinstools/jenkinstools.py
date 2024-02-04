@@ -10,7 +10,7 @@ from toolbox.click_complete import complete_jenkins_profiles
 
 os.environ['NCURSES_NO_UTF8_ACS'] = "1"
 CONFIG = Config('jenkinstools')
-MESSAGE="Jenkins Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_jenkins_url().upper() + misc.RESET
+MESSAGE="Jenkins Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + misc.get_latest_profile('jenkinstools')[1].upper() + misc.RESET
 
 @click.group(help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
 @click.option('-p', '--profile', 'user_profile', help='user profile for Jenkins operations', required=False, default=get_latest_profile(), shell_complete=complete_jenkins_profiles)

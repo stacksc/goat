@@ -1730,7 +1730,7 @@
                         "help": "search for issues in Jira"
                     }
                 },
-                "help": "JIRA CLI ClientCurrent Profile:..."
+                "help": "JIRA CLI ClientCurrent Profile: DEFAULT"
             },
             "oracle": {
                 "command": "oracle",

@@ -1,0 +1,42 @@
+.TH "GOAT AZDEV PROJECT SEARCH" "1" "2024-02-04" "2024.2.4.728" "goat azdev project search Manual"
+.SH NAME
+goat\-azdev\-project\-search \- show a summary of projects matching the...
+.SH SYNOPSIS
+.B goat azdev project search
+[OPTIONS] [PROJECTS]...
+.SH DESCRIPTION
+show a summary of projects matching the specified filter
+.SH OPTIONS
+.TP
+\fB\-a,\fP \-\-assignee TEXT
+i.e. jdoe
+.TP
+\fB\-d,\fP \-\-details
+display more details per ticket  [default: False]
+.TP
+\fB\-r,\fP \-\-reporter TEXT
+i.e. smithj
+.TP
+\fB\-\-title\fP TEXT
+text to search for in the summary field
+.TP
+\fB\-s,\fP \-\-state TEXT
+i.e. active
+.TP
+\fB\-o,\fP \-\-orderby TEXT
+choose which field to use for sorting
+.TP
+\fB\-A,\fP \-\-ascending
+show issues in ascending order  [default: False]
+.TP
+\fB\-D,\fP \-\-descending
+show issues in descending order  [default: False]
+.TP
+\fB\-c,\fP \-\-csv TEXT
+name of the csv file to save the results to
+.TP
+\fB\-J,\fP \-\-json
+output results in JSON format  [default: False]
+.TP
+\fB\-e,\fP \-\-email\-address TEXT
+send results to specific email address; i.e. john.doe@bcu.org  [default: False]

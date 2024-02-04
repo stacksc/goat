@@ -1,0 +1,27 @@
+.TH "GOAT AZDEV ISSUE SEARCH" "1" "2024-02-04" "2024.2.4.728" "goat azdev issue search Manual"
+.SH NAME
+goat\-azdev\-issue\-search \- show a summary of specified issue or issues
+.SH SYNOPSIS
+.B goat azdev issue search
+[OPTIONS] KEYS...
+.SH DESCRIPTION
+show a summary of specified issue or issues
+.SH OPTIONS
+.TP
+\fB\-j,\fP \-\-json
+output results in JSON format  [default: False]
+.TP
+\fB\-o,\fP \-\-orderby TEXT
+choose which field to use for sorting
+.TP
+\fB\-A,\fP \-\-ascending
+show issues in ascending order  [default: False]
+.TP
+\fB\-D,\fP \-\-descending
+show issues in descending order  [default: False]
+.TP
+\fB\-c,\fP \-\-csv TEXT
+name of the csv file to save the results to
+.TP
+\fB\-d,\fP \-\-details
+display more details per ticket  [default: False]

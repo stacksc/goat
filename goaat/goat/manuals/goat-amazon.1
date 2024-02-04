@@ -1,0 +1,47 @@
+.TH "GOAT AMAZON" "1" "2024-02-04" "2024.2.4.728" "goat amazon Manual"
+.SH NAME
+goat\-amazon \- AWS CLI Client[35GCurrent Profile:...
+.SH SYNOPSIS
+.B goat amazon
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+AWS CLI Client[35GCurrent Profile: [0;32m[4mDEFAULT[0m Region: [0;32m[4mUS-EAST-1[0m
+.SH OPTIONS
+.TP
+\fB\-p,\fP \-\-profile TEXT
+profile name to use when working with awstools
+.TP
+\fB\-r,\fP \-\-region TEXT
+region name to use when working with awstools
+.TP
+\fB\-c,\fP \-\-cache
+refresh all cache for region and tenant  [default: False]
+.SH COMMANDS
+.PP
+\fBiam\fP
+  manage and switch between AWS profiles in...
+  See \fBgoat amazon-iam(1)\fP for full documentation on the \fBiam\fP command.
+.PP
+\fBs3\fP
+  s3 functions to sync buckets and filesystems
+  See \fBgoat amazon-s3(1)\fP for full documentation on the \fBs3\fP command.
+.PP
+\fBec2\fP
+  ec2 to manage the instances and related...
+  See \fBgoat amazon-ec2(1)\fP for full documentation on the \fBec2\fP command.
+.PP
+\fBrds\fP
+  rds to manage the DB instances and related...
+  See \fBgoat amazon-rds(1)\fP for full documentation on the \fBrds\fP command.
+.PP
+\fBcli\fP
+  run any awscli (aws) command while...
+  See \fBgoat amazon-cli(1)\fP for full documentation on the \fBcli\fP command.
+.PP
+\fBshow\fP
+  display configuration data for awstools...
+  See \fBgoat amazon-show(1)\fP for full documentation on the \fBshow\fP command.
+.PP
+\fBextract\fP
+  extract the command tree for AWS CLI
+  See \fBgoat amazon-extract(1)\fP for full documentation on the \fBextract\fP command.

@@ -1,0 +1,18 @@
+.TH "GOAT AZDEV PIPELINE LIST-PIPELINES" "1" "2024-02-04" "2024.2.4.728" "goat azdev pipeline list-pipelines Manual"
+.SH NAME
+goat\-azdev\-pipeline\-list-pipelines \- list pipelines and details with optional...
+.SH SYNOPSIS
+.B goat azdev pipeline list-pipelines
+[OPTIONS] [PROJECTS]...
+.SH DESCRIPTION
+list pipelines and details with optional filters
+.SH OPTIONS
+.TP
+\fB\-r,\fP \-\-runs
+output the run information for selected pipeline  [default: False]
+.TP
+\fB\-d,\fP \-\-details
+output the details for pipeline ID found  [default: False]
+.TP
+\fB\-s,\fP \-\-status [succeeded|failed|all]
+Display pipeline builds based on completion status: succeeded, failed, or all.

@@ -2,6 +2,7 @@ from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import to_formatted_text, HTML
 from pathlib import Path
+from configstore.configstore import Config
 
 import os
 import sys
@@ -85,6 +86,12 @@ class Goatshell(object):
         self.config_store_names = get_all_configstore_names()
         self.current_profile = "DEFAULT"
 
+        # init our config store for DEFAULT
+        try:
+            DEFAULTCONFIG = Config('DEFAULT')
+        except:
+            pass
+
         if self.prefix == 'az':
             sub_id, sub_name = self.fetch_current_azure_subscription()
             if sub_id and sub_name:
@@ -93,14 +100,25 @@ class Goatshell(object):
         self.update_completer_context()
     
     def cycle_config_store(self):
-        # Increment the index and cycle back to 0 if it exceeds the list length
-        self.current_config_store_index = (self.current_config_store_index + 1) % len(self.config_store_names)
-        # Retrieve the current config store name
-        current_store = self.config_store_names[self.current_config_store_index]
+        original_index = self.current_config_store_index
+        while True:
+            # Increment the index and cycle back to 0 if it exceeds the list length
+            self.current_config_store_index = (self.current_config_store_index + 1) % len(self.config_store_names)
+            # Retrieve the current config store name
+            current_store = self.config_store_names[self.current_config_store_index]
+            
+            # Check if the current store is not 'DEFAULT' or if we've looped through all options
+            if current_store != 'DEFAULT' or self.current_config_store_index == original_index:
+                break
+        
+        # If after cycling through we're back to the original and it's 'DEFAULT', do nothing further
+        if current_store == 'DEFAULT':
+            return None
+    
         # Here, add any additional logic needed to apply the change in config store
         self.app.invalidate()
         return current_store
-
+    
     def toggle_config_store_profile(self):
         if not self.config_store_names:
             print("No config stores available.")
@@ -108,6 +126,8 @@ class Goatshell(object):
 
         current_index = self.config_store_names.index(self.current_config_store)
         self.current_config_store = self.config_store_names[self.current_config_store_index]
+        if self.current_config_store == 'DEFAULT':
+            return
     
         # Use the select_profile function to allow user selection of a new profile within the current config store
         from goatshell.switch_profile import select_profile as select_profile_function

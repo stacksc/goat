@@ -1,0 +1,24 @@
+.TH "GOAT AZDEV PIPELINE LIST-BUILDS" "1" "2024-02-04" "2024.2.4.728" "goat azdev pipeline list-builds Manual"
+.SH NAME
+goat\-azdev\-pipeline\-list-builds \- list builds, details and logs with...
+.SH SYNOPSIS
+.B goat azdev pipeline list-builds
+[OPTIONS] [PROJECT]...
+.SH DESCRIPTION
+list builds, details and logs with optional filters
+.SH OPTIONS
+.TP
+\fB\-a,\fP \-\-artifacts
+output the artifacts for build ID found  [default: False]
+.TP
+\fB\-d,\fP \-\-details
+output the details for build ID found  [default: True]
+.TP
+\fB\-l,\fP \-\-logs
+display log output for build ID found  [default: False]
+.TP
+\fB\-A,\fP \-\-active
+display only active running builds  [default: False]
+.TP
+\fB\-u,\fP \-\-user TEXT
+i.e. john.doe@bcu.org

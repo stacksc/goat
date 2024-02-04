@@ -1,0 +1,45 @@
+.TH "GOAT AZDEV SPRINTS SEARCH" "1" "2024-02-04" "2024.2.4.728" "goat azdev sprints search Manual"
+.SH NAME
+goat\-azdev\-sprints\-search \- search boards and sprints
+.SH SYNOPSIS
+.B goat azdev sprints search
+[OPTIONS]
+.SH DESCRIPTION
+search boards and sprints
+.SH OPTIONS
+.TP
+\fB\-t,\fP \-\-team TEXT
+provide team name for board search  [default: Infrastructure Engineering and Operations]
+.TP
+\fB\-s,\fP \-\-sprint TEXT
+provide sprint path to search
+.TP
+\fB\-j,\fP \-\-json
+output results in JSON format  [default: False]
+.TP
+\fB\-o,\fP \-\-orderby TEXT
+choose which field to use for sorting
+.TP
+\fB\-A,\fP \-\-ascending
+show issues in ascending order  [default: False]
+.TP
+\fB\-D,\fP \-\-descending
+show issues in descending order  [default: False]
+.TP
+\fB\-c,\fP \-\-csv TEXT
+name of the csv file to save the results to
+.TP
+\fB\-t,\fP \-\-title TEXT
+text to search for in the title field
+.TP
+\fB\-a,\fP \-\-assignee TEXT
+retrieve work items from board and filter by assignee
+.TP
+\fB\-r,\fP \-\-reporter TEXT
+retrieve work items from board and filter by reporter
+.TP
+\fB\-s,\fP \-\-state TEXT
+retrieve work items from board and filter by state
+.TP
+\fB\-d,\fP \-\-details
+display more details per ticket  [default: False]

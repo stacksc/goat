@@ -1,0 +1,42 @@
+.TH "GOAT AZDEV SEARCH" "1" "2024-01-26" "2024.1.25.554" "goat azdev search Manual"
+.SH NAME
+goat\-azdev\-search \- search for issues in AZ DevOps
+.SH SYNOPSIS
+.B goat azdev search
+[OPTIONS]
+.SH DESCRIPTION
+search for issues in AZ DevOps
+.SH OPTIONS
+.TP
+\fB\-k,\fP \-\-key TEXT
+i.e. 12345
+.TP
+\fB\-p,\fP \-\-project TEXT
+i.e. BCUProd
+.TP
+\fB\-a,\fP \-\-assignee TEXT
+i.e. jdoe
+.TP
+\fB\-r,\fP \-\-reporter TEXT
+i.e. smithj
+.TP
+\fB\-s,\fP \-\-state TEXT
+i.e. [Closed, Active, New, Resolved, Removed]
+.TP
+\fB\-t\fP TEXT
+text to search for in the title field
+.TP
+\fB\-j,\fP \-\-json
+output results in JSON format  [default: False]
+.TP
+\fB\-o,\fP \-\-orderby TEXT
+choose which field to use for sorting
+.TP
+\fB\-A,\fP \-\-ascending
+show issues in ascending order  [default: False]
+.TP
+\fB\-D,\fP \-\-descending
+show issues in descending order  [default: False]
+.TP
+\fB\-c,\fP \-\-csv TEXT
+name of the csv file to save the results to

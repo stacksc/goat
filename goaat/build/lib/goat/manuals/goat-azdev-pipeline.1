@@ -1,0 +1,28 @@
+.TH "GOAT AZDEV PIPELINE" "1" "2024-02-04" "2024.2.4.728" "goat azdev pipeline Manual"
+.SH NAME
+goat\-azdev\-pipeline \- manage pipelines
+.SH SYNOPSIS
+.B goat azdev pipeline
+[OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+manage pipelines
+.SH OPTIONS
+.TP
+\fB\-d,\fP \-\-debug [0|1|2]
+0 = no output, 1 = default, 2 = debug on
+.TP
+\fB\-m,\fP \-\-menu
+launch a menu driven interface for common actions
+.SH COMMANDS
+.PP
+\fBlist-pipelines\fP
+  list pipelines and details with optional...
+  See \fBgoat azdev pipeline-list-pipelines(1)\fP for full documentation on the \fBlist-pipelines\fP command.
+.PP
+\fBlist-builds\fP
+  list builds, details and logs with...
+  See \fBgoat azdev pipeline-list-builds(1)\fP for full documentation on the \fBlist-builds\fP command.
+.PP
+\fBstop-build\fP
+  Stop a running build
+  See \fBgoat azdev pipeline-stop-build(1)\fP for full documentation on the \fBstop-build\fP command.

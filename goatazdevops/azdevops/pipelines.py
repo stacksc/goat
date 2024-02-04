@@ -82,7 +82,7 @@ def list_pipelines(ctx, projects, runs, details, status):
                             Log.info("Log JSON:")
                             Log.info(jjson.dumps(extracted_output, sort_keys=True, indent=2))
                             exit()
-                elif details:
+                else:
                     OUTPUT = get_pipelines(profile, project)
                     selected_pipeline_id = display_menu(OUTPUT)
                     clear_terminal()

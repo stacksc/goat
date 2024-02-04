@@ -1,9 +1,9 @@
 # misc functions
 import sys, os, shutil, getpass, glob, gnupg, json, re, operator, base64, subprocess
 from toolbox.logger import Log
-from toolbox.menumaker import Menu
 from pathlib import Path
 from configstore.configstore import Config
+from azdevops.misc import generic_menu
 
 try:
     import importlib_resources as resources
@@ -118,7 +118,7 @@ def search_man_pages(manuals):
         Log.critical(f'WARN: unable to find any user manuals loaded matching pattern {manuals}')
     else:
         INPUT = 'viewer'
-        CHOICE = runMenu(NAMES, INPUT)
+        CHOICE = generic_menu(NAMES)
         try:
             CHOICE = ''.join(CHOICE)
             name = CHOICE.split('\t')[0]
@@ -129,21 +129,6 @@ def search_man_pages(manuals):
         except:
             Log.critical("please select a user manual to continue...")
     return (MY_RESOURCES / "manuals" / name)
-
-def runMenu(DATA, INPUT):
-    COUNT = 0
-    FINAL = []
-    TITLE = f'GOAT: {INPUT}'
-    for data in DATA:
-        COUNT = COUNT + 1
-        RESULTS = []
-        RESULTS.append(data)
-        FINAL.append(RESULTS)
-    SUBTITLE = f'showing {COUNT} available object(s)'
-    JOINER = '\t\t'
-    FINAL_MENU = Menu(FINAL, TITLE, JOINER, SUBTITLE)
-    CHOICE = FINAL_MENU.display()
-    return CHOICE
 
 def remove_html_tags(text):
     import re

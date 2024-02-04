@@ -8,12 +8,12 @@ from azdevops.azdevclient import AzDevClient
 import pprint
 import requests
 import datetime
-from toolbox import misc
+from toolbox.utils import set_terminal_width
 
 CONFIG = Config('azdev')
 AZDEV = AzDevClient()
 
-@click.group(help="perform authentication operations for AZ DevOps", context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
+@click.group(help="perform authentication operations for AZ DevOps", context_settings={'help_option_names':['-h','--help'], 'max_content_width': set_terminal_width()}, invoke_without_command=True)
 @click.option('-d', '--debug', help="0 = no output, 1 = default, 2 = debug on", default='1', type=click.Choice(['0', '1', '2']))
 @click.pass_context
 def auth(ctx, debug):

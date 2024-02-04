@@ -78,9 +78,12 @@ class CustomKeyBindings(KeyBindings):
             elif self.goatshell_instance.prefix == 'goat':
                 # Cycle through config stores and update the profile with the returned name
                 new_config_store_name = self.goatshell_instance.cycle_config_store()
-                # Update the profile to reflect the name of the current config store
-                self.goatshell_instance.profile = select_profile(new_config_store_name)
-                update_latest_profile(new_config_store_name, self.goatshell_instance.profile)
+                if new_config_store_name:
+                    # Update the profile to reflect the name of the current config store
+                    self.goatshell_instance.profile = select_profile(new_config_store_name)
+                    update_latest_profile(new_config_store_name, self.goatshell_instance.profile)
+                else:
+                    self.goatshell_instance.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
             else:
                 # For other prefixes, cycle through their profiles as before
                 self.goatshell_instance.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)

@@ -82,6 +82,7 @@ class CustomKeyBindings(KeyBindings):
                     # Update the profile to reflect the name of the current config store
                     self.goatshell_instance.profile = select_profile(new_config_store_name)
                     update_latest_profile(new_config_store_name, self.goatshell_instance.profile)
+                    self.goatshell_instance.current_config_store = new_config_store_name
                 else:
                     self.goatshell_instance.profile = self.goatshell_instance.get_profile(self.goatshell_instance.prefix)
             else:

@@ -580,6 +580,7 @@ class Goatshell(object):
                     toolbar_to_use = create_toolbar(
                         profile=self.profile,
                         prefix=self.prefix,
+                        configstore=self.current_config_store,
                         vi_mode_enabled=self.vi_mode_enabled,
                         safety_mode_enabled=self.safety_mode_enabled,
                         last_executed_command=last_executed_command,
@@ -633,6 +634,17 @@ class Goatshell(object):
             if 'latest' not in PROFILE:
                 NAMES.append(PROFILE.strip())
         return NAMES
+
+    def determine_initial_config_store(self):
+        cloud_context = self.get_current_context()
+    
+        if cloud_context['cloud_provider'] == 'goat':
+            # Use the first config store if available, default to "DEFAULT" otherwise
+            return self.config_store_names[0] if self.config_store_names else "DEFAULT"
+        else:
+            # For other cloud providers, or if no specific logic is required,
+            # return a default or based on another condition
+            return "DEFAULT"  # Adjust this based on your needs
 
 def get_all_configstore_names():
     names = []

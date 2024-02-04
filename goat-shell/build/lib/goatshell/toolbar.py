@@ -11,7 +11,6 @@ def create_toolbar(profile, prefix, configstore, vi_mode_enabled, safety_mode_en
     upper_prefix = prefix.upper()
     vi_mode_text = "ON" if vi_mode_enabled else "OFF"
     safety_mode_text = "ON" if safety_mode_enabled else "OFF"
-    f6_message = "Config Profile"
     configstore = configstore.upper()
 
     toolbar_class = 'bottom-toolbar-red' if warning_message else 'bottom-toolbar'
@@ -23,7 +22,7 @@ def create_toolbar(profile, prefix, configstore, vi_mode_enabled, safety_mode_en
     else:
         if upper_prefix == 'GOAT':
             toolbar_parts = [
-                    ('class:' + toolbar_class, f'F6: {f6_message}  F8 Cloud: {upper_prefix}   F9 Profile: {configstore}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
+                    ('class:' + toolbar_class, f'F6: {upper_profile}  F8 Cloud: {upper_prefix}   F9 Profile: {configstore}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
             ]
         else:
             toolbar_parts = [

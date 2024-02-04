@@ -5,6 +5,7 @@ from toolbox.click_complete import complete_configstore_names
 from toolbox import misc
 from awstools.aws_config import AWSconfig
 from ocitools.oci_config import OCIconfig
+from goatshell.goatshell import get_all_configstore_names
 
 MESSAGE="Config Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'N/A' + misc.RESET
 
@@ -22,8 +23,13 @@ def cli(ctx, profile):
 def show(ctx, name):
     profile = ctx.obj['PROFILE']
     configstore_name = ''.join(name)
-    _show(configstore_name, profile)
-    
+    all_stores = get_all_configstore_names()
+    if configstore_name in all_stores:
+        _show(configstore_name, profile)
+    else:
+        Log.warn(f'configuration store {configstore_name} does not exist.')
+        exit(-1)
+
 def _show(configstore_name, profile_name=None):
     CONFIG = Config(configstore_name)
     RESULT = None

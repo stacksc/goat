@@ -45,6 +45,9 @@ settings_manager = SettingsManager()
 def load_default_provider_setting():
     return settings_manager.load_setting('default_provider', default_value='oci')
 
+def load_current_config_store():
+    return settings_manager.load_setting('current_config_store', default_value='DEFAULT')
+
 # Global variables
 global vi_mode_enabled, safety_mode_enabled
 os.environ['AWS_PAGER'] = ''  # Disable paging in AWS by default
@@ -82,9 +85,10 @@ class Goatshell(object):
         self.oci_index = 0
         self.profile = self.init_profile()
         self.current_config_store_index = 0
-        self.current_config_store = "DEFAULT"
+        self.current_config_store = self.determine_initial_config_store()
         self.config_store_names = get_all_configstore_names()
         self.current_profile = "DEFAULT"
+        self.save_current_config_store()
 
         # init our config store for DEFAULT
         try:
@@ -98,7 +102,7 @@ class Goatshell(object):
                 self.profile = sub_name  # Set the profile to the current Azure subscription name
         # Add this line to initialize the completer with the current context stack
         self.update_completer_context()
-    
+
     def cycle_config_store(self):
         original_index = self.current_config_store_index
         while True:
@@ -118,7 +122,7 @@ class Goatshell(object):
         # Here, add any additional logic needed to apply the change in config store
         self.app.invalidate()
         return current_store
-    
+   
     def toggle_config_store_profile(self):
         if not self.config_store_names:
             print("No config stores available.")
@@ -211,6 +215,14 @@ class Goatshell(object):
     def load_default_provider_setting(self):
         """Load the provider setting."""
         return settings_manager.load_setting('default_provider', default_value='oci')
+
+    def load_current_config_store(self):
+        """Load the current config store."""
+        return settings_manager.load_setting('current_config_store', default_value='DEFAULT')
+
+    def save_current_config_store(self):
+        """Save the application state for config store"""
+        settings_manager.save_setting('current_config_store', self.current_config_store)
 
     def save_vi_mode_setting(self):
         """Save the VI mode setting."""
@@ -580,7 +592,7 @@ class Goatshell(object):
                     toolbar_to_use = create_toolbar(
                         profile=self.profile,
                         prefix=self.prefix,
-                        configstore=self.current_config_store,
+                        configstore=self.load_current_config_store(),
                         vi_mode_enabled=self.vi_mode_enabled,
                         safety_mode_enabled=self.safety_mode_enabled,
                         last_executed_command=last_executed_command,
@@ -637,7 +649,6 @@ class Goatshell(object):
 
     def determine_initial_config_store(self):
         cloud_context = self.get_current_context()
-    
         if cloud_context['cloud_provider'] == 'goat':
             # Use the first config store if available, default to "DEFAULT" otherwise
             return self.config_store_names[0] if self.config_store_names else "DEFAULT"

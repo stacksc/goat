@@ -49,6 +49,7 @@ def cli():
     toolbar_content = create_toolbar(
         profile=goatshell.profile,
         prefix=goatshell.prefix,
+        configstore=goatshell.determine_initial_config_store(),
         vi_mode_enabled=goatshell.vi_mode_enabled,
         safety_mode_enabled=goatshell.safety_mode_enabled,
         last_executed_command=last_command,

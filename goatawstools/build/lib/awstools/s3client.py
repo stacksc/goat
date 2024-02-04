@@ -138,7 +138,7 @@ class S3client():
         return True
 
     def get_region_from_profile(self, aws_profile_name):
-        AWS_REGION = self.CONFIG.get_from_config('creds', 'region', profile_name=aws_profile_name)
+        AWS_REGION = self.CONFIG.get_from_config('creds', 'region', profile_name=aws_profile_name.lower())
         if AWS_REGION is None: # this is for when the user wants to use a profile which sources another profile for IAM creds
             CREDS_PROFILE = self.CONFIG.get_from_config('creds', 'source_profile', profile_name=aws_profile_name)
             AWS_REGION = self.CONFIG.get_from_config('config', 'region', profile_name=CREDS_PROFILE)

@@ -39,6 +39,6 @@ def get_region(ctx, aws_profile_name):
     AWS_REGION = ctx.obj['REGION']
     if not AWS_REGION:
         S3 = get_S3client(aws_profile_name, 'us-east-1')
-        AWS_REGION = S3.get_region_from_profile(aws_profile_name)
+        AWS_REGION = S3.get_region_from_profile(aws_profile_name.lower())
     return AWS_REGION
 

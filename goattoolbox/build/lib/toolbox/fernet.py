@@ -35,7 +35,6 @@ logging.config.dictConfig(DICTCONFIG)
 def setup(KEYNAME):
     KEYFILE = f"{os.getenv('HOME')}/goat/.{KEYNAME}.key" 
     if not os.path.exists(KEYFILE):
-        warn("Encryption key not detected. Generating a new one")
         KEY = Fernet.generate_key()
         with open(KEYFILE, 'wb') as KEYFILE:
             try:

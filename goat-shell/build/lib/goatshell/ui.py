@@ -12,6 +12,13 @@ from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.layout.dimension import D
 from prompt_toolkit.styles import Style
 
+ascii_art = """
+        (_(
+       /_/'_____/)
+       "  |      |
+          |""""""|
+"""
+
 instructions = """
     1. To trigger auto-completion, start with TAB or type the beginning of a command or option and press Tab.
     2. Use the arrow keys or Tab to navigate through the suggestions.
@@ -82,8 +89,8 @@ def getLayout(with_help=None):
     )
 
     # Explicitly setting the width of frames in VSplit
-    func_frame = Frame(body=Label(text=input.strip()), width=D(preferred=60), title=(func_title))
-    misc_frame = Frame(body=Label(text=misc_input.rstrip()), width=D(preferred=60), title=(misc_title))
+    func_frame = Frame(body=Label(text=input.strip(), dont_extend_height=True), width=D(preferred=60), title=(func_title))
+    misc_frame = Frame(body=Label(text=misc_input.rstrip(), dont_extend_height=True), width=D(preferred=60), title=(misc_title))
 
     # Aligning frames within VSplit
     main_vsplit = VSplit([

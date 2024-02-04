@@ -10,16 +10,16 @@ from azdevops.issue import issue
 from azdevops.sprints import sprints
 from azdevops.pipelines import pipeline
 from toolbox import misc
-from toolbox.misc import debug
+from toolbox.misc import debug, get_latest_profile
 from toolbox.click_complete import complete_azdev_profiles
 from configstore.configstore import Config
 
 CONFIG = Config('azdev')
 
-MESSAGE="AZDEV Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_default_url() + misc.RESET
+MESSAGE="AZDEV Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + get_latest_profile('azdev')[1] + misc.RESET
 
 @click.group('azdev', help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
-@click.option('-p', '--profile', 'user_profile', help='profile name to use when working with the azdev client', required=False, default=None, shell_complete=complete_azdev_profiles, show_default=True)
+@click.option('-p', '--profile', 'user_profile', help='profile name to use when working with the azdev client', required=False, default=get_latest_profile('azdev')[0], shell_complete=complete_azdev_profiles, show_default=True)
 @click.pass_context
 def cli(ctx, user_profile):
     ctx.ensure_object(dict)

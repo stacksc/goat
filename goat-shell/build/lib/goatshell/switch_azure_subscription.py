@@ -5,9 +5,6 @@ from prompt_toolkit import prompt
 from prompt_toolkit.shortcuts import radiolist_dialog
 from prompt_toolkit.styles import Style
 
-#from prompt_toolkit.shortcuts.dialogs import radiolist_dialog
-#import threading
-
 def display_subscription_menu_thread(subscriptions):
     def run_dialog():
         nonlocal selected_subscription_id

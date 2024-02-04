@@ -4,6 +4,7 @@ pyproject.toml
 goatshell/__init__.py
 goatshell/azure_cli.py
 goatshell/completer.py
+goatshell/confirm.py
 goatshell/custom_keys.py
 goatshell/dynamic_prompt.py
 goatshell/fetch_goat.py
@@ -15,6 +16,7 @@ goatshell/parser.py
 goatshell/settings_manager.py
 goatshell/style.py
 goatshell/switch_azure_subscription.py
+goatshell/switch_profile.py
 goatshell/toolbar.py
 goatshell/ui.py
 goatshell.egg-info/PKG-INFO

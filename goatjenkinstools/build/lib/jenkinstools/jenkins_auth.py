@@ -38,7 +38,7 @@ def setup(ctx):
 
 def get_jenkins_url(profile='default'):
     CONFIG = Config('jenkinstools')
-    URL = CONFIG.get_metadata('JENKINS_URL', profile)
+    URL = CONFIG.get_metadata('url', profile)
     if URL:
         return URL
     else:

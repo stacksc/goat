@@ -1,8 +1,9 @@
 # misc functions
-import sys, os, shutil, getpass, glob, gnupg, json, re, operator, base64
+import sys, os, shutil, getpass, glob, gnupg, json, re, operator, base64, subprocess
 from toolbox.logger import Log
 from toolbox.menumaker import Menu
 from pathlib import Path
+from configstore.configstore import Config
 
 try:
     import importlib_resources as resources
@@ -21,15 +22,8 @@ debug = 1
 pushstack = list()
 SCREEN_WIDTH=80
 centered = operator.methodcaller('center', SCREEN_WIDTH)
-
-def draw_title():
-    b = centered('''
-        (_(
-        /_/'_____/)
-        "  |      |
-           |""""""|
-    ''')
-    return(''.join(b))
+rows, columns = os.popen('stty size', 'r').read().split()
+columns = int(columns)
 
 def convert(list):
     # convert list to tuple
@@ -227,3 +221,46 @@ def get_corrupt_provider_files():
 
     return corrupt_files_dict
 
+def get_latest_profile(config_store):
+    CONFIGSTORE = Config(config_store)
+    # Retrieve the 'latest' profile
+    LATEST = CONFIGSTORE.get_profile('latest')
+
+    if LATEST is None:
+        # Fallback to default if no 'latest' profile
+        MY_PROFILE = 'default'
+        URL = 'DEFAULT'
+    else:
+        # Extract the role from the 'latest' profile's config
+        role_name = LATEST['config'].get('role')
+        # Use the role_name to fetch the corresponding profile
+        role_profile = CONFIGSTORE.get_profile(role_name)
+
+        if role_profile:
+            MY_PROFILE = role_name
+            # Assuming the 'url' is directly under the 'config' of the role profile
+            URL = role_profile.get('config', {}).get('url', None)
+            if not URL:
+                URL = role_profile.get('metadata', {}).get('url', None)
+        else:
+            # Fallback if the role profile doesn't exist
+            MY_PROFILE = 'DEFAULT'
+            URL = 'DEFAULT'
+    return MY_PROFILE, URL.upper()
+
+def clear_screen():
+    # Clear the screen
+    subprocess.call('clear' if os.name == 'posix' else 'cls')
+
+def get_terminal_size():
+    rows, columns = os.popen('stty size', 'r').read().split()
+    return int(rows), int(columns)
+
+def draw_title():
+    b = centered('''
+        (_(
+        /_/'_____/)
+        "  |      |
+           |""""""|
+    ''')
+    return(''.join(b))

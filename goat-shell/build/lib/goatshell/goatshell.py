@@ -12,6 +12,8 @@ import logging
 import shutil
 import json
 import configparser
+import glob
+
 from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit import Application, PromptSession
 from prompt_toolkit.history import InMemoryHistory, FileHistory
@@ -19,17 +21,18 @@ from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.styles import Style
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
+from prompt_toolkit.shortcuts import button_dialog
+from pygments.token import Token
 
-from . import misc as misc
+from goatshell import misc as misc
 from goatshell.style import styles
 from goatshell.completer import GoatCompleter
 from goatshell.parser import Parser
 from goatshell.ui import getLayout
 from goatshell.settings_manager import SettingsManager
-from goatshell.custom_keys import CustomKeyBindings
-from .dynamic_prompt import DynamicPromptSession
-from pygments.token import Token
-from .toolbar import create_toolbar
+from goatshell.custom_keys import CustomKeyBindings, update_latest_profile
+from goatshell.dynamic_prompt import DynamicPromptSession
+from goatshell.toolbar import create_toolbar
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.WARNING)
@@ -59,6 +62,7 @@ class Goatshell(object):
         self.toolbar_message = toolbar_message
         self.vi_mode_enabled = self.load_vi_mode_setting()
         self.safety_mode_enabled = self.load_safety_mode_setting()
+        self.config_store_names = get_all_configstore_names()
         self.style = Style.from_dict(styles)
         self.app = app
         self.completer = completer
@@ -76,6 +80,10 @@ class Goatshell(object):
         self.aws_index = 0
         self.oci_index = 0
         self.profile = self.init_profile()
+        self.current_config_store_index = 0
+        self.current_config_store = "DEFAULT"
+        self.config_store_names = get_all_configstore_names()
+        self.current_profile = "DEFAULT"
 
         if self.prefix == 'az':
             sub_id, sub_name = self.fetch_current_azure_subscription()
@@ -83,6 +91,37 @@ class Goatshell(object):
                 self.profile = sub_name  # Set the profile to the current Azure subscription name
         # Add this line to initialize the completer with the current context stack
         self.update_completer_context()
+    
+    def cycle_config_store(self):
+        # Increment the index and cycle back to 0 if it exceeds the list length
+        self.current_config_store_index = (self.current_config_store_index + 1) % len(self.config_store_names)
+        # Retrieve the current config store name
+        current_store = self.config_store_names[self.current_config_store_index]
+        # Here, add any additional logic needed to apply the change in config store
+        self.app.invalidate()
+        return current_store
+
+    def toggle_config_store_profile(self):
+        if not self.config_store_names:
+            print("No config stores available.")
+            return
+
+        current_index = self.config_store_names.index(self.current_config_store)
+        self.current_config_store = self.config_store_names[self.current_config_store_index]
+    
+        # Use the select_profile function to allow user selection of a new profile within the current config store
+        from goatshell.switch_profile import select_profile as select_profile_function
+        try:
+            new_profile = select_profile_function(self.current_config_store)
+            if new_profile:  # Ensure a profile was selected
+                self.current_profile = new_profile
+                print(f"Profile switched within {self.current_config_store}: {self.current_profile}")
+                # Optionally, refresh your prompt here to reflect the change.
+            else:
+                print("No profile was selected or available.")
+        except Exception as e:
+            print(f"Error while selecting a profile within {self.current_config_store}: {e}")
+        return self.current_profile
     
     def fetch_current_azure_subscription(self):
         try:
@@ -169,7 +208,7 @@ class Goatshell(object):
         self.oci_index = 0
         profile = 'DEFAULT'  # Initial value before getting profile
         return self.get_profile(self.prefix)  # update the profile
-
+ 
     def change_context(self, context_command):
         if context_command == '..':  # Go up one level
             if self.context_stack:
@@ -459,7 +498,15 @@ class Goatshell(object):
     def generate_prompt(self):
         # Getting the cloud provider context
         cloud_context = self.get_current_context()
-    
+
+        if cloud_context['cloud_provider'] == 'goat':
+            current_store_name = self.config_store_names[self.current_config_store_index] if self.config_store_names else "DEFAULT"
+            current_profile_name = self.profile
+            prompt_name = f"{current_store_name}:{current_profile_name}"
+        else:
+            current_store_name = cloud_context['profile']
+            prompt_name = current_store_name
+
         # Building the custom context stack string
         custom_context = '/'.join(self.context_stack) if self.context_stack else 'root'
     
@@ -472,7 +519,7 @@ class Goatshell(object):
         icon = '\U0001F441'
     
         # Construct the prompt using both cloud context and custom context
-        return HTML(f'[<b><u>{cloud_context["cloud_provider"]}</u></b>:<b><u>{cloud_context["profile"]}</u></b>] [{custom_context}] {icon}  ')
+        return HTML(f'[<b><u>{cloud_context["cloud_provider"]}</u></b>:<b><u>{prompt_name}</u></b>] [{custom_context}] {icon}  ')
     
     def execute_command(self, cmd):
         # Check for empty command
@@ -556,3 +603,23 @@ class Goatshell(object):
 
             if processed_input and processed_input.strip():
                 last_executed_status = self.execute_command(processed_input)
+
+    def get_profiles_for_store(self, config_store):
+        # Placeholder for fetching profiles. Replace with your actual logic.
+        from configstore.configstore import Config
+        CONFIG = Config(config_store)
+        NAMES = []
+        for PROFILE in CONFIG.PROFILES:
+            if 'latest' not in PROFILE:
+                NAMES.append(PROFILE.strip())
+        return NAMES
+
+def get_all_configstore_names():
+    names = []
+    home = str(Path.home())
+    for key_file in glob.glob(home + "/goat/.*key"):
+        if os.path.isfile(key_file):
+            key_name = str(Path(key_file).stem.replace(".", ""))
+            names.append(key_name)
+    return names
+

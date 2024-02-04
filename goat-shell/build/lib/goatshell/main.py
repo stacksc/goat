@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from __future__ import print_function, absolute_import, unicode_literals
+
 from goatshell.goatshell import Goatshell, load_default_provider_setting
 from goatshell.completer import GoatCompleter
 from prompt_toolkit.styles import Style

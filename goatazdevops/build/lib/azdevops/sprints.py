@@ -59,7 +59,8 @@ def search(ctx, team, sprint, json, orderby, ascending, descending, csv, title, 
             Log.warn('Please provide a sprint name to search against')
             exit()
 
-    run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, user_profile, sprint)
+    email_address = False
+    run_jql_query(ctx, projects, None, assignee, details, reporter, state, title, csv, json, orderby, ascending, descending, user_profile, email_address, sprint)
 
 def get_first_project(RUN):
     for profile, projects in RUN.items():

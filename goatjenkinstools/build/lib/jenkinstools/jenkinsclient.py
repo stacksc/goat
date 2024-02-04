@@ -343,10 +343,10 @@ class JenkinsClient:
 
     def get_jenkins_api_url(self, user_profile='default', jenkins_url=None):
         CONFIG = Config('jenkinstools')
-        jenkins_url = CONFIG.get_metadata('JENKINS_URL', user_profile)
+        jenkins_url = CONFIG.get_metadata('url', user_profile)
         if jenkins_url is None:
             jenkins_url = getFullUrl('jenkins')
-        CONFIG.update_metadata(jenkins_url, 'JENKINS_URL', user_profile)
+        CONFIG.update_metadata(jenkins_url, 'url', user_profile)
         return jenkins_url
 
     def update_config(self, new_data, profile_name):

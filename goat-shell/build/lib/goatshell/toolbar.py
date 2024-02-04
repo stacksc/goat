@@ -3,11 +3,15 @@ from prompt_toolkit.styles import Style
 from goatshell.style import styles
 
 def create_toolbar(profile, prefix, vi_mode_enabled, safety_mode_enabled, last_executed_command=None, status_text="", warning_message=None):
+
+    if profile is None:
+        profile = "DEFAULT"
+
     upper_profile = profile.upper()
     upper_prefix = prefix.upper()
     vi_mode_text = "ON" if vi_mode_enabled else "OFF"
     safety_mode_text = "ON" if safety_mode_enabled else "OFF"
-
+    f6_message = "Config Profile"
 
     toolbar_class = 'bottom-toolbar-red' if warning_message else 'bottom-toolbar'
 
@@ -16,9 +20,14 @@ def create_toolbar(profile, prefix, vi_mode_enabled, safety_mode_enabled, last_e
                ('class:' + toolbar_class, f'WARNING: {warning_message}')
         ]
     else:
-        toolbar_parts = [
-                ('class:' + toolbar_class, f'F8 Cloud: {upper_prefix}   F9 Profile: {upper_profile}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
-        ]
+        if upper_prefix == 'GOAT':
+            toolbar_parts = [
+                    ('class:' + toolbar_class, f'F6: {f6_message}  F8 Cloud: {upper_prefix}   F9 Profile: {upper_profile}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
+            ]
+        else:
+            toolbar_parts = [
+                    ('class:' + toolbar_class, f'F8 Cloud: {upper_prefix}   F9 Profile: {upper_profile}   F10 VIM {vi_mode_text}   F12 Safe Mode: {safety_mode_text}')
+            ]
 
     if last_executed_command:
         if status_text == "failure":

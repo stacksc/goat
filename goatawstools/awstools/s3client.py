@@ -1,6 +1,5 @@
 import datetime, time, os, json, re
 from toolbox.logger import Log
-from toolbox.misc import detect_environment
 from configstore.configstore import Config
 from . import iam_nongc
 from .aws_config import AWSconfig
@@ -29,7 +28,8 @@ class S3client():
             self.get_session()
 
     def get_session(self):
-        if detect_environment() == 'non-gc':
+        RES = 'non-gc'
+        if RES == 'non-gc':
             if self.CONFIG.profile_or_role(self.AWS_PROFILE):
                 self.SESSION = iam_nongc._authenticate(self.AWS_PROFILE, self.AWS_REGION)
             else:

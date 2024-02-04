@@ -1,5 +1,4 @@
 from toolbox.logger import Log
-from toolbox.misc import detect_environment
 from configstore.configstore import Config
 from .aws_config import AWSconfig
 from . import iam_nongc
@@ -23,7 +22,8 @@ class EC2client():
 
     def get_session(self):
         Log.info(f"connecting to EC2 as {self.AWS_PROFILE} via {self.AWS_REGION}...")
-        if detect_environment() == 'non-gc':
+        RES = 'non-gc'
+        if RES == 'non-gc':
             if self.CONFIG.profile_or_role(self.AWS_PROFILE):
                 self.SESSION = iam_nongc._authenticate(self.AWS_PROFILE, self.AWS_REGION)
             else:

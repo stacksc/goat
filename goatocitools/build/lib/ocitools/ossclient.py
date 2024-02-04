@@ -1,6 +1,5 @@
 import datetime, time, os, json, re, oci
 from toolbox.logger import Log
-from toolbox.misc import detect_environment
 from configstore.configstore import Config
 from . import iam_nongc
 from .oci_config import OCIconfig

@@ -9,7 +9,6 @@ from toolbox import misc
 from configstore.configstore import Config
 from toolbox.menumaker import Menu
 from tabulate import tabulate
-from toolbox.misc import detect_environment
 
 JENKINS = JenkinsClient()
 CONFIG = Config('jenkinstools')
@@ -80,14 +79,16 @@ def credentilas(ctx, description):
             DATA_DICT = {}
             LINE = re.sub("<.*?>"," ",LINE)
             LINE = ' '.join(LINE.split())
-            if 'prod' in detect_environment():
+            RES = 'non-gc'
+            if 'prod' in RES:
                 CRED = LINE.split(" ")[2]
             else:
                 CRED = LINE.split(" ")[0]
             CRED = CRED[:75] + (CRED[75:] and '..')
             DATA_DICT['credential'] = CRED
             if description is True:
-                if 'prod' in detect_environment():
+                RES = 'non-gc'
+                if 'prod' in RES:
                     DESC = LINE.split(" ")[3:]
                 else:
                     DESC = LINE.split(" ")[1:]
@@ -119,7 +120,8 @@ def get_credentials(ctx, name):
         for LINE in RESULT:
             LINE = re.sub("<.*?>"," ",LINE)
             LINE = ' '.join(LINE.split())
-            if 'prod' in detect_environment():
+            RES = 'non-gc'
+            if 'prod' in RES:
                 CRED = LINE.split(" ")[2]
             else:
                 CRED = LINE.split(" ")[0]

@@ -22,8 +22,6 @@ debug = 1
 pushstack = list()
 SCREEN_WIDTH=80
 centered = operator.methodcaller('center', SCREEN_WIDTH)
-rows, columns = os.popen('stty size', 'r').read().split()
-columns = int(columns)
 
 def convert(list):
     # convert list to tuple
@@ -75,9 +73,6 @@ def define(completion):
             "\n"
             "# Added by goat #\n"
         )
-
-def detect_environment():
-    return 'non-gc'
 
 def search_man_pages(manuals):
 

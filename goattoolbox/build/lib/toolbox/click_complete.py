@@ -2,7 +2,7 @@
 import os, glob, click
 from pathlib import Path
 from configstore.configstore import Config
-from toolbox.misc import detect_environment
+
 try:
     import importlib_resources as resources
 except:
@@ -121,11 +121,18 @@ def complete_azdev_projects(ctx, param, incomplete):
     from azdevops.azdevclient import AzDevClient
     AZDEV = AzDevClient()
     CONFIG = Config('azdev')
-    CACHED_PROJECTS = {}
+    DATA = []
+
     for PROFILE in CONFIG.PROFILES:
-        if 'sendgrid' not in PROFILE:
-            CACHED_PROJECTS.update(CONFIG.get_metadata('projects', PROFILE))
-    return [k for k in CACHED_PROJECTS if k.startswith(incomplete)]
+        try:
+            for ENTRY in CONFIG.PROFILES[PROFILE]['metadata']['projects']:
+                DATA.append(ENTRY)
+        except:
+            pass
+    if DATA:
+        return [k for k in DATA if k.startswith(incomplete)]
+    else:
+        return None
 
 def complete_projects(ctx, param, incomplete):
     from jiratools.auth import get_default_profile

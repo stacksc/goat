@@ -1,5 +1,4 @@
 from toolbox.logger import Log
-from toolbox.misc import detect_environment
 from configstore.configstore import Config
 from .oci_config import OCIconfig
 from . import iam_nongc

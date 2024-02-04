@@ -3,7 +3,7 @@ from toolbox.logger import Log
 from .aws_config import AWSconfig
 from . import iam_nongc
 from configstore.configstore import Config
-from toolbox.misc import set_terminal_width, detect_environment
+from toolbox.misc import set_terminal_width
 
 CONFIG = Config('awstools')
 LATEST = CONFIG.get_profile('latest')
@@ -30,7 +30,7 @@ def cli(ctx, awscli_command, aws_region):
 
 class AWScli():
     def __init__(self, aws_profile_name, in_boundary, aws_region='us-east-1'):
-        self.INB = detect_environment()
+        self.INB = 'non-gc'
         self.AWS_PROFILE = aws_profile_name
         self.AWS_REGION = aws_region
         self.CONFIG = AWSconfig()

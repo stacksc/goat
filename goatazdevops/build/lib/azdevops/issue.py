@@ -1,7 +1,7 @@
 import os, click, re, json
 from .search import run_jql_query
 from toolbox.logger import Log
-from toolbox.misc import detect_environment, remove_html_tags
+from toolbox.misc import remove_html_tags
 from azdevops.azdevclient import AzDevClient
 from azdevops.misc import setup_az_ctx
 from toolbox.logger import Log

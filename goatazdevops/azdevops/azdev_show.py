@@ -7,7 +7,6 @@ from toolbox.jsontools import filter
 from toolbox import misc
 from configstore.configstore import Config
 from tabulate import tabulate
-from toolbox.misc import detect_environment
 from azdevops.misc import remove_equals, join_lists_to_strings
 
 AZDEV = AzDevClient()

@@ -6,7 +6,6 @@ from toolbox.logger import Log
 from configstore.configstore import Config
 from toolbox.menumaker import Menu
 from toolbox import curl
-from toolbox.misc import detect_environment
 
 def get_transitions(issue_key, user_profile, available=False):
     CONFIG = Config('jiratools')
@@ -271,7 +270,7 @@ def transition_wizard(issue_key, user_profile):
     for REQ_FIELD_RESPONSE in REQ_FIELD_RESPONSES:
         TRANSITION_PAYLOAD[REQ_FIELD_RESPONSE[0]] = { REQ_FIELD_RESPONSE[1]: REQ_FIELD_RESPONSE[2]}
         # OOB
-        RESULT = detect_environment()
+        RESULT = 'non-gc'
         if 'prod' in RESULT and 'CSCM' in issue_key:
             TRANSITION_PAYLOAD.update({"customfield_10806": STARTTIME, "customfield_10410": ENDTIME})
         else:

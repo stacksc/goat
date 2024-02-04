@@ -26,5 +26,4 @@ def get_latest_region(profile_name):
         return 'us-east-1'
     return REGION
 
-if misc.detect_environment() == 'non-gc':
-    iam.add_command(iam_nongc.authenticate)
+iam.add_command(iam_nongc.authenticate)

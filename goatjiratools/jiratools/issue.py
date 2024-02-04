@@ -6,7 +6,7 @@ from .transitions import get_transitions, format_transitions_json, get_status_id
 from .search import run_jql_query, runMenu
 from toolbox.logger import Log
 from toolbox.click_complete import complete_jira_profiles
-from toolbox.misc import detect_environment, remove_html_tags
+from toolbox.misc import remove_html_tags
 
 user_env_var = "USERNAME" if os.name == 'nt' else "LOGNAME"
 default_assignee = os.environ.get(user_env_var, None)
@@ -396,7 +396,8 @@ def get_change_plan_from_issue(issue_keys, profile):
     ISSUE_KEYS, JIRA_SESSION = prepare_issues_and_session(issue_keys, profile)
     for ISSUE_KEY in ISSUE_KEYS:
         DATA = []
-        if 'prod' in detect_environment():
+        RESULT = 'non-gc'
+        if 'prod' in RESULT:
             ISSUE_DESC = JIRA_SESSION.issue(ISSUE_KEY).fields.customfield_11100
         else:
             ISSUE_DESC = JIRA_SESSION.issue(ISSUE_KEY).fields.customfield_13809

@@ -8,6 +8,7 @@ goatshell/confirm.py
 goatshell/custom_keys.py
 goatshell/dynamic_prompt.py
 goatshell/fetch_goat.py
+goatshell/goat_command_tree.json
 goatshell/goatshell.py
 goatshell/logger.py
 goatshell/main.py

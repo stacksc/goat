@@ -3,7 +3,7 @@ from toolbox.logger import Log
 from .oci_config import OCIconfig
 from . import iam_nongc
 from configstore.configstore import Config
-from toolbox.misc import set_terminal_width, detect_environment
+from toolbox.misc import set_terminal_width
 
 CONFIG = Config('ocitools')
 LATEST = CONFIG.get_profile('latest')

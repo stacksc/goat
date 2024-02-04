@@ -13,7 +13,7 @@ from ovhaitools.ovhaitools import CLI as ovhai
 from ibmcloudtools.ibmcloudtools import CLI as ibmcloud
 from ocitools.ocitools import CLI as oci
 from jenkinstools.jenkinstools import cli as jenkins
-from toolbox.misc import set_terminal_width, detect_environment, search_man_pages, debug, draw_title
+from toolbox.misc import set_terminal_width, search_man_pages, debug, draw_title
 from .cmd_slack import slack
 
 if os.getenv('USER') == 'root':

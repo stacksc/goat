@@ -468,7 +468,7 @@ class Goatshell(object):
     def is_valid_global_option(self, option):
         # Implement this method based on how you determine valid global options
         # Example:
-        valid_global_options = ['-v', '-h', '--version', '--help']
+        valid_global_options = ['-v', '-h', '-m', '-s', '--version', '--help', '--manuals', '--shell']
         return option in valid_global_options
 
     def get_current_context(self, user_input=None):

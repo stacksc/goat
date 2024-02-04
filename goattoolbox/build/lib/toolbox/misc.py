@@ -239,13 +239,19 @@ def get_latest_profile(config_store):
         if role_profile:
             MY_PROFILE = role_name
             # Assuming the 'url' is directly under the 'config' of the role profile
-            URL = role_profile.get('config', {}).get('url', None)
-            if not URL:
-                URL = role_profile.get('metadata', {}).get('url', None)
+            URL = role_profile.get('config', {}).get('url', 'DEFAULT')  # Set 'DEFAULT' if 'url' is not found
+            if URL == 'DEFAULT':
+                # try to get it from metadata
+                URL = role_profile.get('metadata', {}).get('url', 'DEFAULT')  # Set 'DEFAULT' if 'url' is not found
         else:
             # Fallback if the role profile doesn't exist
-            MY_PROFILE = 'DEFAULT'
+            MY_PROFILE = 'default'  # Ensure consistency in fallback profile naming
             URL = 'DEFAULT'
+    
+    # Ensure URL is not None; if it is, set to 'DEFAULT'
+    if URL is None:
+        URL = 'DEFAULT'
+        
     return MY_PROFILE, URL.upper()
 
 def clear_screen():

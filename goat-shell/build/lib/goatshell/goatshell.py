@@ -209,8 +209,13 @@ class Goatshell(object):
         return settings_manager.load_setting('vi_mode_enabled', default_value=False)
     
     def load_safety_mode_setting(self):
-        """Load the SAFETY mode setting."""
-        return settings_manager.load_setting('safety_mode_enabled', default_value=False)
+        # Load the safety mode setting as a boolean
+        self.safety_mode_enabled = settings_manager.load_setting('safety_mode_enabled', default_value='False') == 'True'
+        return self.safety_mode_enabled
+
+    #def load_safety_mode_setting(self):
+    #    """Load the SAFETY mode setting."""
+    #    return settings_manager.load_setting('safety_mode_enabled', default_value=False)
     
     def load_default_provider_setting(self):
         """Load the provider setting."""

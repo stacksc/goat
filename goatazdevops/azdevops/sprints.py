@@ -26,7 +26,7 @@ def sprints(ctx, debug, menu):
     pass
 
 @sprints.command(help="search boards and sprints", context_settings={'help_option_names':['-h','--help']})
-@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default=["Infrastructure Engineering and Operations"], show_default=True, multiple=True, callback=remove_equals)
+@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default=None, show_default=True, multiple=True, callback=remove_equals)
 @click.option('-s', '--sprint', help="provide sprint path to search", type=str, required=False, default=None, callback=remove_equals)
 @click.option('-j', '--json', help="output results in JSON format", is_flag=True, show_default=True, default=False, required=False)
 @click.option('-o', '--orderby', help="choose which field to use for sorting", required=False)
@@ -171,20 +171,27 @@ def list_iterations(team_name, project_name, profile, display=False):
         print(f"No iterations / sprints found for Team '{team_name}'.")
 
 @sprints.command(help="List boards and sprints", context_settings={'help_option_names':['-h','--help']})
-@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default=["Infrastructure Engineering and Operations"], multiple=True, show_default=True, callback=remove_equals)
+@click.option('-t', '--team', help="provide team name for board search", type=str, required=False, default=None, multiple=True, show_default=True, callback=remove_equals)
 @click.pass_context
 def list(ctx, team):
     CONFIG = Config('azdev')
-    profile = ctx.obj['PROFILE']
-    CACHED_PROJECTS = {}
-    cached_projects_data = CONFIG.get_metadata('projects', profile)
-    # Check if cached_projects_data is not None before updating CACHED_PROJECTS
-    if cached_projects_data:
-        CACHED_PROJECTS.update(cached_projects_data)
-    projects = tuple([(v) for v in CACHED_PROJECTS])
-    project = projects[0] if projects else None
+    projects = None
+    RUN = setup_runner(ctx, projects)
+    if not RUN:
+        Log.warn('No runnable projects found.')
+        exit()
+
+    project, profile = get_first_project(RUN)
+
     if team:
         team = ','.join(team)
+    else:
+        teams = find_team_per_project(ctx, project, profile)
+        if not teams:
+            return None
+        team = choose_option(teams, 'team name')
+        if not team:
+            Log.critical('please choose a valid option for team.')
 
     if project:
         list_iterations(team, project, profile, display=True)

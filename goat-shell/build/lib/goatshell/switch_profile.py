@@ -53,8 +53,11 @@ def switch_profile(config_store, verbose: bool = False) -> Tuple[str, Optional[s
     profiles = get_profiles_for_store(config_store)  # Fetch profiles for the given config store
 
     # Check if the profiles list is empty
-    if not profiles:
+    if not profiles: 
         return "", "No profiles found for the given config store!"
+    if len(profiles) <= 1:
+        selected_profile_id = profiles[0]
+        return f"{selected_profile_id}", None
 
     selected_profile_id = display_profile_menu_thread(profiles)
 

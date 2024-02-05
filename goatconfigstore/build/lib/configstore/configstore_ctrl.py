@@ -7,6 +7,7 @@ from awstools.aws_config import AWSconfig
 from ocitools.oci_config import OCIconfig
 from goatshell.goatshell import get_all_configstore_names
 
+all_stores = get_all_configstore_names()
 MESSAGE="Config Client" + misc.MOVE + "Current Profile: " + misc.GREEN + misc.UNDERLINE + 'N/A' + misc.RESET
 
 @click.group(help=MESSAGE, context_settings={'help_option_names':['-h','--help'], 'max_content_width': misc.set_terminal_width()}, invoke_without_command=True)
@@ -18,7 +19,7 @@ def cli(ctx, profile):
     pass
 
 @cli.command(help="show records stored in a configstore; you can use profile and record names to narrow down the results", context_settings={'help_option_names':['-h','--help']})
-@click.option('-n', '--name', help="name of the configstore to use", required=True, type=str, shell_complete=complete_configstore_names)
+@click.option('-n', '--name', help="name of the configstore to use", required=True, type=click.Choice(all_stores))
 @click.pass_context
 def show(ctx, name):
     profile = ctx.obj['PROFILE']

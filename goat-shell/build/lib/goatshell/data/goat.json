@@ -703,7 +703,7 @@
                                 "options": {
                                     "-t": {
                                         "name": "-t",
-                                        "help": "--team TEXT  provide team name for board search  [default:"
+                                        "help": "--team TEXT  provide team name for board search"
                                     },
                                     "-h": {
                                         "name": "-h",
@@ -829,11 +829,11 @@
                         "options": {
                             "-n": {
                                 "name": "-n",
-                                "help": "--name TEXT  name of the configstore to use  [required]"
+                                "help": "--name [awstools|ocitools|jiratools|azdev|jenkinstools|DEFAULT]"
                             },
                             "-h": {
                                 "name": "-h",
-                                "help": "--help       Show this message and exit."
+                                "help": "--help                      Show this message and exit."
                             }
                         },
                         "subcommands": {},
@@ -1730,7 +1730,7 @@
                         "help": "search for issues in Jira"
                     }
                 },
-                "help": "JIRA CLI ClientCurrent Profile: DEFAULT"
+                "help": "JIRA CLI ClientCurrent Profile:..."
             },
             "oracle": {
                 "command": "oracle",

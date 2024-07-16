@@ -71,7 +71,7 @@ cli.add_command(aws, name='aws')
 cli.add_command(az, name='az')
 cli.add_command(ibm, name='ibmcloud')
 cli.add_command(oci, name='oci')
-cli.add_command(ovhai, name='ovh')
+cli.add_command(ovhai, name='ovhai')
 cli.add_command(jenkins, name='jenkins')
 cli.add_command(slack)
 

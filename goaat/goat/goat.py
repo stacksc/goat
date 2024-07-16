@@ -10,7 +10,7 @@ from configstore.configstore_ctrl import cli as configs
 from awstools.awstools import CLI as aws
 from aztools.aztools import CLI as az
 from ovhaitools.ovhaitools import CLI as ovhai
-from ibmcloudtools.ibmcloudtools import CLI as ibmcloud
+from ibmcloudtools.ibmcloudtools import CLI as ibm 
 from ocitools.ocitools import CLI as oci
 from jenkinstools.jenkinstools import cli as jenkins
 from toolbox.misc import set_terminal_width, search_man_pages, debug, draw_title
@@ -69,7 +69,7 @@ cli.add_command(configs, name='configs')
 cli.add_command(jira, name='jira')
 cli.add_command(aws, name='aws')
 cli.add_command(az, name='az')
-cli.add_command(ibmcloud, name='ibm')
+cli.add_command(ibm, name='ibmcloud')
 cli.add_command(oci, name='oci')
 cli.add_command(ovhai, name='ovh')
 cli.add_command(jenkins, name='jenkins')

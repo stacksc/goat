@@ -26,7 +26,7 @@ def commands(ctx):
         exit()
 
     # Initial call to start building the command tree
-    root_command = "ibmcloud"
+    root_command = "ibm"
     command_tree = get_ibmcloud_command_tree(root_command, parent_command=None, depth=0, max_depth=3)
 
     # Create the root "ibmcloud" key and add the command_tree as a subcommand

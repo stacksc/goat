@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: goatibmcloudtools
-Version: 2024.7.16.1516
+Version: 2024.7.16.1622
 Summary: IBMCLOUD Tools - CLI client for IBM
 Author-email: Chris Stacks <centerupt@gmail.com>
 Classifier: Programming Language :: Python :: 3
